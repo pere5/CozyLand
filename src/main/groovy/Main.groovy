@@ -9,8 +9,6 @@ class Main extends JFrame {
     static int WINDOW_HEIGHT = 750
 
     static int idGenerator = 0
-    final int DELAY = 16
-    Timer timer
     MyKeyboardListener keyboardListener
     MyMouseListener myMouseListener
 
@@ -32,7 +30,7 @@ class Main extends JFrame {
         addKeyListener(keyboardListener)
         surface.myKeyboardListener = keyboardListener
 
-        timer = new Timer(DELAY, surface)
+        Timer timer = new Timer(150, surface)
         timer.start()
         add(surface)
 
@@ -47,6 +45,7 @@ class Main extends JFrame {
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT)
         setLocationRelativeTo(null)
         setDefaultCloseOperation(EXIT_ON_CLOSE)
+        setVisible(true)
     }
 
     static void main(String[] args) {
@@ -54,8 +53,7 @@ class Main extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             @Override
             void run() {
-                Main ex = new Main()
-                ex.setVisible(true)
+                new Main()
             }
         })
     }

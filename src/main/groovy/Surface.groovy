@@ -10,13 +10,9 @@ class Surface extends JPanel implements ActionListener {
     boolean pause = false
     MyKeyboardListener myKeyboardListener
 
-    def doDrawing(Graphics g) {
-
-        drawables.clear()
-        (0..5).each {
-            drawables << new Drawable()
-        }
-
+    @Override
+    void paintComponent(Graphics g) {
+        super.paintComponent(g)
         Graphics2D g2d = (Graphics2D) g
 
         drawables.each { Drawable drawable ->
@@ -30,18 +26,16 @@ class Surface extends JPanel implements ActionListener {
     }
 
     @Override
-    void paintComponent(Graphics g) {
-        super.paintComponent(g)
-        doDrawing(g)
-    }
-
-    @Override
     void actionPerformed(ActionEvent e) {
         boolean spaceHasBeenPressed = myKeyboardListener.keyHasBeenPressed(KeyEvent.VK_SPACE)
         if (spaceHasBeenPressed) {
             pause = !pause
         }
         if (!pause) {
+            drawables.each {
+                it.x = Drawable.generateX()
+                it.y = Drawable.generateY()
+            }
             repaint()
         }
     }
