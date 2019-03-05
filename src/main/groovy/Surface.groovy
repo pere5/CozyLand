@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent
 
 class Surface extends JPanel implements ActionListener {
 
-    def drawables = [new Drawable(),new Drawable(),new Drawable(),new Drawable(),new Drawable()]
+    def drawables
     boolean pause = false
     MyKeyboardListener myKeyboardListener
 
@@ -32,10 +32,6 @@ class Surface extends JPanel implements ActionListener {
             pause = !pause
         }
         if (!pause) {
-            drawables.each {
-                it.x = Drawable.generateX()
-                it.y = Drawable.generateY()
-            }
             repaint()
         }
     }
