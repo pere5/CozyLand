@@ -5,8 +5,7 @@ import java.awt.event.KeyListener
 /**
  * Makes handling keyboard a lot simpler
  */
-class MyKeyboardListener implements KeyListener
-{
+class MyKeyboardListener implements KeyListener {
     private boolean [] keys = new boolean[256]
     private boolean [] pressedKeys = new boolean[256]
 
