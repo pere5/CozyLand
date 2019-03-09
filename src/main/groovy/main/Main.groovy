@@ -1,6 +1,9 @@
 package main
 
-
+import javaSrc.ExampleFactory
+import javaSrc.ExampleNode
+import javaSrc.Map
+import main.aStar.StarNodeFactory
 import main.person.Person
 import main.input.MyKeyboardListener
 import main.input.MyMouseListener
@@ -8,7 +11,7 @@ import main.things.Stone
 import main.things.Tree
 
 import javax.swing.*
-import java.awt.*
+import java.awt.EventQueue
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
 
@@ -59,6 +62,9 @@ class Main extends JFrame {
                 pause: false,
                 drawables: drawables
         ]
+
+        Map<ExampleNode> myMap = new Map<ExampleNode>(WINDOW_WIDTH, WINDOW_HEIGHT, new StarNodeFactory(model: model))
+
         
         def surface = new Surface(model: model)
 

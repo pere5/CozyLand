@@ -1,5 +1,6 @@
 package main.person
 
+import javaSrc.ExampleNode
 import main.things.Drawable
 import javaSrc.ExampleFactory
 
@@ -14,6 +15,8 @@ class WalkPath extends Action {
         //https://www.redblobgames.com/pathfinding/a-star/implementation.html
 
         ExampleFactory lol = null
+
+        List<Node> path = myMap.findPath(0, 0, 40, 40);
 
         List<double[]> destinations = [
                 destination
