@@ -9,17 +9,17 @@ abstract class Drawable {
     Drawable() {
         this.id = Main.getNewId()
         if (x == 0 && y == 0) {
-            this.x = generateX()
-            this.y = generateY()
+            def (x, y) = generateXY()
+            this.x = x
+            this.y = y
         }
     }
 
-    static double generateX() {
-        return Main.WINDOW_WIDTH / 2 + generate(Main.WINDOW_WIDTH / 3 as int)
-    }
-
-    static double generateY() {
-        return Main.WINDOW_HEIGHT / 2 + generate(Main.WINDOW_HEIGHT / 3 as int)
+    static double[] generateXY() {
+        (double[])[
+                Main.WINDOW_WIDTH / 2 + generate(Main.WINDOW_WIDTH / 3 as int),
+                Main.WINDOW_HEIGHT / 2 + generate(Main.WINDOW_HEIGHT / 3 as int)
+        ]
     }
 
     static double generate(int distance) {
