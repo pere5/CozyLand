@@ -32,7 +32,7 @@ class WalkPath extends Action {
         double xSmall = pointA[0] - step
         double yBig = pointA[1] + step
         double ySmall = pointA[1] - step
-        return pointB[0] < xBig && pointB[0] > xSmall && pointB[1] < yBig && pointB[1] > ySmall
+        return pointB[0] <= xBig && pointB[0] >= xSmall && pointB[1] <= yBig && pointB[1] >= ySmall
     }
 
     @Override
