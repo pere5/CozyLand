@@ -42,11 +42,11 @@ class Main extends JFrame {
         myKeyboardListener = new MyKeyboardListener(model: model)
         addKeyListener(myKeyboardListener)
 
-        Timer timer = new Timer(10, surface)
+        Timer timer = new Timer(15, surface)
         timer.start()
 
         Thread.start {
-            new ThreadWorker(model: model, index: 0, ).run()
+            new ThreadWorker(model: model, index: 0).run()
         }
         Thread.start {
             new ThreadWorker(model: model, index: 1).run()
