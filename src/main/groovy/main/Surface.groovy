@@ -1,13 +1,12 @@
 package main
 
-import main.input.MyKeyboardListener
+
 import main.things.Drawable
 
 import javax.swing.*
 import java.awt.*
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
-import java.awt.event.KeyEvent
 
 class Surface extends JPanel implements ActionListener {
 

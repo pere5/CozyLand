@@ -1,8 +1,9 @@
 package main
 
+
+import main.person.Person
 import main.input.MyKeyboardListener
 import main.input.MyMouseListener
-import main.person.Person
 import main.things.Stone
 import main.things.Tree
 
