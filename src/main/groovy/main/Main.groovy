@@ -30,31 +30,35 @@ class Main extends JFrame {
 
         def drawables = [new Person(), new Person(), new Person(), new Person(), new Person()]
 
-        def surface = new Surface(drawables: drawables)
+        def model = [
+                pause: false,
+                drawables: drawables
+        ]
+        
+        def surface = new Surface(model: model)
 
         myMouseListener = new MyMouseListener()
         surface.addMouseListener(myMouseListener)
-        myKeyboardListener = new MyKeyboardListener()
+        myKeyboardListener = new MyKeyboardListener(model: model)
         addKeyListener(myKeyboardListener)
-        surface.myKeyboardListener = myKeyboardListener
 
         Timer timer = new Timer(10, surface)
         timer.start()
 
         Thread.start {
-            new ThreadWorker(index: 0, drawables: drawables, myKeyboardListener: myKeyboardListener).run()
+            new ThreadWorker(model: model, index: 0, ).run()
         }
         Thread.start {
-            new ThreadWorker(index: 1, drawables: drawables, myKeyboardListener: myKeyboardListener).run()
+            new ThreadWorker(model: model, index: 1).run()
         }
         Thread.start {
-            new ThreadWorker(index: 2, drawables: drawables, myKeyboardListener: myKeyboardListener).run()
+            new ThreadWorker(model: model, index: 2).run()
         }
         Thread.start {
-            new ThreadWorker(index: 3, drawables: drawables, myKeyboardListener: myKeyboardListener).run()
+            new ThreadWorker(model: model, index: 3).run()
         }
         Thread.start {
-            new ThreadWorker(index: 4, drawables: drawables, myKeyboardListener: myKeyboardListener).run()
+            new ThreadWorker(model: model, index: 4).run()
         }
 
         add(surface)

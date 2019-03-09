@@ -8,6 +8,9 @@ import java.awt.event.KeyListener
  * Makes handling keyboard a lot simpler
  */
 class MyKeyboardListener implements KeyListener {
+
+    def model
+
     private boolean [] keys = new boolean[256]
     private boolean [] pressedKeys = new boolean[256]
 
@@ -39,6 +42,10 @@ class MyKeyboardListener implements KeyListener {
         if (e.getKeyCode() > 0 && e.getKeyCode() < 256) {
             keys[e.getKeyCode()] = true
             pressedKeys[e.getKeyCode()] = true
+        }
+
+        if (keyHasBeenPressed(KeyEvent.VK_SPACE)) {
+            model.pause = !model.pause
         }
     }
 

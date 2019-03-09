@@ -23,7 +23,6 @@ class WalkPath extends Action {
             start = nextStep
         }
         path.add(destination)
-        println(path)
     }
 
     boolean closeEnough(double[] pointA, double[] pointB, double step) {
