@@ -3,6 +3,8 @@ package main
 import main.input.MyKeyboardListener
 import main.input.MyMouseListener
 import main.person.Person
+import main.things.Stone
+import main.things.Tree
 
 import javax.swing.*
 import java.awt.*
@@ -28,7 +30,29 @@ class Main extends JFrame {
 
     def initUI() {
 
-        def drawables = [new Person(), new Person(), new Person(), new Person(), new Person()]
+        def persons = [
+                new Person(), new Person(), new Person(), new Person(), new Person()
+        ]
+        def stones = [
+                new Stone(), new Stone(), new Stone(), new Stone(), new Stone(),
+                new Stone(), new Stone(), new Stone(), new Stone(), new Stone(),
+                new Stone(), new Stone(), new Stone(), new Stone(), new Stone(),
+                new Stone(), new Stone(), new Stone(), new Stone(), new Stone(),
+                new Stone(), new Stone(), new Stone(), new Stone(), new Stone(),
+                new Stone(), new Stone(), new Stone(), new Stone(), new Stone()
+        ]
+        def trees = [
+                new Tree(), new Tree(), new Tree(), new Tree(), new Tree(),
+                new Tree(), new Tree(), new Tree(), new Tree(), new Tree(),
+                new Tree(), new Tree(), new Tree(), new Tree(), new Tree(),
+                new Tree(), new Tree(), new Tree(), new Tree(), new Tree(),
+                new Tree(), new Tree(), new Tree(), new Tree(), new Tree(),
+                new Tree(), new Tree(), new Tree(), new Tree(), new Tree()
+        ]
+
+        def drawables = [
+                persons, stones, trees
+        ].flatten()
 
         def model = [
                 pause: false,

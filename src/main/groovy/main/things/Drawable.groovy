@@ -6,6 +6,17 @@ import main.Main
 
 abstract class Drawable {
 
+    enum SHAPES {
+        RECT, CIRCLE
+    }
+
+    int id
+    Color color = Color.BLACK
+    SHAPES shape = SHAPES.RECT
+    int size = 10
+    double x = 0
+    double y = 0
+
     Drawable() {
         this.id = Main.getNewId()
         if (x == 0 && y == 0) {
@@ -25,17 +36,6 @@ abstract class Drawable {
     static double generate(int distance) {
         return distance - ThreadLocalRandom.current().nextInt(0, distance * 2 + 1)
     }
-
-    enum SHAPES {
-        RECT, CIRCLE
-    }
-
-    int id
-    Color color = Color.BLACK
-    SHAPES shape = SHAPES.RECT
-    int size = 10
-    double x = 0
-    double y = 0
 
     int getX() {
         x

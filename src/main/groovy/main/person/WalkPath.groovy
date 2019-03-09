@@ -6,12 +6,19 @@ class WalkPath extends Action {
     Queue<double[]> path = new LinkedList<>()
     double STEP = 0.7
 
-    WalkPath(double[] start, List<double[]> destinations) {
+    WalkPath(double[] start, double[] destination) {
+
+        //do stuff here to pathFind
+
+        List<double[]> destinations = [
+                destination
+        ]
+
         double[] nextStep
-        destinations.each { double[] destination ->
-            while (!closeEnough(start, destination, STEP)) {
-                double vx = destination[0] - start[0]
-                double vy = destination[1] - start[1]
+        destinations.each { double[] dest ->
+            while (!closeEnough(start, dest, STEP)) {
+                double vx = dest[0] - start[0]
+                double vy = dest[1] - start[1]
 
                 double mag = Math.sqrt(vx * vx + vy * vy)
 
@@ -23,7 +30,7 @@ class WalkPath extends Action {
                 path.add(nextStep)
                 start = nextStep
             }
-            path.add(destination)
+            path.add(dest)
         }
     }
 
