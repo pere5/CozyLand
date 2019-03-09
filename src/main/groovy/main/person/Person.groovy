@@ -11,7 +11,14 @@ class Person extends Drawable {
     Person() {
         size = 3
         color = Color.BLUE
-        actionQueue.add(new WalkPath((double[])[generateX(), generateY()], (double[])[generateX(), generateY()]))
+        def start = (double[])[generateX(), generateY()]
+        def path = [
+                (double[])[generateX(), generateY()], (double[])[generateX(), generateY()],
+                (double[])[generateX(), generateY()], (double[])[generateX(), generateY()],
+                (double[])[generateX(), generateY()], (double[])[generateX(), generateY()],
+                (double[])[generateX(), generateY()], (double[])[generateX(), generateY()]
+        ]
+        actionQueue.add(new WalkPath(start, path))
     }
 
     def work() {
