@@ -1,3 +1,9 @@
+package main
+
+import main.input.MyKeyboardListener
+import main.input.MyMouseListener
+import main.person.Person
+
 import javax.swing.*
 import java.awt.*
 import java.awt.event.WindowAdapter
@@ -22,9 +28,9 @@ class Main extends JFrame {
 
     def initUI() {
 
-        def drawables = [new Drawable(),new Drawable(),new Drawable(),new Drawable(),new Drawable()]
+        def drawables = [new Person(), new Person(), new Person(), new Person(), new Person()]
 
-        final Surface surface = new Surface(drawables: drawables)
+        def surface = new Surface(drawables: drawables)
 
         myMouseListener = new MyMouseListener()
         surface.addMouseListener(myMouseListener)
@@ -32,25 +38,23 @@ class Main extends JFrame {
         addKeyListener(myKeyboardListener)
         surface.myKeyboardListener = myKeyboardListener
 
-        Timer timer = new Timer(50, surface)
+        Timer timer = new Timer(10, surface)
         timer.start()
 
-        //https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/concurrency/FlipperProject/src/concurrency/Flipper.java
-
         Thread.start {
-            new ThreadWorker(index: 0, drawables: drawables, myKeyboardListener: myKeyboardListener).work()
+            new ThreadWorker(index: 0, drawables: drawables, myKeyboardListener: myKeyboardListener).run()
         }
         Thread.start {
-            new ThreadWorker(index: 1, drawables: drawables, myKeyboardListener: myKeyboardListener).work()
+            new ThreadWorker(index: 1, drawables: drawables, myKeyboardListener: myKeyboardListener).run()
         }
         Thread.start {
-            new ThreadWorker(index: 2, drawables: drawables, myKeyboardListener: myKeyboardListener).work()
+            new ThreadWorker(index: 2, drawables: drawables, myKeyboardListener: myKeyboardListener).run()
         }
         Thread.start {
-            new ThreadWorker(index: 3, drawables: drawables, myKeyboardListener: myKeyboardListener).work()
+            new ThreadWorker(index: 3, drawables: drawables, myKeyboardListener: myKeyboardListener).run()
         }
         Thread.start {
-            new ThreadWorker(index: 4, drawables: drawables, myKeyboardListener: myKeyboardListener).work()
+            new ThreadWorker(index: 4, drawables: drawables, myKeyboardListener: myKeyboardListener).run()
         }
 
         add(surface)

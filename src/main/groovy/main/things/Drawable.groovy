@@ -1,7 +1,10 @@
+package main.things
+
 import java.awt.Color
 import java.util.concurrent.ThreadLocalRandom
+import main.Main
 
-class Drawable {
+abstract class Drawable {
 
     Drawable() {
         this.id = Main.getNewId()
@@ -11,15 +14,15 @@ class Drawable {
         }
     }
 
-    static int generateX() {
-        return Main.WINDOW_WIDTH / 2 + generateInt(Main.WINDOW_WIDTH / 3 as int)
+    static double generateX() {
+        return Main.WINDOW_WIDTH / 2 + generate(Main.WINDOW_WIDTH / 3 as int)
     }
 
-    static int generateY() {
-        return Main.WINDOW_HEIGHT / 2 + generateInt(Main.WINDOW_HEIGHT / 3 as int)
+    static double generateY() {
+        return Main.WINDOW_HEIGHT / 2 + generate(Main.WINDOW_HEIGHT / 3 as int)
     }
 
-    static int generateInt(int distance) {
+    static double generate(int distance) {
         return distance - ThreadLocalRandom.current().nextInt(0, distance * 2 + 1)
     }
 

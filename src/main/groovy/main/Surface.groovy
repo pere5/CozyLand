@@ -1,3 +1,8 @@
+package main
+
+import main.input.MyKeyboardListener
+import main.things.Drawable
+
 import javax.swing.*
 import java.awt.*
 import java.awt.event.ActionEvent

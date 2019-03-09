@@ -1,5 +1,8 @@
-import java.awt.event.ActionEvent
-import java.awt.event.ActionListener
+package main
+
+import main.input.MyKeyboardListener
+import main.person.Person
+
 import java.awt.event.KeyEvent
 
 class ThreadWorker {
@@ -15,8 +18,7 @@ class ThreadWorker {
     def drawables
     int index
 
-    void work() {
-
+    def run() {
         while(isRunning) {
             boolean spaceHasBeenPressed = myKeyboardListener.keyHasBeenPressed(KeyEvent.VK_SPACE)
             if (spaceHasBeenPressed) {
@@ -49,6 +51,6 @@ class ThreadWorker {
     }
     
     def update() {
-        drawables[index] = new Drawable()
+        (drawables[index] as Person).work()
     }
 }
