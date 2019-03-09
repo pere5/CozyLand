@@ -16,7 +16,7 @@ class WalkPath extends Action {
 
         ExampleFactory lol = null
 
-        List<Node> path = myMap.findPath(0, 0, 40, 40);
+        //List<Node> path = myMap.findPath(0, 0, 40, 40);
 
         List<double[]> destinations = [
                 destination

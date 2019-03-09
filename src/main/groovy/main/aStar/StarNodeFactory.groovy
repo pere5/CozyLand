@@ -6,8 +6,6 @@ import javaSrc.NodeFactory
 
 class StarNodeFactory implements NodeFactory {
 
-    def model
-
     @Override
     AbstractNode createNode(int x, int y) {
         return new Node(x, y);

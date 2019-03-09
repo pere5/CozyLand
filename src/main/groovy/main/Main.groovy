@@ -34,62 +34,33 @@ class Main extends JFrame {
 
     def initUI() {
 
-        def persons = [
-                new Person(), new Person(), new Person(), new Person(), new Person()
-        ]
-        def stones = [
-                new Stone(), new Stone(), new Stone(), new Stone(), new Stone(),
-                new Stone(), new Stone(), new Stone(), new Stone(), new Stone(),
-                new Stone(), new Stone(), new Stone(), new Stone(), new Stone(),
-                new Stone(), new Stone(), new Stone(), new Stone(), new Stone(),
-                new Stone(), new Stone(), new Stone(), new Stone(), new Stone(),
-                new Stone(), new Stone(), new Stone(), new Stone(), new Stone()
-        ]
-        def trees = [
-                new Tree(), new Tree(), new Tree(), new Tree(), new Tree(),
-                new Tree(), new Tree(), new Tree(), new Tree(), new Tree(),
-                new Tree(), new Tree(), new Tree(), new Tree(), new Tree(),
-                new Tree(), new Tree(), new Tree(), new Tree(), new Tree(),
-                new Tree(), new Tree(), new Tree(), new Tree(), new Tree(),
-                new Tree(), new Tree(), new Tree(), new Tree(), new Tree()
-        ]
-
-        def drawables = [
-                persons, stones, trees
-        ].flatten()
-
-        def model = [
-                pause: false,
-                drawables: drawables
-        ]
-
-        Map<ExampleNode> myMap = new Map<ExampleNode>(WINDOW_WIDTH, WINDOW_HEIGHT, new StarNodeFactory(model: model))
+        Map<ExampleNode> myMap = new Map<ExampleNode>(WINDOW_WIDTH, WINDOW_HEIGHT, new StarNodeFactory())
 
         
-        def surface = new Surface(model: model)
+        def surface = new Surface()
 
         myMouseListener = new MyMouseListener()
         surface.addMouseListener(myMouseListener)
-        myKeyboardListener = new MyKeyboardListener(model: model)
+        myKeyboardListener = new MyKeyboardListener()
         addKeyListener(myKeyboardListener)
 
         Timer timer = new Timer(15, surface)
         timer.start()
 
         Thread.start {
-            new ThreadWorker(model: model, index: 0).run()
+            new ThreadWorker(index: 0).run()
         }
         Thread.start {
-            new ThreadWorker(model: model, index: 1).run()
+            new ThreadWorker(index: 1).run()
         }
         Thread.start {
-            new ThreadWorker(model: model, index: 2).run()
+            new ThreadWorker(index: 2).run()
         }
         Thread.start {
-            new ThreadWorker(model: model, index: 3).run()
+            new ThreadWorker(index: 3).run()
         }
         Thread.start {
-            new ThreadWorker(model: model, index: 4).run()
+            new ThreadWorker(index: 4).run()
         }
 
         add(surface)

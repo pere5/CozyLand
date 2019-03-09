@@ -10,14 +10,12 @@ import java.awt.event.ActionListener
 
 class Surface extends JPanel implements ActionListener {
 
-    def model
-
     @Override
     void paintComponent(Graphics g) {
         super.paintComponent(g)
         Graphics2D g2d = (Graphics2D) g
 
-        model.drawables.each { Drawable drawable ->
+        Model.model.drawables.each { Drawable drawable ->
             g2d.setPaint(drawable.color)
             if (drawable.shape == Drawable.SHAPES.RECT ) {
                 g2d.fillRect(drawable.x, drawable.y, drawable.size, drawable.size)
@@ -29,7 +27,7 @@ class Surface extends JPanel implements ActionListener {
 
     @Override
     void actionPerformed(ActionEvent e) {
-        if (!model.pause) {
+        if (!Model.model.pause) {
             repaint()
         }
     }
