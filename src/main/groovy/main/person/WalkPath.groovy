@@ -10,6 +10,8 @@ class WalkPath extends Action {
 
         //do stuff here to pathFind
 
+        //https://www.redblobgames.com/pathfinding/a-star/implementation.html
+
         List<double[]> destinations = [
                 destination
         ]
