@@ -3,6 +3,7 @@ package main
 import javaSrc.ExampleFactory
 import javaSrc.ExampleNode
 import javaSrc.Map
+import main.aStar.StarNode
 import main.aStar.StarNodeFactory
 import main.person.Person
 import main.input.MyKeyboardListener
@@ -33,9 +34,6 @@ class Main extends JFrame {
     }
 
     def initUI() {
-
-        Map<ExampleNode> myMap = new Map<ExampleNode>(WINDOW_WIDTH, WINDOW_HEIGHT, new StarNodeFactory())
-
         
         def surface = new Surface()
 

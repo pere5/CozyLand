@@ -1,8 +1,8 @@
 package main.person
 
-import javaSrc.ExampleNode
+import main.Model
+import main.aStar.StarNode
 import main.things.Drawable
-import javaSrc.ExampleFactory
 
 class WalkPath extends Action {
     Queue<double[]> path = new LinkedList<>()
@@ -10,13 +10,9 @@ class WalkPath extends Action {
 
     WalkPath(double[] start, double[] destination) {
 
-        //do stuff here to pathFind
-
         //https://www.redblobgames.com/pathfinding/a-star/implementation.html
 
-        ExampleFactory lol = null
-
-        //List<Node> path = myMap.findPath(0, 0, 40, 40);
+        List<StarNode> path2 = Model.model.myMap.findPath(0, 0, 40, 40)
 
         List<double[]> destinations = [
                 destination

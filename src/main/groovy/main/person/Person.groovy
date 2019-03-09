@@ -12,10 +12,17 @@ class Person extends Drawable {
     Person() {
         size = 3
         color = Color.BLUE
-        actionQueue.add(new WalkPath(generateXY(), generateXY()))
+        def (x, y) = generateXY()
+        this.x = x
+        this.y = y
     }
 
     def work() {
+
+        if (!actionQueue) {
+            actionQueue.add(new WalkPath((double[])[x, y], generateXY()))
+        }
+
         if(!actionQueue.peek()?.doIt(this)) {
             actionQueue.poll()
         }

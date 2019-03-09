@@ -1,5 +1,9 @@
 package main
 
+
+import javaSrc.Map
+import main.aStar.StarNodeFactory
+import main.aStar.StarNode
 import main.person.Person
 import main.things.Stone
 import main.things.Tree
@@ -33,9 +37,12 @@ class Model {
                 persons, stones, trees
         ].flatten()
 
+        Map<StarNode> myMap = new Map<StarNode>(50, 50, new StarNodeFactory())
+
         def model = [
                 pause: false,
-                drawables: drawables
+                drawables: drawables,
+                myMap: myMap
         ]
         this.model = model
     }
