@@ -30,7 +30,8 @@ class Main extends JFrame {
     }
 
     def initUI() {
-        
+        Model.init()
+
         def surface = new Surface()
 
         myMouseListener = new MyMouseListener()
