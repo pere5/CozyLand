@@ -9,7 +9,6 @@ class ThreadWorker {
     def framesPerSecond = 0
     def intendedFps = 60
     def isRunning = true
-    def model
     int index
 
     def run() {
@@ -24,7 +23,7 @@ class ThreadWorker {
                     System.out.println("Woohah!")
                 }
             }
-            if (!model.pause) {
+            if (!Model.model.pause) {
                 update()
                 long currentTime = System.currentTimeMillis()
                 framesPerSecond++
@@ -38,6 +37,6 @@ class ThreadWorker {
     }
     
     def update() {
-        (model.drawables[index] as Person).work()
+        (Model.model.drawables[index] as Person).work()
     }
 }

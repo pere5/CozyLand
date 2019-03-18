@@ -1,7 +1,6 @@
 package main.person
 
 import main.things.Drawable
-import javaSrc.ExampleFactory
 
 class WalkPath extends Action {
     Queue<double[]> path = new LinkedList<>()
@@ -9,11 +8,7 @@ class WalkPath extends Action {
 
     WalkPath(double[] start, double[] destination) {
 
-        //do stuff here to pathFind
-
         //https://www.redblobgames.com/pathfinding/a-star/implementation.html
-
-        ExampleFactory lol = null
 
         List<double[]> destinations = [
                 destination
