@@ -4,6 +4,9 @@ import main.person.Person
 import main.things.Stone
 import main.things.Tree
 
+import javax.imageio.ImageIO
+import java.awt.image.BufferedImage
+
 class Model {
 
     static model
@@ -44,8 +47,35 @@ class Model {
     }
 
     static Object generateBackground() {
-        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-        InputStream is = classloader.getResourceAsStream("Lol_Height_Map_Merged.png");
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader()
+        BufferedImage image = ImageIO.read(classloader.getResourceAsStream('Lol_Height_Map_Merged.png'))
+        int[][] c = new int[image.getHeight()][image.getWidth()]
+        for(int i = 0; i < image.getHeight(); i++) {
+            for(int j = 0; j < image.getWidth(); j++) {
+
+                /*
+                (getAlpha(inData) << 24)
+                | (getRed(inData) << 16)
+                | (getGreen(inData) << 8)
+                | (getBlue(inData) << 0)
+                 */
+                int rgb = image.getRGB(i, j)
+                /*
+                def first = ((1 << 8) - 1)
+                def second = ((1 << 16) - 1) ^ first
+                def third = ((1 << 24) - 1) ^ second ^ first
+                */
+                def blue = rgb & 0x0000FF
+                def green = rgb & 0x00FF00 >> 8
+                def red = rgb & 0xFF0000 >> 16
+                int lol = 0
+            }
+        }
         int lol = 0
+
+
+
+        byte[] lol2 = classloader.getResourceAsStream("Lol_Height_Map_Merged.png").bytes
+        def lol3 = 0
     }
 }
