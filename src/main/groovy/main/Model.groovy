@@ -1,5 +1,6 @@
 package main
 
+import main.exception.PerIsBorkenException
 import main.person.Person
 import main.things.Stone
 import main.things.Tree
@@ -49,26 +50,24 @@ class Model {
     static Object generateBackground() {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader()
         BufferedImage image = ImageIO.read(classloader.getResourceAsStream('Lol_Height_Map_Merged.png'))
-        int[][] c = new int[image.getHeight()][image.getWidth()]
+        int[][] heightMap = new int[image.getHeight()][image.getWidth()]
         for(int i = 0; i < image.getHeight(); i++) {
             for(int j = 0; j < image.getWidth(); j++) {
-
                 /*
-                (getAlpha(inData) << 24)
-                | (getRed(inData) << 16)
-                | (getGreen(inData) << 8)
-                | (getBlue(inData) << 0)
+                    (getAlpha(inData) << 24)
+                    | (getRed(inData) << 16)
+                    | (getGreen(inData) << 8)
+                    | (getBlue(inData) << 0)
                  */
                 int rgb = image.getRGB(i, j)
-                /*
-                def first = ((1 << 8) - 1)
-                def second = ((1 << 16) - 1) ^ first
-                def third = ((1 << 24) - 1) ^ second ^ first
-                */
                 def blue = rgb & 0x0000FF
                 def green = rgb & 0x00FF00 >> 8
                 def red = rgb & 0xFF0000 >> 16
-                int lol = 0
+                if (blue == green && blue == red) {
+                    heightMap[i][j] = blue
+                } else {
+                    throw new PerIsBorkenException()
+                }
             }
         }
         int lol = 0
