@@ -47,9 +47,9 @@ class Model {
         this.model = model
     }
 
-    static Object generateBackground() {
+    static def generateBackground() {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader()
-        BufferedImage image = ImageIO.read(classloader.getResourceAsStream('Lol_Height_Map_Merged.png'))
+        BufferedImage image = ImageIO.read(classloader.getResourceAsStream('lol.png'))
         int[][] heightMap = new int[image.getHeight()][image.getWidth()]
         for(int i = 0; i < image.getHeight(); i++) {
             for(int j = 0; j < image.getWidth(); j++) {
@@ -71,10 +71,5 @@ class Model {
             }
         }
         int lol = 0
-
-
-
-        byte[] lol2 = classloader.getResourceAsStream("Lol_Height_Map_Merged.png").bytes
-        def lol3 = 0
     }
 }
