@@ -59,26 +59,49 @@ class Model {
     static def generateBackground() {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader()
         BufferedImage image = ImageIO.read(classloader.getResourceAsStream('lol.png'))
-        int[][] heightMap = new int[image.getHeight()][image.getWidth()]
-        for(int i = 0; i < image.getHeight(); i++) {
-            for(int j = 0; j < image.getWidth(); j++) {
+        def imageWidth = image.getWidth()
+        def imageHeight = image.getHeight()
+        int[][] heightMap = new int[imageWidth][imageHeight]
+        for(int x = 0; x < image.getWidth(); x++) {
+            for(int y = 0; y < image.getHeight(); y++) {
                 /*
                     (getAlpha(inData) << 24)
                     | (getRed(inData) << 16)
                     | (getGreen(inData) << 8)
                     | (getBlue(inData) << 0)
                  */
-                int rgb = image.getRGB(i, j)
+                int rgb = image.getRGB(x, y)
                 def blue = rgb & 0x0000FF
                 def green = rgb & 0x00FF00 >> 8
                 def red = rgb & 0xFF0000 >> 16
                 if (blue == green && blue == red) {
-                    heightMap[i][j] = blue
+                    heightMap[x][y] = blue
                 } else {
                     throw new PerIsBorkenException()
                 }
             }
         }
 
+        //undersök max och min här...
+
+        def bfWidth = WINDOW_WIDTH / 6
+        def bgHeight = WINDOW_HEIGHT / 6
+
+        def stepsX = (imageWidth / bfWidth) as int
+        def stepsY = (imageHeight / bgHeight) as int
+
+        for (int i = 0; i < imageWidth; i = i + stepsX) {
+            for (int j = 0; j < imageHeight; j = j + stepsY) {
+
+                for (int x = i; x < i + stepsX; x++) {
+                    for (int y = j; y < j + stepsY; y++) {
+                        if (x < imageWidth && y < imageHeight) {
+                            //do stuff...
+                        }
+                    }
+                }
+
+            }
+        }
     }
 }
