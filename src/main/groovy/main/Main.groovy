@@ -14,19 +14,12 @@ import java.awt.event.WindowEvent
 
 class Main extends JFrame {
 
-    static int WINDOW_WIDTH = 1000
-    static int WINDOW_HEIGHT = 750
 
-    static int idGenerator = 0
     MyKeyboardListener myKeyboardListener
     MyMouseListener myMouseListener
 
     Main() {
         initUI()
-    }
-
-    static int getNewId() {
-        idGenerator++
     }
 
     def initUI() {
@@ -68,7 +61,7 @@ class Main extends JFrame {
         })
 
         setTitle("CozyLand")
-        setSize(WINDOW_WIDTH, WINDOW_HEIGHT)
+        setSize(Model.WINDOW_WIDTH, Model.WINDOW_HEIGHT)
         setLocationRelativeTo(null)
         setDefaultCloseOperation(EXIT_ON_CLOSE)
         setVisible(true)

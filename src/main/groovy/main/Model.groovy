@@ -10,7 +10,16 @@ import java.awt.image.BufferedImage
 
 class Model {
 
+    static int WINDOW_WIDTH = 1000
+    static int WINDOW_HEIGHT = 750
+
+    static int idGenerator = 0
+
     static model
+
+    static int getNewId() {
+        idGenerator++
+    }
 
     static def init() {
         def persons = [
@@ -70,6 +79,6 @@ class Model {
                 }
             }
         }
-        int lol = 0
+
     }
 }

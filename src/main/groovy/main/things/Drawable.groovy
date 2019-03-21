@@ -1,5 +1,7 @@
 package main.things
 
+import main.Model
+
 import java.awt.Color
 import java.util.concurrent.ThreadLocalRandom
 import main.Main
@@ -18,7 +20,7 @@ abstract class Drawable {
     double y = 0
 
     Drawable() {
-        this.id = Main.getNewId()
+        this.id = Model.getNewId()
         if (x == 0 && y == 0) {
             def (x, y) = generateXY()
             this.x = x
@@ -28,8 +30,8 @@ abstract class Drawable {
 
     static double[] generateXY() {
         (double[])[
-                Main.WINDOW_WIDTH / 2 + generate(Main.WINDOW_WIDTH / 3 as int),
-                Main.WINDOW_HEIGHT / 2 + generate(Main.WINDOW_HEIGHT / 3 as int)
+                Model.WINDOW_WIDTH / 2 + generate(Model.WINDOW_WIDTH / 3 as int),
+                Model.WINDOW_HEIGHT / 2 + generate(Model.WINDOW_HEIGHT / 3 as int)
         ]
     }
 
