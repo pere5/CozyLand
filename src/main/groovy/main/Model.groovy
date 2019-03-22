@@ -7,6 +7,7 @@ import main.things.Tree
 
 import javax.imageio.ImageIO
 import java.awt.image.BufferedImage
+import java.math.RoundingMode
 
 class Model {
 
@@ -62,6 +63,8 @@ class Model {
         def imageWidth = image.getWidth()
         def imageHeight = image.getHeight()
         int[][] heightMap = new int[imageWidth][imageHeight]
+        def min = 128
+        def max = 128
         for(int x = 0; x < image.getWidth(); x++) {
             for(int y = 0; y < image.getHeight(); y++) {
                 /*
@@ -76,13 +79,35 @@ class Model {
                 def red = rgb & 0xFF0000 >> 16
                 if (blue == green && blue == red) {
                     heightMap[x][y] = blue
+
+                    if (blue != 0 && blue < min) {
+                        min = blue
+                    } else if (blue != 255 && blue > max) {
+                        max = blue
+                    }
                 } else {
                     throw new PerIsBorkenException()
                 }
             }
         }
 
-        //undersök max och min här...
+        int globalAdjustment = ((Math.abs(min-128) - Math.abs(max-128)) / 2).intValue()
+        max = max + globalAdjustment - 128
+        min = min + globalAdjustment - 128
+        double scaleMax = 128 / max
+        double scaleMin = -128 / min
+
+        if (!(scaleMax + 1 >= scaleMin && scaleMax - 1 <= scaleMin)) {
+            throw new PerIsBorkenException()
+        }
+
+        double scale = scaleMax
+
+        for(int x = 0; x < heightMap.length; x++) {
+            for(int y = 0; y < heightMap[x].length; y++) {
+                heightMap[x][y] = (((heightMap[x][y] + globalAdjustment - 128) * scale) + 128 ).intValue()
+            }
+        }
 
         def bfWidth = WINDOW_WIDTH / 6
         def bgHeight = WINDOW_HEIGHT / 6
