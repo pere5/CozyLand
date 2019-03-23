@@ -17,13 +17,6 @@ class Surface extends JPanel implements ActionListener {
         super.paintComponent(g)
         Graphics2D g2d = (Graphics2D) g
 
-
-        if (first){
-            g2d.setPaint(Color.BLACK)
-            g2d.fillRect(20, 20, 30, 30)
-            first = false
-        }
-
         Model.model.drawables.each { Drawable drawable ->
             g2d.setPaint(drawable.color)
             if (drawable.shape == Drawable.SHAPES.RECT ) {
