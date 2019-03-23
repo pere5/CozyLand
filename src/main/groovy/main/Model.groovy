@@ -91,7 +91,18 @@ class Model {
             }
         }
 
-        int globalAdjustment = ((Math.abs(min-128) - Math.abs(max-128)) / 2).intValue()
+        for(int x = 0; x < heightMap.length; x++) {
+            for(int y = 0; y < heightMap[x].length; y++) {
+                if (heightMap[x][y] > max) {
+                    heightMap[x][y] = max
+                }
+                else if (heightMap[x][y] < min) {
+                    heightMap[x][y] = min
+                }
+            }
+        }
+
+        int globalAdjustment = round((Math.abs(min-128) - Math.abs(max-128)) / 2)
         max = max + globalAdjustment - 128
         min = min + globalAdjustment - 128
         double scaleMax = 128 / max
@@ -101,12 +112,24 @@ class Model {
             throw new PerIsBorkenException()
         }
 
-        double scale = scaleMax
+        double scale = Math.min(scaleMax, scaleMin)
+        max = 128
+        min = 128
 
         for(int x = 0; x < heightMap.length; x++) {
             for(int y = 0; y < heightMap[x].length; y++) {
-                heightMap[x][y] = (((heightMap[x][y] + globalAdjustment - 128) * scale) + 128 ).intValue()
+                heightMap[x][y] = round((((heightMap[x][y] + globalAdjustment - 128) * scale) + 128 ))
+
+                if (heightMap[x][y] < min) {
+                    min = heightMap[x][y]
+                } else if (heightMap[x][y] > max) {
+                    max = heightMap[x][y]
+                }
             }
+        }
+
+        if (max > 255 || min < 0) {
+            throw new PerIsBorkenException()
         }
 
         def bfWidth = WINDOW_WIDTH / 6
@@ -128,5 +151,13 @@ class Model {
 
             }
         }
+    }
+
+    static int round (BigDecimal number) {
+        number.setScale(0, BigDecimal.ROUND_HALF_DOWN).intValue()
+    }
+
+    static int round (double number) {
+        Math.round(number)
     }
 }
