@@ -135,8 +135,8 @@ class Model {
         def bfWidth = WINDOW_WIDTH / 6
         def bgHeight = WINDOW_HEIGHT / 6
 
-        def stepsX = (imageWidth / bfWidth) as int
-        def stepsY = (imageHeight / bgHeight) as int
+        int stepsX = round(imageWidth / bfWidth)
+        int stepsY = round(imageHeight / bgHeight)
 
         for (int i = 0; i < imageWidth; i = i + stepsX) {
             for (int j = 0; j < imageHeight; j = j + stepsY) {
