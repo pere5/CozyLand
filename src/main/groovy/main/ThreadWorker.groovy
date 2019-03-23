@@ -37,6 +37,6 @@ class ThreadWorker {
     }
     
     def update() {
-        (Model.model.drawables[index] as Person).work()
+        (Model.model.persons[index] as Person).work()
     }
 }

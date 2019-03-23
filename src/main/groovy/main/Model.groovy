@@ -44,7 +44,7 @@ class Model {
         ]
 
         def drawables = [
-                persons, stones, trees
+                stones, trees, persons
         ].flatten()
 
         def background = generateBackground()
@@ -52,6 +52,9 @@ class Model {
         def model = [
                 pause: false,
                 drawables: drawables,
+                persons: persons,
+                stones: stones,
+                trees: trees,
                 background: background
         ]
         this.model = model

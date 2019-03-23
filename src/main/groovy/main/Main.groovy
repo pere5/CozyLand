@@ -21,12 +21,6 @@ class Main extends JFrame {
 
     Main() {
         super('CozyLand')
-
-        setTitle("CozyLand")
-        setSize(Model.WINDOW_WIDTH, Model.WINDOW_HEIGHT)
-        setLocationRelativeTo(null)
-        setDefaultCloseOperation(EXIT_ON_CLOSE)
-
         Model.init()
 
         def surface = new Surface()
@@ -36,19 +30,15 @@ class Main extends JFrame {
         myKeyboardListener = new MyKeyboardListener()
         addKeyListener(myKeyboardListener)
 
-
         def background = new Background()
 
         def layeredPane = getLayeredPane()
         background.setOpaque(false)
         surface.setOpaque(false)
-        background.setBounds(200, 200, 100, 100);
-        surface.setBounds(10, 10, 500, 500);
+        background.setBounds(0, 0, Model.WINDOW_WIDTH, Model.WINDOW_HEIGHT)
+        surface.setBounds(0, 0, Model.WINDOW_WIDTH, Model.WINDOW_HEIGHT)
         layeredPane.add(surface, 1)
         layeredPane.add(background, 2)
-
-        //add background
-        //add surface
 
         Timer timer = new Timer(15, surface)
         timer.start()
@@ -78,6 +68,9 @@ class Main extends JFrame {
             }
         })
 
+        setSize(Model.WINDOW_WIDTH, Model.WINDOW_HEIGHT)
+        setLocationRelativeTo(null)
+        setDefaultCloseOperation(EXIT_ON_CLOSE)
         setVisible(true)
     }
 
