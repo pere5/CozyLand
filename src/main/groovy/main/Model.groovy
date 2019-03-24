@@ -2,6 +2,7 @@ package main
 
 import main.exception.PerIsBorkenException
 import main.person.Person
+import main.things.Drawable
 import main.things.Stone
 import main.things.Tree
 
@@ -60,7 +61,7 @@ class Model {
         this.model = model
     }
 
-    static def generateBackground() {
+    static Drawable[][] generateBackground() {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader()
         BufferedImage image = ImageIO.read(classloader.getResourceAsStream('lol.png'))
         def imageWidth = image.getWidth()
@@ -154,6 +155,8 @@ class Model {
 
             }
         }
+
+        return new Drawable[0][0]
     }
 
     static int round (BigDecimal number) {
