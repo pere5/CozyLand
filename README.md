@@ -16,6 +16,7 @@
      - [ ] Walk  
      - [ ] etc...
  - [ ] Pathfinding aStar
+   - [ ] Algoritemen ska inte ta ett steg åt gången mellan noder utan hitta raka strecka mellan noder så att gubben kan vandra fritt.
  - [ ] Node network
    - [x] Heightmap 
    - [ ] Node

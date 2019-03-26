@@ -258,7 +258,9 @@ class Model {
             def colors = colorRatio.colors as List<Color>
             def subNodes = allNodes[from..to - 1]
 
+            //funktionalisera generateBackground
             //för över alla från allNodes av samma height uppåt hit
+            //alla colors måste korrelera mot nodens height
             //se till att dubbelkolla så att alla nodes blir tilldelade en color exakt en gång; annars PerIsBorkenException
 
             def step = subNodes.size() / colors.size()
