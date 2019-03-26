@@ -21,22 +21,6 @@ abstract class Drawable {
 
     Drawable() {
         this.id = Model.getNewId()
-        if (x == 0 && y == 0) {
-            def (x, y) = generateXY()
-            this.x = x
-            this.y = y
-        }
-    }
-
-    static double[] generateXY() {
-        (double[])[
-                Model.WINDOW_WIDTH / 2 + generate(Model.WINDOW_WIDTH / 3 as int),
-                Model.WINDOW_HEIGHT / 2 + generate(Model.WINDOW_HEIGHT / 3 as int)
-        ]
-    }
-
-    static double generate(int distance) {
-        return distance - ThreadLocalRandom.current().nextInt(0, distance * 2 + 1)
     }
 
     int getX() {

@@ -7,8 +7,10 @@ import main.things.Stone
 import main.things.Tree
 
 import javax.imageio.ImageIO
+import java.awt.Color
 import java.awt.image.BufferedImage
 import java.math.RoundingMode
+import java.util.concurrent.ThreadLocalRandom
 
 class Model {
 
@@ -154,7 +156,7 @@ class Model {
         def yNodeIdx = 0
 
         for (def x = 0.0; x < heightMap.length; x += xStep) {
-
+            yNodeIdx = 0
             for (def y = 0.0; y < heightMap[round(x)].length; y += yStep) {
 
                 def sumAreaHeight = 0
@@ -174,7 +176,13 @@ class Model {
                         throw new PerIsBorkenException()
                     }
 
-                    nodeNetwork[xNodeIdx][yNodeIdx] = new Node(height: avgAreaHeight)
+                    nodeNetwork[xNodeIdx][yNodeIdx] = new Node(
+                            height: avgAreaHeight,
+                            size: squareWidth,
+                            x: xNodeIdx * squareWidth,
+                            y: yNodeIdx * squareHeight,
+                            color: new Color(avgAreaHeight, avgAreaHeight, avgAreaHeight)
+                    )
                 }
                 yNodeIdx++
             }
@@ -184,7 +192,7 @@ class Model {
         for(int x = 0; x < nodeNetwork.length; x++) {
             for(int y = 0; y < nodeNetwork[x].length; y++) {
                 if (!nodeNetwork[x][y]) {
-                    //throw new PerIsBorkenException()
+                    throw new PerIsBorkenException()
                 }
             }
         }
@@ -199,4 +207,16 @@ class Model {
     static int round (double number) {
         Math.round(number)
     }
+
+    static double[] generateXY() {
+        (double[])[
+                WINDOW_WIDTH / 2 + generate(WINDOW_WIDTH / 3 as int),
+                WINDOW_HEIGHT / 2 + generate(WINDOW_HEIGHT / 3 as int)
+        ]
+    }
+
+    static double generate(int distance) {
+        return distance - ThreadLocalRandom.current().nextInt(0, distance * 2 + 1)
+    }
+
 }

@@ -16,7 +16,7 @@ class Background extends JPanel implements ActionListener  {
         super.paintComponent(g)
         Graphics2D g2d = (Graphics2D) g
 
-        Node[][] nodeNetwork = [[]]//Model.model.nodeNetwork
+        Node[][] nodeNetwork = Model.model.nodeNetwork
 
         for(int x = 0; x < nodeNetwork.length; x++) {
             for(int y = 0; y < nodeNetwork[x].length; y++) {
@@ -29,8 +29,6 @@ class Background extends JPanel implements ActionListener  {
                 }
             }
         }
-        g2d.setPaint(Color.BLACK)
-        g2d.fillRect(20, 20, 300, 300)
     }
 
     @Override

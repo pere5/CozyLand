@@ -1,6 +1,6 @@
 package main.person
 
-
+import main.Model
 import main.things.Drawable
 
 import java.awt.Color
@@ -12,7 +12,7 @@ class Person extends Drawable {
     Person() {
         size = 3
         color = Color.BLUE
-        def (x, y) = generateXY()
+        def (x, y) = Model.generateXY()
         this.x = x
         this.y = y
     }
@@ -20,7 +20,7 @@ class Person extends Drawable {
     def work() {
 
         if (!actionQueue) {
-            actionQueue.add(new WalkPath((double[])[x, y], generateXY()))
+            actionQueue.add(new WalkPath((double[])[x, y], Model.generateXY()))
         }
 
         if(!actionQueue.peek()?.doIt(this)) {
