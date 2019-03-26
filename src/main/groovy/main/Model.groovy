@@ -274,7 +274,7 @@ class Model {
         return nodeNetwork
     }
 
-    private static List<Color> gradient(Color color2, Color color1, int steps) {
+    private static List<Color> gradient(Color color1, Color color2, int steps) {
         def colors = []
 
         for (int i = 0; i < steps; i++) {
