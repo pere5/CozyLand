@@ -155,15 +155,16 @@ class Model {
         def xNodeIdx = 0
         def yNodeIdx = 0
 
-        for (def x = 0.0; x < heightMap.length; x += xStep) {
-            yNodeIdx = 0
-            for (def y = 0.0; y < heightMap[round(x)].length; y += yStep) {
+        def pixelReadControl = new int[heightMap.length][heightMap[0].length]
 
+        for (def x = 0.0; x < heightMap.length; x += xStep) {
+            for (def y = 0.0; y < heightMap[round(x)].length; y += yStep) {
                 def sumAreaHeight = 0
                 def noPixels = 0
 
                 for (int xx = round(x); xx < Math.min(round(x + xStep), heightMap.length); xx++) {
                     for (int yy = round(y); yy < Math.min(round(y + yStep), heightMap[xx].length); yy++) {
+                        pixelReadControl[xx][yy] += 1
                         sumAreaHeight += heightMap[xx][yy]
                         noPixels++
                     }
@@ -186,7 +187,25 @@ class Model {
                 }
                 yNodeIdx++
             }
+            yNodeIdx = 0
             xNodeIdx++
+        }
+
+        def controlMap = [:]
+
+        for(int x = 0; x < pixelReadControl.length; x++) {
+            for(int y = 0; y < pixelReadControl[x].length; y++) {
+                def xy = controlMap["${pixelReadControl[x][y]}"]
+                if (xy == null) {
+                    controlMap["${pixelReadControl[x][y]}"] = 1
+                } else {
+                    controlMap["${pixelReadControl[x][y]}"] += 1
+                }
+            }
+        }
+
+        if (controlMap['1'] as int != imageHeight * imageWidth) {
+            throw new PerIsBorkenException()
         }
 
         for(int x = 0; x < nodeNetwork.length; x++) {
@@ -196,6 +215,8 @@ class Model {
                 }
             }
         }
+
+        //colors here
 
         return nodeNetwork
     }
