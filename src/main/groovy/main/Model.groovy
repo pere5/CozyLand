@@ -228,7 +228,7 @@ class Model {
         Color blueHigh = new Color(153, 204, 255)
         Color greenLow = new Color(102, 204, 0)
         Color greenHigh = new Color(0, 102, 51)
-        Color mountainLow = new Color(153, 76, 0)
+        Color mountainLow = new Color(25, 51, 0)
         Color mountainHigh = new Color(128, 128, 128)
         def colorRatios = [
                 [
