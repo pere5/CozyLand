@@ -157,6 +157,9 @@ class Model {
 
         def pixelReadControl = new int[heightMap.length][heightMap[0].length]
 
+        max = 128
+        min = 128
+
         for (def x = 0.0; x < heightMap.length; x += xStep) {
             for (def y = 0.0; y < heightMap[round(x)].length; y += yStep) {
                 def sumAreaHeight = 0
@@ -172,6 +175,12 @@ class Model {
 
                 if (noPixels > 0 && xNodeIdx < nodeNetwork.length && yNodeIdx < nodeNetwork[xNodeIdx].length){
                     def avgAreaHeight = round(sumAreaHeight / noPixels)
+
+                    if (avgAreaHeight < min) {
+                        min = avgAreaHeight
+                    } else if (avgAreaHeight > max) {
+                        max = avgAreaHeight
+                    }
 
                     if (nodeNetwork[xNodeIdx][yNodeIdx]) {
                         throw new PerIsBorkenException()

@@ -40,7 +40,7 @@ class Main extends JFrame {
 
         Timer timer = new Timer(15, surface)
         timer.start()
-        Timer timer2 = new Timer(1100, background)
+        Timer timer2 = new Timer(10000, background)
         timer2.start()
 
         Thread.start {
@@ -63,6 +63,7 @@ class Main extends JFrame {
             @Override
             void windowClosing(WindowEvent e) {
                 timer.stop()
+                timer2.stop()
             }
         })
 
