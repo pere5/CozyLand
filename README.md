@@ -1,0 +1,24 @@
+
+ - [ ] Rule thread
+ - [x] Worker thread
+ - [ ] Interruption thread
+ - [x] Draw thread
+ - [ ] Decision model
+   - [ ] Rule
+     - [ ] CozyUp
+     - [ ] etc...
+   - [ ] Work
+     - [ ] Cut tree
+     - [ ] Mine stone
+     - [ ] etc...
+   - [ ] Action
+     - [ ] Wait
+     - [ ] Walk  
+     - [ ] etc...
+ - [ ] Pathfinding aStar
+ - [ ] Node network
+   - [x] Heightmap 
+   - [ ] Node
+     - [ ] Drawable
+     - [ ] Neighbor costs
+     - [ ] Accessibility

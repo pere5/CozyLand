@@ -1,6 +1,6 @@
-package main
+package main.drawers
 
-
+import main.Model
 import main.things.Drawable
 
 import javax.swing.*

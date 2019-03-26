@@ -1,5 +1,6 @@
-package main
+package main.thread
 
+import main.Model
 import main.person.Person
 
 class ThreadWorker {

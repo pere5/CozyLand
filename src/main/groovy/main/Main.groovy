@@ -1,14 +1,12 @@
 package main
 
-
-import main.person.Person
+import main.drawers.Background
+import main.drawers.Surface
 import main.input.MyKeyboardListener
 import main.input.MyMouseListener
-import main.things.Stone
-import main.things.Tree
+import main.thread.ThreadWorker
 
 import javax.swing.*
-import java.awt.Dimension
 import java.awt.EventQueue
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
