@@ -190,8 +190,7 @@ class Model {
                             height: avgAreaHeight,
                             size: squareWidth,
                             x: xNodeIdx * squareWidth,
-                            y: yNodeIdx * squareHeight,
-                            color: new Color(avgAreaHeight, avgAreaHeight, avgAreaHeight)
+                            y: yNodeIdx * squareHeight
                     )
                 }
                 yNodeIdx++
@@ -225,9 +224,67 @@ class Model {
             }
         }
 
-        //colors here
+        Color blueLow = new Color(51, 153, 255)
+        Color blueHigh = new Color(153, 204, 255)
+        Color greenLow = new Color(102, 204, 0)
+        Color greenHigh = new Color(0, 102, 51)
+        Color mountainLow = new Color(153, 76, 0)
+        Color mountainHigh = new Color(128, 128, 128)
+        def colorRatios = [
+                [
+                        from: 0.0, to: 0.2,
+                        colors: gradient(blueLow, blueHigh, 30),
+                ],
+                [
+                        from: 0.2, to: 0.8,
+                        colors: gradient(greenLow, greenHigh, 60),
+                ],
+                [
+                        from: 0.8, to: 1.0,
+                        colors: gradient(mountainLow, mountainHigh, 30),
+                ]
+        ]
+
+        List<Node> allNodes = []
+        for(int x = 0; x < nodeNetwork.length; x++) {
+            for (int y = 0; y < nodeNetwork[x].length; y++) {
+                allNodes << nodeNetwork[x][y]
+            }
+        }
+        allNodes.sort { it.height }
+        colorRatios.each { def colorRatio ->
+            def from = colorRatio.from * allNodes.size()
+            def to = colorRatio.to * allNodes.size()
+            def colors = colorRatio.colors as List<Color>
+            def subNodes = allNodes[from..to - 1]
+
+            //för över alla från allNodes av samma height uppåt hit
+
+            def step = subNodes.size() / colors.size()
+            def colorIdx = 0
+            for (def i = 0.0; i < subNodes.size(); i += step) {
+                def color = colors[colorIdx]
+                for (int j = round(i); j < Math.min(round(i + step), subNodes.size()); j++) {
+                    subNodes[j].color = color
+                }
+                colorIdx++
+            }
+        }
 
         return nodeNetwork
+    }
+
+    private static List<Color> gradient(Color color2, Color color1, int steps) {
+        def colors = []
+
+        for (int i = 0; i < steps; i++) {
+            def ratio = i / steps
+            int r = (color2.getRed() * ratio + color1.getRed() * (1 - ratio)) as int
+            int g = (color2.getGreen() * ratio + color1.getGreen() * (1 - ratio)) as int
+            int b = (color2.getBlue() * ratio + color1.getBlue() * (1 - ratio)) as int
+            colors << new Color(r, g, b)
+        }
+        colors
     }
 
     static int round (BigDecimal number) {

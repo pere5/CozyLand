@@ -13,7 +13,7 @@ abstract class Drawable {
     }
 
     int id
-    Color color = Color.BLACK
+    Color color
     SHAPES shape = SHAPES.RECT
     int size = 10
     double x = 0
