@@ -1,6 +1,7 @@
 package main.drawers
 
 import main.Model
+import main.Node
 import main.things.Drawable
 
 import javax.swing.*
@@ -15,11 +16,11 @@ class Background extends JPanel implements ActionListener  {
         super.paintComponent(g)
         Graphics2D g2d = (Graphics2D) g
 
-        Drawable[][] background = Model.model.background
+        Node[][] nodeNetwork = [[]]//Model.model.nodeNetwork
 
-        for(int x = 0; x < background.length; x++) {
-            for(int y = 0; y < background[x].length; y++) {
-                def drawable = background[x][y]
+        for(int x = 0; x < nodeNetwork.length; x++) {
+            for(int y = 0; y < nodeNetwork[x].length; y++) {
+                def drawable = nodeNetwork[x][y] as Drawable
                 g2d.setPaint(drawable.color)
                 if (drawable.shape == Drawable.SHAPES.RECT ) {
                     g2d.fillRect(drawable.x, drawable.y, drawable.size, drawable.size)

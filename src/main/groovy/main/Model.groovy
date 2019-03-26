@@ -48,7 +48,7 @@ class Model {
                 stones, trees, persons
         ].flatten()
 
-        def background = generateBackground()
+        def nodeNetwork = generateBackground()
 
         def model = [
                 pause: false,
@@ -56,12 +56,12 @@ class Model {
                 persons: persons,
                 stones: stones,
                 trees: trees,
-                background: background
+                nodeNetwork: nodeNetwork
         ]
         this.model = model
     }
 
-    static Drawable[][] generateBackground() {
+    static Node[][] generateBackground() {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader()
         BufferedImage image = ImageIO.read(classloader.getResourceAsStream('lol.png'))
         def imageWidth = image.getWidth()
@@ -109,14 +109,14 @@ class Model {
         int globalAdjustment = round((Math.abs(min-128) - Math.abs(max-128)) / 2)
         max = max + globalAdjustment - 128
         min = min + globalAdjustment - 128
-        double scaleMax = 128 / max
-        double scaleMin = -128 / min
+        def scaleMax = 128 / max
+        def scaleMin = -128 / min
 
         if (!(scaleMax + 1 >= scaleMin && scaleMax - 1 <= scaleMin)) {
             throw new PerIsBorkenException()
         }
 
-        double scale = Math.min(scaleMax, scaleMin)
+        def scale = Math.min(scaleMax, scaleMin)
         max = 128
         min = 128
 
@@ -136,27 +136,60 @@ class Model {
             throw new PerIsBorkenException()
         }
 
-        def bfWidth = WINDOW_WIDTH / 6
-        def bgHeight = WINDOW_HEIGHT / 6
+        def xRatio = imageWidth / WINDOW_WIDTH
+        def yRatio =  imageHeight / WINDOW_HEIGHT
 
-        int stepsX = round(imageWidth / bfWidth)
-        int stepsY = round(imageHeight / bgHeight)
+        def squareWidth = 6
+        def squareHeight = squareWidth
 
-        for (int i = 0; i < imageWidth; i = i + stepsX) {
-            for (int j = 0; j < imageHeight; j = j + stepsY) {
+        def bgWidth = round(WINDOW_WIDTH / squareWidth)
+        def bgHeight = round(WINDOW_HEIGHT / squareHeight)
 
-                for (int x = i; x < i + stepsX; x++) {
-                    for (int y = j; y < j + stepsY; y++) {
-                        if (x < imageWidth && y < imageHeight) {
-                            //do stuff...
-                        }
+        def xStep = squareWidth * xRatio
+        def yStep = squareHeight * yRatio
+
+        def nodeNetwork = new Node[bgWidth][bgHeight]
+
+        def xNodeIdx = 0
+        def yNodeIdx = 0
+
+        for (def x = 0.0; x < heightMap.length; x += xStep) {
+
+            for (def y = 0.0; y < heightMap[round(x)].length; y += yStep) {
+
+                def sumAreaHeight = 0
+                def noPixels = 0
+
+                for (int xx = round(x); xx < Math.min(round(x + xStep), heightMap.length); xx++) {
+                    for (int yy = round(y); yy < Math.min(round(y + yStep), heightMap[xx].length); yy++) {
+                        sumAreaHeight += heightMap[xx][yy]
+                        noPixels++
                     }
                 }
 
+                if (noPixels > 0 && xNodeIdx < nodeNetwork.length && yNodeIdx < nodeNetwork[xNodeIdx].length){
+                    def avgAreaHeight = round(sumAreaHeight / noPixels)
+
+                    if (nodeNetwork[xNodeIdx][yNodeIdx]) {
+                        throw new PerIsBorkenException()
+                    }
+
+                    nodeNetwork[xNodeIdx][yNodeIdx] = new Node(height: avgAreaHeight)
+                }
+                yNodeIdx++
+            }
+            xNodeIdx++
+        }
+
+        for(int x = 0; x < nodeNetwork.length; x++) {
+            for(int y = 0; y < nodeNetwork[x].length; y++) {
+                if (!nodeNetwork[x][y]) {
+                    //throw new PerIsBorkenException()
+                }
             }
         }
 
-        return new Drawable[0][0]
+        return nodeNetwork
     }
 
     static int round (BigDecimal number) {
