@@ -69,8 +69,8 @@ class Model {
         def imageWidth = image.getWidth()
         def imageHeight = image.getHeight()
         int[][] heightMap = new int[imageWidth][imageHeight]
-        def min = 128
-        def max = 128
+        def min = 127
+        def max = 127
 
         def shave = 10
 
@@ -114,9 +114,9 @@ class Model {
             }
         }
 
-        int globalAdjustment = round((Math.abs(min-128) - Math.abs(max-128)) / 2)
-        max = max + globalAdjustment - 128
-        min = min + globalAdjustment - 128
+        int globalAdjustment = round((Math.abs(min-127) - Math.abs(max-127)) / 2)
+        max = max + globalAdjustment - 127
+        min = min + globalAdjustment - 127
         def scaleMax = 127 / max
         def scaleMin = -127 / min
 
@@ -125,12 +125,12 @@ class Model {
         }
 
         def scale = Math.min(scaleMax, scaleMin)
-        max = 128
-        min = 128
+        max = 127
+        min = 127
 
         for(int x = 0; x < heightMap.length; x++) {
             for(int y = 0; y < heightMap[x].length; y++) {
-                heightMap[x][y] = round((((heightMap[x][y] + globalAdjustment - 128) * scale) + 128 ))
+                heightMap[x][y] = round((((heightMap[x][y] + globalAdjustment - 127) * scale) + 127 ))
 
                 if (heightMap[x][y] < min) {
                     min = heightMap[x][y]
@@ -163,8 +163,8 @@ class Model {
 
         def pixelReadControl = new int[heightMap.length][heightMap[0].length]
 
-        max = 128
-        min = 128
+        max = 127
+        min = 127
 
         for (def x = 0.0; x < heightMap.length; x += xStep) {
             for (def y = 0.0; y < heightMap[round(x)].length; y += yStep) {
