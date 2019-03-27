@@ -71,6 +71,12 @@ class Model {
         int[][] heightMap = new int[imageWidth][imageHeight]
         def min = 128
         def max = 128
+
+        def shave = 10
+
+        def shaveOffMax = 255 - shave
+        def shaveOffMin = 0 + shave
+
         for(int x = 0; x < image.getWidth(); x++) {
             for(int y = 0; y < image.getHeight(); y++) {
                 /*
@@ -86,9 +92,9 @@ class Model {
                 if (blue == green && blue == red) {
                     heightMap[x][y] = blue
 
-                    if (blue != 0 && blue < min) {
+                    if (blue > shaveOffMin && blue < min) {
                         min = blue
-                    } else if (blue != 255 && blue > max) {
+                    } else if (blue < shaveOffMax && blue > max) {
                         max = blue
                     }
                 } else {
