@@ -349,7 +349,7 @@ class Model {
     }
 
     static double[] generateXY() {
-        (double[])[
+        [
                 WINDOW_WIDTH / 2 + generate(WINDOW_WIDTH / 3 as int),
                 WINDOW_HEIGHT / 2 + generate(WINDOW_HEIGHT / 3 as int)
         ]
