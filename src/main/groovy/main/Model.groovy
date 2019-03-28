@@ -324,6 +324,22 @@ class Model {
                 }
                 colorIdx++
             }
+
+            /*
+
+            //alla colors måste korrelera mot nodens height
+
+            def step = subNodes.size() / colors.size()
+            def colorIdx = 0
+            for (def i = 0.0; i < subNodes.size(); i += step) {
+                def color = colors[colorIdx]
+                for (int j = round(i); j < Math.min(round(i + step), subNodes.size()); j++) {
+                    subNodes[j].color = color
+                }
+                colorIdx++
+            }
+
+             */
         }
     }
 
