@@ -8,7 +8,7 @@ class ThreadWorker {
     def lastFramesPerSecond = 0
     def startTime = System.currentTimeMillis()
     def framesPerSecond = 0
-    def intendedFps = 60
+    def intendedFps = 8
     def isRunning = true
     int index
 

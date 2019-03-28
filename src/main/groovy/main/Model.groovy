@@ -254,19 +254,19 @@ class Model {
         Color greenLow = new Color(102, 204, 0)
         Color greenHigh = new Color(0, 102, 51)
         Color mountainLow = new Color(25, 51, 0)
-        Color mountainHigh = new Color(128, 128, 128)
+        Color mountainHigh = new Color(230, 230, 230)
         def colorRatios = [
                 [
-                        from  : 0.0, to: 0.2,
-                        colors: gradient(blueLow, blueHigh, 30),
+                        from  : 0.0, to: 0.2, subNodes: null,
+                        colors: gradient(blueLow, blueHigh, 7),
                 ],
                 [
-                        from  : 0.2, to: 0.8,
-                        colors: gradient(greenLow, greenHigh, 60),
+                        from  : 0.2, to: 0.9, subNodes: null,
+                        colors: gradient(greenLow, greenHigh, 7),
                 ],
                 [
-                        from  : 0.8, to: 1.0,
-                        colors: gradient(mountainLow, mountainHigh, 30),
+                        from  : 0.9, to: 1.0, subNodes: null,
+                        colors: gradient(mountainLow, mountainHigh, 7),
                 ]
         ]
 
@@ -277,15 +277,43 @@ class Model {
             }
         }
         allNodes.sort { it.height }
+
+        //transfer nodes of the same height as the last of the previous level down one level
         colorRatios.each { def colorRatio ->
-            def from = colorRatio.from * allNodes.size()
-            def to = colorRatio.to * allNodes.size()
-            def colors = colorRatio.colors as List<Color>
+            int from = colorRatio.from * allNodes.size()
+            int to = colorRatio.to * allNodes.size()
             def subNodes = allNodes[from..to - 1]
 
-            //för över alla från allNodes av samma height uppåt hit
+            //remove from the back
+            if (from > 0) {
+                for (int i = subNodes.size() - 1; i >= 0; i--) {
+                    if (subNodes[i].height == allNodes[from - 1].height) {
+                        subNodes.remove(i)
+                    }
+                }
+            }
+
+            //add to the front
+            for (int i = to; i < allNodes.size(); i++) {
+                if (subNodes.last().height == allNodes[i].height) {
+                    subNodes << allNodes[i]
+                }
+            }
+
+            colorRatio.subNodes = subNodes
+        }
+
+        //Check that all nodes are present as subNodes
+        def allSubNodes = colorRatios.subNodes.flatten() as List<Node>
+        if (!(allNodes.size() == allSubNodes.size() && allSubNodes.size() == allSubNodes.id.toSet().size())) {
+            throw new PerIsBorkenException()
+        }
+
+        colorRatios.each { def colorRatio ->
+            def colors = colorRatio.colors as List<Color>
+            def subNodes = colorRatio.subNodes as List<Node>
+
             //alla colors måste korrelera mot nodens height
-            //se till att dubbelkolla så att alla nodes blir tilldelade en color exakt en gång; annars PerIsBorkenException
 
             def step = subNodes.size() / colors.size()
             def colorIdx = 0
