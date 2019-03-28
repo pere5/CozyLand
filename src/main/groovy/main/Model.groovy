@@ -66,86 +66,75 @@ class Model {
     static Node[][] generateBackground() {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader()
         BufferedImage image = ImageIO.read(classloader.getResourceAsStream('lol.png'))
-        def imageWidth = image.getWidth()
-        def imageHeight = image.getHeight()
-        int[][] heightMap = new int[imageWidth][imageHeight]
-        def min = 127
-        def max = 127
 
-        def shave = 10
+        int[][] heightMap = maximizeScale(image)
 
-        def shaveOffMax = 255 - shave
-        def shaveOffMin = 0 + shave
+        Node[][] nodeNetwork = buildNodeNetwork(heightMap)
 
-        for(int x = 0; x < image.getWidth(); x++) {
-            for(int y = 0; y < image.getHeight(); y++) {
-                /*
-                    (getAlpha(inData) << 24)
-                    | (getRed(inData) << 16)
-                    | (getGreen(inData) << 8)
-                    | (getBlue(inData) << 0)
-                 */
-                int rgb = image.getRGB(x, y)
-                def blue = rgb & 0x0000FF
-                def green = rgb & 0x00FF00 >> 8
-                def red = rgb & 0xFF0000 >> 16
-                if (blue == green && blue == red) {
-                    heightMap[x][y] = blue
+        setColors(nodeNetwork)
 
-                    if (blue > shaveOffMin && blue < min) {
-                        min = blue
-                    } else if (blue < shaveOffMax && blue > max) {
-                        max = blue
-                    }
-                } else {
-                    throw new PerIsBorkenException()
-                }
+        return nodeNetwork
+    }
+
+    private static void setColors(Node[][] nodeNetwork) {
+        Color blueLow = new Color(51, 153, 255)
+        Color blueHigh = new Color(153, 204, 255)
+        Color greenLow = new Color(102, 204, 0)
+        Color greenHigh = new Color(0, 102, 51)
+        Color mountainLow = new Color(25, 51, 0)
+        Color mountainHigh = new Color(128, 128, 128)
+        def colorRatios = [
+                [
+                        from  : 0.0, to: 0.2,
+                        colors: gradient(blueLow, blueHigh, 30),
+                ],
+                [
+                        from  : 0.2, to: 0.8,
+                        colors: gradient(greenLow, greenHigh, 60),
+                ],
+                [
+                        from  : 0.8, to: 1.0,
+                        colors: gradient(mountainLow, mountainHigh, 30),
+                ]
+        ]
+
+        List<Node> allNodes = []
+        for (int x = 0; x < nodeNetwork.length; x++) {
+            for (int y = 0; y < nodeNetwork[x].length; y++) {
+                allNodes << nodeNetwork[x][y]
             }
         }
+        allNodes.sort { it.height }
+        colorRatios.each { def colorRatio ->
+            def from = colorRatio.from * allNodes.size()
+            def to = colorRatio.to * allNodes.size()
+            def colors = colorRatio.colors as List<Color>
+            def subNodes = allNodes[from..to - 1]
 
-        for(int x = 0; x < heightMap.length; x++) {
-            for(int y = 0; y < heightMap[x].length; y++) {
-                if (heightMap[x][y] > max) {
-                    heightMap[x][y] = max
+            //funktionalisera generateBackground
+            //för över alla från allNodes av samma height uppåt hit
+            //alla colors måste korrelera mot nodens height
+            //se till att dubbelkolla så att alla nodes blir tilldelade en color exakt en gång; annars PerIsBorkenException
+
+            def step = subNodes.size() / colors.size()
+            def colorIdx = 0
+            for (def i = 0.0; i < subNodes.size(); i += step) {
+                def color = colors[colorIdx]
+                for (int j = round(i); j < Math.min(round(i + step), subNodes.size()); j++) {
+                    subNodes[j].color = color
                 }
-                else if (heightMap[x][y] < min) {
-                    heightMap[x][y] = min
-                }
+                colorIdx++
             }
         }
+    }
 
-        int globalAdjustment = round((Math.abs(min-127) - Math.abs(max-127)) / 2)
-        max = max + globalAdjustment - 127
-        min = min + globalAdjustment - 127
-        def scaleMax = 127 / max
-        def scaleMin = -127 / min
+    private static Node[][] buildNodeNetwork(int[][] heightMap) {
 
-        if (!(scaleMax + 1 >= scaleMin && scaleMax - 1 <= scaleMin)) {
-            throw new PerIsBorkenException()
-        }
-
-        def scale = Math.min(scaleMax, scaleMin)
-        max = 127
-        min = 127
-
-        for(int x = 0; x < heightMap.length; x++) {
-            for(int y = 0; y < heightMap[x].length; y++) {
-                heightMap[x][y] = round((((heightMap[x][y] + globalAdjustment - 127) * scale) + 127 ))
-
-                if (heightMap[x][y] < min) {
-                    min = heightMap[x][y]
-                } else if (heightMap[x][y] > max) {
-                    max = heightMap[x][y]
-                }
-            }
-        }
-
-        if (max > 255 || min < 0) {
-            throw new PerIsBorkenException()
-        }
+        def imageWidth = heightMap.length
+        def imageHeight = heightMap[0].length
 
         def xRatio = imageWidth / WINDOW_WIDTH
-        def yRatio =  imageHeight / WINDOW_HEIGHT
+        def yRatio = imageHeight / WINDOW_HEIGHT
 
         def squareWidth = 6
         def squareHeight = squareWidth
@@ -163,8 +152,8 @@ class Model {
 
         def pixelReadControl = new int[heightMap.length][heightMap[0].length]
 
-        max = 127
-        min = 127
+        def max = 128
+        def min = 128
 
         for (def x = 0.0; x < heightMap.length; x += xStep) {
             for (def y = 0.0; y < heightMap[round(x)].length; y += yStep) {
@@ -179,7 +168,7 @@ class Model {
                     }
                 }
 
-                if (noPixels > 0 && xNodeIdx < nodeNetwork.length && yNodeIdx < nodeNetwork[xNodeIdx].length){
+                if (noPixels > 0 && xNodeIdx < nodeNetwork.length && yNodeIdx < nodeNetwork[xNodeIdx].length) {
                     def avgAreaHeight = round(sumAreaHeight / noPixels)
 
                     if (avgAreaHeight < min) {
@@ -207,8 +196,8 @@ class Model {
 
         def controlMap = [:]
 
-        for(int x = 0; x < pixelReadControl.length; x++) {
-            for(int y = 0; y < pixelReadControl[x].length; y++) {
+        for (int x = 0; x < pixelReadControl.length; x++) {
+            for (int y = 0; y < pixelReadControl[x].length; y++) {
                 def xy = controlMap["${pixelReadControl[x][y]}"]
                 if (xy == null) {
                     controlMap["${pixelReadControl[x][y]}"] = 1
@@ -222,65 +211,93 @@ class Model {
             throw new PerIsBorkenException()
         }
 
-        for(int x = 0; x < nodeNetwork.length; x++) {
-            for(int y = 0; y < nodeNetwork[x].length; y++) {
+        for (int x = 0; x < nodeNetwork.length; x++) {
+            for (int y = 0; y < nodeNetwork[x].length; y++) {
                 if (!nodeNetwork[x][y]) {
                     throw new PerIsBorkenException()
                 }
             }
         }
+        nodeNetwork
+    }
 
-        Color blueLow = new Color(51, 153, 255)
-        Color blueHigh = new Color(153, 204, 255)
-        Color greenLow = new Color(102, 204, 0)
-        Color greenHigh = new Color(0, 102, 51)
-        Color mountainLow = new Color(25, 51, 0)
-        Color mountainHigh = new Color(128, 128, 128)
-        def colorRatios = [
-                [
-                        from: 0.0, to: 0.2,
-                        colors: gradient(blueLow, blueHigh, 30),
-                ],
-                [
-                        from: 0.2, to: 0.8,
-                        colors: gradient(greenLow, greenHigh, 60),
-                ],
-                [
-                        from: 0.8, to: 1.0,
-                        colors: gradient(mountainLow, mountainHigh, 30),
-                ]
-        ]
+    private static int[][] maximizeScale(BufferedImage image) {
+        int[][] heightMap = new int[image.getWidth()][image.getHeight()]
 
-        List<Node> allNodes = []
-        for(int x = 0; x < nodeNetwork.length; x++) {
-            for (int y = 0; y < nodeNetwork[x].length; y++) {
-                allNodes << nodeNetwork[x][y]
-            }
-        }
-        allNodes.sort { it.height }
-        colorRatios.each { def colorRatio ->
-            def from = colorRatio.from * allNodes.size()
-            def to = colorRatio.to * allNodes.size()
-            def colors = colorRatio.colors as List<Color>
-            def subNodes = allNodes[from..to - 1]
+        def min = 128
+        def max = 128
 
-            //funktionalisera generateBackground
-            //för över alla från allNodes av samma height uppåt hit
-            //alla colors måste korrelera mot nodens height
-            //se till att dubbelkolla så att alla nodes blir tilldelade en color exakt en gång; annars PerIsBorkenException
+        def shave = 10
 
-            def step = subNodes.size() / colors.size()
-            def colorIdx = 0
-            for (def i = 0.0; i < subNodes.size(); i += step) {
-                def color = colors[colorIdx]
-                for (int j = round(i); j < Math.min(round(i + step), subNodes.size()); j++) {
-                    subNodes[j].color = color
+        def shaveOffMax = 255 - shave
+        def shaveOffMin = 0 + shave
+
+        for (int x = 0; x < image.getWidth(); x++) {
+            for (int y = 0; y < image.getHeight(); y++) {
+                /*
+                    (getAlpha(inData) << 24)
+                    | (getRed(inData) << 16)
+                    | (getGreen(inData) << 8)
+                    | (getBlue(inData) << 0)
+                 */
+                int rgb = image.getRGB(x, y)
+                def blue = rgb & 0x0000FF
+                def green = rgb & 0x00FF00 >> 8
+                def red = rgb & 0xFF0000 >> 16
+                if (blue == green && blue == red) {
+                    heightMap[x][y] = blue
+
+                    if (blue > shaveOffMin && blue < min) {
+                        min = blue
+                    } else if (blue < shaveOffMax && blue > max) {
+                        max = blue
+                    }
+                } else {
+                    throw new PerIsBorkenException()
                 }
-                colorIdx++
             }
         }
 
-        return nodeNetwork
+        for (int x = 0; x < heightMap.length; x++) {
+            for (int y = 0; y < heightMap[x].length; y++) {
+                if (heightMap[x][y] > max) {
+                    heightMap[x][y] = max
+                } else if (heightMap[x][y] < min) {
+                    heightMap[x][y] = min
+                }
+            }
+        }
+
+        int globalAdjustment = round((Math.abs(min - 128) - Math.abs(max - 128)) / 2)
+        max = max + globalAdjustment - 128
+        min = min + globalAdjustment - 128
+        def scaleMax = 128 / max
+        def scaleMin = -128 / min
+
+        if (!(scaleMax + 1 >= scaleMin && scaleMax - 1 <= scaleMin)) {
+            throw new PerIsBorkenException()
+        }
+
+        def scale = Math.min(scaleMax, scaleMin)
+        max = 128
+        min = 128
+
+        for (int x = 0; x < heightMap.length; x++) {
+            for (int y = 0; y < heightMap[x].length; y++) {
+                heightMap[x][y] = round((((heightMap[x][y] + globalAdjustment - 128) * scale) + 128))
+
+                if (heightMap[x][y] < min) {
+                    min = heightMap[x][y]
+                } else if (heightMap[x][y] > max) {
+                    max = heightMap[x][y]
+                }
+            }
+        }
+
+        if (max > 255 || max < 253 || min > 1 || min < 0) {
+            throw new PerIsBorkenException()
+        }
+        return heightMap
     }
 
     private static List<Color> gradient(Color color1, Color color2, int steps) {
