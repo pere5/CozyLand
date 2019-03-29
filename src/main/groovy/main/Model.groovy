@@ -30,20 +30,8 @@ class Model {
                 new Person(), new Person(), new Person(), new Person(), new Person()
         ]
         def stones = [
-                new Stone(), new Stone(), new Stone(), new Stone(), new Stone(),
-                new Stone(), new Stone(), new Stone(), new Stone(), new Stone(),
-                new Stone(), new Stone(), new Stone(), new Stone(), new Stone(),
-                new Stone(), new Stone(), new Stone(), new Stone(), new Stone(),
-                new Stone(), new Stone(), new Stone(), new Stone(), new Stone(),
-                new Stone(), new Stone(), new Stone(), new Stone(), new Stone()
         ]
         def trees = [
-                new Tree(), new Tree(), new Tree(), new Tree(), new Tree(),
-                new Tree(), new Tree(), new Tree(), new Tree(), new Tree(),
-                new Tree(), new Tree(), new Tree(), new Tree(), new Tree(),
-                new Tree(), new Tree(), new Tree(), new Tree(), new Tree(),
-                new Tree(), new Tree(), new Tree(), new Tree(), new Tree(),
-                new Tree(), new Tree(), new Tree(), new Tree(), new Tree()
         ]
 
         def drawables = [
@@ -253,7 +241,8 @@ class Model {
         Color blueHigh = new Color(153, 204, 255)
         Color greenLow = new Color(102, 204, 0)
         Color greenHigh = new Color(0, 102, 51)
-        Color mountainLow = new Color(120, 120, 120)
+        Color mountainEdgeGreen = new Color(85,107,47)
+        Color mountainLow = new Color(140, 140, 140)
         Color mountainHigh = new Color(255, 255, 255)
         def colorRatios = [
                 [
@@ -262,15 +251,15 @@ class Model {
                 ],
                 [
                         from  : 0.2, to: 0.90, subNodes: null,
-                        colors: gradient(greenLow, greenHigh, 7),
+                        colors: gradient(greenLow, greenHigh, 10),
                 ],
                 [
-                        from  : 0.9, to: 0.95, subNodes: null,
-                        colors: gradient(greenHigh, mountainLow, 12),
+                        from  : 0.90, to: 0.95, subNodes: null,
+                        colors: gradient(mountainEdgeGreen, mountainLow, 12),
                 ],
                 [
                         from  : 0.95, to: 1.0, subNodes: null,
-                        colors: gradient(mountainLow, mountainHigh, 20),
+                        colors: gradient(mountainLow, mountainHigh, 12),
                 ]
         ]
 
@@ -319,7 +308,7 @@ class Model {
             def colors = colorRatio.colors as List<Color>
             def subNodes = colorRatio.subNodes as List<Node>
 
-            def mapColorToHeight = true
+            def mapColorToHeight = false
             def spreadColorLinearly = !mapColorToHeight
 
             if (spreadColorLinearly) {
@@ -352,7 +341,15 @@ class Model {
             }
         }
 
-        if (!(allNodes.size() == nodeControl.size() && nodeControl.size() == nodeControl.id.toSet().size())) {
+        if (allNodes.size() != nodeControl.size()) {
+            throw new PerIsBorkenException()
+        }
+
+        if (nodeControl.size() != nodeControl.id.toSet().size()) {
+            throw new PerIsBorkenException()
+        }
+
+        if(allNodes.color.grep().size() != allNodes.size()) {
             throw new PerIsBorkenException()
         }
     }
