@@ -237,32 +237,6 @@ class Model {
     }
 
     private static void setColors(Node[][] nodeNetwork) {
-        Color blueLow = new Color(51, 153, 255)
-        Color blueHigh = new Color(153, 204, 255)
-        Color greenLow = new Color(102, 204, 0)
-        Color greenHigh = new Color(0, 102, 51)
-        Color mountainEdgeGreen = new Color(0,100,0)
-        Color mountainLower = new Color(75, 75, 75)
-        Color mountainLow = new Color(90, 90, 90)
-        Color mountainHigh = new Color(255, 255, 255)
-        def colorRatios = [
-                [
-                        from  : 0.0, to: 0.2, subNodes: null,
-                        colors: gradient(blueLow, blueHigh, 12),
-                ],
-                [
-                        from  : 0.2, to: 0.85, subNodes: null,
-                        colors: gradient(greenLow, greenHigh, 12),
-                ],
-                [
-                        from  : 0.85, to: 0.93, subNodes: null,
-                        colors: gradient(mountainEdgeGreen, mountainLower, 12),
-                ],
-                [
-                        from  : 0.93, to: 1.0, subNodes: null,
-                        colors: gradient(mountainLow, mountainHigh, 12),
-                ]
-        ]
 
         List<Node> allNodes = []
         for (int x = 0; x < nodeNetwork.length; x++) {
@@ -272,81 +246,50 @@ class Model {
         }
         allNodes.sort { it.height }
 
-        //transfer nodes of the same height as the last of the previous level down one level
-        colorRatios.each { def colorRatio ->
-            int from = colorRatio.from * allNodes.size()
-            int to = colorRatio.to * allNodes.size()
-            def subNodes = allNodes[from..to - 1]
+        Color blueLow = new Color(51, 153, 255)
+        Color blueHigh = new Color(153, 204, 255)
+        Color greenLow = new Color(102, 204, 0)
+        Color greenHigh = new Color(0, 102, 51)
+        Color mountainEdgeGreen = new Color(0,100,0)
+        Color mountainLower = new Color(75, 75, 75)
+        Color mountainLow = new Color(90, 90, 90)
+        Color mountainHigh = new Color(255, 255, 255)
+        def colorRatios = [
+                [from: 0.0,  to: 0.2,  colorFrom: blueLow,           colorTo: blueHigh],
+                [from: 0.2,  to: 0.85, colorFrom: greenLow,          colorTo: greenHigh],
+                [from: 0.85, to: 0.93, colorFrom: mountainEdgeGreen, colorTo: mountainLower],
+                [from: 0.93, to: 1.0,  colorFrom: mountainLow,       colorTo: mountainHigh]
+        ]
+
+        for (def colorRatio: colorRatios) {
+            int from = round(colorRatio.from * allNodes.size())
+            int to = round(colorRatio.to * allNodes.size())
+            def nodeGroup = allNodes[from..to - 1]
 
             //remove from the back
             if (from > 0) {
-                for (int i = subNodes.size() - 1; i >= 0; i--) {
-                    if (subNodes[i].height == allNodes[from - 1].height) {
-                        subNodes.remove(i)
+                for (int i = nodeGroup.size() - 1; i >= 0; i--) {
+                    if (nodeGroup[i].height == allNodes[from - 1].height) {
+                        nodeGroup.remove(i)
                     }
                 }
             }
 
             //add to the front
             for (int i = to; i < allNodes.size(); i++) {
-                if (subNodes.last().height == allNodes[i].height) {
-                    subNodes << allNodes[i]
+                if (nodeGroup.last().height == allNodes[i].height) {
+                    nodeGroup << allNodes[i]
                 }
             }
 
-            colorRatio.subNodes = subNodes
-        }
+            def uniqueHeightValues = nodeGroup.groupBy {it.height}.collect {it.key}
 
-        //Check that all nodes are present as subNodes
-        def allSubNodes = colorRatios.subNodes.flatten() as List<Node>
-        if (!(allNodes.size() == allSubNodes.size() && allSubNodes.size() == allSubNodes.id.toSet().size())) {
-            throw new PerIsBorkenException()
-        }
-
-        def nodeControl = [] as List<Node>
-
-        colorRatios.each { def colorRatio ->
-            def colors = colorRatio.colors as List<Color>
-            def subNodes = colorRatio.subNodes as List<Node>
-
-            def mapColorToHeight = true
-            def spreadColorLinearly = !mapColorToHeight
-
-            if (spreadColorLinearly) {
-                def step = subNodes.size() / colors.size()
-                def colorIdx = 0
-                for (def i = 0.0; i < subNodes.size(); i += step) {
-                    def color = colors[colorIdx]
-                    for (int j = round(i); j < Math.min(round(i + step), subNodes.size()); j++) {
-                        subNodes[j].color = color
-                        nodeControl << subNodes[j]
-                    }
-                    colorIdx++
-                }
-            } else if (mapColorToHeight) {
-                def maxHeight = subNodes.height.max() as int
-                def minHeight = subNodes.height.min() as int
-
-                def colorStep = (maxHeight - minHeight) / colors.size()
-
-                int i = 0
-                for (BigDecimal height = minHeight; height <= maxHeight; height += colorStep) {
-                    for (Node node: subNodes) {
-                        if (node.height >= height && node.height < height + colorStep) {
-                            if (!colors[i]) {
-                                //throw new PerIsBorkenException()
-                            }
-                            node.color = colors[i]
-                            nodeControl << node
-                        }
-                    }
-                    i++
+            List<Color> colors = gradient(colorRatio.colorFrom, colorRatio.colorTo, uniqueHeightValues.size())
+            for (int i = 0; i < uniqueHeightValues.size(); i++) {
+                nodeGroup.grep { it.height == uniqueHeightValues[i] }.each {
+                    it.color = colors[i]
                 }
             }
-        }
-
-        if (allNodes.id.sort() != nodeControl.id.sort()) {
-            throw new PerIsBorkenException()
         }
 
         if(allNodes.color.grep().size() != allNodes.size()) {
