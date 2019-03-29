@@ -296,6 +296,9 @@ class Model {
             }
         }
 
+        //test: använder alla färger
+        //test: inga två height nivåer använder samma färg
+
         if (controlMap.collect { it.key }.sort() != allNodes.id.sort()) {
             throw new PerIsBorkenException()
         }
