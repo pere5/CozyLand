@@ -259,6 +259,8 @@ class Model {
         ]
 
         def controlMap = [:]
+        def controlColors = []
+        def controlUniqueHeightValues = []
 
         for (def colorRatio: colorRatios) {
             int from = round(colorRatio.from * allNodes.size())
@@ -291,10 +293,23 @@ class Model {
                     controlMap[it.id] = controlMap[it.id] ? controlMap[it.id] + 1 : 1
                 }
             }
+            controlColors << colors
+            controlUniqueHeightValues << uniqueHeightValues
         }
 
-        //test: använder alla färger
-        //test: inga två height nivåer använder samma färg
+        //test: use all colors
+        controlColors.flatten().each {
+            if (!((it as Color) in allNodes.color)) {
+                throw new PerIsBorkenException()
+            }
+        }
+
+        //test: no two heights of nodes uses the same color
+        allNodes.groupBy {it.height}.each { int height, List<Node> nodes ->
+            if (nodes.groupBy {it.color}.size() != 1) {
+                throw new PerIsBorkenException()
+            }
+        }
 
         if (controlMap.collect { it.key }.sort() != allNodes.id.sort()) {
             throw new PerIsBorkenException()
