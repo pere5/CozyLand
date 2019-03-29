@@ -253,19 +253,23 @@ class Model {
         Color blueHigh = new Color(153, 204, 255)
         Color greenLow = new Color(102, 204, 0)
         Color greenHigh = new Color(0, 102, 51)
-        Color mountainLow = new Color(25, 51, 0)
-        Color mountainHigh = new Color(230, 230, 230)
+        Color mountainLow = new Color(170, 170, 170)
+        Color mountainHigh = new Color(250, 250, 250)
         def colorRatios = [
                 [
                         from  : 0.0, to: 0.2, subNodes: null,
                         colors: gradient(blueLow, blueHigh, 7),
                 ],
                 [
-                        from  : 0.2, to: 0.9, subNodes: null,
+                        from  : 0.2, to: 0.85, subNodes: null,
                         colors: gradient(greenLow, greenHigh, 7),
                 ],
                 [
-                        from  : 0.9, to: 1.0, subNodes: null,
+                        from  : 0.85, to: 0.92, subNodes: null,
+                        colors: gradient(greenHigh, mountainLow, 7),
+                ],
+                [
+                        from  : 0.92, to: 1.0, subNodes: null,
                         colors: gradient(mountainLow, mountainHigh, 7),
                 ]
         ]
