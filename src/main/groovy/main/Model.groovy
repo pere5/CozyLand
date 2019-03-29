@@ -241,24 +241,25 @@ class Model {
         Color blueHigh = new Color(153, 204, 255)
         Color greenLow = new Color(102, 204, 0)
         Color greenHigh = new Color(0, 102, 51)
-        Color mountainEdgeGreen = new Color(85,107,47)
-        Color mountainLow = new Color(140, 140, 140)
+        Color mountainEdgeGreen = new Color(0,100,0)
+        Color mountainLower = new Color(75, 75, 75)
+        Color mountainLow = new Color(90, 90, 90)
         Color mountainHigh = new Color(255, 255, 255)
         def colorRatios = [
                 [
                         from  : 0.0, to: 0.2, subNodes: null,
-                        colors: gradient(blueLow, blueHigh, 7),
+                        colors: gradient(blueLow, blueHigh, 12),
                 ],
                 [
-                        from  : 0.2, to: 0.90, subNodes: null,
-                        colors: gradient(greenLow, greenHigh, 10),
+                        from  : 0.2, to: 0.85, subNodes: null,
+                        colors: gradient(greenLow, greenHigh, 12),
                 ],
                 [
-                        from  : 0.90, to: 0.95, subNodes: null,
-                        colors: gradient(mountainEdgeGreen, mountainLow, 12),
+                        from  : 0.85, to: 0.93, subNodes: null,
+                        colors: gradient(mountainEdgeGreen, mountainLower, 12),
                 ],
                 [
-                        from  : 0.95, to: 1.0, subNodes: null,
+                        from  : 0.93, to: 1.0, subNodes: null,
                         colors: gradient(mountainLow, mountainHigh, 12),
                 ]
         ]
@@ -308,7 +309,7 @@ class Model {
             def colors = colorRatio.colors as List<Color>
             def subNodes = colorRatio.subNodes as List<Node>
 
-            def mapColorToHeight = false
+            def mapColorToHeight = true
             def spreadColorLinearly = !mapColorToHeight
 
             if (spreadColorLinearly) {
@@ -330,8 +331,11 @@ class Model {
 
                 int i = 0
                 for (BigDecimal height = minHeight; height <= maxHeight; height += colorStep) {
-                    subNodes.each { Node node ->
+                    for (Node node: subNodes) {
                         if (node.height >= height && node.height < height + colorStep) {
+                            if (!colors[i]) {
+                                //throw new PerIsBorkenException()
+                            }
                             node.color = colors[i]
                             nodeControl << node
                         }
@@ -341,16 +345,16 @@ class Model {
             }
         }
 
-        if (allNodes.size() != nodeControl.size()) {
-            throw new PerIsBorkenException()
-        }
-
-        if (nodeControl.size() != nodeControl.id.toSet().size()) {
+        if (allNodes.id.sort() != nodeControl.id.sort()) {
             throw new PerIsBorkenException()
         }
 
         if(allNodes.color.grep().size() != allNodes.size()) {
-            throw new PerIsBorkenException()
+            allNodes.grep{!it.color}.each{
+                it.color = new Color(255,0,0)
+                it.size = 20
+            }
+            //throw new PerIsBorkenException()
         }
     }
 
