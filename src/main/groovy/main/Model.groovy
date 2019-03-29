@@ -14,9 +14,6 @@ import java.util.concurrent.ThreadLocalRandom
 
 class Model {
 
-    static int WINDOW_WIDTH = 1000
-    static int WINDOW_HEIGHT = 750
-
     static int idGenerator = 0
 
     static model
@@ -148,14 +145,14 @@ class Model {
         def imageWidth = heightMap.length
         def imageHeight = heightMap[0].length
 
-        def xRatio = imageWidth / WINDOW_WIDTH
-        def yRatio = imageHeight / WINDOW_HEIGHT
+        def xRatio = imageWidth / Main.PANE_WIDTH
+        def yRatio = imageHeight / Main.PANE_HEIGHT
 
         def squareWidth = 6
         def squareHeight = squareWidth
 
-        def bgWidth = round(WINDOW_WIDTH / squareWidth)
-        def bgHeight = round(WINDOW_HEIGHT / squareHeight)
+        def bgWidth = round(Main.PANE_WIDTH / squareWidth)
+        def bgHeight = round(Main.PANE_HEIGHT / squareHeight)
 
         def xStep = squareWidth * xRatio
         def yStep = squareHeight * yRatio
@@ -340,8 +337,8 @@ class Model {
 
     static double[] generateXY() {
         [
-                WINDOW_WIDTH / 2 + generate(WINDOW_WIDTH / 3 as int),
-                WINDOW_HEIGHT / 2 + generate(WINDOW_HEIGHT / 3 as int)
+                Main.PANE_WIDTH / 2 + generate(Main.PANE_WIDTH / 3 as int),
+                Main.PANE_HEIGHT / 2 + generate(Main.PANE_HEIGHT / 3 as int)
         ]
     }
 

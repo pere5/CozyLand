@@ -13,12 +13,21 @@ import java.awt.event.WindowEvent
 
 class Main extends JFrame {
 
+    static int WINDOW_WIDTH = 1000
+    static int WINDOW_HEIGHT = 750
+    static int PANE_WIDTH
+    static int PANE_HEIGHT
 
     MyKeyboardListener myKeyboardListener
     MyMouseListener myMouseListener
 
     Main() {
         super('CozyLand')
+
+        pack()
+        PANE_WIDTH = WINDOW_WIDTH - (getWidth() - getContentPane().getWidth())
+        PANE_HEIGHT = WINDOW_HEIGHT - (getHeight() - getContentPane().getHeight())
+
         Model.init()
 
         def surface = new Surface()
@@ -33,8 +42,8 @@ class Main extends JFrame {
         def layeredPane = getLayeredPane()
         background.setOpaque(false)
         surface.setOpaque(false)
-        background.setBounds(0, 0, Model.WINDOW_WIDTH, Model.WINDOW_HEIGHT)
-        surface.setBounds(0, 0, Model.WINDOW_WIDTH, Model.WINDOW_HEIGHT)
+        background.setBounds(0, 0, PANE_WIDTH, PANE_HEIGHT)
+        surface.setBounds(0, 0, PANE_WIDTH, PANE_HEIGHT)
         layeredPane.add(surface, 1)
         layeredPane.add(background, 2)
 
@@ -67,7 +76,7 @@ class Main extends JFrame {
             }
         })
 
-        setSize(Model.WINDOW_WIDTH, Model.WINDOW_HEIGHT)
+        setSize(WINDOW_WIDTH, WINDOW_HEIGHT)
         setLocationRelativeTo(null)
         setDefaultCloseOperation(EXIT_ON_CLOSE)
         setVisible(true)
