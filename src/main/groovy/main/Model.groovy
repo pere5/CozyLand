@@ -309,37 +309,47 @@ class Model {
             throw new PerIsBorkenException()
         }
 
+        def nodeControl = [] as List<Node>
+
         colorRatios.each { def colorRatio ->
             def colors = colorRatio.colors as List<Color>
             def subNodes = colorRatio.subNodes as List<Node>
 
-            //alla colors måste korrelera mot nodens height
+            def mapColorToHeight = true
+            def spreadColorLinearly = !mapColorToHeight
 
-            def step = subNodes.size() / colors.size()
-            def colorIdx = 0
-            for (def i = 0.0; i < subNodes.size(); i += step) {
-                def color = colors[colorIdx]
-                for (int j = round(i); j < Math.min(round(i + step), subNodes.size()); j++) {
-                    subNodes[j].color = color
+            if (spreadColorLinearly) {
+                def step = subNodes.size() / colors.size()
+                def colorIdx = 0
+                for (def i = 0.0; i < subNodes.size(); i += step) {
+                    def color = colors[colorIdx]
+                    for (int j = round(i); j < Math.min(round(i + step), subNodes.size()); j++) {
+                        subNodes[j].color = color
+                        nodeControl << subNodes[j]
+                    }
+                    colorIdx++
                 }
-                colorIdx++
-            }
+            } else if (mapColorToHeight) {
+                def maxHeight = subNodes.height.max() as int
+                def minHeight = subNodes.height.min() as int
 
-            /*
+                def colorStep = (maxHeight - minHeight) / colors.size()
 
-            //alla colors måste korrelera mot nodens height
-
-            def step = subNodes.size() / colors.size()
-            def colorIdx = 0
-            for (def i = 0.0; i < subNodes.size(); i += step) {
-                def color = colors[colorIdx]
-                for (int j = round(i); j < Math.min(round(i + step), subNodes.size()); j++) {
-                    subNodes[j].color = color
+                int i = 0
+                for (BigDecimal height = minHeight; height <= maxHeight; height += colorStep) {
+                    subNodes.each { Node node ->
+                        if (node.height >= height && node.height < height + colorStep) {
+                            node.color = colors[i]
+                            nodeControl << node
+                        }
+                    }
+                    i++
                 }
-                colorIdx++
             }
+        }
 
-             */
+        if (!(allNodes.size() == nodeControl.size() && nodeControl.size() == nodeControl.id.toSet().size())) {
+            throw new PerIsBorkenException()
         }
     }
 
