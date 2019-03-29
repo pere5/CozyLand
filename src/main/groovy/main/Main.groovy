@@ -13,8 +13,8 @@ import java.awt.event.WindowEvent
 
 class Main extends JFrame {
 
-    static int WINDOW_WIDTH = 1000
-    static int WINDOW_HEIGHT = 750
+    static int WINDOW_WIDTH = 1200
+    static int WINDOW_HEIGHT = 900
     static int PANE_WIDTH
     static int PANE_HEIGHT
 
