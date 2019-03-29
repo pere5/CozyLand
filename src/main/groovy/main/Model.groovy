@@ -261,6 +261,8 @@ class Model {
                 [from: 0.93, to: 1.0,  colorFrom: mountainLow,       colorTo: mountainHigh]
         ]
 
+        def controlMap = [:]
+
         for (def colorRatio: colorRatios) {
             int from = round(colorRatio.from * allNodes.size())
             int to = round(colorRatio.to * allNodes.size())
@@ -288,7 +290,18 @@ class Model {
             for (int i = 0; i < uniqueHeightValues.size(); i++) {
                 nodeGroup.grep { it.height == uniqueHeightValues[i] }.each {
                     it.color = colors[i]
+
+                    controlMap[it.id] = controlMap[it.id] ? controlMap[it.id] + 1 : 1
                 }
+            }
+        }
+
+        if (controlMap.collect { it.key }.sort() != allNodes.id.sort()) {
+            throw new PerIsBorkenException()
+        }
+        controlMap.each {
+            if (it.value != 1) {
+                throw new PerIsBorkenException()
             }
         }
 
@@ -297,7 +310,7 @@ class Model {
                 it.color = new Color(255,0,0)
                 it.size = 20
             }
-            //throw new PerIsBorkenException()
+            throw new PerIsBorkenException()
         }
     }
 
