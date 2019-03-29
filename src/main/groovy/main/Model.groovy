@@ -252,6 +252,7 @@ class Model {
         Color mountainLow = new Color(90, 90, 90)
         Color mountainHigh = new Color(255, 255, 255)
         def accessibleLimit = 0.9
+        def movementCostLimit = accessibleLimit - 0.1
         def colorRatios = [
                 [from: 0.0,  to: 0.2,  colorFrom: blueLow,           colorTo: blueHigh],
                 [from: 0.2,  to: 0.85, colorFrom: greenLow,          colorTo: greenHigh],
@@ -267,6 +268,7 @@ class Model {
             int from = round(colorRatio.from * allNodes.size())
             int to = round(colorRatio.to * allNodes.size())
             def accessibleLimitIndex = round(accessibleLimit * allNodes.size())
+            def movementCostLimitIndex = round(movementCostLimit * allNodes.size())
             def nodeGroup = allNodes[from..to - 1]
 
             //remove from the back
@@ -292,6 +294,7 @@ class Model {
                 nodeGroup.grep { it.height == uniqueHeightValues[i] }.each {
                     it.color = colors[i]
                     it.accessible = allNodes.indexOf(it) < accessibleLimitIndex
+                    it.movementCost = allNodes.indexOf(it) < movementCostLimitIndex ? 1 : 2
 
                     controlMap[it.id] = controlMap[it.id] ? controlMap[it.id] + 1 : 1
                 }
@@ -303,6 +306,12 @@ class Model {
         //test accessibleLimit
         def accessibleRatio = (allNodes.grep { it.accessible }.size() / allNodes.size()).setScale(1,BigDecimal.ROUND_HALF_DOWN )
         if (accessibleLimit != accessibleRatio) {
+            throw new PerIsBorkenException()
+        }
+
+        //test movementCost
+        def movementCostRatio = (allNodes.grep { it.movementCost == 1 }.size() / allNodes.size()).setScale(1,BigDecimal.ROUND_HALF_DOWN )
+        if (movementCostLimit != movementCostRatio) {
             throw new PerIsBorkenException()
         }
 

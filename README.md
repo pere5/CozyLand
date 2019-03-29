@@ -20,6 +20,6 @@
  - [ ] Node network
    - [x] Heightmap 
    - [ ] Node
-     - [ ] Drawable
+     - [x] Drawable
      - [ ] Neighbor costs
-     - [ ] Accessibility
+     - [x] Accessibility
