@@ -50,7 +50,7 @@ class Model {
 
     static Node[][] generateBackground() {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader()
-        BufferedImage image = ImageIO.read(classloader.getResourceAsStream('lol.png'))
+        BufferedImage image = ImageIO.read(classloader.getResourceAsStream('lol3.png'))
 
         int[][] heightMap = maximizeScale(image)
 
@@ -111,8 +111,8 @@ class Model {
         int globalAdjustment = round((Math.abs(min - 128) - Math.abs(max - 128)) / 2)
         max = max + globalAdjustment - 128
         min = min + globalAdjustment - 128
-        def scaleMax = 128 / max
-        def scaleMin = -128 / min
+        def scaleMax = 127 / max
+        def scaleMin = -127 / min
 
         if (!(scaleMax + 1 >= scaleMin && scaleMax - 1 <= scaleMin)) {
             throw new PerIsBorkenException()
