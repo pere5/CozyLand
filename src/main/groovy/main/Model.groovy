@@ -86,6 +86,34 @@ class Model {
         return heightMap
     }
 
+    private static void shaveOffExtremeMaxMin(int[][] heightMap) {
+
+        def maxMin = []
+        for (int x = 0; x < heightMap.length; x++) {
+            for (int y = 0; y < heightMap[x].length; y++) {
+                maxMin << heightMap[x][y]
+            }
+        }
+        def max = maxMin.max() as int
+        def min = maxMin.min() as int
+
+        def nextMax = maxMin.toSet().sort().reverse()[1] as int
+        def nextMin = maxMin.toSet().sort()[1] as int
+        def shaveMax = Math.abs(max - nextMax) > 5
+        def shaveMin = Math.abs(min - nextMin) > 5
+
+        for (int x = 0; x < heightMap.length; x++) {
+            for (int y = 0; y < heightMap[x].length; y++) {
+                if (shaveMax && heightMap[x][y] == max) {
+                    heightMap[x][y] = nextMax
+                }
+                if (shaveMin && heightMap[x][y] == min) {
+                    heightMap[x][y] = nextMin
+                }
+            }
+        }
+    }
+
     private static void maximizeScale(int[][] heightMap) {
         def middle = 255 / 2
         def maxMin = []
@@ -123,37 +151,6 @@ class Model {
 
         if (max != 255 || min != 0) {
             throw new PerIsBorkenException()
-        }
-    }
-
-    private static void shaveOffExtremeMaxMin(int[][] heightMap) {
-
-        def maxMin = []
-        for (int x = 0; x < heightMap.length; x++) {
-            for (int y = 0; y < heightMap[x].length; y++) {
-                maxMin << heightMap[x][y]
-            }
-        }
-        def max = maxMin.max() as int
-        def min = maxMin.min() as int
-
-        def nextMax = maxMin.toSet().sort().reverse()[1] as int
-        def nextMin = maxMin.toSet().sort()[1] as int
-        def shaveMax = Math.abs(max - nextMax) > 5
-        def shaveMin = Math.abs(min - nextMin) > 5
-
-        maxMin.clear()
-        for (int x = 0; x < heightMap.length; x++) {
-            for (int y = 0; y < heightMap[x].length; y++) {
-                if (shaveMax && heightMap[x][y] == max) {
-                    heightMap[x][y] = nextMax
-                }
-                if (shaveMin && heightMap[x][y] == min) {
-                    heightMap[x][y] = nextMin
-                }
-
-                maxMin << heightMap[x][y]
-            }
         }
     }
 
