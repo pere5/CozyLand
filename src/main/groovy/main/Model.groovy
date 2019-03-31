@@ -92,16 +92,16 @@ class Model {
         def min = maxMin.min() as int
         def nextMax = maxMin.toSet().sort().reverse()[1] as int
         def nextMin = maxMin.toSet().sort()[1] as int
-        def switchMax = Math.abs(max - nextMax) > 5
-        def switchMin = Math.abs(min - nextMin) > 5
+        def shaveMax = Math.abs(max - nextMax) > 5
+        def shaveMin = Math.abs(min - nextMin) > 5
 
         maxMin.clear()
         for (int x = 0; x < heightMap.length; x++) {
             for (int y = 0; y < heightMap[x].length; y++) {
-                if (switchMax && heightMap[x][y] == max) {
+                if (shaveMax && heightMap[x][y] == max) {
                     heightMap[x][y] = nextMax
                 }
-                if (switchMin && heightMap[x][y] == min) {
+                if (shaveMin && heightMap[x][y] == min) {
                     heightMap[x][y] = nextMin
                 }
 
