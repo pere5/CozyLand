@@ -90,24 +90,8 @@ class Model {
 
         def max = maxMin.max() as int
         def min = maxMin.min() as int
-        def nextMax = maxMin.toSet().sort().reverse()[1] as int
-        def nextMin = maxMin.toSet().sort()[1] as int
-        def shaveMax = Math.abs(max - nextMax) > 5
-        def shaveMin = Math.abs(min - nextMin) > 5
 
-        maxMin.clear()
-        for (int x = 0; x < heightMap.length; x++) {
-            for (int y = 0; y < heightMap[x].length; y++) {
-                if (shaveMax && heightMap[x][y] == max) {
-                    heightMap[x][y] = nextMax
-                }
-                if (shaveMin && heightMap[x][y] == min) {
-                    heightMap[x][y] = nextMin
-                }
-
-                maxMin << heightMap[x][y]
-            }
-        }
+        shaveOffExtremeMaxMin(maxMin, max, min, heightMap)
 
         max = maxMin.max() as int
         min = maxMin.min() as int
@@ -139,6 +123,27 @@ class Model {
             throw new PerIsBorkenException()
         }
         return heightMap
+    }
+
+    private static void shaveOffExtremeMaxMin(List maxMin, int max, int min, int[][] heightMap) {
+        def nextMax = maxMin.toSet().sort().reverse()[1] as int
+        def nextMin = maxMin.toSet().sort()[1] as int
+        def shaveMax = Math.abs(max - nextMax) > 5
+        def shaveMin = Math.abs(min - nextMin) > 5
+
+        maxMin.clear()
+        for (int x = 0; x < heightMap.length; x++) {
+            for (int y = 0; y < heightMap[x].length; y++) {
+                if (shaveMax && heightMap[x][y] == max) {
+                    heightMap[x][y] = nextMax
+                }
+                if (shaveMin && heightMap[x][y] == min) {
+                    heightMap[x][y] = nextMin
+                }
+
+                maxMin << heightMap[x][y]
+            }
+        }
     }
 
     private static Node[][] buildNodeNetwork(int[][] heightMap) {
