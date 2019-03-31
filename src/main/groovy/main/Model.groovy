@@ -62,15 +62,9 @@ class Model {
     }
 
     private static int[][] maximizeScale(BufferedImage image) {
+        def middle = 127.5
+
         int[][] heightMap = new int[image.getWidth()][image.getHeight()]
-
-        def min = 128
-        def max = 128
-
-        def shave = 10
-
-        def shaveOffMax = 255 - shave
-        def shaveOffMin = 0 + shave
 
         for (int x = 0; x < image.getWidth(); x++) {
             for (int y = 0; y < image.getHeight(); y++) {
@@ -86,55 +80,49 @@ class Model {
                 def red = rgb & 0xFF0000 >> 16
                 if (blue == green && blue == red) {
                     heightMap[x][y] = blue
-
-                    if (blue > shaveOffMin && blue < min) {
-                        min = blue
-                    } else if (blue < shaveOffMax && blue > max) {
-                        max = blue
-                    }
-                } else {
-                    throw new PerIsBorkenException()
                 }
             }
         }
 
+        def maxMin = []
         for (int x = 0; x < heightMap.length; x++) {
             for (int y = 0; y < heightMap[x].length; y++) {
-                if (heightMap[x][y] > max) {
-                    heightMap[x][y] = max
-                } else if (heightMap[x][y] < min) {
-                    heightMap[x][y] = min
-                }
+                maxMin << heightMap[x][y]
             }
         }
 
-        int globalAdjustment = round((Math.abs(min - 128) - Math.abs(max - 128)) / 2)
-        max = max + globalAdjustment - 128
-        min = min + globalAdjustment - 128
-        def scaleMax = 127 / max
-        def scaleMin = -127 / min
+        def max = maxMin.max() as int
+        def min = maxMin.min() as int
 
-        if (!(scaleMax + 1 >= scaleMin && scaleMax - 1 <= scaleMin)) {
+        def globalAdjustment = middle - ((max + min) / 2)
+        def newMax = max + globalAdjustment - middle
+        def newMin = min + globalAdjustment - middle
+        def scaleMax = middle / newMax
+        def scaleMin = -middle / newMin
+
+        if (scaleMax != scaleMin) {
             throw new PerIsBorkenException()
         }
 
-        def scale = Math.min(scaleMax, scaleMin)
-        max = 128
-        min = 128
+        def scale = scaleMax
 
         for (int x = 0; x < heightMap.length; x++) {
             for (int y = 0; y < heightMap[x].length; y++) {
-                heightMap[x][y] = round((((heightMap[x][y] + globalAdjustment - 128) * scale) + 128))
-
-                if (heightMap[x][y] < min) {
-                    min = heightMap[x][y]
-                } else if (heightMap[x][y] > max) {
-                    max = heightMap[x][y]
-                }
+                heightMap[x][y] = round((((heightMap[x][y] + globalAdjustment - middle) * scale) + middle))
             }
         }
 
-        if (max > 255 || max < 253 || min > 1 || min < 0) {
+        maxMin.clear()
+        for (int x = 0; x < heightMap.length; x++) {
+            for (int y = 0; y < heightMap[x].length; y++) {
+                maxMin << heightMap[x][y]
+            }
+        }
+
+        max = maxMin.max() as int
+        min = maxMin.min() as int
+
+        if (max != 255 || min != 0) {
             throw new PerIsBorkenException()
         }
         return heightMap
