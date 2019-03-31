@@ -50,7 +50,7 @@ class Model {
 
     static Node[][] generateBackground() {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader()
-        BufferedImage image = ImageIO.read(classloader.getResourceAsStream('lol3.png'))
+        BufferedImage image = ImageIO.read(classloader.getResourceAsStream('lol2.png'))
 
         int[][] heightMap = maximizeScale(image)
 
@@ -65,6 +65,7 @@ class Model {
         def middle = 127.5
 
         int[][] heightMap = new int[image.getWidth()][image.getHeight()]
+        def maxMin = []
 
         for (int x = 0; x < image.getWidth(); x++) {
             for (int y = 0; y < image.getHeight(); y++) {
@@ -80,14 +81,10 @@ class Model {
                 def red = rgb & 0xFF0000 >> 16
                 if (blue == green && blue == red) {
                     heightMap[x][y] = blue
+                    maxMin << heightMap[x][y]
+                } else {
+                    throw new PerIsBorkenException()
                 }
-            }
-        }
-
-        def maxMin = []
-        for (int x = 0; x < heightMap.length; x++) {
-            for (int y = 0; y < heightMap[x].length; y++) {
-                maxMin << heightMap[x][y]
             }
         }
 
@@ -106,15 +103,10 @@ class Model {
 
         def scale = scaleMax
 
-        for (int x = 0; x < heightMap.length; x++) {
-            for (int y = 0; y < heightMap[x].length; y++) {
-                heightMap[x][y] = round((((heightMap[x][y] + globalAdjustment - middle) * scale) + middle))
-            }
-        }
-
         maxMin.clear()
         for (int x = 0; x < heightMap.length; x++) {
             for (int y = 0; y < heightMap[x].length; y++) {
+                heightMap[x][y] = round((((heightMap[x][y] + globalAdjustment - middle) * scale) + middle))
                 maxMin << heightMap[x][y]
             }
         }
