@@ -23,5 +23,5 @@
      - [x] Drawable
      - [x] Neighbor costs
      - [x] Accessibility
- - [ ] Testa: scaling helt med alla maps
- - [ ] 6x6 -> 3x3 tiles med 2x zoom och panning
+ - [x] Testa: scaling helt med alla maps
+ - [ ] 6x6 -> 3x3 tiles med 2x zoom och panning m.h.a att helt enkelt flytta på jPanelen
