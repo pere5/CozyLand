@@ -52,20 +52,17 @@ class Model {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader()
         BufferedImage image = ImageIO.read(classloader.getResourceAsStream('lol.png'))
 
-        int[][] heightMap = maximizeScale(image)
-
+        int[][] heightMap = buildHeightMap(image)
+        shaveOffExtremeMaxMin(heightMap)
+        maximizeScale(heightMap)
         Node[][] nodeNetwork = buildNodeNetwork(heightMap)
-
         setColors(nodeNetwork)
 
         return nodeNetwork
     }
 
-    private static int[][] maximizeScale(BufferedImage image) {
-        def middle = 255 / 2
-
+    private static int[][] buildHeightMap(BufferedImage image) {
         int[][] heightMap = new int[image.getWidth()][image.getHeight()]
-        def maxMin = []
 
         for (int x = 0; x < image.getWidth(); x++) {
             for (int y = 0; y < image.getHeight(); y++) {
@@ -81,20 +78,25 @@ class Model {
                 def red = rgb & 0xFF0000 >> 16
                 if (blue == green && blue == red) {
                     heightMap[x][y] = blue
-                    maxMin << heightMap[x][y]
                 } else {
                     throw new PerIsBorkenException()
                 }
             }
         }
+        return heightMap
+    }
+
+    private static void maximizeScale(int[][] heightMap) {
+        def middle = 255 / 2
+        def maxMin = []
+        for (int x = 0; x < heightMap.length; x++) {
+            for (int y = 0; y < heightMap[x].length; y++) {
+                maxMin << heightMap[x][y]
+            }
+        }
 
         def max = maxMin.max() as int
         def min = maxMin.min() as int
-
-        shaveOffExtremeMaxMin(maxMin, max, min, heightMap)
-
-        max = maxMin.max() as int
-        min = maxMin.min() as int
 
         def globalAdjustment = middle - ((max + min) / 2)
         def newMax = max + globalAdjustment - middle
@@ -122,10 +124,19 @@ class Model {
         if (max != 255 || min != 0) {
             throw new PerIsBorkenException()
         }
-        return heightMap
     }
 
-    private static void shaveOffExtremeMaxMin(List maxMin, int max, int min, int[][] heightMap) {
+    private static void shaveOffExtremeMaxMin(int[][] heightMap) {
+
+        def maxMin = []
+        for (int x = 0; x < heightMap.length; x++) {
+            for (int y = 0; y < heightMap[x].length; y++) {
+                maxMin << heightMap[x][y]
+            }
+        }
+        def max = maxMin.max() as int
+        def min = maxMin.min() as int
+
         def nextMax = maxMin.toSet().sort().reverse()[1] as int
         def nextMin = maxMin.toSet().sort()[1] as int
         def shaveMax = Math.abs(max - nextMax) > 5
