@@ -50,7 +50,7 @@ class Model {
 
     static Node[][] generateBackground() {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader()
-        BufferedImage image = ImageIO.read(classloader.getResourceAsStream('lol2.png'))
+        BufferedImage image = ImageIO.read(classloader.getResourceAsStream('lol.png'))
 
         int[][] heightMap = maximizeScale(image)
 
@@ -62,7 +62,7 @@ class Model {
     }
 
     private static int[][] maximizeScale(BufferedImage image) {
-        def middle = 127.5
+        def middle = 255 / 2
 
         int[][] heightMap = new int[image.getWidth()][image.getHeight()]
         def maxMin = []
@@ -90,6 +90,27 @@ class Model {
 
         def max = maxMin.max() as int
         def min = maxMin.min() as int
+        def nextMax = maxMin.toSet().sort().reverse()[1] as int
+        def nextMin = maxMin.toSet().sort()[1] as int
+        def switchMax = Math.abs(max - nextMax) > 5
+        def switchMin = Math.abs(min - nextMin) > 5
+
+        maxMin.clear()
+        for (int x = 0; x < heightMap.length; x++) {
+            for (int y = 0; y < heightMap[x].length; y++) {
+                if (switchMax && heightMap[x][y] == max) {
+                    heightMap[x][y] = nextMax
+                }
+                if (switchMin && heightMap[x][y] == min) {
+                    heightMap[x][y] = nextMin
+                }
+
+                maxMin << heightMap[x][y]
+            }
+        }
+
+        max = maxMin.max() as int
+        min = maxMin.min() as int
 
         def globalAdjustment = middle - ((max + min) / 2)
         def newMax = max + globalAdjustment - middle
