@@ -9,7 +9,6 @@ import main.things.Tree
 import javax.imageio.ImageIO
 import java.awt.Color
 import java.awt.image.BufferedImage
-import java.math.RoundingMode
 import java.util.concurrent.ThreadLocalRandom
 
 class Model {
@@ -22,7 +21,7 @@ class Model {
         idGenerator++
     }
 
-    static def init() {
+    static def init(def keyboard, def mouse) {
         def persons = [
                 new Person(), new Person(), new Person(), new Person(), new Person()
         ]
@@ -38,7 +37,8 @@ class Model {
         def nodeNetwork = generateBackground()
 
         def model = [
-                pause: false,
+                keyboard: keyboard,
+                mouse: mouse,
                 drawables: drawables,
                 persons: persons,
                 stones: stones,
@@ -376,10 +376,6 @@ class Model {
 
     static int round (BigDecimal number) {
         number.setScale(0, BigDecimal.ROUND_HALF_DOWN).intValue()
-    }
-
-    static int round (double number) {
-        Math.round(number)
     }
 
     static double[] generateXY() {

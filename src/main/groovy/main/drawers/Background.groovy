@@ -2,14 +2,16 @@ package main.drawers
 
 import main.Model
 import main.Node
+import main.input.MyKeyboardListener
 import main.things.Drawable
 
 import javax.swing.*
 import java.awt.*
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
+import java.awt.event.KeyEvent
 
-class Background extends JPanel implements ActionListener  {
+class Background extends Drawer  {
 
     @Override
     void paintComponent(Graphics g) {
@@ -23,18 +25,9 @@ class Background extends JPanel implements ActionListener  {
                 def drawable = nodeNetwork[x][y] as Drawable
                 g2d.setPaint(drawable.color)
                 if (drawable.shape == Drawable.SHAPES.RECT ) {
-                    g2d.fillRect(drawable.x, drawable.y, drawable.size, drawable.size)
-                } else {
-                    g2d.fillOval(drawable.x, drawable.y, drawable.size, drawable.size)
+                    g2d.fillRect(drawable.x + xOffset, drawable.y + yOffset, drawable.size, drawable.size)
                 }
             }
-        }
-    }
-
-    @Override
-    void actionPerformed(ActionEvent e) {
-        if (!Model.model.pause) {
-            repaint()
         }
     }
 }

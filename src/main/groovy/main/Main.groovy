@@ -25,18 +25,16 @@ class Main extends JFrame {
         super('CozyLand')
 
         pack()
-        PANE_WIDTH = WINDOW_WIDTH - (getWidth() - getContentPane().getWidth())
-        PANE_HEIGHT = WINDOW_HEIGHT - (getHeight() - getContentPane().getHeight())
+        PANE_WIDTH = (WINDOW_WIDTH - (getWidth() - getContentPane().getWidth())) * 2
+        PANE_HEIGHT = (WINDOW_HEIGHT - (getHeight() - getContentPane().getHeight())) * 2
 
-        Model.init()
-
-        def surface = new Surface()
-
-        myMouseListener = new MyMouseListener()
-        surface.addMouseListener(myMouseListener)
         myKeyboardListener = new MyKeyboardListener()
-        addKeyListener(myKeyboardListener)
+        myMouseListener = new MyMouseListener()
+        Model.init(myKeyboardListener, myMouseListener)
 
+        addKeyListener(myKeyboardListener)
+        def surface = new Surface()
+        surface.addMouseListener(myMouseListener)
         def background = new Background()
 
         def layeredPane = getLayeredPane()
@@ -49,7 +47,7 @@ class Main extends JFrame {
 
         Timer timer = new Timer(15, surface)
         timer.start()
-        Timer timer2 = new Timer(10000, background)
+        Timer timer2 = new Timer(30, background)
         timer2.start()
 
         Thread.start {

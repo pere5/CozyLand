@@ -1,7 +1,10 @@
 package main.thread
 
 import main.Model
+import main.input.MyKeyboardListener
 import main.person.Person
+
+import java.awt.event.KeyEvent
 
 class ThreadWorker {
 
@@ -11,8 +14,11 @@ class ThreadWorker {
     def intendedFps = 8
     def isRunning = true
     int index
+    def pause = false
 
     def run() {
+        MyKeyboardListener keyboard = Model.model.keyboard
+
         while(isRunning) {
             long timeBeforeFrame = System.currentTimeMillis()
             //  delay for each frame - time it took for one frame
@@ -24,7 +30,12 @@ class ThreadWorker {
                     System.out.println("Woohah!")
                 }
             }
-            if (!Model.model.pause) {
+
+            if (keyboard.keyHasBeenPressed(KeyEvent.VK_SPACE)) {
+                pause = !pause
+            }
+
+            if (!pause) {
                 update()
                 long currentTime = System.currentTimeMillis()
                 framesPerSecond++

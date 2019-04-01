@@ -42,10 +42,6 @@ class MyKeyboardListener implements KeyListener {
             keys[e.getKeyCode()] = true
             pressedKeys[e.getKeyCode()] = true
         }
-
-        if (keyHasBeenPressed(KeyEvent.VK_SPACE)) {
-            Model.model.pause = !Model.model.pause
-        }
     }
 
     /**
