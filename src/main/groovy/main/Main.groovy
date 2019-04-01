@@ -1,6 +1,6 @@
 package main
 
-import main.drawers.Background
+
 import main.drawers.Surface
 import main.input.MyKeyboardListener
 import main.input.MyMouseListener
@@ -35,20 +35,11 @@ class Main extends JFrame {
         addKeyListener(myKeyboardListener)
         def surface = new Surface()
         surface.addMouseListener(myMouseListener)
-        def background = new Background()
 
-        def layeredPane = getLayeredPane()
-        background.setOpaque(false)
-        surface.setOpaque(false)
-        background.setBounds(0, 0, PANE_WIDTH, PANE_HEIGHT)
-        surface.setBounds(0, 0, PANE_WIDTH, PANE_HEIGHT)
-        layeredPane.add(surface, 1)
-        layeredPane.add(background, 2)
+        add(surface)
 
         Timer timer = new Timer(15, surface)
         timer.start()
-        Timer timer2 = new Timer(30, background)
-        timer2.start()
 
         Thread.start {
             new ThreadWorker(index: 0).run()
@@ -70,7 +61,6 @@ class Main extends JFrame {
             @Override
             void windowClosing(WindowEvent e) {
                 timer.stop()
-                timer2.stop()
             }
         })
 
