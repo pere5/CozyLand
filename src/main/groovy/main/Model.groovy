@@ -39,6 +39,7 @@ class Model {
         def model = [
                 keyboard: keyboard,
                 mouse: mouse,
+                pause: false,
                 drawables: drawables,
                 persons: persons,
                 stones: stones,

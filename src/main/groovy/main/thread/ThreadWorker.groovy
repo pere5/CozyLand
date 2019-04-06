@@ -14,10 +14,8 @@ class ThreadWorker {
     def intendedFps = 8
     def isRunning = true
     int index
-    def pause = false
 
     def run() {
-        MyKeyboardListener keyboard = Model.model.keyboard
 
         while(isRunning) {
             long timeBeforeFrame = System.currentTimeMillis()
@@ -31,11 +29,7 @@ class ThreadWorker {
                 }
             }
 
-            if (keyboard.keyHasBeenPressed(KeyEvent.VK_SPACE)) {
-                pause = !pause
-            }
-
-            if (!pause) {
+            if (!Model.model.pause) {
                 update()
                 long currentTime = System.currentTimeMillis()
                 framesPerSecond++

@@ -13,8 +13,6 @@ import java.awt.event.KeyEvent
 
 class Surface extends JPanel implements ActionListener {
 
-    boolean pause = false
-
     int xOffset = 0
     int yOffset = 0
 
@@ -23,16 +21,16 @@ class Surface extends JPanel implements ActionListener {
 
         MyKeyboardListener keyboard = Model.model.keyboard
 
-        xOffset = keyboard.isKeyDown(KeyEvent.VK_LEFT) ? xOffset + 12 : xOffset
-        xOffset = keyboard.isKeyDown(KeyEvent.VK_RIGHT) ? xOffset - 12 : xOffset
-        yOffset = keyboard.isKeyDown(KeyEvent.VK_UP) ? yOffset + 12 : yOffset
-        yOffset = keyboard.isKeyDown(KeyEvent.VK_DOWN) ? yOffset - 12 : yOffset
-
         if (keyboard.keyHasBeenPressed(KeyEvent.VK_SPACE)) {
-            pause = !pause
+            Model.model.pause = !Model.model.pause
         }
 
-        if (!pause) {
+        if (!Model.model.pause) {
+            xOffset = keyboard.isKeyDown(KeyEvent.VK_LEFT) ? xOffset + 12 : xOffset
+            xOffset = keyboard.isKeyDown(KeyEvent.VK_RIGHT) ? xOffset - 12 : xOffset
+            yOffset = keyboard.isKeyDown(KeyEvent.VK_UP) ? yOffset + 12 : yOffset
+            yOffset = keyboard.isKeyDown(KeyEvent.VK_DOWN) ? yOffset - 12 : yOffset
+
             repaint()
         }
     }
