@@ -2,6 +2,7 @@ package main.drawers
 
 import main.Model
 import main.Node
+import main.exception.PerIsBorkenException
 import main.input.MyKeyboardListener
 import main.things.Drawable
 
@@ -45,20 +46,28 @@ class Surface extends JPanel implements ActionListener {
         for(int x = 0; x < nodeNetwork.length; x++) {
             for(int y = 0; y < nodeNetwork[x].length; y++) {
                 def drawable = nodeNetwork[x][y] as Drawable
-                g2d.setPaint(drawable.color)
-                if (drawable.shape == Drawable.SHAPES.RECT ) {
-                    g2d.fillRect(drawable.x + xOffset, drawable.y + yOffset, drawable.size, drawable.size)
+                if (inView(drawable)) {
+                    g2d.setPaint(drawable.color)
+                    if (drawable.shape == Drawable.SHAPES.RECT ) {
+                        g2d.fillRect(drawable.x + xOffset, drawable.y + yOffset, drawable.size, drawable.size)
+                    }
                 }
             }
         }
 
         Model.model.drawables.each { Drawable drawable ->
-            g2d.setPaint(drawable.color)
-            if (drawable.shape == Drawable.SHAPES.RECT ) {
-                g2d.fillRect(drawable.x + xOffset, drawable.y + yOffset, drawable.size, drawable.size)
-            } else {
-                g2d.fillOval(drawable.x + xOffset, drawable.y + yOffset, drawable.size, drawable.size)
+            if (inView(drawable)) {
+                g2d.setPaint(drawable.color)
+                if (drawable.shape == Drawable.SHAPES.RECT) {
+                    g2d.fillRect(drawable.x + xOffset, drawable.y + yOffset, drawable.size, drawable.size)
+                } else {
+                    g2d.fillOval(drawable.x + xOffset, drawable.y + yOffset, drawable.size, drawable.size)
+                }
             }
         }
+    }
+
+    boolean inView(Drawable drawable) {
+        throw new PerIsBorkenException()
     }
 }
