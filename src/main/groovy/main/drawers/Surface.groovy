@@ -11,6 +11,7 @@ import java.awt.*
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
 import java.awt.event.KeyEvent
+import java.awt.image.BufferedImage
 
 class Surface extends JPanel implements ActionListener {
 
@@ -38,6 +39,20 @@ class Surface extends JPanel implements ActionListener {
 
             repaint()
         }
+    }
+
+
+    this is cool!
+
+    public BufferedImage createImage(JPanel panel) {
+
+        int w = panel.getWidth()
+        int h = panel.getHeight()
+        BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB)
+        Graphics2D g = bi.createGraphics()
+        panel.paint(g)
+        g.dispose()
+        return bi
     }
 
     @Override
