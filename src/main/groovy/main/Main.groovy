@@ -1,13 +1,12 @@
 package main
 
-
 import main.drawers.Surface
 import main.input.MyKeyboardListener
 import main.input.MyMouseListener
 import main.thread.ThreadWorker
 
 import javax.swing.*
-import java.awt.EventQueue
+import java.awt.*
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
 
@@ -17,6 +16,8 @@ class Main extends JFrame {
     static int WINDOW_HEIGHT = 900
     static int PANE_WIDTH
     static int PANE_HEIGHT
+    static int VIEWPORT_WIDTH
+    static int VIEWPORT_HEIGHT
 
     MyKeyboardListener myKeyboardListener
     MyMouseListener myMouseListener
@@ -25,8 +26,10 @@ class Main extends JFrame {
         super('CozyLand')
 
         pack()
-        PANE_WIDTH = (WINDOW_WIDTH - (getWidth() - getContentPane().getWidth())) * 2
-        PANE_HEIGHT = (WINDOW_HEIGHT - (getHeight() - getContentPane().getHeight())) * 2
+        VIEWPORT_WIDTH = WINDOW_WIDTH - (getWidth() - getContentPane().getWidth())
+        VIEWPORT_HEIGHT = WINDOW_HEIGHT - (getHeight() - getContentPane().getHeight())
+        PANE_WIDTH = VIEWPORT_WIDTH * 2
+        PANE_HEIGHT = VIEWPORT_HEIGHT * 2
 
         myKeyboardListener = new MyKeyboardListener()
         myMouseListener = new MyMouseListener()

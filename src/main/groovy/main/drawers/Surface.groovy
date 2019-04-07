@@ -1,8 +1,8 @@
 package main.drawers
 
+import main.Main
 import main.Model
 import main.Node
-import main.exception.PerIsBorkenException
 import main.input.MyKeyboardListener
 import main.things.Drawable
 
@@ -68,6 +68,14 @@ class Surface extends JPanel implements ActionListener {
     }
 
     boolean inView(Drawable drawable) {
-        throw new PerIsBorkenException()
+        def x = drawable.x
+        def y = drawable.y
+        def left = - xOffset
+        def right = Main.VIEWPORT_WIDTH - xOffset
+        def bottom = - yOffset
+        def top = Main.VIEWPORT_HEIGHT - yOffset
+
+        x >= left && x <= right && y <= top && y >= bottom
+        //return true
     }
 }

@@ -2,13 +2,11 @@ package main
 
 import main.exception.PerIsBorkenException
 import main.person.Person
-import main.things.Drawable
-import main.things.Stone
-import main.things.Tree
 
 import javax.imageio.ImageIO
-import java.awt.Color
+import java.awt.*
 import java.awt.image.BufferedImage
+import java.util.List
 import java.util.concurrent.ThreadLocalRandom
 
 class Model {
@@ -377,6 +375,10 @@ class Model {
 
     static int round (BigDecimal number) {
         number.setScale(0, BigDecimal.ROUND_HALF_DOWN).intValue()
+    }
+
+    static int round (double number) {
+        Math.round(number)
     }
 
     static double[] generateXY() {

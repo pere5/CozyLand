@@ -2,9 +2,7 @@ package main.things
 
 import main.Model
 
-import java.awt.Color
-import java.util.concurrent.ThreadLocalRandom
-import main.Main
+import java.awt.*
 
 abstract class Drawable {
 
@@ -24,9 +22,9 @@ abstract class Drawable {
     }
 
     int getX() {
-        x
+        Model.round(x)
     }
     int getY() {
-        y
+        Model.round(y)
     }
 }
