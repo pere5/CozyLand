@@ -43,10 +43,15 @@ class Surface extends JPanel implements ActionListener {
 
         Node[][] nodeNetwork = Model.model.nodeNetwork
 
+        def left = - xOffset
+        def right = Main.VIEWPORT_WIDTH - xOffset
+        def bottom = - yOffset
+        def top = Main.VIEWPORT_HEIGHT - yOffset
+
         for(int x = 0; x < nodeNetwork.length; x++) {
             for(int y = 0; y < nodeNetwork[x].length; y++) {
                 def drawable = nodeNetwork[x][y] as Drawable
-                if (inView(drawable)) {
+                if (inView(drawable, left, right, top, bottom)) {
                     g2d.setPaint(drawable.color)
                     if (drawable.shape == Drawable.SHAPES.RECT ) {
                         g2d.fillRect(drawable.x + xOffset, drawable.y + yOffset, drawable.size, drawable.size)
@@ -56,7 +61,7 @@ class Surface extends JPanel implements ActionListener {
         }
 
         Model.model.drawables.each { Drawable drawable ->
-            if (inView(drawable)) {
+            if (inView(drawable, left, right, top, bottom)) {
                 g2d.setPaint(drawable.color)
                 if (drawable.shape == Drawable.SHAPES.RECT) {
                     g2d.fillRect(drawable.x + xOffset, drawable.y + yOffset, drawable.size, drawable.size)
@@ -67,14 +72,9 @@ class Surface extends JPanel implements ActionListener {
         }
     }
 
-    boolean inView(Drawable drawable) {
+    boolean inView(Drawable drawable, def left, def right, def top, def bottom) {
         def x = drawable.x
         def y = drawable.y
-        def left = - xOffset
-        def right = Main.VIEWPORT_WIDTH - xOffset
-        def bottom = - yOffset
-        def top = Main.VIEWPORT_HEIGHT - yOffset
-
         x >= left && x <= right && y <= top && y >= bottom
     }
 }

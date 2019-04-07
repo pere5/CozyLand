@@ -22,9 +22,9 @@ abstract class Drawable {
     }
 
     int getX() {
-        Model.round(x)
+        x
     }
     int getY() {
-        Model.round(y)
+        y
     }
 }

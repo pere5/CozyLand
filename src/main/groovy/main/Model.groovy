@@ -374,11 +374,15 @@ class Model {
     }
 
     static int round (BigDecimal number) {
-        number.setScale(0, BigDecimal.ROUND_HALF_DOWN).intValue()
+        round(number.toDouble())
     }
 
     static int round (double number) {
-        Math.round(number)
+        if (number > 0) {
+            return (int) (number + 0.5d)
+        } else {
+            return (int) (number - 0.5d)
+        }
     }
 
     static double[] generateXY() {
