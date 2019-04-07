@@ -17,6 +17,10 @@ class Surface extends JPanel implements ActionListener {
     int xOffset = 0
     int yOffset = 0
 
+    def lastFramesPerSecond = 0
+    def startTime = System.currentTimeMillis()
+    def framesPerSecond = 0
+
     @Override
     void actionPerformed(ActionEvent e) {
 
@@ -70,6 +74,21 @@ class Surface extends JPanel implements ActionListener {
                 }
             }
         }
+
+        drawFPS(g2d)
+    }
+
+    void drawFPS(Graphics2D g2d) {
+        long currentTime = System.currentTimeMillis()
+        framesPerSecond++
+        if (currentTime - startTime > 1000) {
+            startTime = currentTime
+            lastFramesPerSecond = framesPerSecond
+            framesPerSecond = 0
+        }
+        g2d.setColor(Color.CYAN);
+        g2d.drawString("FPS: " + lastFramesPerSecond, 20, 20);
+
     }
 
     boolean inView(Drawable drawable, def left, def right, def top, def bottom) {

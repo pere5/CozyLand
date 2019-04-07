@@ -43,7 +43,7 @@ class Main extends JFrame {
 
         add(surface)
 
-        Timer timer = new Timer(15, surface)
+        Timer timer = new Timer(40, surface)
         timer.start()
 
         Thread.start {
