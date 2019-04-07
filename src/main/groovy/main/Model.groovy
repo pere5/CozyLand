@@ -2,6 +2,7 @@ package main
 
 import main.exception.PerIsBorkenException
 import main.person.Person
+import main.things.Drawable
 
 import javax.imageio.ImageIO
 import java.awt.*
@@ -32,7 +33,7 @@ class Model {
                 stones, trees, persons
         ].flatten()
 
-        def nodeNetwork = generateBackground()
+        def (nodeNetwork, backgroundImage) = generateBackground()
 
         def model = [
                 keyboard: keyboard,
@@ -42,12 +43,13 @@ class Model {
                 persons: persons,
                 stones: stones,
                 trees: trees,
-                nodeNetwork: nodeNetwork
+                nodeNetwork: nodeNetwork,
+                backgroundImage: backgroundImage
         ]
         this.model = model
     }
 
-    static Node[][] generateBackground() {
+    static def generateBackground() {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader()
         BufferedImage image = ImageIO.read(classloader.getResourceAsStream('lol.png'))
 
@@ -57,7 +59,27 @@ class Model {
         Node[][] nodeNetwork = buildNodeNetwork(heightMap)
         setColors(nodeNetwork)
 
-        return nodeNetwork
+        Image backgroundImage = createImage(nodeNetwork)
+
+        [nodeNetwork, backgroundImage]
+    }
+
+    static BufferedImage createImage(Node[][] nodeNetwork) {
+
+        BufferedImage image = new BufferedImage(Main.MAP_WIDTH, Main.MAP_HEIGHT, BufferedImage.TYPE_INT_RGB)
+        Graphics2D g2d = image.createGraphics()
+
+        for(int x = 0; x < nodeNetwork.length; x++) {
+            for(int y = 0; y < nodeNetwork[x].length; y++) {
+                def drawable = nodeNetwork[x][y] as Drawable
+                g2d.setPaint(drawable.color)
+                if (drawable.shape == Drawable.SHAPES.RECT ) {
+                    g2d.fillRect(drawable.x, drawable.y, drawable.size, drawable.size)
+                }
+            }
+        }
+
+        return image
     }
 
     private static int[][] buildHeightMap(BufferedImage image) {

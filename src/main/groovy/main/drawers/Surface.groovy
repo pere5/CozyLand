@@ -2,7 +2,6 @@ package main.drawers
 
 import main.Main
 import main.Model
-import main.Node
 import main.input.MyKeyboardListener
 import main.things.Drawable
 
@@ -11,7 +10,6 @@ import java.awt.*
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
 import java.awt.event.KeyEvent
-import java.awt.image.BufferedImage
 
 class Surface extends JPanel implements ActionListener {
 
@@ -41,43 +39,19 @@ class Surface extends JPanel implements ActionListener {
         }
     }
 
-
-    this is cool!
-
-    public BufferedImage createImage(JPanel panel) {
-
-        int w = panel.getWidth()
-        int h = panel.getHeight()
-        BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB)
-        Graphics2D g = bi.createGraphics()
-        panel.paint(g)
-        g.dispose()
-        return bi
-    }
-
     @Override
     void paintComponent(Graphics g) {
         super.paintComponent(g)
         Graphics2D g2d = (Graphics2D) g
 
-        Node[][] nodeNetwork = Model.model.nodeNetwork
+        Image backgroundImage = Model.model.backgroundImage
 
         def left = - xOffset
         def right = Main.VIEWPORT_WIDTH - xOffset
         def bottom = - yOffset
         def top = Main.VIEWPORT_HEIGHT - yOffset
 
-        for(int x = 0; x < nodeNetwork.length; x++) {
-            for(int y = 0; y < nodeNetwork[x].length; y++) {
-                def drawable = nodeNetwork[x][y] as Drawable
-                if (inView(drawable, left, right, top, bottom)) {
-                    g2d.setPaint(drawable.color)
-                    if (drawable.shape == Drawable.SHAPES.RECT ) {
-                        g2d.fillRect(drawable.x + xOffset, drawable.y + yOffset, drawable.size, drawable.size)
-                    }
-                }
-            }
-        }
+        g2d.drawImage(backgroundImage, xOffset, yOffset, null)
 
         Model.model.drawables.each { Drawable drawable ->
             if (inView(drawable, left, right, top, bottom)) {
