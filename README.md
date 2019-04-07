@@ -25,4 +25,4 @@
      - [x] Accessibility
  - [x] Testa: scaling helt med alla maps
  - [ ] Add some simple FPS stats for all threads and estimated load on cpu
- - [ ] 6x6 -> 3x3 tiles med 2x zoom och panning m.h.a att helt enkelt flytta på jPanelen
+ - [x] 6x6 -> 3x3 tiles med 2x zoom och panning m.h.a att helt enkelt flytta på jPanelen
