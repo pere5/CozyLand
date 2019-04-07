@@ -76,6 +76,5 @@ class Surface extends JPanel implements ActionListener {
         def top = Main.VIEWPORT_HEIGHT - yOffset
 
         x >= left && x <= right && y <= top && y >= bottom
-        //return true
     }
 }
