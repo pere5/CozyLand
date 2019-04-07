@@ -158,14 +158,14 @@ class Model {
         def imageWidth = heightMap.length
         def imageHeight = heightMap[0].length
 
-        def xRatio = imageWidth / Main.PANE_WIDTH
-        def yRatio = imageHeight / Main.PANE_HEIGHT
+        def xRatio = imageWidth / Main.MAP_WIDTH
+        def yRatio = imageHeight / Main.MAP_HEIGHT
 
         def squareWidth = 6
         def squareHeight = squareWidth
 
-        def bgWidth = round(Main.PANE_WIDTH / squareWidth)
-        def bgHeight = round(Main.PANE_HEIGHT / squareHeight)
+        def bgWidth = round(Main.MAP_WIDTH / squareWidth)
+        def bgHeight = round(Main.MAP_HEIGHT / squareHeight)
 
         def xStep = squareWidth * xRatio
         def yStep = squareHeight * yRatio
@@ -387,8 +387,8 @@ class Model {
 
     static double[] generateXY() {
         [
-                Main.PANE_WIDTH / 2 + generate(Main.PANE_WIDTH / 3 as int),
-                Main.PANE_HEIGHT / 2 + generate(Main.PANE_HEIGHT / 3 as int)
+                Main.MAP_WIDTH / 2 + generate(Main.MAP_WIDTH / 3 as int),
+                Main.MAP_HEIGHT / 2 + generate(Main.MAP_HEIGHT / 3 as int)
         ]
     }
 
