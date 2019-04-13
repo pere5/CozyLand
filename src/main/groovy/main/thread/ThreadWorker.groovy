@@ -1,10 +1,7 @@
 package main.thread
 
 import main.Model
-import main.input.MyKeyboardListener
 import main.person.Person
-
-import java.awt.event.KeyEvent
 
 class ThreadWorker {
 
@@ -44,5 +41,7 @@ class ThreadWorker {
     
     def update() {
         (Model.model.persons[index] as Person).work()
+        def frameSlots = Model.model.frameSlots as List
+        frameSlots[index + 1] = lastFramesPerSecond
     }
 }

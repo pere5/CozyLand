@@ -33,9 +33,9 @@ class Model {
                 stones, trees, persons
         ].flatten()
 
-        def (nodeNetwork, backgroundImage) = generateBackground()
+        def nodeNetwork = generateBackground()
 
-        def model = [
+        model = [
                 keyboard: keyboard,
                 mouse: mouse,
                 pause: false,
@@ -43,10 +43,11 @@ class Model {
                 persons: persons,
                 stones: stones,
                 trees: trees,
-                nodeNetwork: nodeNetwork,
-                backgroundImage: backgroundImage
+                frameSlots: [0,0,0,0,0,0],
+                nodeNetwork: nodeNetwork
         ]
-        this.model = model
+
+        model.backgroundImage = createBGImage()
     }
 
     static def generateBackground() {
@@ -59,13 +60,11 @@ class Model {
         Node[][] nodeNetwork = buildNodeNetwork(heightMap)
         setColors(nodeNetwork)
 
-        Image backgroundImage = createImage(nodeNetwork)
-
-        [nodeNetwork, backgroundImage]
+        return nodeNetwork
     }
 
-    static BufferedImage createImage(Node[][] nodeNetwork) {
-
+    static BufferedImage createBGImage() {
+        Node[][] nodeNetwork = model.nodeNetwork
         BufferedImage image = new BufferedImage(Main.MAP_WIDTH, Main.MAP_HEIGHT, BufferedImage.TYPE_INT_RGB)
         Graphics2D g2d = image.createGraphics()
 
