@@ -1,8 +1,9 @@
 package main
 
 import main.exception.PerIsBorkenException
-import main.person.Person
+import main.rule.Walk
 import main.things.Drawable
+import main.villager.Villager
 
 import javax.imageio.ImageIO
 import java.awt.*
@@ -21,8 +22,8 @@ class Model {
     }
 
     static def init(def keyboard, def mouse) {
-        def persons = [
-                new Person(), new Person(), new Person(), new Person(), new Person()
+        def villagers = [
+                new Villager(), new Villager(), new Villager(), new Villager(), new Villager()
         ]
         def stones = [
         ]
@@ -30,7 +31,7 @@ class Model {
         ]
 
         def drawables = [
-                stones, trees, persons
+                stones, trees, villagers
         ].flatten()
 
         def nodeNetwork = generateBackground()
@@ -40,14 +41,21 @@ class Model {
                 mouse: mouse,
                 pause: false,
                 drawables: drawables,
-                persons: persons,
+                villagers: villagers,
+                lookingForWork: [],
                 stones: stones,
                 trees: trees,
                 frameSlots: [0,0,0,0,0],
-                nodeNetwork: nodeNetwork
+                nodeNetwork: nodeNetwork,
+                rules: generateRules()
         ]
 
         model.backgroundImage = createBGImage()
+    }
+
+    static def generateRules() {
+        int rank = Integer.MAX_VALUE
+        [new Walk(rank: --rank)]
     }
 
     static def generateBackground() {

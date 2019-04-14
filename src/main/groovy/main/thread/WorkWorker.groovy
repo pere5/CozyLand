@@ -1,11 +1,16 @@
 package main.thread
 
 import main.Model
-import main.person.Person
+import main.villager.Villager
 
 class WorkWorker extends Worker {
 
     def update() {
-        (Model.model.persons as List<Person>)*.work()
+        for (Villager villager : Model.model.villagers) {
+            boolean working = villager.work()
+            if (!working && !(villager in Model.model.lookingForWork)) {
+                Model.model.lookingForWork << villager
+            }
+        }
     }
 }

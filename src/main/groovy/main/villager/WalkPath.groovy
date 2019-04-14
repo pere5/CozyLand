@@ -1,4 +1,4 @@
-package main.person
+package main.villager
 
 import main.things.Drawable
 
