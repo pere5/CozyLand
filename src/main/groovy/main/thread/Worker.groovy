@@ -1,16 +1,15 @@
 package main.thread
 
 import main.Model
-import main.person.Person
+import main.exception.PerIsBorkenException
 
-class ThreadWorker {
+abstract class Worker {
 
     def lastFramesPerSecond = 0
     def startTime = System.currentTimeMillis()
     def framesPerSecond = 0
     def intendedFps = 8
     def isRunning = true
-    int index
 
     def run() {
 
@@ -22,7 +21,7 @@ class ThreadWorker {
                 try {
                     Thread.sleep(time)
                 } catch(Exception e) {
-                    System.out.println("Woohah!")
+                    throw new PerIsBorkenException()
                 }
             }
 
@@ -38,10 +37,6 @@ class ThreadWorker {
             }
         }
     }
-    
-    def update() {
-        (Model.model.persons[index] as Person).work()
-        def frameSlots = Model.model.frameSlots as List
-        frameSlots[index + 1] = lastFramesPerSecond
-    }
+
+    abstract def update()
 }

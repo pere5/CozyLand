@@ -3,7 +3,7 @@ package main
 import main.drawers.Surface
 import main.input.MyKeyboardListener
 import main.input.MyMouseListener
-import main.thread.ThreadWorker
+import main.thread.WorkWorker
 
 import javax.swing.*
 import java.awt.*
@@ -47,19 +47,7 @@ class Main extends JFrame {
         timer.start()
 
         Thread.start {
-            new ThreadWorker(index: 0).run()
-        }
-        Thread.start {
-            new ThreadWorker(index: 1).run()
-        }
-        Thread.start {
-            new ThreadWorker(index: 2).run()
-        }
-        Thread.start {
-            new ThreadWorker(index: 3).run()
-        }
-        Thread.start {
-            new ThreadWorker(index: 4).run()
+            new WorkWorker().run()
         }
 
         addWindowListener(new WindowAdapter() {
