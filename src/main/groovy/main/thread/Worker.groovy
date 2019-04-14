@@ -11,6 +11,8 @@ abstract class Worker {
     def intendedFps = 8
     def isRunning = true
 
+    int frameIndex
+
     def run() {
 
         while(isRunning) {
@@ -26,7 +28,9 @@ abstract class Worker {
             }
 
             if (!Model.model.pause) {
+
                 update()
+
                 long currentTime = System.currentTimeMillis()
                 framesPerSecond++
                 if (currentTime - startTime > 1000) {
@@ -34,6 +38,9 @@ abstract class Worker {
                     lastFramesPerSecond = framesPerSecond
                     framesPerSecond = 0
                 }
+
+                def frameSlots = Model.model.frameSlots as List
+                frameSlots[frameIndex] = lastFramesPerSecond
             }
         }
     }

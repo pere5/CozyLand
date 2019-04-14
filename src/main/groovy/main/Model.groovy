@@ -43,7 +43,7 @@ class Model {
                 persons: persons,
                 stones: stones,
                 trees: trees,
-                frameSlots: [0,0,0,0,0,0],
+                frameSlots: [0,0,0,0,0],
                 nodeNetwork: nodeNetwork
         ]
 
