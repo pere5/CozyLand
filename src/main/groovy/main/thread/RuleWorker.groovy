@@ -12,14 +12,14 @@ class RuleWorker extends Worker {
 
             int currentStatus = Integer.MAX_VALUE
             for (Rule rule : Model.model.rules) {
-                int newStatus = rule.calculateStatus(villager)
+                int newStatus = rule.status(villager)
                 if (newStatus < currentStatus || (newStatus == currentStatus && rule.rank > selectedRule.rank)) {
                     currentStatus = newStatus
                     selectedRule = rule
                 }
             }
             if (selectedRule) {
-                selectedRule.initWork(villager, currentStatus)
+                selectedRule.startWork(villager, currentStatus)
                 villager.lookingForWork = false
             }
         }

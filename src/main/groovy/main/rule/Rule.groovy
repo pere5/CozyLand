@@ -4,6 +4,6 @@ import main.villager.Villager
 
 abstract class Rule {
     int rank
-    abstract int calculateStatus(Villager villager)
-    abstract void initWork(Villager villager, int status)
+    abstract int status(Villager villager)
+    abstract void startWork(Villager villager, int status)
 }
