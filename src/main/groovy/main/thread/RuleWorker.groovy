@@ -7,7 +7,7 @@ import main.villager.Villager
 class RuleWorker extends Worker {
 
     def update() {
-        for (Villager villager : Model.model.lookingForWork) {
+        (Model.model.villagers as List<Villager>).grep { it.lookingForWork }.each { def villager ->
             def selectedRule = null
 
             int currentStatus = Integer.MAX_VALUE
@@ -20,6 +20,7 @@ class RuleWorker extends Worker {
             }
             if (selectedRule) {
                 selectedRule.initWork(villager, currentStatus)
+                villager.lookingForWork = false
             }
         }
     }

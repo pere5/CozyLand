@@ -6,10 +6,10 @@ import main.villager.Villager
 class WorkWorker extends Worker {
 
     def update() {
-        for (Villager villager : Model.model.villagers) {
+        (Model.model.villagers as List<Villager>).grep { !it.lookingForWork }.each { def villager ->
             boolean working = villager.work()
-            if (!working && !(villager in Model.model.lookingForWork)) {
-                Model.model.lookingForWork << villager
+            if (!working) {
+                villager.lookingForWork = true
             }
         }
     }

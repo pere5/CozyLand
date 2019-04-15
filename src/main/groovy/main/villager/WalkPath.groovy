@@ -47,6 +47,6 @@ class WalkPath extends Action {
         def (x, y) = path.poll()
         drawable.x = x
         drawable.y = y
-        return path
+        return path ? CONTINUE : DONE
     }
 }

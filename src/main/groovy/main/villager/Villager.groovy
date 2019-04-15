@@ -9,6 +9,7 @@ import java.util.Queue
 class Villager extends Drawable {
 
     Queue<Action> actionQueue = new LinkedList<>()
+    boolean lookingForWork
 
     Villager() {
         size = 3
@@ -19,6 +20,17 @@ class Villager extends Drawable {
     }
 
     boolean work() {
-        actionQueue.poll()?.doIt(this)
+        def action = actionQueue.peek()
+        if (action) {
+            def canContinue = action.doIt(this)
+            if (canContinue) {
+                return Action.CONTINUE
+            } else {
+                actionQueue.poll()
+                return Action.DONE
+            }
+        } else {
+            return Action.DONE
+        }
     }
 }
