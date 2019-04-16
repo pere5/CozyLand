@@ -6,12 +6,12 @@ class StraightPath extends Action {
     Queue<double[]> path = new LinkedList<>()
     double STEP = 0.7
 
-    StraightPath(double[] start, double[] destination) {
+    StraightPath(double[] start, double[] dest) {
 
         double[] nextStep = start
-        while (!closeEnough(nextStep, destination, STEP)) {
-            double vx = destination[0] - nextStep[0]
-            double vy = destination[1] - nextStep[1]
+        while (!closeEnough(nextStep, dest, STEP)) {
+            double vx = dest[0] - nextStep[0]
+            double vy = dest[1] - nextStep[1]
 
             double mag = Math.sqrt(vx * vx + vy * vy)
 
@@ -22,7 +22,7 @@ class StraightPath extends Action {
             nextStep = [px, py]
             path.add(nextStep)
         }
-        path.add(destination)
+        path.add(dest)
     }
 
     boolean closeEnough(double[] pointA, double[] pointB, double step) {
