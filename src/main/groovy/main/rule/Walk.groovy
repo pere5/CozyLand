@@ -8,7 +8,7 @@ class Walk extends Rule {
 
     @Override
     int status(Villager villager) {
-        return 0
+        BAD
     }
 
     @Override

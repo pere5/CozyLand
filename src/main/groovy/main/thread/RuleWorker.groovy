@@ -8,18 +8,18 @@ class RuleWorker extends Worker {
 
     def update() {
         (Model.model.villagers as List<Villager>).grep { it.lookingForWork }.each { def villager ->
-            def selectedRule = null
+            def rule = null
+            int status = Rule.UNREACHABLE
 
-            int currentStatus = Integer.MAX_VALUE
-            for (Rule rule : Model.model.rules) {
-                int newStatus = rule.status(villager)
-                if (newStatus < currentStatus || (newStatus == currentStatus && rule.rank > selectedRule.rank)) {
-                    currentStatus = newStatus
-                    selectedRule = rule
+            for (Rule newRule : Model.model.rules) {
+                int newStatus = newRule.status(villager)
+                if (newStatus < status || (newStatus == status && newRule.rank > rule.rank)) {
+                    status = newStatus
+                    rule = newRule
                 }
             }
-            if (selectedRule) {
-                selectedRule.startWork(villager, currentStatus)
+            if (rule) {
+                rule.startWork(villager, status)
                 villager.lookingForWork = false
             }
         }
