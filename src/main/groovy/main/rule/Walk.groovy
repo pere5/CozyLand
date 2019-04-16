@@ -13,6 +13,8 @@ class Walk extends Rule {
 
     @Override
     void startWork(Villager villager, int status) {
-        villager.actionQueue << new StraightPath([villager.x, villager.y] as double[], Model.generateXY())
+        def start = [villager.x, villager.y] as double[]
+        def destination = Model.generateXY()
+        villager.actionQueue << new StraightPath(start, destination)
     }
 }

@@ -20,11 +20,4 @@ abstract class Drawable {
     Drawable() {
         this.id = Model.getNewId()
     }
-
-    int getX() {
-        x
-    }
-    int getY() {
-        y
-    }
 }
