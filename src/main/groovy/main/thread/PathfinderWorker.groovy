@@ -20,7 +20,7 @@ class PathfinderWorker extends Worker {
             def destNode = [1, 7] as int[]
 
             //this seems bonkers
-            def nodeIndices = nodeIndices(startNode, destNode)
+            def nodeIndices = bresenham(startNode, destNode)
 
             //set all nodes oin this line to red and view the result
 
@@ -30,29 +30,26 @@ class PathfinderWorker extends Worker {
         }
     }
 
-    List<int[]> nodeIndices(int[] start, int[] dest) {
-
+    List<int[]> bresenham(int x1, int y1, int x2, int y2) {
         def result = []
+        int m_new = 2 * (y2 - y1)
+        int slope_error_new = m_new - (x2 - x1)
 
-        def x0 = start[0] as int
-        def y0 = start[1] as int
-        def x1 = dest[0] as int
-        def y1 = dest[1] as int
+        int x = x1, y = y1
+        for (; x <= x2; x++) {
+            //System.out.print("(" +x + "," + y + ")\n")
+            result << [x, y] as int[]
 
-        def dx = x1 - x0
-        def dy = y1 - y0
-        def D = 2 * dy - dx
-        def y = y0
+            // Add slope to increment angle formed
+            slope_error_new += m_new
 
-        (x0..x1).each { def x ->
-            result << [x, y]
-            if (D > 0) {
-                y = y + 1
-                D = D - 2 * dx
+            // Slope error reached limit, time to
+            // increment y and update slope error.
+            if (slope_error_new >= 0) {
+                y++
+                slope_error_new -= 2 * (x2 - x1)
             }
-            D = D + 2 * dy
         }
-
-        result
+        return result
     }
 }
