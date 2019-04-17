@@ -9,9 +9,9 @@ import java.util.Queue
 class Villager extends Drawable {
 
     Queue<Action> actionQueue = new LinkedList<>()
-    boolean lookingForRule
-    boolean planningPath
-    boolean working
+    boolean ruleWorker
+    boolean pathfinderWorker
+    boolean workWorker
 
     Villager() {
         size = 3
@@ -19,7 +19,7 @@ class Villager extends Drawable {
         def (x, y) = Model.generateXY()
         this.x = x
         this.y = y
-        inLookingForRule()
+        toRuleWorker()
     }
 
     boolean work() {
@@ -37,21 +37,24 @@ class Villager extends Drawable {
         }
     }
 
-    void inWorking() {
-        planningPath = false
-        lookingForRule = false
-        working = true
+    void toWorkWorker() {
+        println("${id}-w")
+        pathfinderWorker = false
+        ruleWorker = false
+        workWorker = true
     }
 
-    void inLookingForRule() {
-        planningPath = false
-        lookingForRule = true
-        working = false
+    void toRuleWorker() {
+        println("${id}-r")
+        pathfinderWorker = false
+        ruleWorker = true
+        workWorker = false
     }
 
-    void inPlanningPath() {
-        planningPath = true
-        lookingForRule = false
-        working = false
+    void toPathfinderWorker() {
+        println("${id}-p")
+        pathfinderWorker = true
+        ruleWorker = false
+        workWorker = false
     }
 }

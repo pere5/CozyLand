@@ -7,7 +7,7 @@ import main.villager.Villager
 class RuleWorker extends Worker {
 
     def update() {
-        Model.model.villagers.grep { it.lookingForRule }.each { Villager villager ->
+        Model.model.villagers.grep { it.ruleWorker }.each { Villager villager ->
             def rule = null
             int status = Rule.UNREACHABLE
 
