@@ -14,6 +14,13 @@ class Walk extends Rule {
 
     @Override
     void startWork(Villager villager, int status) {
+
+
+
+
+        de här ska in i PathfinderWorker
+
+
         def start = [villager.x, villager.y] as double[]
         def destination = Model.generateXY()
 
