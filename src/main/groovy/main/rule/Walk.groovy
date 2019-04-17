@@ -14,7 +14,7 @@ class Walk extends Rule {
     void startWork(Villager villager, int status) {}
 
     @Override
-    void setVillagerState(Villager villager) {
+    void stateWhenDone(Villager villager) {
         villager.inPlanningPath()
     }
 }

@@ -19,8 +19,8 @@ class RuleWorker extends Worker {
                 }
             }
             if (rule) {
-                rule.setVillagerState(villager)
                 rule.startWork(villager, status)
+                rule.stateWhenDone(villager)
             }
         }
     }
