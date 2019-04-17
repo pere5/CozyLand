@@ -5,6 +5,8 @@ import main.Node
 import main.villager.StraightPath
 import main.villager.Villager
 
+import java.awt.Color
+
 class PathfinderWorker extends Worker {
 
     public static void main(String[] args) {
@@ -20,21 +22,32 @@ class PathfinderWorker extends Worker {
         Model.model.villagers.grep { it.pathfinderWorker }.each { Villager villager ->
 
             def start = [villager.x, villager.y] as double[]
-            def destination = Model.generateXY()
+            def dest = Model.generateXY()
 
             def nodeNetwork = Model.model.nodeNetwork as Node[][]
 
-            def startIdx = [0, 0] as int[]
-            def destIdx = [1, 7] as int[]
+            def startIdx = Model.round(start)
+            def destIdx = Model.round(dest)
 
-            def nodeIndices = bresenham(startIdx, destIdx)
+            def nodeStartIdx = nodeIdxToPixelIdx(startIdx)
+            def nodeDestIdx = nodeIdxToPixelIdx(destIdx)
 
-            //set all nodes oin this line to red and view the result
+            def nodeIndices = bresenham(nodeStartIdx, nodeDestIdx)
+            nodeIndices.each {
+                nodeNetwork[it[0]][it[1]].color = Color.RED
+            }
 
-            villager.actionQueue << new StraightPath(start, destination)
-
+            villager.actionQueue << new StraightPath(start, dest)
             villager.toWorkWorker()
         }
+    }
+
+    int[] nodeIdxToPixelIdx(int[] ints) {
+
+        major stuff here
+
+
+        ints.collect { it }
     }
 
     List<int[]> bresenham(int[] start, int[] dest) {

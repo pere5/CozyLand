@@ -411,6 +411,10 @@ class Model {
         }
     }
 
+    static int[] round (double[] numbers) {
+        numbers.collect { round(it) }
+    }
+
     static double[] generateXY() {
         [
                 Main.MAP_WIDTH / 2 + generate(Main.MAP_WIDTH / 3 as int),

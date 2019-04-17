@@ -11,7 +11,10 @@ class Walk extends Rule {
     }
 
     @Override
-    void startWork(Villager villager, int status) {}
+    void startWork(Villager villager, int status) {
+        //gotta setup the actual points to travel here
+        //then let PathfinderWorker calculate path between them
+    }
 
     @Override
     void stateWhenDone(Villager villager) {
