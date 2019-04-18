@@ -9,6 +9,17 @@ import java.awt.Color
 
 class PathfinderWorker extends Worker {
 
+    /*
+        - [ ] kör steg nod för nod
+        - [ ] för nästa steg:
+          - [ ] kör 90 grader med mittersta graden pekandes mot målet
+          - [ ] fördela ut graderna lika till grann noderna
+          - [ ] lägg upp en (normal) fördelning av sannolikhet för graderna
+          - [ ] beräkna genomsnittliga sannolikheten för varje grann nod relativt till de andra noderna utifrån gradernas sannolikheter
+          - [ ] omfördela sannolikheterna mot vaje nod baserat på nodens movementCost relativt till de andra noderna
+     */
+
+
     public static void main(String[] args) {
         def startIdx = [7, 5] as int[]
         def destIdx = [7, 2] as int[]
