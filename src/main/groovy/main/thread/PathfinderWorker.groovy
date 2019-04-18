@@ -14,7 +14,9 @@ class PathfinderWorker extends Worker {
         - [ ] för nästa steg:
           - [ ] kör 90 grader med mittersta graden pekandes mot målet
           - [ ] fördela ut graderna lika till grann noderna
-          - [ ] lägg upp en (normal) fördelning av sannolikhet för graderna
+            - [ ] hårdkoda det med en färdig lösning per grad för alla 360 grader.
+          - [ ] lägg upp en (normal) fördelning av sannolikhet för graderna över 90 grader.
+            - [ ] hårdkoda fördelningen för 0 -> 90 grader med max i 45
           - [ ] beräkna genomsnittliga sannolikheten för varje grann nod relativt till de andra noderna utifrån gradernas sannolikheter
           - [ ] omfördela sannolikheterna mot vaje nod baserat på nodens movementCost relativt till de andra noderna
      */
