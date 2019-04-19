@@ -2,6 +2,7 @@ package main.thread
 
 import main.Model
 import main.Node
+import main.exception.PerIsBorkenException
 import main.villager.StraightPath
 import main.villager.Villager
 
@@ -31,9 +32,19 @@ class PathfinderWorker extends Worker {
                 (108..143).collectEntries { [it, 25/36] } +
                 (144..180).collectEntries { [it, 12.5/37] }
         ).inject([sum:0.0]) { Map result, def entry ->
-            result.sum += entry.value
-            entry.value = result.sum
+            def lowerLimit = result.sum
+            def upperLimit = lowerLimit + entry.value
+            result.sum = upperLimit
+            entry.value = [lowerLimit: lowerLimit, upperLimit: upperLimit]
             result << entry
+        }
+
+        if (degreeProbabilities.keySet()*.toString() != (['sum'] + (0..180))*.toString()) {
+            throw new PerIsBorkenException()
+        }
+
+        if (Math.abs(degreeProbabilities.sum - 100) > 0.00000001) {
+            throw new PerIsBorkenException()
         }
     }
 
@@ -41,7 +52,7 @@ class PathfinderWorker extends Worker {
         def startIdx = [7, 5] as int[]
         def destIdx = [7, 2] as int[]
 
-        println(degreeProbabilities)
+        println()
 
         def nodeIndices = new PathfinderWorker().bresenham(startIdx, destIdx)
         println(nodeIndices)
