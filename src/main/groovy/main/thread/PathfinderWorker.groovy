@@ -64,7 +64,7 @@ class PathfinderWorker extends Worker {
 
             def start = [villager.x, villager.y] as double[]
             def dest = Model.generateXY()
-
+            /*
             def nodeNetwork = Model.model.nodeNetwork as Node[][]
 
             def startIdx = Model.round(start)
@@ -76,7 +76,7 @@ class PathfinderWorker extends Worker {
             def nodeIndices = bresenham(nodeStartIdx, nodeDestIdx)
             nodeIndices.each {
                 nodeNetwork[it[0]][it[1]].color = Color.RED
-            }
+            }*/
 
             villager.actionQueue << new StraightPath(start, dest)
             villager.toWorkWorker()
@@ -85,7 +85,7 @@ class PathfinderWorker extends Worker {
 
     int[] nodeIdxToPixelIdx(int[] ints) {
 
-        major stuff here
+        //major stuff here
 
 
         ints.collect { it }
