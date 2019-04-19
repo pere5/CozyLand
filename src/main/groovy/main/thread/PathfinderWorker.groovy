@@ -21,10 +21,21 @@ class PathfinderWorker extends Worker {
           - [ ] omfördela sannolikheterna mot vaje nod baserat på nodens movementCost relativt till de andra noderna
      */
 
+    static def degreeProbabilities
+
+    static {
+        degreeProbabilities = (0..35).collectEntries { [it, (12.5/36) as double] } +
+                (36..71).collectEntries { [it, (25/36) as double] } +
+                (72..107).collectEntries { [it, (25/36) as double] } +
+                (108..143).collectEntries { [it, (25/36) as double] } +
+                (144..180).collectEntries { [it, (12.5/37) as double] }
+    }
 
     public static void main(String[] args) {
         def startIdx = [7, 5] as int[]
         def destIdx = [7, 2] as int[]
+
+        println(degreeProbabilities.collect{it.value}.sum())
 
         def nodeIndices = new PathfinderWorker().bresenham(startIdx, destIdx)
         println(nodeIndices)
