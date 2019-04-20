@@ -1,12 +1,9 @@
 package main.thread
 
 import main.Model
-import main.Node
 import main.exception.PerIsBorkenException
 import main.villager.StraightPath
 import main.villager.Villager
-
-import java.awt.Color
 
 class PathfinderWorker extends Worker {
 
@@ -22,10 +19,11 @@ class PathfinderWorker extends Worker {
           - [ ] omfördela sannolikheterna mot vaje nod baserat på nodens movementCost relativt till de andra noderna
      */
 
-    static def degreeProbabilities
+    static def DEGREE_PROBABILITY
+    static def SQUARE_DEGREES
 
     static {
-        degreeProbabilities = (
+        DEGREE_PROBABILITY = (
                 (0..35).collectEntries { [it, 12.5/36] } +
                 (36..71).collectEntries { [it, 25/36] } +
                 (72..107).collectEntries { [it, 25/36] } +
@@ -39,20 +37,23 @@ class PathfinderWorker extends Worker {
             result << entry
         }
 
-        if (degreeProbabilities.keySet()*.toString() != (['sum'] + (0..180))*.toString()) {
+        if (DEGREE_PROBABILITY.keySet()*.toString() != (['sum'] + (0..180))*.toString()) {
             throw new PerIsBorkenException()
         }
 
-        if (Math.abs(degreeProbabilities.sum - 100) > 0.00000001) {
+        if (Math.abs(DEGREE_PROBABILITY.sum - 100) > 0.00000001) {
             throw new PerIsBorkenException()
         }
+
+        här
+        SQUARE_DEGREES = []
     }
 
     public static void main(String[] args) {
         def startIdx = [7, 5] as int[]
         def destIdx = [7, 2] as int[]
 
-        println()
+        println(DEGREE_PROBABILITY)
 
         def nodeIndices = new PathfinderWorker().bresenham(startIdx, destIdx)
         println(nodeIndices)
