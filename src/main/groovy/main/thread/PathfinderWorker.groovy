@@ -45,8 +45,25 @@ class PathfinderWorker extends Worker {
             throw new PerIsBorkenException()
         }
 
-        här
-        SQUARE_DEGREES = []
+        int degrees = 90
+        degreeToSquareProbabilities(degrees)
+    }
+
+    static def degreeToSquareProbabilities(int i) {
+        360 / 8
+
+        def squares = [
+                [[2, 1]:0  ],
+                [[2, 2]:45 ],
+                [[1, 2]:90 ],
+                [[0, 2]:135],
+                [[0, 1]:180],
+                [[0, 0]:225],
+                [[1, 0]:270],
+                [[2, 0]:315]
+        ]
+
+
     }
 
     public static void main(String[] args) {
