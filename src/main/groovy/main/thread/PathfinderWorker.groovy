@@ -1,6 +1,7 @@
 package main.thread
 
 import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
 import main.Model
 import main.exception.PerIsBorkenException
 import main.villager.StraightPath
@@ -43,7 +44,7 @@ class PathfinderWorker extends Worker {
             throw new PerIsBorkenException()
         }
 
-        File file = new File("degreesFile.json")
+        File file = new File('degreesFile.json')
         file.write '{"data":[\n'
         def times = 360
         times.times {
@@ -85,6 +86,11 @@ class PathfinderWorker extends Worker {
         if (false) {
             rewriteDegreesFile()
         }
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader()
+        def boll = new JsonSlurper().parse(classloader.getResourceAsStream('degreesFile.json'))
+
+        //ok
+
         def startIdx = [7, 5] as int[]
         def destIdx = [7, 2] as int[]
 
