@@ -1,5 +1,6 @@
 package main.thread
 
+import groovy.json.JsonOutput
 import main.Model
 import main.exception.PerIsBorkenException
 import main.villager.StraightPath
@@ -42,11 +43,14 @@ class PathfinderWorker extends Worker {
             throw new PerIsBorkenException()
         }
 
-        File file = new File("degreesFile.txt")
-        file.write ''
-        360.times {
-            file << "${[it, probabilitiesForRange(degreeRange(it))]}\n"
+        File file = new File("degreesFile.json")
+        file.write '{"data":[\n'
+        def times = 360
+        times.times {
+            file << "${JsonOutput.toJson([(it): probabilitiesForRange(degreeRange(it))])}"
+            file << ((it + 1 == times) ? '\n' : ',\n')
         }
+        file << ']}'
     }
 
     private static List<Integer> degreeRange (int degree) {
@@ -81,7 +85,6 @@ class PathfinderWorker extends Worker {
         if (false) {
             rewriteDegreesFile()
         }
-
         def startIdx = [7, 5] as int[]
         def destIdx = [7, 2] as int[]
 
