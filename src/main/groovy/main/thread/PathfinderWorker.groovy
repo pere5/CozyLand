@@ -24,31 +24,25 @@ class PathfinderWorker extends Worker {
 
     static {
         //DEGREE_PROBABILITY = (0..359).collect { lol(it) }
-
-        lol(45)
-        lol(90)
-        lol(270)
+        if (
+                degreeRange(45) != (315..359) + (0..135) ||
+                degreeRange(100) != 10..190 ||
+                degreeRange(300) != (210..359) + (0..30)
+        ) {
+            throw new PerIsBorkenException()
+        }
         //verje ruta har en lista med gradtal, jämnt fördelat
     }
 
-    static def lol (int degree) {
+    static def degreeRange (int degree) {
+        int u = degree + 90
+        int l = degree - 90
+        int upper = u % 360
+        int lower = l >= 0 ? l : l + 360
+        (upper > lower) ? (lower..upper) : (lower..359) + (0..upper)
+    }
 
-        def upper
-        def lower
-        def range
-        if (degree >= 90 && degree < 270) {
-            upper = degree + 90
-            lower = degree - 90
-            range = lower..upper
-        } else if (degree >= 270) {
-            upper = (degree + 90) % 360
-            lower = degree - 90
-            range = (lower..359) + (0..upper)
-        } else if (degree < 90) {
-            upper = degree + 90
-            lower = degree + 270
-            range = (lower..359) + (0..upper)
-        }
+    static def lol (int degree) {
 
         DEGREE_PROBABILITY = (
                 (0..35).collectEntries { [it, 12.5/36] } +
