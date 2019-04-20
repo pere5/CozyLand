@@ -72,7 +72,11 @@ class Model {
 
     static BufferedImage createBGImage() {
         Node[][] nodeNetwork = model.nodeNetwork
-        BufferedImage image = new BufferedImage(Main.MAP_WIDTH, Main.MAP_HEIGHT, BufferedImage.TYPE_INT_RGB)
+        BufferedImage image = new BufferedImage(
+                nodeNetwork.length * Main.SQUARE_WIDTH,
+                nodeNetwork[0].length * Main.SQUARE_WIDTH,
+                BufferedImage.TYPE_INT_RGB
+        )
         Graphics2D g2d = image.createGraphics()
 
         for(int x = 0; x < nodeNetwork.length; x++) {
@@ -189,7 +193,7 @@ class Model {
         def xRatio = imageWidth / Main.MAP_WIDTH
         def yRatio = imageHeight / Main.MAP_HEIGHT
 
-        def squareWidth = 6
+        def squareWidth = Main.SQUARE_WIDTH
         def squareHeight = squareWidth
 
         def bgWidth = round(Main.MAP_WIDTH / squareWidth)
@@ -208,8 +212,8 @@ class Model {
         def max = 128
         def min = 128
 
-        for (def x = 0.0; x < heightMap.length; x += xStep) {
-            for (def y = 0.0; y < heightMap[round(x)].length; y += yStep) {
+        for (def x = 0.0; round(x) < heightMap.length; x += xStep) {
+            for (def y = 0.0; round(y) < heightMap[round(x)].length; y += yStep) {
                 def sumAreaHeight = 0
                 def noPixels = 0
 
