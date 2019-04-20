@@ -22,8 +22,7 @@ class PathfinderWorker extends Worker {
     static def DEGREE_PROBABILITY
     static def SQUARE_DEGREES
 
-    static {
-
+    private static void rewriteDegreesFile() {
         if (
                 degreeRange(45) != (315..359) + (0..135) ||
                 degreeRange(100) != 10..190 ||
@@ -32,15 +31,25 @@ class PathfinderWorker extends Worker {
             throw new PerIsBorkenException()
         }
 
+        def testDegrees = degreeRange(0)
+        def testRange = probabilitiesForRange(testDegrees)
 
-        def a = probabilitiesForRange(degreeRange(45))
-        def b = probabilitiesForRange(degreeRange(100))
-        def c = probabilitiesForRange(degreeRange(300))
+        if (testRange.keySet()*.toString() != (['sum'] + (testDegrees[0..180]))*.toString()) {
+            throw new PerIsBorkenException()
+        }
 
-        //verje ruta har en lista med gradtal, jämnt fördelat
+        if (Math.abs(testRange.sum - 100) > 0.00000001) {
+            throw new PerIsBorkenException()
+        }
+
+        File file = new File("degreesFile.txt")
+        file.write ''
+        360.times {
+            file << "${[it, probabilitiesForRange(degreeRange(it))]}\n"
+        }
     }
 
-    static List<Integer> degreeRange (int degree) {
+    private static List<Integer> degreeRange (int degree) {
         int u = degree + 90
         int l = degree - 90
         int upper = u % 360
@@ -48,7 +57,7 @@ class PathfinderWorker extends Worker {
         (upper > lower) ? (lower..upper) : (lower..359) + (0..upper)
     }
 
-    static def probabilitiesForRange(List<Integer> degree) {
+    private static def probabilitiesForRange(List<Integer> degree) {
         def probabilityRange = degree.collectEntries {
             (
                     (degree[0..35]).collectEntries { [it, 12.5/36] } +
@@ -60,31 +69,24 @@ class PathfinderWorker extends Worker {
                 def lowerLimit = result.sum
                 def upperLimit = lowerLimit + entry.value
                 result.sum = upperLimit
-                entry.value = [lowerLimit: lowerLimit, upperLimit: upperLimit]
+                entry.value = [lowerLimit, upperLimit]
                 result << entry
             }
         }
 
-        if (probabilityRange.keySet()*.toString() != (['sum'] + (degree[0..180]))*.toString()) {
-            println(probabilityRange.keySet()*.toString())
-            println((['sum'] + (degree[0..180]))*.toString())
-            throw new PerIsBorkenException()
-        }
-
-        if (Math.abs(probabilityRange.sum - 100) > 0.00000001) {
-            throw new PerIsBorkenException()
-        }
         return probabilityRange
     }
 
     public static void main(String[] args) {
+        if (false) {
+            rewriteDegreesFile()
+        }
+
         def startIdx = [7, 5] as int[]
         def destIdx = [7, 2] as int[]
 
-        println(DEGREE_PROBABILITY)
-
         def nodeIndices = new PathfinderWorker().bresenham(startIdx, destIdx)
-        println(nodeIndices)
+
     }
 
     def update() {
