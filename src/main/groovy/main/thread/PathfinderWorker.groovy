@@ -23,12 +23,39 @@ class PathfinderWorker extends Worker {
     static def SQUARE_DEGREES
 
     static {
+        //DEGREE_PROBABILITY = (0..359).collect { lol(it) }
+
+        lol(45)
+        lol(90)
+        lol(270)
+        //verje ruta har en lista med gradtal, jämnt fördelat
+    }
+
+    static def lol (int degree) {
+
+        def upper
+        def lower
+        def range
+        if (degree >= 90 && degree < 270) {
+            upper = degree + 90
+            lower = degree - 90
+            range = lower..upper
+        } else if (degree >= 270) {
+            upper = (degree + 90) % 360
+            lower = degree - 90
+            range = (lower..359) + (0..upper)
+        } else if (degree < 90) {
+            upper = degree + 90
+            lower = degree + 270
+            range = (lower..359) + (0..upper)
+        }
+
         DEGREE_PROBABILITY = (
                 (0..35).collectEntries { [it, 12.5/36] } +
-                (36..71).collectEntries { [it, 25/36] } +
-                (72..107).collectEntries { [it, 25/36] } +
-                (108..143).collectEntries { [it, 25/36] } +
-                (144..180).collectEntries { [it, 12.5/37] }
+                        (36..71).collectEntries { [it, 25/36] } +
+                        (72..107).collectEntries { [it, 25/36] } +
+                        (108..143).collectEntries { [it, 25/36] } +
+                        (144..180).collectEntries { [it, 12.5/37] }
         ).inject([sum:0.0]) { Map result, def entry ->
             def lowerLimit = result.sum
             def upperLimit = lowerLimit + entry.value
@@ -44,26 +71,6 @@ class PathfinderWorker extends Worker {
         if (Math.abs(DEGREE_PROBABILITY.sum - 100) > 0.00000001) {
             throw new PerIsBorkenException()
         }
-
-        int degrees = 90
-        degreeToSquareProbabilities(degrees)
-    }
-
-    static def degreeToSquareProbabilities(int i) {
-        360 / 8
-
-        def squares = [
-                [[2, 1]:0  ],
-                [[2, 2]:45 ],
-                [[1, 2]:90 ],
-                [[0, 2]:135],
-                [[0, 1]:180],
-                [[0, 0]:225],
-                [[1, 0]:270],
-                [[2, 0]:315]
-        ]
-
-
     }
 
     public static void main(String[] args) {
