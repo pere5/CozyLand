@@ -418,8 +418,8 @@ class Model {
 
     static double[] generateXY() {
         [
-                Main.MAP_WIDTH / 2 + generate(Main.MAP_WIDTH / 3 as int),
-                Main.MAP_HEIGHT / 2 + generate(Main.MAP_HEIGHT / 3 as int)
+                Main.MAP_WIDTH / 2 + generate(Main.MAP_WIDTH / 5 as int),
+                Main.MAP_HEIGHT / 2 + generate(Main.MAP_HEIGHT / 5 as int)
         ]
     }
 

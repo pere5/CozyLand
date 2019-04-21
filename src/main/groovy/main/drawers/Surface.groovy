@@ -55,8 +55,11 @@ class Surface extends JPanel implements ActionListener {
         g2d.drawImage(backgroundImage, xOffset, yOffset, null)
 
         List<Drawable> drawables = Model.model.drawables
-        for (Drawable drawable : drawables) {
-            if (inView(drawable, left, right, top, bottom)) {
+        for (int i = 0; i < drawables.size(); i++) {
+            Drawable drawable = drawables[i]
+            //Groovy don't throw IndexOutOfBoundException.
+            //Drawables might have changed and drawable might be null
+            if (drawable && inView(drawable, left, right, top, bottom)) {
                 g2d.setPaint(drawable.color)
                 if (drawable.shape == Drawable.SHAPES.RECT) {
                     g2d.fillRect((drawable.x as int) + xOffset, (drawable.y as int) + yOffset, drawable.size, drawable.size)

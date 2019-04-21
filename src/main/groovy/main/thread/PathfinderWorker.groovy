@@ -5,7 +5,6 @@ import groovy.json.JsonSlurper
 import main.Main
 import main.Model
 import main.exception.PerIsBorkenException
-import main.things.Artifact
 import main.villager.StraightPath
 import main.villager.Villager
 
@@ -108,21 +107,16 @@ class PathfinderWorker extends Worker {
             def start = [villager.x, villager.y] as double[]
             def dest = Model.generateXY()
 
-            def nodeIndices = bresenham(Model.round(start), Model.round(dest))
-            nodeIndices.each {
-                Model.model.drawables << new Artifact(x: it[0], y: it[1])
-            }
-
             villager.actionQueue << new StraightPath(start, dest)
             villager.toWorkWorker()
         }
     }
 
-    int[] pixelToNodeIdx(int[] ints) {
+    static int[] pixelToNodeIdx(int[] ints) {
         ints.collect { Model.round(it / Main.SQUARE_WIDTH) } as int[]
     }
 
-    List<int[]> bresenham(int[] start, int[] dest) {
+    static List<int[]> bresenham(int[] start, int[] dest) {
         def (int x1, int y1) = start
         def (int x2, int y2) = dest
         def result = []
