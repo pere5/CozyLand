@@ -400,7 +400,7 @@ class Model {
         colors
     }
 
-    static Integer round (BigDecimal number) {
+    static int round (BigDecimal number) {
         if (number > 0) {
             return number + 0.5
         } else {
