@@ -400,15 +400,27 @@ class Model {
         colors
     }
 
-    static int round (BigDecimal number) {
-        round(number.toDouble())
+    static Integer round (BigDecimal number) {
+        if (number > 0) {
+            return number + 0.5
+        } else {
+            return number - 0.5
+        }
+    }
+
+    static int round (Double number) {
+        if (number > 0) {
+            return number + 0.5
+        } else {
+            return number - 0.5
+        }
     }
 
     static int round (double number) {
         if (number > 0) {
-            return (int) (number + 0.5d)
+            return number + 0.5
         } else {
-            return (int) (number - 0.5d)
+            return number - 0.5
         }
     }
 
@@ -418,8 +430,8 @@ class Model {
 
     static double[] generateXY() {
         [
-                Main.MAP_WIDTH / 2 + generate(Main.MAP_WIDTH / 5 as int),
-                Main.MAP_HEIGHT / 2 + generate(Main.MAP_HEIGHT / 5 as int)
+                Main.MAP_WIDTH / 2 + generate(Main.MAP_WIDTH / 9 as int),
+                Main.MAP_HEIGHT / 2 + generate(Main.MAP_HEIGHT / 9 as int)
         ]
     }
 
