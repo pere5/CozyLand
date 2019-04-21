@@ -2,7 +2,7 @@ package main.things
 
 import main.Model
 
-import java.awt.Color
+import java.awt.*
 
 class Stone extends Drawable {
 
@@ -14,6 +14,4 @@ class Stone extends Drawable {
         this.x = x
         this.y = y
     }
-
-    def work() {}
 }

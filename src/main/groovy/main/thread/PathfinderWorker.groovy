@@ -2,8 +2,10 @@ package main.thread
 
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
+import main.Main
 import main.Model
 import main.exception.PerIsBorkenException
+import main.things.Artifact
 import main.villager.StraightPath
 import main.villager.Villager
 
@@ -87,7 +89,8 @@ class PathfinderWorker extends Worker {
             rewriteDegreesFile()
         }
         ClassLoader classloader = Thread.currentThread().getContextClassLoader()
-        def boll = new JsonSlurper().parse(classloader.getResourceAsStream('degreesFile.json'))
+        def degrees = new JsonSlurper().parse(classloader.getResourceAsStream('degreesFile.json'))
+
 
         //ok
 
@@ -104,31 +107,19 @@ class PathfinderWorker extends Worker {
 
             def start = [villager.x, villager.y] as double[]
             def dest = Model.generateXY()
-            /*
-            def nodeNetwork = Model.model.nodeNetwork as Node[][]
 
-            def startIdx = Model.round(start)
-            def destIdx = Model.round(dest)
-
-            def nodeStartIdx = nodeIdxToPixelIdx(startIdx)
-            def nodeDestIdx = nodeIdxToPixelIdx(destIdx)
-
-            def nodeIndices = bresenham(nodeStartIdx, nodeDestIdx)
+            def nodeIndices = bresenham(Model.round(start), Model.round(dest))
             nodeIndices.each {
-                nodeNetwork[it[0]][it[1]].color = Color.RED
-            }*/
+                Model.model.drawables << new Artifact(x: it[0], y: it[1])
+            }
 
             villager.actionQueue << new StraightPath(start, dest)
             villager.toWorkWorker()
         }
     }
 
-    int[] nodeIdxToPixelIdx(int[] ints) {
-
-        //major stuff here
-
-
-        ints.collect { it }
+    int[] pixelToNodeIdx(int[] ints) {
+        ints.collect { Model.round(it / Main.SQUARE_WIDTH) } as int[]
     }
 
     List<int[]> bresenham(int[] start, int[] dest) {

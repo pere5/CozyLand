@@ -25,13 +25,12 @@ class Model {
         def villagers = [
                 new Villager(), new Villager(), new Villager(), new Villager(), new Villager()
         ]
-        def stones = [
-        ]
-        def trees = [
-        ]
+        def stones = []
+        def trees = []
+        def artifacts = []
 
         def drawables = [
-                stones, trees, villagers
+                artifacts, stones, trees, villagers
         ].flatten()
 
         def nodeNetwork = generateBackground()
@@ -42,8 +41,6 @@ class Model {
                 pause: false,
                 drawables: drawables,
                 villagers: villagers,
-                stones: stones,
-                trees: trees,
                 frameSlots: [0,0,0,0,0],
                 nodeNetwork: nodeNetwork,
                 rules: generateRules()

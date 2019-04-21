@@ -2,7 +2,7 @@ package main.things
 
 import main.Model
 
-import java.awt.Color
+import java.awt.*
 
 class Tree extends Drawable {
 
@@ -14,6 +14,4 @@ class Tree extends Drawable {
         this.x = x
         this.y = y
     }
-
-    def work() {}
 }
