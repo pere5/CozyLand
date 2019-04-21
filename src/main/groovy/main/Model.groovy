@@ -81,7 +81,7 @@ class Model {
                 def drawable = nodeNetwork[x][y] as Drawable
                 g2d.setPaint(drawable.color)
                 if (drawable.shape == Drawable.SHAPES.RECT ) {
-                    g2d.fillRect(drawable.x as int, drawable.y as int, drawable.size, drawable.size)
+                    g2d.fillRect(round(drawable.x), round(drawable.y), drawable.size, drawable.size)
                 }
             }
         }

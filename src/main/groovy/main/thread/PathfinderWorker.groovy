@@ -102,8 +102,7 @@ class PathfinderWorker extends Worker {
 
     def update() {
 
-        Model.model.villagers.grep { it.pathfinderWorker }.each { Villager villager ->
-
+        (Model.model.villagers as List<Villager>).grep { it.pathfinderWorker }.each { Villager villager ->
             def start = [villager.x, villager.y] as double[]
             def dest = Model.generateXY()
 
