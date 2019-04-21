@@ -439,4 +439,8 @@ class Model {
         return distance - ThreadLocalRandom.current().nextInt(0, distance * 2 + 1)
     }
 
+    static Object toDegrees(int[] start, int[] dest) {
+        def deg = Math.toDegrees(Math.atan2(dest[1] - start[1], dest[0] - start[0]))
+        deg >= 0 ? deg : deg + 360
+    }
 }

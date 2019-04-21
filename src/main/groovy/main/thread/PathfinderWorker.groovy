@@ -22,9 +22,6 @@ class PathfinderWorker extends Worker {
           - [ ] omfördela sannolikheterna mot vaje nod baserat på nodens movementCost relativt till de andra noderna
      */
 
-    static def DEGREE_PROBABILITY
-    static def SQUARE_DEGREES
-
     private static void rewriteDegreesFile() {
         if (
                 degreeRange(45) != (315..359) + (0..135) ||
@@ -90,14 +87,12 @@ class PathfinderWorker extends Worker {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader()
         def degrees = new JsonSlurper().parse(classloader.getResourceAsStream('degreesFile.json'))
 
+        def start = [1, 0] as int[]
+        def dest = [0, -20] as int[]
 
-        //ok
+        def deg = Model.toDegrees(start, dest)
 
-        def startIdx = [7, 5] as int[]
-        def destIdx = [7, 2] as int[]
-
-        def nodeIndices = new PathfinderWorker().bresenham(startIdx, destIdx)
-
+        println(deg)
     }
 
     def update() {
