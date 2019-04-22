@@ -15,8 +15,8 @@ abstract class Drawable {
     Color color
     SHAPES shape = SHAPES.RECT
     int size = 10
-    double x = 0
-    double y = 0
+    Double x = 0
+    Double y = 0
 
     Drawable() {
         this.id = Model.getNewId()

@@ -16,7 +16,7 @@ class Villager extends Drawable {
     Villager() {
         size = 3
         color = Color.BLUE
-        def (double x, double y) = Model.generateXY()
+        def (Double x, Double y) = Model.generateXY()
         this.x = x
         this.y = y
         toRuleWorker()

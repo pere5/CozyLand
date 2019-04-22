@@ -144,7 +144,7 @@ class Model {
     }
 
     private static void maximizeScale(int[][] heightMap) {
-        def middle = 255 / 2 as double
+        Double middle = 255 / 2
         List<Integer> maxMin = []
         for (int x = 0; x < heightMap.length; x++) {
             for (int y = 0; y < heightMap[x].length; y++) {
@@ -155,17 +155,17 @@ class Model {
         int max = maxMin.max()
         int min = maxMin.min()
 
-        def globalAdjustment = middle - ((max + min) / 2) as double
-        def newMax = max + globalAdjustment - middle as double
-        def newMin = min + globalAdjustment - middle as double
-        def scaleMax = middle / newMax as double
-        def scaleMin = -middle / newMin as double
+        Double globalAdjustment = middle - ((max + min) / 2)
+        Double newMax = max + globalAdjustment - middle
+        Double newMin = min + globalAdjustment - middle
+        Double scaleMax = middle / newMax
+        Double scaleMin = -middle / newMin
 
         if (scaleMax != scaleMin) {
             throw new PerIsBorkenException()
         }
 
-        def scale = scaleMax as double
+        Double scale = scaleMax
 
         maxMin.clear()
         for (int x = 0; x < heightMap.length; x++) {
@@ -188,8 +188,8 @@ class Model {
         int imageWidth = heightMap.length
         int imageHeight = heightMap[0].length
 
-        def xRatio = imageWidth / Main.MAP_WIDTH as double
-        def yRatio = imageHeight / Main.MAP_HEIGHT as double
+        Double xRatio = imageWidth / Main.MAP_WIDTH
+        Double yRatio = imageHeight / Main.MAP_HEIGHT
 
         int squareWidth = Main.SQUARE_WIDTH
         int squareHeight = squareWidth
@@ -197,8 +197,8 @@ class Model {
         int bgWidth = round(Main.MAP_WIDTH / squareWidth)
         int bgHeight = round(Main.MAP_HEIGHT / squareHeight)
 
-        def xStep = squareWidth * xRatio as double
-        def yStep = squareHeight * yRatio as double
+        Double xStep = squareWidth * xRatio
+        Double yStep = squareHeight * yRatio
 
         def nodeNetwork = new Node[bgWidth][bgHeight]
 
@@ -210,8 +210,8 @@ class Model {
         int max = 128
         int min = 128
 
-        for (double x = 0.0; round(x) < heightMap.length; x += xStep) {
-            for (double y = 0.0; round(y) < heightMap[round(x)].length; y += yStep) {
+        for (Double x = 0; round(x) < heightMap.length; x += xStep) {
+            for (Double y = 0; round(y) < heightMap[round(x)].length; y += yStep) {
                 int sumAreaHeight = 0
                 int noPixels = 0
 
@@ -294,8 +294,8 @@ class Model {
         Color mountainLower = new Color(75, 75, 75)
         Color mountainLow = new Color(90, 90, 90)
         Color mountainHigh = new Color(255, 255, 255)
-        double accessibleLimit = 0.9
-        double movementCostLimit = accessibleLimit - 0.1
+        Double accessibleLimit = 0.9
+        Double movementCostLimit = accessibleLimit - 0.1
         def colorRatios = [
                 [from: 0.0,  to: 0.2,  colorFrom: blueLow,           colorTo: blueHigh],
                 [from: 0.2,  to: 0.85, colorFrom: greenLow,          colorTo: greenHigh],
@@ -347,13 +347,13 @@ class Model {
         }
 
         //test accessibleLimit
-        double accessibleRatio = (allNodes.grep { it.accessible }.size() / allNodes.size()).setScale(1,BigDecimal.ROUND_HALF_DOWN )
+        Double accessibleRatio = (allNodes.grep { it.accessible }.size() / allNodes.size()).setScale(1,BigDecimal.ROUND_HALF_DOWN )
         if (accessibleLimit != accessibleRatio) {
             throw new PerIsBorkenException()
         }
 
         //test movementCost
-        double movementCostRatio = (allNodes.grep { it.movementCost == 1 }.size() / allNodes.size()).setScale(1,BigDecimal.ROUND_HALF_DOWN )
+        Double movementCostRatio = (allNodes.grep { it.movementCost == 1 }.size() / allNodes.size()).setScale(1,BigDecimal.ROUND_HALF_DOWN )
         if (movementCostLimit != movementCostRatio) {
             throw new PerIsBorkenException()
         }
@@ -392,10 +392,10 @@ class Model {
         def colors = []
 
         for (int i = 0; i < steps; i++) {
-            def ratio = i / steps as double
-            int r = (color2.getRed() * ratio + color1.getRed() * (1 - ratio)) as int
-            int g = (color2.getGreen() * ratio + color1.getGreen() * (1 - ratio)) as int
-            int b = (color2.getBlue() * ratio + color1.getBlue() * (1 - ratio)) as int
+            Double ratio = i / steps
+            int r = round(color2.getRed() * ratio + color1.getRed() * (1 - ratio))
+            int g = round(color2.getGreen() * ratio + color1.getGreen() * (1 - ratio))
+            int b = round(color2.getBlue() * ratio + color1.getBlue() * (1 - ratio))
             colors << new Color(r, g, b)
         }
         colors
@@ -417,31 +417,23 @@ class Model {
         }
     }
 
-    static int round (double number) {
-        if (number > 0) {
-            return number + 0.5
-        } else {
-            return number - 0.5
-        }
-    }
-
-    static int[] round (double[] numbers) {
+    static int[] round (Double[] numbers) {
         numbers.collect { round(it) }
     }
 
-    static double[] generateXY() {
+    static Double[] generateXY() {
         [
-                Main.MAP_WIDTH / 2 + generate(Main.MAP_WIDTH / 9 as int),
-                Main.MAP_HEIGHT / 2 + generate(Main.MAP_HEIGHT / 9 as int)
+                Main.MAP_WIDTH / 2 + generate(round(Main.MAP_WIDTH / 9)),
+                Main.MAP_HEIGHT / 2 + generate(round(Main.MAP_HEIGHT / 9))
         ]
     }
 
-    static double generate(int distance) {
+    static Double generate(int distance) {
         return distance - ThreadLocalRandom.current().nextInt(0, distance * 2 + 1)
     }
 
     static int toDegrees(int[] start, int[] dest) {
-        def deg = Math.toDegrees(Math.atan2(dest[1] - start[1], dest[0] - start[0])) as double
+        Double deg = Math.toDegrees(Math.atan2(dest[1] - start[1], dest[0] - start[0]))
         round(deg >= 0 ? deg : deg + 360)
     }
 }

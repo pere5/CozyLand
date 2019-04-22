@@ -1,7 +1,6 @@
 package main.thread
 
 import groovy.json.JsonOutput
-import groovy.json.JsonSlurper
 import main.Main
 import main.Model
 import main.exception.PerIsBorkenException
@@ -69,8 +68,8 @@ class PathfinderWorker extends Worker {
                     (degree[108..143]).collectEntries { [it, 25/36] } +
                     (degree[144..180]).collectEntries { [it, 12.5/37] }
             ).inject([sum:0.0]) { Map result, def entry ->
-                double lowerLimit = result.sum
-                double upperLimit = lowerLimit + entry.value
+                Double lowerLimit = result.sum
+                Double upperLimit = lowerLimit + entry.value
                 result.sum = upperLimit
                 entry.value = [lowerLimit, upperLimit]
                 result << entry
@@ -81,9 +80,10 @@ class PathfinderWorker extends Worker {
     }
 
     public static void main(String[] args) {
-        if (false) {
+        if (true) {
             rewriteDegreesFile()
         }
+        /*
         ClassLoader classloader = Thread.currentThread().getContextClassLoader()
         def degrees = new JsonSlurper().parse(classloader.getResourceAsStream('degreesFile.json'))
 
@@ -91,19 +91,13 @@ class PathfinderWorker extends Worker {
         def dest = [0, -20] as int[]
 
         def deg = Model.toDegrees(start, dest)
-
-        println(deg)
-
-        double hej = 5/2 as double
-        Double boll = 5 / 2
-        println(hej)
-        println(boll)
+        */
     }
 
     def update() {
 
         (Model.model.villagers as List<Villager>).grep { it.pathfinderWorker }.each { Villager villager ->
-            def start = [villager.x, villager.y] as double[]
+            def start = [villager.x, villager.y] as Double[]
             def dest = Model.generateXY()
 
             villager.actionQueue << new StraightPath(start, dest)

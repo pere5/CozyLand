@@ -90,8 +90,8 @@ class Surface extends JPanel implements ActionListener {
     }
 
     boolean inView(Drawable drawable, int left, int right, int top, int bottom) {
-        double x = drawable.x
-        double y = drawable.y
+        Double x = drawable.x
+        Double y = drawable.y
         x >= left && x <= right && y <= top && y >= bottom
     }
 }
