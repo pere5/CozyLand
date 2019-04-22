@@ -44,7 +44,7 @@ class StraightPath extends Action {
 
     @Override
     boolean doIt(Drawable drawable) {
-        def (x, y) = path.poll()
+        def (double x, double y) = path.poll()
         drawable.x = x
         drawable.y = y
         def resolution = path ? CONTINUE : DONE

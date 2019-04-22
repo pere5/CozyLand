@@ -1,6 +1,7 @@
 package main
 
 import main.exception.PerIsBorkenException
+import main.rule.Rule
 import main.rule.Walk
 import main.things.Drawable
 import main.villager.Villager
@@ -49,12 +50,12 @@ class Model {
         model.backgroundImage = createBGImage()
     }
 
-    static def generateRules() {
+    static List<Rule> generateRules() {
         int rank = Integer.MAX_VALUE
         [new Walk(rank: --rank)]
     }
 
-    static def generateBackground() {
+    static Node[][] generateBackground() {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader()
         BufferedImage image = ImageIO.read(classloader.getResourceAsStream('lol.png'))
 
@@ -78,7 +79,7 @@ class Model {
 
         for(int x = 0; x < nodeNetwork.length; x++) {
             for(int y = 0; y < nodeNetwork[x].length; y++) {
-                def drawable = nodeNetwork[x][y] as Drawable
+                Drawable drawable = nodeNetwork[x][y]
                 g2d.setPaint(drawable.color)
                 if (drawable.shape == Drawable.SHAPES.RECT ) {
                     g2d.fillRect(round(drawable.x), round(drawable.y), drawable.size, drawable.size)
@@ -101,9 +102,9 @@ class Model {
                     | (getBlue(inData) << 0)
                  */
                 int rgb = image.getRGB(x, y)
-                def blue = rgb & 0x0000FF
-                def green = rgb & 0x00FF00 >> 8
-                def red = rgb & 0xFF0000 >> 16
+                int blue = rgb & 0x0000FF
+                int green = rgb & 0x00FF00 >> 8
+                int red = rgb & 0xFF0000 >> 16
                 if (blue == green && blue == red) {
                     heightMap[x][y] = blue
                 } else {
@@ -116,19 +117,19 @@ class Model {
 
     private static void shaveOffExtremeMaxMin(int[][] heightMap) {
 
-        def maxMin = []
+        List<Integer> maxMin = []
         for (int x = 0; x < heightMap.length; x++) {
             for (int y = 0; y < heightMap[x].length; y++) {
                 maxMin << heightMap[x][y]
             }
         }
-        def max = maxMin.max() as int
-        def min = maxMin.min() as int
+        int max = maxMin.max()
+        int min = maxMin.min()
 
-        def nextMax = maxMin.toSet().sort().reverse()[1] as int
-        def nextMin = maxMin.toSet().sort()[1] as int
-        def shaveMax = Math.abs(max - nextMax) > 5
-        def shaveMin = Math.abs(min - nextMin) > 5
+        int nextMax = maxMin.toSet().sort().reverse()[1]
+        int nextMin = maxMin.toSet().sort()[1]
+        boolean shaveMax = Math.abs(max - nextMax) > 5
+        boolean shaveMin = Math.abs(min - nextMin) > 5
 
         for (int x = 0; x < heightMap.length; x++) {
             for (int y = 0; y < heightMap[x].length; y++) {
@@ -143,28 +144,28 @@ class Model {
     }
 
     private static void maximizeScale(int[][] heightMap) {
-        def middle = 255 / 2
-        def maxMin = []
+        def middle = 255 / 2 as double
+        List<Integer> maxMin = []
         for (int x = 0; x < heightMap.length; x++) {
             for (int y = 0; y < heightMap[x].length; y++) {
                 maxMin << heightMap[x][y]
             }
         }
 
-        def max = maxMin.max() as int
-        def min = maxMin.min() as int
+        int max = maxMin.max()
+        int min = maxMin.min()
 
-        def globalAdjustment = middle - ((max + min) / 2)
-        def newMax = max + globalAdjustment - middle
-        def newMin = min + globalAdjustment - middle
-        def scaleMax = middle / newMax
-        def scaleMin = -middle / newMin
+        def globalAdjustment = middle - ((max + min) / 2) as double
+        def newMax = max + globalAdjustment - middle as double
+        def newMin = min + globalAdjustment - middle as double
+        def scaleMax = middle / newMax as double
+        def scaleMin = -middle / newMin as double
 
         if (scaleMax != scaleMin) {
             throw new PerIsBorkenException()
         }
 
-        def scale = scaleMax
+        def scale = scaleMax as double
 
         maxMin.clear()
         for (int x = 0; x < heightMap.length; x++) {
@@ -174,8 +175,8 @@ class Model {
             }
         }
 
-        max = maxMin.max() as int
-        min = maxMin.min() as int
+        max = maxMin.max()
+        min = maxMin.min()
 
         if (max != 255 || min != 0) {
             throw new PerIsBorkenException()
@@ -184,35 +185,35 @@ class Model {
 
     private static Node[][] buildNodeNetwork(int[][] heightMap) {
 
-        def imageWidth = heightMap.length
-        def imageHeight = heightMap[0].length
+        int imageWidth = heightMap.length
+        int imageHeight = heightMap[0].length
 
-        def xRatio = imageWidth / Main.MAP_WIDTH
-        def yRatio = imageHeight / Main.MAP_HEIGHT
+        def xRatio = imageWidth / Main.MAP_WIDTH as double
+        def yRatio = imageHeight / Main.MAP_HEIGHT as double
 
-        def squareWidth = Main.SQUARE_WIDTH
-        def squareHeight = squareWidth
+        int squareWidth = Main.SQUARE_WIDTH
+        int squareHeight = squareWidth
 
-        def bgWidth = round(Main.MAP_WIDTH / squareWidth)
-        def bgHeight = round(Main.MAP_HEIGHT / squareHeight)
+        int bgWidth = round(Main.MAP_WIDTH / squareWidth)
+        int bgHeight = round(Main.MAP_HEIGHT / squareHeight)
 
-        def xStep = squareWidth * xRatio
-        def yStep = squareHeight * yRatio
+        def xStep = squareWidth * xRatio as double
+        def yStep = squareHeight * yRatio as double
 
         def nodeNetwork = new Node[bgWidth][bgHeight]
 
-        def xNodeIdx = 0
-        def yNodeIdx = 0
+        int xNodeIdx = 0
+        int yNodeIdx = 0
 
         def pixelReadControl = new int[heightMap.length][heightMap[0].length]
 
-        def max = 128
-        def min = 128
+        int max = 128
+        int min = 128
 
-        for (def x = 0.0; round(x) < heightMap.length; x += xStep) {
-            for (def y = 0.0; round(y) < heightMap[round(x)].length; y += yStep) {
-                def sumAreaHeight = 0
-                def noPixels = 0
+        for (double x = 0.0; round(x) < heightMap.length; x += xStep) {
+            for (double y = 0.0; round(y) < heightMap[round(x)].length; y += yStep) {
+                int sumAreaHeight = 0
+                int noPixels = 0
 
                 for (int xx = round(x); xx < Math.min(round(x + xStep), heightMap.length); xx++) {
                     for (int yy = round(y); yy < Math.min(round(y + yStep), heightMap[xx].length); yy++) {
@@ -223,7 +224,7 @@ class Model {
                 }
 
                 if (noPixels > 0 && xNodeIdx < nodeNetwork.length && yNodeIdx < nodeNetwork[xNodeIdx].length) {
-                    def avgAreaHeight = round(sumAreaHeight / noPixels)
+                    int avgAreaHeight = round(sumAreaHeight / noPixels)
 
                     if (avgAreaHeight < min) {
                         min = avgAreaHeight
@@ -261,7 +262,7 @@ class Model {
             }
         }
 
-        if (controlMap['1'] as int != imageHeight * imageWidth) {
+        if (controlMap['1'] != imageHeight * imageWidth) {
             throw new PerIsBorkenException()
         }
 
@@ -293,8 +294,8 @@ class Model {
         Color mountainLower = new Color(75, 75, 75)
         Color mountainLow = new Color(90, 90, 90)
         Color mountainHigh = new Color(255, 255, 255)
-        def accessibleLimit = 0.9
-        def movementCostLimit = accessibleLimit - 0.1
+        double accessibleLimit = 0.9
+        double movementCostLimit = accessibleLimit - 0.1
         def colorRatios = [
                 [from: 0.0,  to: 0.2,  colorFrom: blueLow,           colorTo: blueHigh],
                 [from: 0.2,  to: 0.85, colorFrom: greenLow,          colorTo: greenHigh],
@@ -309,9 +310,9 @@ class Model {
         for (def colorRatio: colorRatios) {
             int from = round(colorRatio.from * allNodes.size())
             int to = round(colorRatio.to * allNodes.size())
-            def accessibleLimitIndex = round(accessibleLimit * allNodes.size())
-            def movementCostLimitIndex = round(movementCostLimit * allNodes.size())
-            def nodeGroup = allNodes[from..to - 1]
+            int accessibleLimitIndex = round(accessibleLimit * allNodes.size())
+            int movementCostLimitIndex = round(movementCostLimit * allNodes.size())
+            List<Node> nodeGroup = allNodes[from..to - 1]
 
             //remove from the back
             if (from > 0) {
@@ -346,13 +347,13 @@ class Model {
         }
 
         //test accessibleLimit
-        def accessibleRatio = (allNodes.grep { it.accessible }.size() / allNodes.size()).setScale(1,BigDecimal.ROUND_HALF_DOWN )
+        double accessibleRatio = (allNodes.grep { it.accessible }.size() / allNodes.size()).setScale(1,BigDecimal.ROUND_HALF_DOWN )
         if (accessibleLimit != accessibleRatio) {
             throw new PerIsBorkenException()
         }
 
         //test movementCost
-        def movementCostRatio = (allNodes.grep { it.movementCost == 1 }.size() / allNodes.size()).setScale(1,BigDecimal.ROUND_HALF_DOWN )
+        double movementCostRatio = (allNodes.grep { it.movementCost == 1 }.size() / allNodes.size()).setScale(1,BigDecimal.ROUND_HALF_DOWN )
         if (movementCostLimit != movementCostRatio) {
             throw new PerIsBorkenException()
         }
@@ -391,7 +392,7 @@ class Model {
         def colors = []
 
         for (int i = 0; i < steps; i++) {
-            def ratio = i / steps
+            def ratio = i / steps as double
             int r = (color2.getRed() * ratio + color1.getRed() * (1 - ratio)) as int
             int g = (color2.getGreen() * ratio + color1.getGreen() * (1 - ratio)) as int
             int b = (color2.getBlue() * ratio + color1.getBlue() * (1 - ratio)) as int
@@ -439,8 +440,8 @@ class Model {
         return distance - ThreadLocalRandom.current().nextInt(0, distance * 2 + 1)
     }
 
-    static Object toDegrees(int[] start, int[] dest) {
-        def deg = Math.toDegrees(Math.atan2(dest[1] - start[1], dest[0] - start[0]))
-        deg >= 0 ? deg : deg + 360
+    static int toDegrees(int[] start, int[] dest) {
+        def deg = Math.toDegrees(Math.atan2(dest[1] - start[1], dest[0] - start[0])) as double
+        round(deg >= 0 ? deg : deg + 360)
     }
 }

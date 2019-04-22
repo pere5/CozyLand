@@ -44,7 +44,7 @@ class PathfinderWorker extends Worker {
 
         File file = new File('degreesFile.json')
         file.write '{"data":[\n'
-        def times = 360
+        int times = 360
         times.times {
             file << "${JsonOutput.toJson([(it): probabilitiesForRange(degreeRange(it))])}"
             file << ((it + 1 == times) ? '\n' : ',\n')
@@ -69,8 +69,8 @@ class PathfinderWorker extends Worker {
                     (degree[108..143]).collectEntries { [it, 25/36] } +
                     (degree[144..180]).collectEntries { [it, 12.5/37] }
             ).inject([sum:0.0]) { Map result, def entry ->
-                def lowerLimit = result.sum
-                def upperLimit = lowerLimit + entry.value
+                double lowerLimit = result.sum
+                double upperLimit = lowerLimit + entry.value
                 result.sum = upperLimit
                 entry.value = [lowerLimit, upperLimit]
                 result << entry
@@ -93,6 +93,11 @@ class PathfinderWorker extends Worker {
         def deg = Model.toDegrees(start, dest)
 
         println(deg)
+
+        double hej = 5/2 as double
+        Double boll = 5 / 2
+        println(hej)
+        println(boll)
     }
 
     def update() {

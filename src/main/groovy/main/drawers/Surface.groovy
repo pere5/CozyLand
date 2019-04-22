@@ -17,9 +17,9 @@ class Surface extends JPanel implements ActionListener {
     int xOffset = 0
     int yOffset = 0
 
-    def lastFramesPerSecond = 0
-    def startTime = System.currentTimeMillis()
-    def framesPerSecond = 0
+    int lastFramesPerSecond = 0
+    long startTime = System.currentTimeMillis()
+    int framesPerSecond = 0
 
     @Override
     void actionPerformed(ActionEvent e) {
@@ -47,10 +47,10 @@ class Surface extends JPanel implements ActionListener {
 
         Image backgroundImage = Model.model.backgroundImage
 
-        def left = - xOffset
-        def right = Main.VIEWPORT_WIDTH - xOffset
-        def bottom = - yOffset
-        def top = Main.VIEWPORT_HEIGHT - yOffset
+        int left = - xOffset
+        int right = Main.VIEWPORT_WIDTH - xOffset
+        int bottom = - yOffset
+        int top = Main.VIEWPORT_HEIGHT - yOffset
 
         g2d.drawImage(backgroundImage, xOffset, yOffset, null)
 
@@ -89,9 +89,9 @@ class Surface extends JPanel implements ActionListener {
         }
     }
 
-    boolean inView(Drawable drawable, def left, def right, def top, def bottom) {
-        def x = drawable.x
-        def y = drawable.y
+    boolean inView(Drawable drawable, int left, int right, int top, int bottom) {
+        double x = drawable.x
+        double y = drawable.y
         x >= left && x <= right && y <= top && y >= bottom
     }
 }

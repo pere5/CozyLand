@@ -10,7 +10,7 @@ class Tree extends Drawable {
         size = 12
         color = Color.GREEN
         shape = SHAPES.CIRCLE
-        def (x, y) = Model.generateXY()
+        def (double x, double y) = Model.generateXY()
         this.x = x
         this.y = y
     }
