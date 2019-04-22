@@ -33,11 +33,11 @@ class PathfinderWorker extends Worker {
         def testDegrees = degreeRange(0)
         def testRange = probabilitiesForRange(testDegrees)
 
-        if (testRange.keySet()*.toString() != (['sum'] + (testDegrees[0..180]))*.toString()) {
+        if (testRange.collect { it[0] } != testDegrees) {
             throw new PerIsBorkenException()
         }
 
-        if (Math.abs(testRange.sum - 100) > 0.00000001) {
+        if (Math.abs(testRange.last()[2] - 100) > 0.00000001) {
             throw new PerIsBorkenException()
         }
 
@@ -60,23 +60,30 @@ class PathfinderWorker extends Worker {
     }
 
     private static def probabilitiesForRange(List<Integer> degree) {
-        def probabilityRange = degree.collectEntries {
-            (
-                    (degree[0..35]).collectEntries { [it, 12.5/36] } +
-                    (degree[36..71]).collectEntries { [it, 25/36] } +
-                    (degree[72..107]).collectEntries { [it, 25/36] } +
-                    (degree[108..143]).collectEntries { [it, 25/36] } +
-                    (degree[144..180]).collectEntries { [it, 12.5/37] }
-            ).inject([sum:0.0]) { Map result, def entry ->
-                Double lowerLimit = result.sum
-                Double upperLimit = lowerLimit + entry.value
-                result.sum = upperLimit
-                entry.value = [lowerLimit, upperLimit]
-                result << entry
-            }
+
+        List<List<Number>> probbs = (
+                (degree[0..35]).collect { [it, 12.5/36] } +
+                (degree[36..71]).collect { [it, 25/36] } +
+                (degree[72..107]).collect { [it, 25/36] } +
+                (degree[108..143]).collect { [it, 25/36] } +
+                (degree[144..180]).collect { [it, 12.5/37] }
+        )
+
+        Double sum = 0
+        for (int i = 0; i < probbs.size(); i++) {
+            List<Number> probb = probbs[i]
+            Double lowerLimit = sum
+            Double upperLimit = lowerLimit + probb[1]
+            sum = upperLimit
+            probb[1] = lowerLimit
+            probb << upperLimit
         }
 
-        return probabilityRange
+        return probbs
+    }
+
+    def squaresForProbabilities(Map<Object, Object> probabilitiesForRange) {
+
     }
 
     public static void main(String[] args) {
