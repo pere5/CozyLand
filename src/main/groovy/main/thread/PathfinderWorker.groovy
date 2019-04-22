@@ -32,6 +32,7 @@ class PathfinderWorker extends Worker {
 
         def testDegrees = degreeRange(0)
         def testRange = probabilitiesForRange(testDegrees)
+        def squareProbabilities = squareProbabilities(testRange)
 
         if (testRange.collect { it[0] } != testDegrees) {
             throw new PerIsBorkenException()
@@ -82,8 +83,10 @@ class PathfinderWorker extends Worker {
         return probbs
     }
 
-    def squaresForProbabilities(Map<Object, Object> probabilitiesForRange) {
-
+    private static def squareProbabilities(List<List<Number>> lists) {
+        def lol = [
+                [2, 0]: []
+        ]
     }
 
     public static void main(String[] args) {
