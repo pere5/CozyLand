@@ -23,7 +23,7 @@ class PathfinderWorker extends Worker {
 
     static def PROBABILITIES_MODEL
 
-    private static void rewriteDegreesFile() {
+    private static void calculateProbabilitiesModel() {
         if (
                 degreeRange(45) != (315..359) + (0..135) ||
                 degreeRange(100) != 10..190 ||
@@ -33,19 +33,23 @@ class PathfinderWorker extends Worker {
         }
 
         def testDegrees = degreeRange(0)
-        def testRange = probabilitiesForRange(testDegrees)
+        def testRange = degreeProbabilities(testDegrees)
         def testSquares = squareProbabilities(testRange)
 
         if (testRange.collect { it[0] } != testDegrees) {
             throw new PerIsBorkenException()
         }
 
-        if (Math.abs(testRange.last()[2] as Double - 100) > 0.00000001) {
+        if (Math.abs((testRange.sum { it[1] } as Double) - 100) > 0.00000001) {
+            throw new PerIsBorkenException()
+        }
+
+        if (Math.abs((testSquares.probability.sum() as Double) - 100) > 0.00000001) {
             throw new PerIsBorkenException()
         }
 
         PROBABILITIES_MODEL = (0..359).collect {
-            [(it): squareProbabilities(probabilitiesForRange(degreeRange(it)))]
+            [(it): squareProbabilities(degreeProbabilities(degreeRange(it)))]
         }
     }
 
@@ -57,40 +61,37 @@ class PathfinderWorker extends Worker {
         (upper > lower) ? (lower..upper) : (lower..359) + (0..upper)
     }
 
-    private static List<List<Number>> probabilitiesForRange(List<Integer> degree) {
-
-        List<List<Number>> probbs = (
+    private static List<List<Number>> degreeProbabilities(List<Integer> degree) {
+        (
                 (degree[0..35]).collect { [it, 12.5/36] } +
                 (degree[36..71]).collect { [it, 25/36] } +
                 (degree[72..107]).collect { [it, 25/36] } +
                 (degree[108..143]).collect { [it, 25/36] } +
                 (degree[144..180]).collect { [it, 12.5/37] }
         )
-
-        Double sum = 0
-        for (int i = 0; i < probbs.size(); i++) {
-            List<Number> probb = probbs[i]
-            Double lowerLimit = sum
-            Double upperLimit = lowerLimit + probb[1]
-            sum = upperLimit
-            probb[1] = lowerLimit
-            probb << upperLimit
-        }
-
-        return probbs
     }
 
-    private static def squareProbabilities(List<List<Number>> lists) {
-        def degreeToSquare = [
+    private static def squareProbabilities(List<List<Number>> degreeProbabilities) {
+        def squares = [
                 [135, 180]: [0, 2], [90 , 135]: [1, 2], [45 , 90 ]: [2, 2],
                 [180, 225]: [0, 1],                     [0  , 45 ]: [2, 1],
                 [225, 270]: [0, 0], [270, 315]: [1, 0], [315, 359]: [2, 0],
         ]
+
+        squares.collect { def square ->
+            def squareDegrees = square.key
+            def squareProbability = degreeProbabilities.sum { def degreeProbability ->
+                def degree = degreeProbability[0] as int
+                def probability = degreeProbability[1] as Double
+                (degree >= squareDegrees[0] && degree < squareDegrees[1]) ? probability : 0
+            }
+            [square: square, probability: squareProbability]
+        }
     }
 
     public static void main(String[] args) {
         if (true) {
-            rewriteDegreesFile()
+            calculateProbabilitiesModel()
         }
         /*
         ClassLoader classloader = Thread.currentThread().getContextClassLoader()
