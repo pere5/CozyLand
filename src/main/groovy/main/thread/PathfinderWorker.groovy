@@ -1,6 +1,6 @@
 package main.thread
 
-import groovy.json.JsonOutput
+
 import main.Main
 import main.Model
 import main.exception.PerIsBorkenException
@@ -21,6 +21,8 @@ class PathfinderWorker extends Worker {
           - [ ] omfördela sannolikheterna mot vaje nod baserat på nodens movementCost relativt till de andra noderna
      */
 
+    static def PROBABILITIES_MODEL
+
     private static void rewriteDegreesFile() {
         if (
                 degreeRange(45) != (315..359) + (0..135) ||
@@ -32,24 +34,19 @@ class PathfinderWorker extends Worker {
 
         def testDegrees = degreeRange(0)
         def testRange = probabilitiesForRange(testDegrees)
-        def squareProbabilities = squareProbabilities(testRange)
+        def testSquares = squareProbabilities(testRange)
 
         if (testRange.collect { it[0] } != testDegrees) {
             throw new PerIsBorkenException()
         }
 
-        if (Math.abs(testRange.last()[2] - 100) > 0.00000001) {
+        if (Math.abs(testRange.last()[2] as Double - 100) > 0.00000001) {
             throw new PerIsBorkenException()
         }
 
-        File file = new File('degreesFile.json')
-        file.write '{"data":[\n'
-        int times = 360
-        times.times {
-            file << "${JsonOutput.toJson([(it): probabilitiesForRange(degreeRange(it))])}"
-            file << ((it + 1 == times) ? '\n' : ',\n')
+        PROBABILITIES_MODEL = (0..359).collect {
+            [(it): squareProbabilities(probabilitiesForRange(degreeRange(it)))]
         }
-        file << ']}'
     }
 
     private static List<Integer> degreeRange (int degree) {
@@ -60,7 +57,7 @@ class PathfinderWorker extends Worker {
         (upper > lower) ? (lower..upper) : (lower..359) + (0..upper)
     }
 
-    private static def probabilitiesForRange(List<Integer> degree) {
+    private static List<List<Number>> probabilitiesForRange(List<Integer> degree) {
 
         List<List<Number>> probbs = (
                 (degree[0..35]).collect { [it, 12.5/36] } +
@@ -84,8 +81,10 @@ class PathfinderWorker extends Worker {
     }
 
     private static def squareProbabilities(List<List<Number>> lists) {
-        def lol = [
-                [2, 0]: []
+        def degreeToSquare = [
+                [135, 180]: [0, 2], [90 , 135]: [1, 2], [45 , 90 ]: [2, 2],
+                [180, 225]: [0, 1],                     [0  , 45 ]: [2, 1],
+                [225, 270]: [0, 0], [270, 315]: [1, 0], [315, 359]: [2, 0],
         ]
     }
 
