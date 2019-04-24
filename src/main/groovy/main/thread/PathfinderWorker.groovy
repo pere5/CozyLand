@@ -52,8 +52,10 @@ class PathfinderWorker extends Worker {
         }
 
         PROBABILITIES_MODEL = (0..359).collect {
-            [(it): squareProbabilities(degreeProbabilities(degreeRange(it)))]
+            [(it): realSquareProbabilities(squareProbabilities(degreeProbabilities(degreeRange(it))))]
         }
+
+        println(PROBABILITIES_MODEL)
     }
 
     private static List<Integer> degreeRange (int degree) {
@@ -74,7 +76,7 @@ class PathfinderWorker extends Worker {
         )
     }
 
-    private static def squareProbabilities(List<List<Number>> degreeProbabilities) {
+    private static List<LinkedHashMap<String, Object>> squareProbabilities(List<List<Number>> degreeProbabilities) {
         def squares = [
                 [135, 180]: [0, 2], [90 , 135]: [1, 2], [45 , 90 ]: [2, 2],
                 [180, 225]: [0, 1],                     [0  , 45 ]: [2, 1],
@@ -90,6 +92,13 @@ class PathfinderWorker extends Worker {
             }
             [square: square, probability: squareProbability]
         }
+    }
+
+    private static def realSquareProbabilities(List<LinkedHashMap<String, Object>> linkedHashMaps) {
+
+        hells yeah
+
+        linkedHashMaps
     }
 
     public static void main(String[] args) {
