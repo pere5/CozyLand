@@ -44,7 +44,8 @@ class Model {
                 villagers: villagers,
                 frameSlots: [0,0,0,0,0],
                 nodeNetwork: nodeNetwork,
-                rules: generateRules()
+                rules: generateRules(),
+                squareProbabilitiesForDegrees: calculateProbabilitiesModel()
         ]
 
         model.backgroundImage = createBGImage()
@@ -53,6 +54,75 @@ class Model {
     static List<Rule> generateRules() {
         int rank = Integer.MAX_VALUE
         [new Walk(rank: --rank)]
+    }
+
+    private static def calculateProbabilitiesModel() {
+        if (
+                degreeRange(45) != (315..359) + (0..135) ||
+                degreeRange(100) != 10..190 ||
+                degreeRange(300) != (210..359) + (0..30)
+        ) {
+            throw new PerIsBorkenException()
+        }
+
+        def test = [359, 0 ,1, 89, 90, 91, 134, 135, 136, 179, 180, 181, 224, 225, 226, 269, 270 ,271, 314, 315, 316]
+        test.each { def degree ->
+            def testDegrees = degreeRange(degree)
+            def testRange = degreeProbabilities(testDegrees)
+            def testSquares = squareProbabilities(testRange)
+
+            if (testRange.collect { it[0] } != testDegrees) {
+                throw new PerIsBorkenException()
+            }
+
+            if (Math.abs((testRange.sum { it[1] } as Double) - 100) > 0.00000001) {
+                throw new PerIsBorkenException()
+            }
+
+            if (Math.abs((testSquares.collect{ it[1] }.sum() as Double) - 100) > 0.00000001) {
+                throw new PerIsBorkenException()
+            }
+        }
+
+        (0..359).collectEntries {
+            [(it), squareProbabilities(degreeProbabilities(degreeRange(it)))]
+        }
+    }
+
+    private static List<Integer> degreeRange (int degree) {
+        int u = degree + 90
+        int l = degree - 90
+        int upper = u % 360
+        int lower = l >= 0 ? l : l + 360
+        (upper > lower) ? (lower..upper) : (lower..359) + (0..upper)
+    }
+
+    private static List<List<Number>> degreeProbabilities(List<Integer> degree) {
+        (
+                (degree[0..35]).collect { [it, 12.5/36] } +
+                        (degree[36..71]).collect { [it, 25/36] } +
+                        (degree[72..107]).collect { [it, 25/36] } +
+                        (degree[108..143]).collect { [it, 25/36] } +
+                        (degree[144..180]).collect { [it, 12.5/37] }
+        )
+    }
+
+    private static List<List<Object>> squareProbabilities(List<List<Number>> degreeProbabilities) {
+        def squares = [
+                [135, 180]: [0, 2], [90 , 135]: [1, 2], [45 , 90 ]: [2, 2],
+                [180, 225]: [0, 1],                     [0  , 45 ]: [2, 1],
+                [225, 270]: [0, 0], [270, 315]: [1, 0], [315, 360]: [2, 0],
+        ]
+
+        squares.collect { def square ->
+            def squareDegrees = square.key
+            def squareProbability = degreeProbabilities.sum { def degreeProbability ->
+                def degree = degreeProbability[0] as int
+                def probability = degreeProbability[1] as Double
+                (degree >= squareDegrees[0] && degree < squareDegrees[1]) ? probability : 0
+            }
+            [square.value, squareProbability]
+        }
     }
 
     static Node[][] generateBackground() {
@@ -430,10 +500,5 @@ class Model {
 
     static Double generate(int distance) {
         return distance - ThreadLocalRandom.current().nextInt(0, distance * 2 + 1)
-    }
-
-    static int toDegrees(int[] start, int[] dest) {
-        Double deg = Math.toDegrees(Math.atan2(dest[1] - start[1], dest[0] - start[0]))
-        round(deg >= 0 ? deg : deg + 360)
     }
 }
