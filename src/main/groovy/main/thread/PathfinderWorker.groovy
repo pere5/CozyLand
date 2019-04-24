@@ -52,7 +52,7 @@ class PathfinderWorker extends Worker {
         }
 
         PROBABILITIES_MODEL = (0..359).collect {
-            [(it): realSquareProbabilities(squareProbabilities(degreeProbabilities(degreeRange(it))))]
+            [(it): squareProbabilities(degreeProbabilities(degreeRange(it)))]
         }
 
         println(PROBABILITIES_MODEL)
@@ -94,13 +94,6 @@ class PathfinderWorker extends Worker {
         }
     }
 
-    private static def realSquareProbabilities(List<LinkedHashMap<String, Object>> linkedHashMaps) {
-
-        hells yeah
-
-        linkedHashMaps
-    }
-
     public static void main(String[] args) {
         if (true) {
             calculateProbabilitiesModel()
@@ -122,9 +115,21 @@ class PathfinderWorker extends Worker {
             def start = [villager.x, villager.y] as Double[]
             def dest = Model.generateXY()
 
+
+            int realDegree = 0
+            def square = realSquareProbabilities(realDegree)
+
+
             villager.actionQueue << new StraightPath(start, dest)
             villager.toWorkWorker()
         }
+    }
+
+    def realSquareProbabilities(int realDegree) {
+
+        //Random and stuff here
+
+        null
     }
 
     static int[] pixelToNodeIdx(int[] ints) {
