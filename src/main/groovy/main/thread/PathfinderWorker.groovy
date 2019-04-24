@@ -32,20 +32,23 @@ class PathfinderWorker extends Worker {
             throw new PerIsBorkenException()
         }
 
-        def testDegrees = degreeRange(0)
-        def testRange = degreeProbabilities(testDegrees)
-        def testSquares = squareProbabilities(testRange)
+        def test = [359, 0 ,1, 89, 90, 91, 134, 135, 136, 179, 180, 181, 224, 225, 226, 269, 270 ,271, 314, 315, 316]
+        test.each { def degree ->
+            def testDegrees = degreeRange(degree)
+            def testRange = degreeProbabilities(testDegrees)
+            def testSquares = squareProbabilities(testRange)
 
-        if (testRange.collect { it[0] } != testDegrees) {
-            throw new PerIsBorkenException()
-        }
+            if (testRange.collect { it[0] } != testDegrees) {
+                throw new PerIsBorkenException()
+            }
 
-        if (Math.abs((testRange.sum { it[1] } as Double) - 100) > 0.00000001) {
-            throw new PerIsBorkenException()
-        }
+            if (Math.abs((testRange.sum { it[1] } as Double) - 100) > 0.00000001) {
+                throw new PerIsBorkenException()
+            }
 
-        if (Math.abs((testSquares.probability.sum() as Double) - 100) > 0.00000001) {
-            throw new PerIsBorkenException()
+            if (Math.abs((testSquares.probability.sum() as Double) - 100) > 0.00000001) {
+                throw new PerIsBorkenException()
+            }
         }
 
         PROBABILITIES_MODEL = (0..359).collect {
@@ -75,7 +78,7 @@ class PathfinderWorker extends Worker {
         def squares = [
                 [135, 180]: [0, 2], [90 , 135]: [1, 2], [45 , 90 ]: [2, 2],
                 [180, 225]: [0, 1],                     [0  , 45 ]: [2, 1],
-                [225, 270]: [0, 0], [270, 315]: [1, 0], [315, 359]: [2, 0],
+                [225, 270]: [0, 0], [270, 315]: [1, 0], [315, 360]: [2, 0],
         ]
 
         squares.collect { def square ->
