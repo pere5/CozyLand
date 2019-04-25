@@ -458,7 +458,7 @@ class Model {
         }
     }
 
-    private static List<Color> gradient(Color color1, Color color2, int steps) {
+    static List<Color> gradient(Color color1, Color color2, int steps) {
         def colors = []
 
         for (int i = 0; i < steps; i++) {

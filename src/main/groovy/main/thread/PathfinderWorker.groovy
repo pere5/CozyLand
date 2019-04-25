@@ -1,5 +1,6 @@
 package main.thread
 
+
 import main.Main
 import main.Model
 import main.Node
@@ -46,6 +47,8 @@ class PathfinderWorker extends Worker {
         }
     }
 
+    static def lol = Model.gradient(Color.GRAY, Color.RED, 35)
+
     def realSquareProbabilities(int[] start, int[] dest) {
 
         def realDegree = calculateDegree(start, dest)
@@ -63,7 +66,7 @@ class PathfinderWorker extends Worker {
             Node neighbor = nodeNetwork[nodeIdx[0] + square[0][0]][nodeIdx[1] + square[0][1]]
             Model.model.drawables << new Artifact(
                     size: neighbor.size, parent: node.id, x: neighbor.x, y: neighbor.y,
-                    color: Color.BLUE
+                    color: lol[Model.round(square[1])]
             )
         }
 
@@ -72,7 +75,7 @@ class PathfinderWorker extends Worker {
     }
 
     static int[] pixelToNodeIdx(int[] ints) {
-        ints.collect { Model.round(it / Main.SQUARE_WIDTH) } as int[]
+        ints.collect { Model.round(it / Main.SQUARE_WIDTH) + Model.round(Main.SQUARE_WIDTH / 2) }
     }
 
     static int calculateDegree(int[] start, int[] dest) {
