@@ -2,8 +2,13 @@ package main.thread
 
 import main.Main
 import main.Model
+import main.Node
+import main.things.Artifact
 import main.villager.StraightPath
 import main.villager.Villager
+
+import java.awt.*
+import java.util.List
 
 class PathfinderWorker extends Worker {
 
@@ -45,10 +50,22 @@ class PathfinderWorker extends Worker {
 
         def realDegree = calculateDegree(start, dest)
         def nodeIdx = pixelToNodeIdx(start)
-        def node = Model.model.nodeNetwork[nodeIdx[0]][nodeIdx[1]]
+        def nodeNetwork = Model.model.nodeNetwork as Node[][]
+        def node = nodeNetwork[nodeIdx[0]][nodeIdx[1]]
 
         final def SQUARE_PROBABILITIES = Model.model.squareProbabilitiesForDegrees[realDegree]
+        Model.model.drawables << new Artifact(
+                size: node.size, parent: node.id, x: node.x, y: node.y,
+                color: Color.GREEN
+        )
+        SQUARE_PROBABILITIES.each { def square ->
 
+            Node neighbor = nodeNetwork[nodeIdx[0] + square[0][0]][nodeIdx[1] + square[0][1]]
+            Model.model.drawables << new Artifact(
+                    size: neighbor.size, parent: node.id, x: neighbor.x, y: neighbor.y,
+                    color: Color.BLUE
+            )
+        }
 
         int boll = 0
         null
