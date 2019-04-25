@@ -1,10 +1,7 @@
 package main.thread
 
-
 import main.Main
 import main.Model
-import main.Node
-import main.things.Artifact
 import main.villager.StraightPath
 import main.villager.Villager
 
@@ -27,8 +24,24 @@ class PathfinderWorker extends Worker {
 
     public static void main(String[] args) {
 
+        Model.model = [
+                squareProbabilitiesForDegrees: Model.calculateProbabilitiesModel()
+        ]
+
         def start = [0, 0] as int[]
         def dest = [1, 1] as int[]
+
+        new PathfinderWorker().realSquareProbabilities(start, dest)
+        start = [0, 0] as int[]
+        dest = [0, 1] as int[]
+
+        new PathfinderWorker().realSquareProbabilities(start, dest)
+        start = [0, 0] as int[]
+        dest = [-1, 0] as int[]
+
+        new PathfinderWorker().realSquareProbabilities(start, dest)
+        start = [0, 0] as int[]
+        dest = [0, -1] as int[]
 
         new PathfinderWorker().realSquareProbabilities(start, dest)
     }
@@ -55,22 +68,29 @@ class PathfinderWorker extends Worker {
 
         def realDegree = calculateDegree(start, dest)
         def nodeIdx = pixelToNodeIdx(start)
-        def nodeNetwork = Model.model.nodeNetwork as Node[][]
-        def node = nodeNetwork[nodeIdx[0]][nodeIdx[1]]
+        //def nodeNetwork = Model.model.nodeNetwork as Node[][]
+        //def node = nodeNetwork[nodeIdx[0]][nodeIdx[1]]
 
         final def SQUARE_PROBABILITIES = Model.model.squareProbabilitiesForDegrees[realDegree]
+        /*
         Model.model.drawables << new Artifact(
                 size: node.size, parent: node.id, x: node.x, y: node.y,
                 color: Color.GREEN
         )
+*/
+        println(realDegree)
         SQUARE_PROBABILITIES.each { def square ->
 
+            println("${Model.round(square[1])}\t${square[0][0]}\t${square[0][1]}")
+/*
             Node neighbor = nodeNetwork[nodeIdx[0] + square[0][0]][nodeIdx[1] + square[0][1]]
             Model.model.drawables << new Artifact(
                     size: neighbor.size, parent: node.id, x: neighbor.x, y: neighbor.y,
                     color: lol[Model.round(square[1])]
-            )
+            )*/
         }
+        println()
+        println()
 
         int boll = 0
         null

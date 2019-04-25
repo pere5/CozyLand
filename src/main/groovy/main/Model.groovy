@@ -56,7 +56,7 @@ class Model {
         [new Walk(rank: --rank)]
     }
 
-    private static def calculateProbabilitiesModel() {
+    static def calculateProbabilitiesModel() {
         if (
                 degreeRange(45) != (315..359) + (0..135) ||
                 degreeRange(100) != 10..190 ||
@@ -80,6 +80,7 @@ class Model {
             }
 
             if (Math.abs((testSquares.collect{ it[1] }.sum() as Double) - 100) > 0.00000001) {
+                println(Math.abs((testSquares.collect{ it[1] }.sum() as Double) - 100))
                 throw new PerIsBorkenException()
             }
         }
@@ -99,19 +100,19 @@ class Model {
 
     private static List<List<Number>> degreeProbabilities(List<Integer> degree) {
         (
-                (degree[0..35]).collect { [it, 12.5/36] } +
-                        (degree[36..71]).collect { [it, 25/36] } +
-                        (degree[72..107]).collect { [it, 25/36] } +
-                        (degree[108..143]).collect { [it, 25/36] } +
-                        (degree[144..180]).collect { [it, 12.5/37] }
+                (degree[0..35]).collect    { [it, 12.5/36] } +
+                (degree[36..71]).collect   { [it, 25/36] } +
+                (degree[72..107]).collect  { [it, 25/36] } +
+                (degree[108..143]).collect { [it, 25/36] } +
+                (degree[144..180]).collect { [it, 12.5/37] }
         )
     }
 
     private static List<List<Object>> squareProbabilities(List<List<Number>> degreeProbabilities) {
         def squares = [
-                [135, 180]: [-1,  1], [90 , 135]: [0,  1], [45 ,  90]: [1,  1],
-                [180, 225]: [-1,  0],                      [0  ,  45]: [1,  0],
-                [225, 270]: [-1, -1], [270, 315]: [0, -1], [315, 360]: [1, -1],
+                [113, 158]: [-1,  1], [68 , 113]: [0,  1], [23 ,  68]: [1,  1],
+                [158, 203]: [-1,  0],                      [338,  23]: [1,  0],
+                [203, 248]: [-1, -1], [248, 293]: [0, -1], [293, 338]: [1, -1],
         ]
 
         squares.collect { def square ->
@@ -119,7 +120,12 @@ class Model {
             def squareProbability = degreeProbabilities.sum { def degreeProbability ->
                 def degree = degreeProbability[0] as int
                 def probability = degreeProbability[1] as Double
-                (degree >= squareDegrees[0] && degree < squareDegrees[1]) ? probability : 0
+                if (squareDegrees[0] < squareDegrees[1]) {
+                    (degree >= squareDegrees[0] && degree < squareDegrees[1]) ? probability : 0
+                } else {
+                    ((degree >= squareDegrees[0] && degree < 360) || (degree < squareDegrees[1])) ? probability : 0
+                }
+
             }
             [square.value, squareProbability]
         }
