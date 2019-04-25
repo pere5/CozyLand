@@ -7,10 +7,12 @@ import main.villager.Villager
 class WorkWorker extends Worker {
 
     def update() {
-        (Model.model.villagers as List<Villager>).grep { it.workWorker }.each { Villager villager ->
-            def resolution = villager.work()
-            if (resolution == Action.DONE) {
-                villager.toRuleWorker()
+        for (Villager villager: Model.model.villagers) {
+            if (villager.workWorker) {
+                def resolution = villager.work()
+                if (resolution == Action.DONE) {
+                    villager.toRuleWorker()
+                }
             }
         }
     }

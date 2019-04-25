@@ -7,20 +7,23 @@ import main.villager.Villager
 class RuleWorker extends Worker {
 
     def update() {
-        (Model.model.villagers as List<Villager>).grep { it.ruleWorker }.each { Villager villager ->
-            def rule = null
-            int status = Rule.UNREACHABLE
 
-            for (Rule newRule : Model.model.rules) {
-                int newStatus = newRule.status(villager)
-                if (newStatus < status || (newStatus == status && newRule.rank > rule.rank)) {
-                    status = newStatus
-                    rule = newRule
+        for (Villager villager: Model.model.villagers) {
+            if (villager.ruleWorker) {
+                def rule = null
+                int status = Rule.UNREACHABLE
+
+                for (Rule newRule : Model.model.rules) {
+                    int newStatus = newRule.status(villager)
+                    if (newStatus < status || (newStatus == status && newRule.rank > rule.rank)) {
+                        status = newStatus
+                        rule = newRule
+                    }
                 }
-            }
-            if (rule) {
-                rule.startWork(villager, status)
-                rule.stateWhenDone(villager)
+                if (rule) {
+                    rule.startWork(villager, status)
+                    rule.stateWhenDone(villager)
+                }
             }
         }
     }

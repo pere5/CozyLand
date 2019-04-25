@@ -35,15 +35,17 @@ class PathfinderWorker extends Worker {
 
     def update() {
 
-        (Model.model.villagers as List<Villager>).grep { it.pathfinderWorker }.each { Villager villager ->
-            def start = [villager.x, villager.y] as Double[]
-            def dest = Model.generateXY()
+        for (Villager villager: Model.model.villagers) {
+            if (villager.pathfinderWorker) {
+                def start = [villager.x, villager.y] as Double[]
+                def dest = Model.generateXY()
 
-            def square = realSquareProbabilities(Model.round(start), Model.round(dest))
+                def square = realSquareProbabilities(Model.round(start), Model.round(dest))
 
 
-            villager.actionQueue << new StraightPath(start, dest)
-            villager.toWorkWorker()
+                villager.actionQueue << new StraightPath(start, dest)
+                villager.toWorkWorker()
+            }
         }
     }
 
@@ -75,7 +77,7 @@ class PathfinderWorker extends Worker {
     }
 
     static int[] pixelToNodeIdx(int[] ints) {
-        ints.collect { Model.round(it / Main.SQUARE_WIDTH) + Model.round(Main.SQUARE_WIDTH / 2) }
+        ints.collect { it / Main.SQUARE_WIDTH }
     }
 
     static int calculateDegree(int[] start, int[] dest) {
