@@ -2,6 +2,7 @@ package main.thread
 
 import main.Main
 import main.Model
+import main.Node
 import main.villager.StraightPath
 import main.villager.Villager
 
@@ -62,35 +63,30 @@ class PathfinderWorker extends Worker {
         }
     }
 
-    static def lol = Model.gradient(Color.GRAY, Color.RED, 35)
+    static def testGradient = Model.gradient(Color.BLACK, Color.WHITE, 32)
 
     def realSquareProbabilities(int[] start, int[] dest) {
 
         def realDegree = calculateDegree(start, dest)
         def nodeIdx = pixelToNodeIdx(start)
-        //def nodeNetwork = Model.model.nodeNetwork as Node[][]
-        //def node = nodeNetwork[nodeIdx[0]][nodeIdx[1]]
+        def nodeNetwork = Model.model.nodeNetwork as Node[][]
+        def node = nodeNetwork[nodeIdx[0]][nodeIdx[1]]
 
         final def SQUARE_PROBABILITIES = Model.model.squareProbabilitiesForDegrees[realDegree]
-        /*
-        Model.model.drawables << new Artifact(
-                size: node.size, parent: node.id, x: node.x, y: node.y,
-                color: Color.GREEN
-        )
-*/
-        println(realDegree)
+
+        //println(realDegree)
         SQUARE_PROBABILITIES.each { def square ->
 
-            println("${Model.round(square[1])}\t${square[0][0]}\t${square[0][1]}")
-/*
+            //println("${Model.round(square[1])}\t${square[0][0]}\t${square[0][1]}")
+
             Node neighbor = nodeNetwork[nodeIdx[0] + square[0][0]][nodeIdx[1] + square[0][1]]
+            /*
             Model.model.drawables << new Artifact(
                     size: neighbor.size, parent: node.id, x: neighbor.x, y: neighbor.y,
-                    color: lol[Model.round(square[1])]
-            )*/
+                    color: testGradient[Model.round(square[1])]
+            )
+            */
         }
-        println()
-        println()
 
         int boll = 0
         null

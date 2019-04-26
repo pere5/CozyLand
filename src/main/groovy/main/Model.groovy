@@ -80,7 +80,6 @@ class Model {
             }
 
             if (Math.abs((testSquares.collect{ it[1] }.sum() as Double) - 100) > 0.00000001) {
-                println(Math.abs((testSquares.collect{ it[1] }.sum() as Double) - 100))
                 throw new PerIsBorkenException()
             }
         }
@@ -99,13 +98,11 @@ class Model {
     }
 
     private static List<List<Number>> degreeProbabilities(List<Integer> degree) {
-        (
-                (degree[0..35]).collect    { [it, 12.5/36] } +
-                (degree[36..71]).collect   { [it, 25/36] } +
-                (degree[72..107]).collect  { [it, 25/36] } +
-                (degree[108..143]).collect { [it, 25/36] } +
-                (degree[144..180]).collect { [it, 12.5/37] }
-        )
+        (degree[0..35]).collect    { [it, 12.5/36] } +
+        (degree[36..71]).collect   { [it, 25/36] } +
+        (degree[72..107]).collect  { [it, 25/36] } +
+        (degree[108..143]).collect { [it, 25/36] } +
+        (degree[144..180]).collect { [it, 12.5/37] }
     }
 
     private static List<List<Object>> squareProbabilities(List<List<Number>> degreeProbabilities) {
