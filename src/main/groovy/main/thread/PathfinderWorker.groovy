@@ -75,23 +75,33 @@ class PathfinderWorker extends Worker {
 
         final def SQUARE_PROBABILITIES = Model.model.squareProbabilitiesForDegrees[realDegree]
 
+        testRealDegreeWithVectorAddition(realDegree, SQUARE_PROBABILITIES)
+        testPrints(SQUARE_PROBABILITIES, nodeIdx, realDegree, nodeNetwork)
 
         SQUARE_PROBABILITIES.each { def SQUARE ->
-
             Node neighbor = nodeNetwork[nodeIdx[0] + SQUARE[0][0]][nodeIdx[1] + SQUARE[0][1]]
-            testPrints(SQUARE, node, neighbor, realDegree)
         }
 
         int boll = 0
         null
     }
 
-    private void testPrints(def SQUARE, def node, def neighbor, def realDegree) {
-        println("${Model.round(SQUARE[1])}\t${SQUARE[0][0]}\t${SQUARE[0][1]}\t${realDegree}")
-        Model.model.drawables << new Artifact(
-                size: neighbor.size, parent: node.id, x: neighbor.x, y: neighbor.y,
-                color: testGradient[Model.round(SQUARE[1])]
-        )
+    void testRealDegreeWithVectorAddition(int realDegree, def SQUARE_PROBABILITIES) {
+
+    }
+
+    private void testPrints(def SQUARE_PROBABILITIES, def nodeIdx, def realDegree, def nodeNetwork) {
+        def node = nodeNetwork[nodeIdx[0]][nodeIdx[1]]
+        SQUARE_PROBABILITIES.each { def SQUARE ->
+
+            Node neighbor = nodeNetwork[nodeIdx[0] + SQUARE[0][0]][nodeIdx[1] + SQUARE[0][1]]
+            println("${Model.round(SQUARE[1])}\t${SQUARE[0][0]}\t${SQUARE[0][1]}\t${realDegree}")
+            Model.model.drawables << new Artifact(
+                    size: neighbor.size, parent: node.id, x: neighbor.x, y: neighbor.y,
+                    color: testGradient[Model.round(SQUARE[1])]
+            )
+        }
+
     }
 
     static int[] pixelToNodeIdx(int[] ints) {
