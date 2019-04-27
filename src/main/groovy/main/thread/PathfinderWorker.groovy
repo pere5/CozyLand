@@ -74,8 +74,6 @@ class PathfinderWorker extends Worker {
         def node = nodeNetwork[nodeIdx[0]][nodeIdx[1]]
 
         final def SQUARE_PROBABILITIES = Model.model.squareProbabilitiesForDegrees[realDegree]
-
-        testRealDegreeWithVectorAddition(realDegree, SQUARE_PROBABILITIES)
         testPrints(SQUARE_PROBABILITIES, nodeIdx, realDegree, nodeNetwork)
 
         SQUARE_PROBABILITIES.each { def SQUARE ->
@@ -84,10 +82,6 @@ class PathfinderWorker extends Worker {
 
         int boll = 0
         null
-    }
-
-    void testRealDegreeWithVectorAddition(int realDegree, def SQUARE_PROBABILITIES) {
-
     }
 
     private void testPrints(def SQUARE_PROBABILITIES, def nodeIdx, def realDegree, def nodeNetwork) {

@@ -65,9 +65,9 @@ class Model {
             throw new PerIsBorkenException()
         }
 
-        def test = [359, 0 ,1, 89, 90, 91, 134, 135, 136, 179, 180, 181, 224, 225, 226, 269, 270 ,271, 314, 315, 316]
-        test.each { def degree ->
-            def testDegrees = degreeRange(degree)
+        def test = [358, 359, 0 , 1, 2, 89, 90, 91, 134, 135, 136, 179, 180, 181, 224, 225, 226, 269, 270 ,271, 314, 315, 316]
+        test.each { def realDegree ->
+            def testDegrees = degreeRange(realDegree)
             def testRange = degreeProbabilities(testDegrees)
             def testSquares = squareProbabilities(testRange)
 
@@ -82,10 +82,38 @@ class Model {
             if (Math.abs((testSquares.collect{ it[1] }.sum() as Double) - 100) > 0.00000001) {
                 throw new PerIsBorkenException()
             }
+
+            reverseEngineerDegree(realDegree, testSquares)
         }
 
         (0..359).collectEntries {
             [(it), squareProbabilities(degreeProbabilities(degreeRange(it)))]
+        }
+    }
+
+    static void reverseEngineerDegree(int realDegree, def squares) {
+
+        def vectors = squares.collect { def square ->
+            [square[1] * square[0][0], square[1] * square[0][1]]
+        }
+
+        def addedVector = vectors.inject([0, 0]) { def result, def elem ->
+            result[0] += elem[0]
+            result[1] += elem[1]
+            return result
+        }
+
+        def l = Math.toDegrees(Math.atan2(addedVector[1], addedVector[0]))
+
+        def upper = (l + 1) >= 0 ? (l + 1) : (l + 1 + 360)
+        def lower = (l - 1) >= 0 ? (l - 1) : (l - 1 + 360)
+
+        def normal = (upper > realDegree && lower < realDegree)
+        def closeToZero = (upper > realDegree && lower > realDegree)
+
+        def withinBounds = upper > lower ? normal : closeToZero
+        if (!withinBounds) {
+            throw new PerIsBorkenException()
         }
     }
 
