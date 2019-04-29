@@ -107,6 +107,7 @@ class Model {
 
         def reversed = l >= 0 ? l : l + 360
 
+        //https://gamedev.stackexchange.com/questions/4467/comparing-angles-and-working-out-the-difference
         def diffDeg = 180.0 - Math.abs(Math.abs(reversed - realDegree) - 180.0)
 
         if (diffDeg > 1) {
