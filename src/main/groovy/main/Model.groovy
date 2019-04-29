@@ -82,12 +82,12 @@ class Model {
             if (Math.abs((testSquares.collect{ it[1] }.sum() as Double) - 100) > 0.00000001) {
                 throw new PerIsBorkenException()
             }
-
-            reverseEngineerDegree(realDegree, testSquares)
         }
 
-        (0..359).collectEntries {
-            [(it), squareProbabilities(degreeProbabilities(degreeRange(it)))]
+        (0..359).collectEntries { def degree ->
+            def squares = squareProbabilities(degreeProbabilities(degreeRange(degree)))
+            reverseEngineerDegree(degree, squares)
+            [(degree), squares]
         }
     }
 
@@ -109,7 +109,7 @@ class Model {
 
         def diffDeg = 180.0 - Math.abs(Math.abs(reversed - realDegree) - 180.0)
 
-        if (diffDeg > 0.6) {
+        if (diffDeg > 1) {
             throw new PerIsBorkenException()
         }
     }
