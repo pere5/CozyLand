@@ -89,6 +89,8 @@ class Model {
             reverseEngineerDegree(degree, squares)
             [(degree), squares]
         }
+
+        int lol = 0
     }
 
     static void reverseEngineerDegree(int realDegree, def squares) {
@@ -110,8 +112,8 @@ class Model {
         //https://gamedev.stackexchange.com/questions/4467/comparing-angles-and-working-out-the-difference
         def diffDeg = 180.0 - Math.abs(Math.abs(reversed - realDegree) - 180.0)
 
-        if (diffDeg > 1) {
-            throw new PerIsBorkenException()
+        if (diffDeg > 1.5) {
+            println("${realDegree}\t${reversed}\t${diffDeg}")
         }
     }
 
@@ -126,9 +128,9 @@ class Model {
     private static List<List<Number>> degreeProbabilities(List<Integer> degree) {
         (degree[0..35]).collect    { [it, 12.5/36] } +
         (degree[36..71]).collect   { [it, 25/36] } +
-        (degree[72..107]).collect  { [it, 25/36] } +
-        (degree[108..143]).collect { [it, 25/36] } +
-        (degree[144..180]).collect { [it, 12.5/37] }
+        (degree[72..108]).collect  { [it, 25/37] } +
+        (degree[109..144]).collect { [it, 25/36] } +
+        (degree[145..180]).collect { [it, 12.5/36] }
     }
 
     private static List<List<Object>> squareProbabilities(List<List<Number>> degreeProbabilities) {
