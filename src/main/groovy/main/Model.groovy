@@ -65,7 +65,7 @@ class Model {
             throw new PerIsBorkenException()
         }
 
-        def test = [358, 359, 0 , 1, 2, 89, 90, 91, 134, 135, 136, 179, 180, 181, 224, 225, 226, 269, 270 ,271, 314, 315, 316]
+        def test = [353, 354, 355, 356, 357, 358, 359, 0 , 1, 2, 89, 90, 91, 134, 135, 136, 179, 180, 181, 224, 225, 226, 269, 270 ,271, 314, 315, 316]
         test.each { def realDegree ->
             def testDegrees = degreeRange(realDegree)
             def testRange = degreeProbabilities(testDegrees)
@@ -105,14 +105,11 @@ class Model {
 
         def l = Math.toDegrees(Math.atan2(addedVector[1], addedVector[0]))
 
-        def upper = (l + 1) >= 0 ? (l + 1) : (l + 1 + 360)
-        def lower = (l - 1) >= 0 ? (l - 1) : (l - 1 + 360)
+        def reversed = l >= 0 ? l : l + 360
 
-        def normal = (upper > realDegree && lower < realDegree)
-        def closeToZero = (upper > realDegree && lower > realDegree)
+        def diffDeg = 180.0 - Math.abs(Math.abs(reversed - realDegree) - 180.0)
 
-        def withinBounds = upper > lower ? normal : closeToZero
-        if (!withinBounds) {
+        if (diffDeg > 0.6) {
             throw new PerIsBorkenException()
         }
     }
