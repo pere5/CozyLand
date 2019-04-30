@@ -71,13 +71,15 @@ class PathfinderWorker extends Worker {
         def realDegree = calculateDegree(start, dest)
         def nodeIdx = pixelToNodeIdx(start)
         def nodeNetwork = Model.model.nodeNetwork as Node[][]
-        def node = nodeNetwork[nodeIdx[0]][nodeIdx[1]]
 
         final def SQUARE_PROBABILITIES = Model.model.squareProbabilitiesForDegrees[realDegree]
-        testPrints(SQUARE_PROBABILITIES, nodeIdx, realDegree, nodeNetwork)
+        //testPrints(SQUARE_PROBABILITIES, nodeIdx, realDegree, nodeNetwork)
 
         SQUARE_PROBABILITIES.each { def SQUARE ->
             Node neighbor = nodeNetwork[nodeIdx[0] + SQUARE[0][0]][nodeIdx[1] + SQUARE[0][1]]
+
+            neighbor.movementCost
+            beräkna nya sannolikheter med neighbor.movementCost
         }
 
         int boll = 0
@@ -89,7 +91,6 @@ class PathfinderWorker extends Worker {
         SQUARE_PROBABILITIES.each { def SQUARE ->
 
             Node neighbor = nodeNetwork[nodeIdx[0] + SQUARE[0][0]][nodeIdx[1] + SQUARE[0][1]]
-            println("${Model.round(SQUARE[1])}\t${SQUARE[0][0]}\t${SQUARE[0][1]}\t${realDegree}")
             Model.model.drawables << new Artifact(
                     size: neighbor.size, parent: node.id, x: neighbor.x, y: neighbor.y,
                     color: testGradient[Model.round(SQUARE[1])]
