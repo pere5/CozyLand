@@ -65,32 +65,30 @@ class Model {
             throw new PerIsBorkenException()
         }
 
-        def test = [353, 354, 355, 356, 357, 358, 359, 0 , 1, 2, 89, 90, 91, 134, 135, 136, 179, 180, 181, 224, 225, 226, 269, 270 ,271, 314, 315, 316]
-        test.each { def realDegree ->
-            def testDegrees = degreeRange(realDegree)
-            def testRange = degreeProbabilities(testDegrees)
-            def testSquares = squareProbabilities(testRange)
-
-            if (testRange.collect { it[0] } != testDegrees) {
-                throw new PerIsBorkenException()
-            }
-
-            if (Math.abs((testRange.sum { it[1] } as Double) - 100) > 0.00000001) {
-                throw new PerIsBorkenException()
-            }
-
-            if (Math.abs((testSquares.collect{ it[1] }.sum() as Double) - 100) > 0.00000001) {
-                throw new PerIsBorkenException()
-            }
-        }
-
         (0..359).collectEntries { def degree ->
-            def squares = squareProbabilities(degreeProbabilities(degreeRange(degree)))
-            reverseEngineerDegree(degree, squares)
+            def degreeRange = degreeRange(degree)
+            def degreeProbabilities = degreeProbabilities(degreeRange)
+            def squares = squareProbabilities(degreeProbabilities)
+
+            def random = round(Math.random() * 10)
+            if (random % 10 == 0) {
+                if (degreeProbabilities.collect { it[0] } != degreeRange) {
+                    throw new PerIsBorkenException()
+                }
+
+                if (Math.abs((degreeProbabilities.sum { it[1] } as Double) - 100) > 0.00000001) {
+                    throw new PerIsBorkenException()
+                }
+
+                if (Math.abs((squares.collect{ it[1] }.sum() as Double) - 100) > 0.00000001) {
+                    throw new PerIsBorkenException()
+                }
+
+                reverseEngineerDegree(degree, squares)
+            }
+
             [(degree), squares]
         }
-
-        int lol = 0
     }
 
     static void reverseEngineerDegree(int realDegree, def squares) {
@@ -112,8 +110,8 @@ class Model {
         //https://gamedev.stackexchange.com/questions/4467/comparing-angles-and-working-out-the-difference
         def diffDeg = 180.0 - Math.abs(Math.abs(reversed - realDegree) - 180.0)
 
-        if (diffDeg > 1.5) {
-            println("${realDegree}\t${reversed}\t${diffDeg}")
+        if (diffDeg > 1.6) {
+            throw new PerIsBorkenException()
         }
     }
 
