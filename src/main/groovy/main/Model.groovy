@@ -22,6 +22,8 @@ class Model {
         idGenerator++
     }
 
+    enum TravelType { WATER, FOREST, HILL, MOUNTAIN, PLAIN, ROAD }
+
     static def init(def keyboard, def mouse) {
         def villagers = [
                 new Villager(), new Villager(), new Villager(), new Villager(), new Villager()
@@ -36,6 +38,15 @@ class Model {
 
         def nodeNetwork = generateBackground()
 
+        def travelCost = [
+                (TravelType.WATER)   : 0.7,
+                (TravelType.FOREST)  : 1,
+                (TravelType.HILL)    : 1.1,
+                (TravelType.MOUNTAIN): 1.2,
+                (TravelType.PLAIN)   : 0.9,
+                (TravelType.ROAD)    : 0.8
+        ]
+
         model = [
                 keyboard: keyboard,
                 mouse: mouse,
@@ -45,7 +56,8 @@ class Model {
                 frameSlots: [0,0,0,0,0],
                 nodeNetwork: nodeNetwork,
                 rules: generateRules(),
-                squareProbabilitiesForDegrees: calculateProbabilitiesModel()
+                squareProbabilitiesForDegrees: calculateProbabilitiesModel(),
+                travelCost: travelCost
         ]
 
         model.backgroundImage = createBGImage()
@@ -393,13 +405,11 @@ class Model {
         Color mountainLower = new Color(75, 75, 75)
         Color mountainLow = new Color(90, 90, 90)
         Color mountainHigh = new Color(255, 255, 255)
-        Double accessibleLimit = 0.9
-        Double movementCostLimit = accessibleLimit - 0.1
         def colorRatios = [
-                [from: 0.0,  to: 0.2,  colorFrom: blueLow,           colorTo: blueHigh],
-                [from: 0.2,  to: 0.85, colorFrom: greenLow,          colorTo: greenHigh],
-                [from: 0.85, to: 0.93, colorFrom: mountainEdgeGreen, colorTo: mountainLower],
-                [from: 0.93, to: 1.0,  colorFrom: mountainLow,       colorTo: mountainHigh]
+                [from: 0.0,  to: 0.2,  colorFrom: blueLow,           colorTo: blueHigh,         travelType: TravelType.WATER],
+                [from: 0.2,  to: 0.85, colorFrom: greenLow,          colorTo: greenHigh,        travelType: TravelType.FOREST],
+                [from: 0.85, to: 0.93, colorFrom: mountainEdgeGreen, colorTo: mountainLower,    travelType: TravelType.HILL],
+                [from: 0.93, to: 1.0,  colorFrom: mountainLow,       colorTo: mountainHigh,     travelType: TravelType.MOUNTAIN]
         ]
 
         def controlMap = [:]
@@ -409,8 +419,6 @@ class Model {
         for (def colorRatio: colorRatios) {
             int from = round(colorRatio.from * allNodes.size())
             int to = round(colorRatio.to * allNodes.size())
-            int accessibleLimitIndex = round(accessibleLimit * allNodes.size())
-            int movementCostLimitIndex = round(movementCostLimit * allNodes.size())
             List<Node> nodeGroup = allNodes[from..to - 1]
 
             //remove from the back
@@ -435,26 +443,12 @@ class Model {
             for (int i = 0; i < uniqueHeightValues.size(); i++) {
                 nodeGroup.grep { it.height == uniqueHeightValues[i] }.each {
                     it.color = colors[i]
-                    it.accessible = allNodes.indexOf(it) < accessibleLimitIndex
-                    it.movementCost = allNodes.indexOf(it) < movementCostLimitIndex ? 1 : 2
-
+                    it.travelType = colorRatio.travelType
                     controlMap[it.id] = controlMap[it.id] ? controlMap[it.id] + 1 : 1
                 }
             }
             controlAllColors << colors
             controlUniqueHeightValues << uniqueHeightValues
-        }
-
-        //test accessibleLimit
-        Double accessibleRatio = (allNodes.grep { it.accessible }.size() / allNodes.size()).setScale(1,BigDecimal.ROUND_HALF_DOWN )
-        if (accessibleLimit != accessibleRatio) {
-            throw new PerIsBorkenException()
-        }
-
-        //test movementCost
-        Double movementCostRatio = (allNodes.grep { it.movementCost == 1 }.size() / allNodes.size()).setScale(1,BigDecimal.ROUND_HALF_DOWN )
-        if (movementCostLimit != movementCostRatio) {
-            throw new PerIsBorkenException()
         }
 
         //test: use all colors

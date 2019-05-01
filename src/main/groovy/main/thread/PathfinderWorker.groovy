@@ -2,6 +2,7 @@ package main.thread
 
 import main.Main
 import main.Model
+import main.Model.TravelType
 import main.Node
 import main.things.Artifact
 import main.villager.StraightPath
@@ -33,19 +34,21 @@ class PathfinderWorker extends Worker {
         def start = [0, 0] as int[]
         def dest = [1, 1] as int[]
 
-        new PathfinderWorker().realSquareProbabilities(start, dest)
+        def villager = new Villager()
+
+        new PathfinderWorker().realSquareProbabilities(villager, start, dest)
         start = [0, 0] as int[]
         dest = [0, 1] as int[]
 
-        new PathfinderWorker().realSquareProbabilities(start, dest)
+        new PathfinderWorker().realSquareProbabilities(villager, start, dest)
         start = [0, 0] as int[]
         dest = [-1, 0] as int[]
 
-        new PathfinderWorker().realSquareProbabilities(start, dest)
+        new PathfinderWorker().realSquareProbabilities(villager, start, dest)
         start = [0, 0] as int[]
         dest = [0, -1] as int[]
 
-        new PathfinderWorker().realSquareProbabilities(start, dest)
+        new PathfinderWorker().realSquareProbabilities(villager, start, dest)
     }
 
     def update() {
@@ -55,8 +58,7 @@ class PathfinderWorker extends Worker {
                 def start = [villager.x, villager.y] as Double[]
                 def dest = Model.generateXY()
 
-                def square = realSquareProbabilities(Model.round(start), Model.round(dest))
-
+                def square = realSquareProbabilities(villager, Model.round(start), Model.round(dest))
 
                 villager.actionQueue << new StraightPath(start, dest)
                 villager.toWorkWorker()
@@ -64,13 +66,18 @@ class PathfinderWorker extends Worker {
         }
     }
 
-    static def testGradient = Model.gradient(Color.BLACK, Color.WHITE, 32)
+    def realSquareProbabilities(Villager villager, int[] start, int[] dest) {
 
-    def realSquareProbabilities(int[] start, int[] dest) {
+        def realSquareProbabilities = [
+                [-1,  1]: 0, [0,  1]: 0, [1,  1]: 0,
+                [-1,  0]: 0,             [1,  0]: 0,
+                [-1, -1]: 0, [0, -1]: 0, [1, -1]: 0,
+        ]
 
         def realDegree = calculateDegree(start, dest)
         def nodeIdx = pixelToNodeIdx(start)
         def nodeNetwork = Model.model.nodeNetwork as Node[][]
+        def node = nodeNetwork[nodeIdx[0]][nodeIdx[1]]
 
         final def SQUARE_PROBABILITIES = Model.model.squareProbabilitiesForDegrees[realDegree]
         //testPrints(SQUARE_PROBABILITIES, nodeIdx, realDegree, nodeNetwork)
@@ -78,14 +85,23 @@ class PathfinderWorker extends Worker {
         SQUARE_PROBABILITIES.each { def SQUARE ->
             Node neighbor = nodeNetwork[nodeIdx[0] + SQUARE[0][0]][nodeIdx[1] + SQUARE[0][1]]
 
-            neighbor.movementCost
-            beräkna nya sannolikheter med neighbor.movementCost
+            TravelType travelType = neighbor.travelType
+            Double cost
+            if (villager.canTravel(travelType)) {
+                int heightDifference = node.height - neighbor.height
+                Double travelCost = Model.model.travelCost[travelType] as Double
+                cost = travelCost + heightDifference + 2543543654
+                Double probability = cost + SQUARE[1]
+                realSquareProbabilities[SQUARE[0]] = probability
+            } else {
+                realSquareProbabilities[SQUARE[0]] = 0
+            }
         }
 
-        int boll = 0
-        null
+        return realSquareProbabilities
     }
 
+    static def testGradient = Model.gradient(Color.BLACK, Color.WHITE, 32)
     private void testPrints(def SQUARE_PROBABILITIES, def nodeIdx, def realDegree, def nodeNetwork) {
         def node = nodeNetwork[nodeIdx[0]][nodeIdx[1]]
         SQUARE_PROBABILITIES.each { def SQUARE ->

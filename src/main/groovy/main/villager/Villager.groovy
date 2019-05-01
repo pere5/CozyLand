@@ -57,4 +57,8 @@ class Villager extends Drawable {
         ruleWorker = false
         workWorker = false
     }
+
+    boolean canTravel(Model.TravelType travelType) {
+        travelType.WATER ? false : true
+    }
 }
