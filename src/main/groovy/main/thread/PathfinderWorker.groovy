@@ -58,7 +58,10 @@ class PathfinderWorker extends Worker {
                 def start = [villager.x, villager.y] as Double[]
                 def dest = Model.generateXY()
 
-                def square = realSquareProbabilities(villager, Model.round(start), Model.round(dest))
+                def squares = realSquareProbabilities(villager, Model.round(start), Model.round(dest))
+
+                println(squares)
+                println(villager)
 
                 villager.actionQueue << new StraightPath(start, dest)
                 villager.toWorkWorker()
@@ -72,29 +75,30 @@ class PathfinderWorker extends Worker {
                 [-1,  1]: 0, [0,  1]: 0, [1,  1]: 0,
                 [-1,  0]: 0,             [1,  0]: 0,
                 [-1, -1]: 0, [0, -1]: 0, [1, -1]: 0,
-        ]
+        ] as Map<int[], Double>
 
         def realDegree = calculateDegree(start, dest)
-        def nodeIdx = pixelToNodeIdx(start)
+        def (int x, int y) = pixelToNodeIdx(start)
         def nodeNetwork = Model.model.nodeNetwork as Node[][]
-        def node = nodeNetwork[nodeIdx[0]][nodeIdx[1]]
+        def node = nodeNetwork[x][y]
 
         final def SQUARE_PROBABILITIES = Model.model.squareProbabilitiesForDegrees[realDegree]
         //testPrints(SQUARE_PROBABILITIES, nodeIdx, realDegree, nodeNetwork)
 
         SQUARE_PROBABILITIES.each { def SQUARE ->
-            Node neighbor = nodeNetwork[nodeIdx[0] + SQUARE[0][0]][nodeIdx[1] + SQUARE[0][1]]
+            def nX = x + SQUARE[0][0]
+            def nY = y + SQUARE[0][1]
+            def neighbor = nodeNetwork[nX][nY] as Node
 
             TravelType travelType = neighbor.travelType
-            Double cost
-            if (villager.canTravel(travelType)) {
+            if (travelType != TravelType.WATER) {
                 int heightDifference = node.height - neighbor.height
                 Double travelCost = Model.model.travelCost[travelType] as Double
-                cost = travelCost + heightDifference + 2543543654
-                Double probability = cost + SQUARE[1]
-                realSquareProbabilities[SQUARE[0]] = probability
+                Double cost = travelCost + heightDifference + 2543543654
+                Double probability = cost + (SQUARE[1] as Double)
+                realSquareProbabilities[SQUARE[0] as int[]] = probability
             } else {
-                realSquareProbabilities[SQUARE[0]] = 0
+                realSquareProbabilities[SQUARE[0] as int[]] = 0d
             }
         }
 
