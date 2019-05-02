@@ -129,6 +129,13 @@ class PathfinderWorker extends Worker {
             }
         }
 
+        sum = realSquareProbabilities.collect{ it.value }.sum()
+
+
+
+        we need to start looking at visited squares
+
+
         if (sum - 100 > 0.00000001) {
             throw new PerIsBorkenException()
         }
