@@ -22,7 +22,9 @@ class Model {
         idGenerator++
     }
 
-    enum TravelType { WATER, FOREST, HILL, MOUNTAIN, PLAIN, ROAD }
+    enum TravelType {
+        WATER, FOREST, HILL, MOUNTAIN, PLAIN, ROAD, UP_HILL, DOWN_HILL, EVEN
+    }
 
     static def init(def keyboard, def mouse) {
         def villagers = [
@@ -38,26 +40,30 @@ class Model {
 
         def nodeNetwork = generateBackground()
 
-        def travelCost = [
-                (TravelType.WATER)   : 0.7,
-                (TravelType.FOREST)  : 1,
-                (TravelType.HILL)    : 1.1,
-                (TravelType.MOUNTAIN): 1.2,
-                (TravelType.PLAIN)   : 0.9,
-                (TravelType.ROAD)    : 0.8
+        def travelModifier = [
+                (TravelType.WATER)    : 0.7d,
+                (TravelType.FOREST)   : 1.0d,
+                (TravelType.HILL)     : 1.1d,
+                (TravelType.MOUNTAIN) : 1.2d,
+                (TravelType.PLAIN)    : 0.9d,
+                (TravelType.ROAD)     : 0.8d,
+
+                (TravelType.UP_HILL)  : 1.1d,
+                (TravelType.EVEN)     : 1.0d,
+                (TravelType.DOWN_HILL): 1.0d,
         ]
 
         model = [
-                keyboard: keyboard,
-                mouse: mouse,
-                pause: false,
-                drawables: drawables,
-                villagers: villagers,
-                frameSlots: [0,0,0,0,0],
-                nodeNetwork: nodeNetwork,
-                rules: generateRules(),
+                keyboard                     : keyboard,
+                mouse                        : mouse,
+                pause                        : false,
+                drawables                    : drawables,
+                villagers                    : villagers,
+                frameSlots                   : [0, 0, 0, 0, 0],
+                nodeNetwork                  : nodeNetwork,
+                rules                        : generateRules(),
                 squareProbabilitiesForDegrees: calculateProbabilitiesModel(),
-                travelCost: travelCost
+                travelModifier               : travelModifier
         ]
 
         model.backgroundImage = createBGImage()
@@ -70,7 +76,7 @@ class Model {
 
     static def calculateProbabilitiesModel() {
         if (
-                degreeRange(45) != (315..359) + (0..135) ||
+        degreeRange(45) != (315..359) + (0..135) ||
                 degreeRange(100) != 10..190 ||
                 degreeRange(300) != (210..359) + (0..30)
         ) {
@@ -92,7 +98,7 @@ class Model {
                     throw new PerIsBorkenException()
                 }
 
-                if (Math.abs((squares.collect{ it[1] }.sum() as Double) - 100) > 0.00000001) {
+                if (Math.abs((squares.collect { it[1] }.sum() as Double) - 100) > 0.00000001) {
                     throw new PerIsBorkenException()
                 }
 
@@ -127,7 +133,7 @@ class Model {
         }
     }
 
-    private static List<Integer> degreeRange (int degree) {
+    private static List<Integer> degreeRange(int degree) {
         int u = degree + 90
         int l = degree - 90
         int upper = u % 360
@@ -188,11 +194,11 @@ class Model {
         )
         Graphics2D g2d = image.createGraphics()
 
-        for(int x = 0; x < nodeNetwork.length; x++) {
-            for(int y = 0; y < nodeNetwork[x].length; y++) {
+        for (int x = 0; x < nodeNetwork.length; x++) {
+            for (int y = 0; y < nodeNetwork[x].length; y++) {
                 Drawable drawable = nodeNetwork[x][y]
                 g2d.setPaint(drawable.color)
-                if (drawable.shape == Drawable.SHAPES.RECT ) {
+                if (drawable.shape == Drawable.SHAPES.RECT) {
                     g2d.fillRect(round(drawable.x), round(drawable.y), drawable.size, drawable.size)
                 }
             }
@@ -401,7 +407,7 @@ class Model {
         Color blueHigh = new Color(153, 204, 255)
         Color greenLow = new Color(102, 204, 0)
         Color greenHigh = new Color(0, 102, 51)
-        Color mountainEdgeGreen = new Color(0,100,0)
+        Color mountainEdgeGreen = new Color(0, 100, 0)
         Color mountainLower = new Color(75, 75, 75)
         Color mountainLow = new Color(90, 90, 90)
         Color mountainHigh = new Color(255, 255, 255)
@@ -416,7 +422,7 @@ class Model {
         def controlAllColors = []
         def controlUniqueHeightValues = []
 
-        for (def colorRatio: colorRatios) {
+        for (def colorRatio : colorRatios) {
             int from = round(colorRatio.from * allNodes.size())
             int to = round(colorRatio.to * allNodes.size())
             List<Node> nodeGroup = allNodes[from..to - 1]
@@ -437,7 +443,7 @@ class Model {
                 }
             }
 
-            def uniqueHeightValues = nodeGroup.groupBy {it.height}.collect {it.key}
+            def uniqueHeightValues = nodeGroup.groupBy { it.height }.collect { it.key }
 
             List<Color> colors = gradient(colorRatio.colorFrom, colorRatio.colorTo, uniqueHeightValues.size())
             for (int i = 0; i < uniqueHeightValues.size(); i++) {
@@ -457,8 +463,8 @@ class Model {
         }
 
         //test: no two heights of nodes uses the same color
-        allNodes.groupBy {it.height}.each { int height, List<Node> nodes ->
-            if (nodes.groupBy {it.color}.size() != 1) {
+        allNodes.groupBy { it.height }.each { int height, List<Node> nodes ->
+            if (nodes.groupBy { it.color }.size() != 1) {
                 throw new PerIsBorkenException()
             }
         }
@@ -472,9 +478,9 @@ class Model {
             }
         }
 
-        if(allNodes.color.grep().size() != allNodes.size()) {
-            allNodes.grep{!it.color}.each{
-                it.color = new Color(255,0,0)
+        if (allNodes.color.grep().size() != allNodes.size()) {
+            allNodes.grep { !it.color }.each {
+                it.color = new Color(255, 0, 0)
                 it.size = 20
             }
             throw new PerIsBorkenException()
@@ -494,7 +500,7 @@ class Model {
         colors
     }
 
-    static int round (BigDecimal number) {
+    static int round(BigDecimal number) {
         if (number > 0) {
             return number + 0.5
         } else {
@@ -502,7 +508,7 @@ class Model {
         }
     }
 
-    static int round (Double number) {
+    static int round(Double number) {
         if (number > 0) {
             return number + 0.5
         } else {
@@ -510,7 +516,7 @@ class Model {
         }
     }
 
-    static int[] round (Double[] numbers) {
+    static int[] round(Double[] numbers) {
         numbers.collect { round(it) }
     }
 

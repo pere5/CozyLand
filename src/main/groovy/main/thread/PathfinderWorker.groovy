@@ -4,6 +4,7 @@ import main.Main
 import main.Model
 import main.Model.TravelType
 import main.Node
+import main.exception.PerIsBorkenException
 import main.things.Artifact
 import main.villager.StraightPath
 import main.villager.Villager
@@ -71,11 +72,7 @@ class PathfinderWorker extends Worker {
 
     def realSquareProbabilities(Villager villager, int[] start, int[] dest) {
 
-        def realSquareProbabilities = [
-                [-1,  1]: 0, [0,  1]: 0, [1,  1]: 0,
-                [-1,  0]: 0,             [1,  0]: 0,
-                [-1, -1]: 0, [0, -1]: 0, [1, -1]: 0,
-        ] as Map<int[], Double>
+        def realSquareProbabilities = [:]
 
         def realDegree = calculateDegree(start, dest)
         def (int x, int y) = pixelToNodeIdx(start)
@@ -88,18 +85,52 @@ class PathfinderWorker extends Worker {
         SQUARE_PROBABILITIES.each { def SQUARE ->
             def nX = x + SQUARE[0][0]
             def nY = y + SQUARE[0][1]
+            def squareProbability = SQUARE[1]
             def neighbor = nodeNetwork[nX][nY] as Node
+            def travelModifierMap = Model.model.travelModifier
 
             TravelType travelType = neighbor.travelType
-            if (travelType != TravelType.WATER) {
-                int heightDifference = node.height - neighbor.height
-                Double travelCost = Model.model.travelCost[travelType] as Double
-                Double cost = travelCost + heightDifference + 2543543654
-                Double probability = cost + (SQUARE[1] as Double)
-                realSquareProbabilities[SQUARE[0] as int[]] = probability
+            if (villager.canTravel(travelType)) {
+                int heightDifference = neighbor.height - node.height
+                Double travelModifier = travelModifierMap[travelType] as Double
+                Double heightModifier = heightDifference > 0
+                        ? travelModifierMap[TravelType.UP_HILL]
+                        : heightDifference == 0
+                        ? travelModifierMap[TravelType.EVEN]
+                        : travelModifierMap[TravelType.DOWN_HILL]
+                Double probability = (1 / (heightModifier * travelModifier)) * squareProbability
+                realSquareProbabilities[SQUARE[0]] = probability
             } else {
-                realSquareProbabilities[SQUARE[0] as int[]] = 0d
+                realSquareProbabilities[SQUARE[0]] = 0d
             }
+        }
+
+        def globalModifier = 100 / (realSquareProbabilities.collect{ it.value }.sum() as Double)
+        realSquareProbabilities.each {
+            it.value *= globalModifier
+        }
+
+        def sum = realSquareProbabilities.collect{ it.value }.sum()
+
+        if (sum == 0) {
+            SQUARE_PROBABILITIES.each { def SQUARE ->
+                def nX = x + SQUARE[0][0]
+                def nY = y + SQUARE[0][1]
+                def neighbor = nodeNetwork[nX][nY] as Node
+                TravelType travelType = neighbor.travelType
+                if (villager.canTravel(travelType)) {
+                    realSquareProbabilities[SQUARE[0]] = 1
+                }
+            }
+
+            globalModifier = 100 / (realSquareProbabilities.collect{ it.value }.sum() as Double)
+            realSquareProbabilities.each {
+                it.value *= globalModifier
+            }
+        }
+
+        if (sum - 100 > 0.00000001) {
+            throw new PerIsBorkenException()
         }
 
         return realSquareProbabilities

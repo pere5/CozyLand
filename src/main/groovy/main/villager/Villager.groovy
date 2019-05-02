@@ -1,6 +1,7 @@
 package main.villager
 
 import main.Model
+import main.Model.TravelType
 import main.things.Drawable
 
 import java.awt.*
@@ -56,5 +57,9 @@ class Villager extends Drawable {
         pathfinderWorker = true
         ruleWorker = false
         workWorker = false
+    }
+
+    boolean canTravel(TravelType travelType) {
+        travelType == TravelType.WATER
     }
 }
