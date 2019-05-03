@@ -12,49 +12,28 @@ class PathfinderWorker extends Worker {
     /*
         - [ ] kör steg nod för nod
         - [ ] för nästa steg:
-          - [ ] kör 90 grader med mittersta graden pekandes mot målet
-          - [ ] fördela ut graderna lika till grann noderna
-            - [ ] hårdkoda det med en färdig lösning per grad för alla 360 grader.
-          - [ ] lägg upp en (normal) fördelning av sannolikhet för graderna över 90 grader.
-            - [ ] hårdkoda fördelningen för 0 -> 90 grader med max i 45
-          - [ ] beräkna genomsnittliga sannolikheten för varje grann nod relativt till de andra noderna utifrån gradernas sannolikheter
-          - [ ] omfördela sannolikheterna mot vaje nod baserat på nodens movementCost relativt till de andra noderna
+          - [x] kör 90 grader med mittersta graden pekandes mot målet
+          - [x] fördela ut graderna lika till grann noderna
+          - [x] hårdkoda det med en färdig lösning per grad för alla 360 grader.
+          - [x] lägg upp en (normal) fördelning av sannolikhet för graderna över 90 grader.
+          - [x] hårdkoda fördelningen för 0 -> 90 grader med max i 45
+          - [x] beräkna genomsnittliga sannolikheten för varje grann nod relativt till de andra noderna utifrån gradernas sannolikheter
+          - [x] omfördela sannolikheterna mot vaje nod baserat på nodens movementCost relativt till de andra noderna
      */
-
-    public static void main(String[] args) {
-
-        Model.model = [
-                squareProbabilitiesForDegrees: Model.calculateProbabilitiesModel()
-        ]
-
-        def start = [0, 0] as int[]
-        def dest = [1, 1] as int[]
-
-        def villager = new Villager()
-
-        new PathfinderWorker().realSquareProbabilities(villager, start, dest)
-        start = [0, 0] as int[]
-        dest = [0, 1] as int[]
-
-        new PathfinderWorker().realSquareProbabilities(villager, start, dest)
-        start = [0, 0] as int[]
-        dest = [-1, 0] as int[]
-
-        new PathfinderWorker().realSquareProbabilities(villager, start, dest)
-        start = [0, 0] as int[]
-        dest = [0, -1] as int[]
-
-        new PathfinderWorker().realSquareProbabilities(villager, start, dest)
-    }
 
     def update() {
 
         for (Villager villager: Model.model.villagers) {
             if (villager.pathfinderWorker) {
+
+                def visitedSquares = [:]
+                def exhaustedSquares = [:]
+
                 def start = [villager.x, villager.y] as Double[]
                 def dest = Model.generateXY()
 
-                def squares = realSquareProbabilities(villager, Model.round(start), Model.round(dest))
+                def realSquareProbabilities = realSquareProbabilities(villager, Model.round(start), Model.round(dest))
+
 
                 villager.actionQueue << new StraightPath(start, dest)
                 villager.toWorkWorker()
