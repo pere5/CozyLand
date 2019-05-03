@@ -56,11 +56,12 @@ class PathfinderWorker extends Worker {
             def (int sX, int sY) = SQUARE[0]
             def nX = x + sX
             def nY = y + sY
-            def squareProbability = SQUARE[1] as Double
             def neighbor = nodeNetwork[nX][nY] as Node
+            TravelType travelType = neighbor.travelType
+
+            def squareProbability = SQUARE[1] as Double
             def travelModifierMap = Model.model.travelModifier as Map<TravelType, Double>
 
-            TravelType travelType = neighbor.travelType
             if (villager.canTravel(travelType)) {
                 int heightDifference = neighbor.height - node.height
                 Double travelModifier = travelModifierMap[travelType]
@@ -76,8 +77,6 @@ class PathfinderWorker extends Worker {
             }
         }
 
-        //we need to start looking at visited squares
-
         def sum = realSquareProbabilities.collect{ it.value }.sum() as Double
 
         if (sum == 0) {
@@ -87,6 +86,7 @@ class PathfinderWorker extends Worker {
                 def nY = y + sY
                 def neighbor = nodeNetwork[nX][nY] as Node
                 TravelType travelType = neighbor.travelType
+
                 if (villager.canTravel(travelType)) {
                     realSquareProbabilities[SQUARE[0]] = 1d
                 }
