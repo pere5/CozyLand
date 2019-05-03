@@ -529,19 +529,19 @@ class Model {
     }
 
     static Double[] generateXY() {
-        def (int x, int y) = pixelToNodeIdx(round([
+        def xy = [
                 Main.MAP_WIDTH / 2 + generate(round(Main.MAP_WIDTH / 9)),
                 Main.MAP_HEIGHT / 2 + generate(round(Main.MAP_HEIGHT / 9))
-        ]))
+        ]
 
-        def node = Model.model.nodeNetwork[x][y] as Node
+        def nodeXY = pixelToNodeIdx(round(xy))
 
-        fel här
+        def node = Model.model.nodeNetwork[nodeXY[0]][nodeXY[1]] as Node
 
         if (node.travelType == TravelType.WATER) {
             return generateXY()
         } else {
-            return [x, y]
+            return xy
         }
     }
 
