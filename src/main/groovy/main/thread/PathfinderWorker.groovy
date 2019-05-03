@@ -83,9 +83,10 @@ class PathfinderWorker extends Worker {
         //testPrints(SQUARE_PROBABILITIES, nodeIdx, realDegree, nodeNetwork)
 
         SQUARE_PROBABILITIES.each { def SQUARE ->
-            def nX = x + SQUARE[0][0]
-            def nY = y + SQUARE[0][1]
-            def squareProbability = SQUARE[1]
+            def (int sX, int sY) = SQUARE[0]
+            def nX = x + sX
+            def nY = y + sY
+            def squareProbability = SQUARE[1] as Double
             def neighbor = nodeNetwork[nX][nY] as Node
             def travelModifierMap = Model.model.travelModifier
 
@@ -93,11 +94,11 @@ class PathfinderWorker extends Worker {
             if (villager.canTravel(travelType)) {
                 int heightDifference = neighbor.height - node.height
                 Double travelModifier = travelModifierMap[travelType] as Double
-                Double heightModifier = heightDifference > 0
+                Double heightModifier = (heightDifference > 0
                         ? travelModifierMap[TravelType.UP_HILL]
                         : heightDifference == 0
                         ? travelModifierMap[TravelType.EVEN]
-                        : travelModifierMap[TravelType.DOWN_HILL]
+                        : travelModifierMap[TravelType.DOWN_HILL]) as Double
                 Double probability = (1 / (heightModifier * travelModifier)) * squareProbability
                 realSquareProbabilities[SQUARE[0]] = probability
             } else {
@@ -105,40 +106,37 @@ class PathfinderWorker extends Worker {
             }
         }
 
-        def globalModifier = 100 / (realSquareProbabilities.collect{ it.value }.sum() as Double)
-        realSquareProbabilities.each {
-            it.value *= globalModifier
-        }
-
-        def sum = realSquareProbabilities.collect{ it.value }.sum()
+        def sum = realSquareProbabilities.collect{ it.value }.sum() as Double
 
         if (sum == 0) {
             SQUARE_PROBABILITIES.each { def SQUARE ->
-                def nX = x + SQUARE[0][0]
-                def nY = y + SQUARE[0][1]
+                def (int sX, int sY) = SQUARE[0]
+                def nX = x + sX
+                def nY = y + sY
                 def neighbor = nodeNetwork[nX][nY] as Node
                 TravelType travelType = neighbor.travelType
                 if (villager.canTravel(travelType)) {
                     realSquareProbabilities[SQUARE[0]] = 1
                 }
             }
-
-            globalModifier = 100 / (realSquareProbabilities.collect{ it.value }.sum() as Double)
-            realSquareProbabilities.each {
-                it.value *= globalModifier
-            }
         }
 
-        sum = realSquareProbabilities.collect{ it.value }.sum()
+        sum = realSquareProbabilities.collect{ it.value }.sum() as Double
 
+        if (sum == 0) {
+            throw new PerIsBorkenException()
+        }
 
-
-        we need to start looking at visited squares
-
+        def globalModifier = 100 / sum
+        realSquareProbabilities.each {
+            it.value *= globalModifier
+        }
 
         if (sum - 100 > 0.00000001) {
             throw new PerIsBorkenException()
         }
+
+        //we need to start looking at visited squares
 
         return realSquareProbabilities
     }
