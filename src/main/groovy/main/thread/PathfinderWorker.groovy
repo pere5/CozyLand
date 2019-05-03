@@ -1,6 +1,6 @@
 package main.thread
 
-import main.Main
+
 import main.Model
 import main.Model.TravelType
 import main.Node
@@ -75,7 +75,7 @@ class PathfinderWorker extends Worker {
         def realSquareProbabilities = [:]
 
         def realDegree = calculateDegree(start, dest)
-        def (int x, int y) = pixelToNodeIdx(start)
+        def (int x, int y) = Model.pixelToNodeIdx(start)
         def nodeNetwork = Model.model.nodeNetwork as Node[][]
         def node = nodeNetwork[x][y]
 
@@ -105,6 +105,8 @@ class PathfinderWorker extends Worker {
                 realSquareProbabilities[SQUARE[0]] = 0d
             }
         }
+
+        //we need to start looking at visited squares
 
         def sum = realSquareProbabilities.collect{ it.value }.sum() as Double
 
@@ -153,10 +155,6 @@ class PathfinderWorker extends Worker {
             )
         }
 
-    }
-
-    static int[] pixelToNodeIdx(int[] ints) {
-        ints.collect { it / Main.SQUARE_WIDTH }
     }
 
     static int calculateDegree(int[] start, int[] dest) {

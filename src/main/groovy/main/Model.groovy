@@ -27,18 +27,8 @@ class Model {
     }
 
     static def init(def keyboard, def mouse) {
-        def villagers = [
-                new Villager(), new Villager(), new Villager(), new Villager(), new Villager()
-        ]
-        def stones = []
-        def trees = []
-        def artifacts = []
-
-        def drawables = [
-                artifacts, stones, trees, villagers
-        ].flatten()
-
         def nodeNetwork = generateBackground()
+
 
         def travelModifier = [
                 (TravelType.WATER)    : 0.7d,
@@ -57,14 +47,28 @@ class Model {
                 keyboard                     : keyboard,
                 mouse                        : mouse,
                 pause                        : false,
-                drawables                    : drawables,
-                villagers                    : villagers,
+                drawables                    : [],
+                villagers                    : [],
                 frameSlots                   : [0, 0, 0, 0, 0],
                 nodeNetwork                  : nodeNetwork,
                 rules                        : generateRules(),
                 squareProbabilitiesForDegrees: calculateProbabilitiesModel(),
                 travelModifier               : travelModifier
         ]
+
+        def villagers = [
+                new Villager(), new Villager(), new Villager(), new Villager(), new Villager()
+        ]
+        def stones = []
+        def trees = []
+        def artifacts = []
+
+        def drawables = [
+                artifacts, stones, trees, villagers
+        ].flatten()
+
+        model.villagers = villagers
+        model.drawables = drawables
 
         model.backgroundImage = createBGImage()
     }
@@ -520,14 +524,32 @@ class Model {
         numbers.collect { round(it) }
     }
 
+    static int[] round(List<Double> numbers) {
+        numbers.collect { round(it) }
+    }
+
     static Double[] generateXY() {
-        [
+        def (int x, int y) = pixelToNodeIdx(round([
                 Main.MAP_WIDTH / 2 + generate(round(Main.MAP_WIDTH / 9)),
                 Main.MAP_HEIGHT / 2 + generate(round(Main.MAP_HEIGHT / 9))
-        ]
+        ]))
+
+        def node = Model.model.nodeNetwork[x][y] as Node
+
+        fel här
+
+        if (node.travelType == TravelType.WATER) {
+            return generateXY()
+        } else {
+            return [x, y]
+        }
     }
 
     static Double generate(int distance) {
         return distance - ThreadLocalRandom.current().nextInt(0, distance * 2 + 1)
+    }
+
+    static int[] pixelToNodeIdx(int[] ints) {
+        ints.collect { it / Main.SQUARE_WIDTH }
     }
 }
