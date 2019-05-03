@@ -39,21 +39,21 @@ class Villager extends Drawable {
     }
 
     void toWorkWorker() {
-        println("${id}-w")
+        //println("${id}-w")
         pathfinderWorker = false
         ruleWorker = false
         workWorker = true
     }
 
     void toRuleWorker() {
-        println("${id}-r")
+        //println("${id}-r")
         pathfinderWorker = false
         ruleWorker = true
         workWorker = false
     }
 
     void toPathfinderWorker() {
-        println("${id}-p")
+        //println("${id}-p")
         pathfinderWorker = true
         ruleWorker = false
         workWorker = false
