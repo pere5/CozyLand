@@ -553,4 +553,60 @@ class Model {
     static int[] pixelToNodeIdx(int[] ints) {
         ints.collect { it / Main.SQUARE_WIDTH }
     }
+
+    static int calculateDegree(int[] start, int[] dest) {
+        Double deg = Math.toDegrees(Math.atan2(dest[1] - start[1], dest[0] - start[0]))
+        Model.round(deg >= 0 ? deg : deg + 360)
+    }
+
+    static List<int[]> bresenham(int[] start, int[] dest) {
+        def (int x1, int y1) = start
+        def (int x2, int y2) = dest
+        def result = []
+
+        // delta of exact value and rounded value of the dependent variable
+        int d = 0
+
+        int dx = Math.abs(x2 - x1)
+        int dy = Math.abs(y2 - y1)
+
+        int dx2 = 2 * dx // slope scaling factors to
+        int dy2 = 2 * dy // avoid floating point
+
+        int ix = x1 < x2 ? 1 : -1 // increment direction
+        int iy = y1 < y2 ? 1 : -1
+
+        int x = x1
+        int y = y1
+
+        if (dx >= dy) {
+            while (true) {
+                result << ([x, y] as int[])
+                if (x == x2) {
+                    break
+                }
+                x += ix
+                d += dy2
+                if (d > dx) {
+                    y += iy
+                    d -= dx2
+                }
+            }
+        } else {
+            while (true) {
+                result << ([x, y] as int[])
+                if (y == y2) {
+                    break
+                }
+                y += iy
+                d += dx2
+                if (d > dy) {
+                    x += ix
+                    d -= dy2
+                }
+            }
+        }
+
+        return result
+    }
 }

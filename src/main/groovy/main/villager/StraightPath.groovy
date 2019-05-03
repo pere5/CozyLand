@@ -4,7 +4,6 @@ import main.Model
 import main.Node
 import main.things.Artifact
 import main.things.Drawable
-import main.thread.PathfinderWorker
 
 import java.awt.*
 import java.util.Queue
@@ -17,20 +16,9 @@ class StraightPath extends Action {
 
     StraightPath(Double[] start, Double[] dest) {
         id = Model.getNewId()
-        def nodeIndices = PathfinderWorker.bresenham(Model.round(start), Model.round(dest))
-        nodeIndices.each {
-            Model.model.drawables << new Artifact(parent: id, x: it[0], y: it[1])
-        }
-/*
-        def realDegree = calculateDegree(start, dest)
-        def (int x, int y) = Model.pixelToNodeIdx(start)
-        def nodeNetwork = Model.model.nodeNetwork as Node[][]
-        def node = nodeNetwork[x][y]
 
-        final def SQUARE_PROBABILITIES = Model.model.squareProbabilitiesForDegrees[realDegree]
+        testPrints(start, dest)
 
-        testPrints(SQUARE_PROBABILITIES, x, y, realDegree, nodeNetwork)
-*/
         Double[] nextStep = start
         while (!closeEnough(nextStep, dest, STEP)) {
             Double vx = dest[0] - nextStep[0]
@@ -49,7 +37,15 @@ class StraightPath extends Action {
     }
 
     static def testGradient = Model.gradient(Color.BLACK, Color.WHITE, 32)
-    private void testPrints(def SQUARE_PROBABILITIES, int x, int y, def realDegree, def nodeNetwork) {
+    private void testPrints(Double[] start, Double[] dest) {
+        def sR = Model.round(start)
+        def dR = Model.round(dest)
+
+        def realDegree = Model.calculateDegree(sR, dR)
+        def (int x, int y) = Model.pixelToNodeIdx(sR)
+        def nodeNetwork = Model.model.nodeNetwork as Node[][]
+        def SQUARE_PROBABILITIES = Model.model.squareProbabilitiesForDegrees[realDegree]
+
         def node = nodeNetwork[x][y]
         SQUARE_PROBABILITIES.each { def SQUARE ->
             def (int sX, int sY) = SQUARE[0]
@@ -58,9 +54,14 @@ class StraightPath extends Action {
             def squareProbability = SQUARE[1] as Double
             def neighbor = nodeNetwork[nX][nY] as Node
             Model.model.drawables << new Artifact(
-                    size: neighbor.size, parent: node.id, x: neighbor.x, y: neighbor.y,
+                    size: neighbor.size, parent: this.id, x: neighbor.x, y: neighbor.y,
                     color: testGradient[Model.round(squareProbability)]
             )
+        }
+
+        def nodeIndices = Model.bresenham(sR, dR)
+        nodeIndices.each {
+            Model.model.drawables << new Artifact(parent: id, x: it[0], y: it[1])
         }
 
     }
