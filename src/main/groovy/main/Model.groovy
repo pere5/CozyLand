@@ -10,6 +10,7 @@ import javax.imageio.ImageIO
 import java.awt.*
 import java.awt.image.BufferedImage
 import java.util.List
+import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.ThreadLocalRandom
 
 class Model {
@@ -63,9 +64,9 @@ class Model {
         def trees = []
         def artifacts = []
 
-        def drawables = [
+        def drawables = new ConcurrentLinkedQueue<Drawable>([
                 artifacts, stones, trees, villagers
-        ].flatten()
+        ].flatten())
 
         model.villagers = villagers
         model.drawables = drawables

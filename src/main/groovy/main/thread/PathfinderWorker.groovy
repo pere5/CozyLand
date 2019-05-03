@@ -1,16 +1,11 @@
 package main.thread
 
-
 import main.Model
 import main.Model.TravelType
 import main.Node
 import main.exception.PerIsBorkenException
-import main.things.Artifact
 import main.villager.StraightPath
 import main.villager.Villager
-
-import java.awt.*
-import java.util.List
 
 class PathfinderWorker extends Worker {
 
@@ -61,9 +56,6 @@ class PathfinderWorker extends Worker {
 
                 def squares = realSquareProbabilities(villager, Model.round(start), Model.round(dest))
 
-                println(squares)
-                println(villager)
-
                 villager.actionQueue << new StraightPath(start, dest)
                 villager.toWorkWorker()
             }
@@ -80,7 +72,6 @@ class PathfinderWorker extends Worker {
         def node = nodeNetwork[x][y]
 
         final def SQUARE_PROBABILITIES = Model.model.squareProbabilitiesForDegrees[realDegree]
-        //testPrints(SQUARE_PROBABILITIES, nodeIdx, realDegree, nodeNetwork)
 
         SQUARE_PROBABILITIES.each { def SQUARE ->
             def (int sX, int sY) = SQUARE[0]
@@ -141,20 +132,6 @@ class PathfinderWorker extends Worker {
         }
 
         return realSquareProbabilities
-    }
-
-    static def testGradient = Model.gradient(Color.BLACK, Color.WHITE, 32)
-    private void testPrints(def SQUARE_PROBABILITIES, def nodeIdx, def realDegree, def nodeNetwork) {
-        def node = nodeNetwork[nodeIdx[0]][nodeIdx[1]]
-        SQUARE_PROBABILITIES.each { def SQUARE ->
-
-            Node neighbor = nodeNetwork[nodeIdx[0] + SQUARE[0][0]][nodeIdx[1] + SQUARE[0][1]]
-            Model.model.drawables << new Artifact(
-                    size: neighbor.size, parent: node.id, x: neighbor.x, y: neighbor.y,
-                    color: testGradient[Model.round(SQUARE[1])]
-            )
-        }
-
     }
 
     static int calculateDegree(int[] start, int[] dest) {

@@ -60,6 +60,6 @@ class Villager extends Drawable {
     }
 
     boolean canTravel(TravelType travelType) {
-        travelType == TravelType.WATER
+        travelType != TravelType.WATER
     }
 }

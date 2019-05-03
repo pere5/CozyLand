@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
 import java.awt.event.KeyEvent
 import java.util.List
+import java.util.concurrent.ConcurrentLinkedQueue
 
 class Surface extends JPanel implements ActionListener {
 
@@ -54,7 +55,7 @@ class Surface extends JPanel implements ActionListener {
 
         g2d.drawImage(backgroundImage, xOffset, yOffset, null)
 
-        List<Drawable> drawables = Model.model.drawables
+        ConcurrentLinkedQueue<Drawable> drawables = Model.model.drawables
         for (int i = 0; i < drawables.size(); i++) {
             Drawable drawable = drawables[i]
             //Groovy don't throw IndexOutOfBoundException.
