@@ -31,7 +31,11 @@ class Villager extends Drawable {
                 return Action.CONTINUE
             } else {
                 actionQueue.poll()
-                return Action.DONE
+                if (actionQueue.peek()) {
+                    return Action.CONTINUE
+                } else {
+                    return Action.DONE
+                }
             }
         } else {
             return Action.DONE
