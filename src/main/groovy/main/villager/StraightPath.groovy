@@ -14,10 +14,10 @@ class StraightPath extends Action {
     Double STEP = 0.7
     int id
 
-    StraightPath(Double[] start, Double[] dest) {
+    StraightPath(Double[] start, Double[] dest, def nextSquares) {
         id = Model.getNewId()
 
-        testPrints(start, dest)
+        testPrints(start, dest, nextSquares)
 
         Double[] nextStep = start
         while (!closeEnough(nextStep, dest, STEP)) {
@@ -36,26 +36,32 @@ class StraightPath extends Action {
         path.add(dest)
     }
 
-    static def testGradient = Model.gradient(Color.BLACK, Color.WHITE, 32)
-    private void testPrints(Double[] start, Double[] dest) {
+    private void testPrints(Double[] start, Double[] dest, def nextSquares) {
         def sR = Model.round(start)
         def dR = Model.round(dest)
-
-        def realDegree = Model.calculateDegree(sR, dR)
         def (int x, int y) = Model.pixelToNodeIdx(sR)
         def nodeNetwork = Model.model.nodeNetwork as Node[][]
-        def SQUARE_PROBABILITIES = Model.model.squareProbabilitiesForDegrees[realDegree]
 
-        def node = nodeNetwork[x][y]
-        SQUARE_PROBABILITIES.each { def SQUARE ->
-            def (int sX, int sY) = SQUARE[0]
+        def maxSquare = nextSquares.max { def square ->
+            square[0][1] - square[0][0]
+        }
+
+        int maxProb = Model.round(maxSquare[0][1] - maxSquare[0][0] + 1)
+
+        def colorGradient = Model.gradient(Color.DARK_GRAY, Color.WHITE, maxProb)
+
+        nextSquares.each { def square ->
+            def (int sX, int sY) = square[1]
             def nX = x + sX
             def nY = y + sY
-            def squareProbability = SQUARE[1] as Double
+            def squareProbability = (square[0][1] - square[0][0]) as Double
             def neighbor = nodeNetwork[nX][nY] as Node
+
+
+
             Model.model.drawables << new Artifact(
                     size: neighbor.size, parent: this.id, x: neighbor.x, y: neighbor.y,
-                    color: testGradient[Model.round(squareProbability)]
+                    color: colorGradient[Model.round(squareProbability)]
             )
         }
 

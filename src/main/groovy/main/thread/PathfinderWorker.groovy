@@ -31,10 +31,10 @@ class PathfinderWorker extends Worker {
 
                 def start = [villager.x, villager.y] as Double[]
                 def dest = Model.generateXY()
-                def realDegree = Model.calculateDegree(start, dest)
+                def degree = Model.calculateDegree(start, dest)
                 def (int nodeX, int nodeY) = Model.pixelToNodeIdx(start)
 
-                def nextSquares = nextSquares(villager, nodeX, nodeY, realDegree, visitedSquares)
+                def nextSquares = nextSquares(villager, nodeX, nodeY, degree, visitedSquares)
 
                 if (nextSquares) {
                     def random = Math.random() * 100
@@ -50,29 +50,29 @@ class PathfinderWorker extends Worker {
 
                 }
 
-                villager.actionQueue << new StraightPath(start, dest)
+                villager.actionQueue << new StraightPath(start, dest, nextSquares)
                 villager.toWorkWorker()
             }
         }
     }
 
-    def nextSquares(Villager villager, int nodeX, int nodeY, int realDegree, Map visitedSquares) {
+    def nextSquares(Villager villager, int nodeX, int nodeY, int degree, Map visitedSquares) {
 
         def nextSquares = []
 
         def nodeNetwork = Model.model.nodeNetwork as Node[][]
         def node = nodeNetwork[nodeX][nodeY]
 
-        final def SQUARE_PROBABILITIES = Model.model.squareProbabilitiesForDegrees[realDegree]
+        final def squareProbabilities = Model.model.squareProbabilitiesForDegrees[degree]
 
-        SQUARE_PROBABILITIES.each { def SQUARE ->
-            if (!visitedSquares.containsKey(SQUARE)) {
-                def (int sX, int sY) = SQUARE[0]
+        squareProbabilities.each { def square ->
+            if (!visitedSquares.containsKey(square)) {
+                def (int sX, int sY) = square[0]
                 def nX = nodeX + sX
                 def nY = nodeY + sY
                 def neighbor = nodeNetwork[nX][nY] as Node
                 TravelType travelType = neighbor.travelType
-                def squareProbability = SQUARE[1] as Double
+                def squareProbability = square[1] as Double
 
                 if (villager.canTravel(travelType) && squareProbability > 0) {
                     def travelModifierMap = Model.model.travelModifier as Map<TravelType, Double>
@@ -84,21 +84,21 @@ class PathfinderWorker extends Worker {
                             ? travelModifierMap[TravelType.EVEN]
                             : travelModifierMap[TravelType.DOWN_HILL]) as Double
                     Double probability = (1 / (heightModifier * travelModifier)) * squareProbability
-                    nextSquares << [probability, SQUARE[0]]
+                    nextSquares << [probability, square[0]]
                 }
             }
         }
 
         if (nextSquares.size() == 0) {
-            SQUARE_PROBABILITIES.each { def SQUARE ->
-                def (int sX, int sY) = SQUARE[0]
+            squareProbabilities.each { def square ->
+                def (int sX, int sY) = square[0]
                 def nX = nodeX + sX
                 def nY = nodeY + sY
                 def neighbor = nodeNetwork[nX][nY] as Node
                 TravelType travelType = neighbor.travelType
 
                 if (villager.canTravel(travelType)) {
-                    nextSquares << [1d, SQUARE[0]]
+                    nextSquares << [1d, square[0]]
                 }
             }
         }
