@@ -57,8 +57,6 @@ class StraightPath extends Action {
             def squareProbability = (square[0][1] - square[0][0]) as Double
             def neighbor = nodeNetwork[nX][nY] as Node
 
-
-
             Model.model.drawables << new Artifact(
                     size: neighbor.size, parent: this.id, x: neighbor.x, y: neighbor.y,
                     color: colorGradient[Model.round(squareProbability)]
