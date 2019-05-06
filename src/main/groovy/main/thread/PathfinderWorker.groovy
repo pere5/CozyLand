@@ -32,7 +32,11 @@ class PathfinderWorker extends Worker {
                 def start = [villager.x, villager.y] as Double[]
                 def dest = Model.generateXY()
 
-                def realSquareProbabilities = realSquareProbabilities(villager, Model.round(start), Model.round(dest))
+                def nextSquares = nextSquares(villager, Model.round(start), Model.round(dest), visitedSquares)
+
+                def random = Math.random() * 100
+
+                //def step = nextSquares[]
 
 
                 villager.actionQueue << new StraightPath(start, dest)
@@ -41,9 +45,9 @@ class PathfinderWorker extends Worker {
         }
     }
 
-    def realSquareProbabilities(Villager villager, int[] start, int[] dest) {
+    def nextSquares(Villager villager, int[] start, int[] dest, Map visitedSquares) {
 
-        def realSquareProbabilities = [:]
+        def nextSquares = [:]
 
         def realDegree = Model.calculateDegree(start, dest)
         def (int x, int y) = Model.pixelToNodeIdx(start)
@@ -71,13 +75,13 @@ class PathfinderWorker extends Worker {
                         ? travelModifierMap[TravelType.EVEN]
                         : travelModifierMap[TravelType.DOWN_HILL]) as Double
                 Double probability = (1 / (heightModifier * travelModifier)) * squareProbability
-                realSquareProbabilities[SQUARE[0]] = probability
+                nextSquares[SQUARE[0]] = probability
             } else {
-                realSquareProbabilities[SQUARE[0]] = 0d
+                nextSquares[SQUARE[0]] = 0d
             }
         }
 
-        def sum = realSquareProbabilities.collect{ it.value }.sum() as Double
+        def sum = nextSquares.collect{ it.value }.sum() as Double
 
         if (sum == 0) {
             SQUARE_PROBABILITIES.each { def SQUARE ->
@@ -88,28 +92,40 @@ class PathfinderWorker extends Worker {
                 TravelType travelType = neighbor.travelType
 
                 if (villager.canTravel(travelType)) {
-                    realSquareProbabilities[SQUARE[0]] = 1d
+                    nextSquares[SQUARE[0]] = 1d
                 }
             }
         }
 
-        sum = realSquareProbabilities.collect{ it.value }.sum() as Double
+        sum = nextSquares.collect{ it.value }.sum() as Double
 
         if (sum == 0) {
             throw new PerIsBorkenException()
         }
 
         def globalModifier = 100 / sum
-        realSquareProbabilities.each {
+        nextSquares.each {
             it.value *= globalModifier
         }
 
-        sum = realSquareProbabilities.collect{ it.value }.sum() as Double
+        sum = nextSquares.collect{ it.value }.sum() as Double
 
         if (sum - 100 > 0.00000001) {
             throw new PerIsBorkenException()
         }
 
-        return realSquareProbabilities
+        sum = 0
+        def boll = nextSquares.collectEntries { def key, Double value ->
+            Double lowerLimit = sum
+            Double upperLimit = lowerLimit + value
+            sum = upperLimit
+            [[lowerLimit, upperLimit], key]
+        }
+
+        if (Math.abs(boll.last()[2] as Double - 100) > 0.00000001) {
+            throw new PerIsBorkenException()
+        }
+
+        return boll
     }
 }
