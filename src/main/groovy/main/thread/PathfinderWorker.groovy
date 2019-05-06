@@ -105,7 +105,7 @@ class PathfinderWorker extends Worker {
             square[0] = [lowerLimit, upperLimit]
         }
 
-        if (Math.abs(nextSquares.last()[0][1] - 100) > 0.00000001) {
+        if (nextSquares && Math.abs(nextSquares.last()[0][1] - 100) > 0.00000001) {
             throw new PerIsBorkenException()
         }
 
