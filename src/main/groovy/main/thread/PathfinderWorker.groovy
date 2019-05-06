@@ -31,8 +31,10 @@ class PathfinderWorker extends Worker {
 
                 def start = [villager.x, villager.y] as Double[]
                 def dest = Model.generateXY()
+                def realDegree = Model.calculateDegree(start, dest)
+                def (int nodeX, int nodeY) = Model.pixelToNodeIdx(start)
 
-                def nextSquares = nextSquares(villager, Model.round(start), Model.round(dest), visitedSquares)
+                def nextSquares = nextSquares(villager, nodeX, nodeY, realDegree, visitedSquares)
 
                 if (nextSquares) {
                     def random = Math.random() * 100
@@ -54,22 +56,20 @@ class PathfinderWorker extends Worker {
         }
     }
 
-    def nextSquares(Villager villager, int[] start, int[] dest, Map visitedSquares) {
+    def nextSquares(Villager villager, int nodeX, int nodeY, int realDegree, Map visitedSquares) {
 
         def nextSquares = []
 
-        def realDegree = Model.calculateDegree(start, dest)
-        def (int x, int y) = Model.pixelToNodeIdx(start)
         def nodeNetwork = Model.model.nodeNetwork as Node[][]
-        def node = nodeNetwork[x][y]
+        def node = nodeNetwork[nodeX][nodeY]
 
         final def SQUARE_PROBABILITIES = Model.model.squareProbabilitiesForDegrees[realDegree]
 
         SQUARE_PROBABILITIES.each { def SQUARE ->
             if (!visitedSquares.containsKey(SQUARE)) {
                 def (int sX, int sY) = SQUARE[0]
-                def nX = x + sX
-                def nY = y + sY
+                def nX = nodeX + sX
+                def nY = nodeY + sY
                 def neighbor = nodeNetwork[nX][nY] as Node
                 TravelType travelType = neighbor.travelType
                 def squareProbability = SQUARE[1] as Double
@@ -92,8 +92,8 @@ class PathfinderWorker extends Worker {
         if (nextSquares.size() == 0) {
             SQUARE_PROBABILITIES.each { def SQUARE ->
                 def (int sX, int sY) = SQUARE[0]
-                def nX = x + sX
-                def nY = y + sY
+                def nX = nodeX + sX
+                def nY = nodeY + sY
                 def neighbor = nodeNetwork[nX][nY] as Node
                 TravelType travelType = neighbor.travelType
 

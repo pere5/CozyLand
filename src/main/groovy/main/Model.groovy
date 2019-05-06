@@ -550,13 +550,21 @@ class Model {
         return distance - ThreadLocalRandom.current().nextInt(0, distance * 2 + 1)
     }
 
-    static int[] pixelToNodeIdx(int[] ints) {
-        ints.collect { it / Main.SQUARE_WIDTH }
+    static int[] pixelToNodeIdx(int[] pixels) {
+        pixels.collect { it / Main.SQUARE_WIDTH }
+    }
+
+    static int[] pixelToNodeIdx(Double[] pixels) {
+        pixelToNodeIdx(round(pixels))
     }
 
     static int calculateDegree(int[] start, int[] dest) {
         Double deg = Math.toDegrees(Math.atan2(dest[1] - start[1], dest[0] - start[0]))
         Model.round(deg >= 0 ? deg : deg + 360)
+    }
+
+    static int calculateDegree(Double[] start, Double[] dest) {
+        calculateDegree(round(start), round(dest))
     }
 
     static List<int[]> bresenham(int[] start, int[] dest) {
