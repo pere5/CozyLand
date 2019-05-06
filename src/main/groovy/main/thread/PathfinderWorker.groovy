@@ -47,7 +47,7 @@ class PathfinderWorker extends Worker {
 
     def nextSquares(Villager villager, int[] start, int[] dest, Map visitedSquares) {
 
-        def nextSquares = [:]
+        def nextSquares = []
 
         def realDegree = Model.calculateDegree(start, dest)
         def (int x, int y) = Model.pixelToNodeIdx(start)
@@ -62,11 +62,10 @@ class PathfinderWorker extends Worker {
             def nY = y + sY
             def neighbor = nodeNetwork[nX][nY] as Node
             TravelType travelType = neighbor.travelType
-
             def squareProbability = SQUARE[1] as Double
-            def travelModifierMap = Model.model.travelModifier as Map<TravelType, Double>
 
-            if (villager.canTravel(travelType)) {
+            if (villager.canTravel(travelType) && squareProbability > 0) {
+                def travelModifierMap = Model.model.travelModifier as Map<TravelType, Double>
                 int heightDifference = neighbor.height - node.height
                 Double travelModifier = travelModifierMap[travelType]
                 Double heightModifier = (heightDifference > 0
@@ -75,15 +74,11 @@ class PathfinderWorker extends Worker {
                         ? travelModifierMap[TravelType.EVEN]
                         : travelModifierMap[TravelType.DOWN_HILL]) as Double
                 Double probability = (1 / (heightModifier * travelModifier)) * squareProbability
-                nextSquares[SQUARE[0]] = probability
-            } else {
-                nextSquares[SQUARE[0]] = 0d
+                nextSquares << [probability, SQUARE[0]]
             }
         }
 
-        def sum = nextSquares.collect{ it.value }.sum() as Double
-
-        if (sum == 0) {
+        if (nextSquares.size() == 0) {
             SQUARE_PROBABILITIES.each { def SQUARE ->
                 def (int sX, int sY) = SQUARE[0]
                 def nX = x + sX
@@ -92,40 +87,28 @@ class PathfinderWorker extends Worker {
                 TravelType travelType = neighbor.travelType
 
                 if (villager.canTravel(travelType)) {
-                    nextSquares[SQUARE[0]] = 1d
+                    nextSquares << [1d, SQUARE[0]]
                 }
             }
         }
 
-        sum = nextSquares.collect{ it.value }.sum() as Double
-
-        if (sum == 0) {
-            throw new PerIsBorkenException()
-        }
-
-        def globalModifier = 100 / sum
+        def globalModifier = 100 / (nextSquares.sum { it[0] } as Double)
         nextSquares.each {
-            it.value *= globalModifier
+            it[0] *= globalModifier
         }
 
-        sum = nextSquares.collect{ it.value }.sum() as Double
-
-        if (sum - 100 > 0.00000001) {
-            throw new PerIsBorkenException()
-        }
-
-        sum = 0
-        def boll = nextSquares.collectEntries { def key, Double value ->
+        Double sum = 0
+        nextSquares.each { def square ->
             Double lowerLimit = sum
-            Double upperLimit = lowerLimit + value
+            Double upperLimit = lowerLimit + (square[0] as Double)
             sum = upperLimit
-            [[lowerLimit, upperLimit], key]
+            square[0] = [lowerLimit, upperLimit]
         }
 
-        if (Math.abs(boll.last()[2] as Double - 100) > 0.00000001) {
+        if (Math.abs(nextSquares.last()[0][1] - 100) > 0.00000001) {
             throw new PerIsBorkenException()
         }
 
-        return boll
+        return nextSquares
     }
 }
