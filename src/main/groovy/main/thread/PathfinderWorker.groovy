@@ -34,10 +34,19 @@ class PathfinderWorker extends Worker {
 
                 def nextSquares = nextSquares(villager, Model.round(start), Model.round(dest), visitedSquares)
 
-                def random = Math.random() * 100
+                if (nextSquares) {
+                    def random = Math.random() * 100
 
-                //def step = nextSquares[]
+                    def square = nextSquares.find {
+                        def from = it[0][0] as Double
+                        def to = it[0][1] as Double
+                        random >= from && random <= to
+                    }
 
+                    visitedSquares[square] = Boolean.TRUE
+                } else {
+
+                }
 
                 villager.actionQueue << new StraightPath(start, dest)
                 villager.toWorkWorker()
@@ -57,24 +66,26 @@ class PathfinderWorker extends Worker {
         final def SQUARE_PROBABILITIES = Model.model.squareProbabilitiesForDegrees[realDegree]
 
         SQUARE_PROBABILITIES.each { def SQUARE ->
-            def (int sX, int sY) = SQUARE[0]
-            def nX = x + sX
-            def nY = y + sY
-            def neighbor = nodeNetwork[nX][nY] as Node
-            TravelType travelType = neighbor.travelType
-            def squareProbability = SQUARE[1] as Double
+            if (!visitedSquares.containsKey(SQUARE)) {
+                def (int sX, int sY) = SQUARE[0]
+                def nX = x + sX
+                def nY = y + sY
+                def neighbor = nodeNetwork[nX][nY] as Node
+                TravelType travelType = neighbor.travelType
+                def squareProbability = SQUARE[1] as Double
 
-            if (villager.canTravel(travelType) && squareProbability > 0) {
-                def travelModifierMap = Model.model.travelModifier as Map<TravelType, Double>
-                int heightDifference = neighbor.height - node.height
-                Double travelModifier = travelModifierMap[travelType]
-                Double heightModifier = (heightDifference > 0
-                        ? travelModifierMap[TravelType.UP_HILL]
-                        : heightDifference == 0
-                        ? travelModifierMap[TravelType.EVEN]
-                        : travelModifierMap[TravelType.DOWN_HILL]) as Double
-                Double probability = (1 / (heightModifier * travelModifier)) * squareProbability
-                nextSquares << [probability, SQUARE[0]]
+                if (villager.canTravel(travelType) && squareProbability > 0) {
+                    def travelModifierMap = Model.model.travelModifier as Map<TravelType, Double>
+                    int heightDifference = neighbor.height - node.height
+                    Double travelModifier = travelModifierMap[travelType]
+                    Double heightModifier = (heightDifference > 0
+                            ? travelModifierMap[TravelType.UP_HILL]
+                            : heightDifference == 0
+                            ? travelModifierMap[TravelType.EVEN]
+                            : travelModifierMap[TravelType.DOWN_HILL]) as Double
+                    Double probability = (1 / (heightModifier * travelModifier)) * squareProbability
+                    nextSquares << [probability, SQUARE[0]]
+                }
             }
         }
 
@@ -99,10 +110,10 @@ class PathfinderWorker extends Worker {
 
         Double sum = 0
         nextSquares.each { def square ->
-            Double lowerLimit = sum
-            Double upperLimit = lowerLimit + (square[0] as Double)
-            sum = upperLimit
-            square[0] = [lowerLimit, upperLimit]
+            Double from = sum
+            Double to = from + (square[0] as Double)
+            sum = to
+            square[0] = [from, to]
         }
 
         if (nextSquares && Math.abs(nextSquares.last()[0][1] - 100) > 0.00000001) {
