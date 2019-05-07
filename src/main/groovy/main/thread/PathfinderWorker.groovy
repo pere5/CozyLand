@@ -29,34 +29,72 @@ class PathfinderWorker extends Worker {
                 def visitedSquares = [:]
                 def exhaustedSquares = [:]
 
-                def start = [villager.x, villager.y] as Double[]
-                def dest = Model.generateXY()
-                def degree = Model.calculateDegree(start, dest)
-                def (int nodeX, int nodeY) = Model.pixelToNodeIdx(start)
+                def there = false
 
-                def nextSquares = nextSquares(villager, nodeX, nodeY, degree, visitedSquares)
+                while (!there) {
+                    def start = [villager.x, villager.y] as Double[]
+                    def dest = Model.generateXY()
+                    def degree = Model.calculateDegree(start, dest)
+                    def nodeXY = Model.pixelToNodeIdx(start)
 
-                if (nextSquares) {
-                    def random = Math.random() * 100
+                    visitedSquares[nodeXY] = Boolean.TRUE
 
-                    def square = nextSquares.find {
-                        def from = it[0][0] as Double
-                        def to = it[0][1] as Double
-                        random >= from && random <= to
+                    def nextSquares = nextSquares(villager, nodeXY, degree, visitedSquares)
+
+                    def square
+                    if (nextSquares) {
+                        def random = Math.random() * 100
+
+                        square = nextSquares.find {
+                            def from = it[0][0] as Double
+                            def to = it[0][1] as Double
+                            random >= from && random <= to
+                        }
+                    } else {
+                        exhaustedSquares[nodeXY] = Boolean.TRUE
+                        square = unExhaustedSquareClosestToDest(nodeXY, degree, exhaustedSquares, villager)
                     }
 
-                    visitedSquares[square] = Boolean.TRUE
-                } else {
+                    square //yeah boi
 
+                    villager.actionQueue << new StraightPath(start, dest, nextSquares)
+                    villager.toWorkWorker()
+
+                    there = true
                 }
-
-                villager.actionQueue << new StraightPath(start, dest, nextSquares)
-                villager.toWorkWorker()
             }
         }
     }
 
-    def nextSquares(Villager villager, int nodeX, int nodeY, int degree, Map visitedSquares) {
+    private def unExhaustedSquareClosestToDest(int[] nodeXY, int degree, def exhaustedSquares, Villager villager) {
+
+        def (int nodeX, int nodeY) = nodeXY
+
+        def candidates = []
+
+        Model.model.squareDegrees.each { def square ->
+            def (int sX, int sY) = square
+            def nX = nodeX + sX
+            def nY = nodeY + sY
+            def neighbor = nodeNetwork[nX][nY] as Node
+            TravelType travelType = neighbor.travelType
+
+            if (villager.canTravel(travelType)) {
+
+
+
+
+
+                candidates << [1d, square[0]]
+            }
+        }
+
+        candidates.min { it[0] }[1]
+    }
+
+    def nextSquares(Villager villager, int[] nodeXY, int degree, Map visitedSquares) {
+
+        def (int nodeX, int nodeY) = nodeXY
 
         def nextSquares = []
 
@@ -85,20 +123,6 @@ class PathfinderWorker extends Worker {
                             : travelModifierMap[TravelType.DOWN_HILL]) as Double
                     Double probability = (1 / (heightModifier * travelModifier)) * squareProbability
                     nextSquares << [probability, square[0]]
-                }
-            }
-        }
-
-        if (nextSquares.size() == 0) {
-            squareProbabilities.each { def square ->
-                def (int sX, int sY) = square[0]
-                def nX = nodeX + sX
-                def nY = nodeY + sY
-                def neighbor = nodeNetwork[nX][nY] as Node
-                TravelType travelType = neighbor.travelType
-
-                if (villager.canTravel(travelType)) {
-                    nextSquares << [1d, square[0]]
                 }
             }
         }

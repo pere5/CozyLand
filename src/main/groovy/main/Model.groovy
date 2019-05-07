@@ -30,7 +30,6 @@ class Model {
     static def init(def keyboard, def mouse) {
         def nodeNetwork = generateBackground()
 
-
         def travelModifier = [
                 (TravelType.WATER)    : 0.7d,
                 (TravelType.FOREST)   : 1.0d,
@@ -44,18 +43,33 @@ class Model {
                 (TravelType.DOWN_HILL): 1.0d,
         ]
 
-        model = [
-                keyboard                     : keyboard,
-                mouse                        : mouse,
-                pause                        : false,
-                drawables                    : [],
-                villagers                    : [],
-                frameSlots                   : [0, 0, 0, 0, 0],
-                nodeNetwork                  : nodeNetwork,
-                rules                        : generateRules(),
-                squareProbabilitiesForDegrees: calculateProbabilitiesModel(),
-                travelModifier               : travelModifier
+        def allSquares = [
+                [-1, 1],  [0,  1],  [1,  1],
+                [-1, 0],            [1,  0],
+                [-1, -1], [0, -1],  [1, -1]
         ]
+
+        def squareDegrees = [
+                [113, 158]: [-1,  1], [68, 113] : [0,  1], [23,   68]: [1,  1],
+                [158, 203]: [-1,  0],                      [338,  23]: [1,  0],
+                [203, 248]: [-1, -1], [248, 293]: [0, -1], [293, 338]: [1, -1]
+        ]
+
+        model = [
+                keyboard      : keyboard,
+                mouse         : mouse,
+                pause         : false,
+                drawables     : [],
+                villagers     : [],
+                frameSlots    : [0, 0, 0, 0, 0],
+                nodeNetwork   : nodeNetwork,
+                rules         : generateRules(),
+                squareDegrees : squareDegrees,
+                travelModifier: travelModifier,
+                allSquares    : allSquares
+        ]
+
+        model.squareProbabilitiesForDegrees = calculateProbabilitiesModel()
 
         def villagers = [
                 new Villager(), new Villager(), new Villager(), new Villager(), new Villager()
@@ -66,7 +80,7 @@ class Model {
 
         def drawables = new ConcurrentLinkedQueue<Drawable>([
                 artifacts, stones, trees, villagers
-        ].flatten())
+        ].flatten() as List<Drawable>)
 
         model.villagers = villagers
         model.drawables = drawables
@@ -81,7 +95,7 @@ class Model {
 
     static def calculateProbabilitiesModel() {
         if (
-        degreeRange(45) != (315..359) + (0..135) ||
+                degreeRange(45) != (315..359) + (0..135) ||
                 degreeRange(100) != 10..190 ||
                 degreeRange(300) != (210..359) + (0..30)
         ) {
@@ -155,13 +169,7 @@ class Model {
     }
 
     private static List<List<Object>> squareProbabilities(List<List<Number>> degreeProbabilities) {
-        def squares = [
-                [113, 158]: [-1,  1], [68 , 113]: [0,  1], [23 ,  68]: [1,  1],
-                [158, 203]: [-1,  0],                      [338,  23]: [1,  0],
-                [203, 248]: [-1, -1], [248, 293]: [0, -1], [293, 338]: [1, -1],
-        ]
-
-        squares.collect { def square ->
+        model.squareDegrees.collect { def square ->
             def squareDegrees = square.key
             def squareProbability = degreeProbabilities.sum { def degreeProbability ->
                 def degree = degreeProbability[0] as int
