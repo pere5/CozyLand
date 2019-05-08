@@ -32,11 +32,12 @@ class PathfinderWorker extends Worker {
         Model.model.squareProbabilitiesForDegrees = Model.calculateProbabilitiesModel()
         Model.model.nodeNetwork = Model.generateBackground()
 
-        def villager = new Villager()
-        int[] nodeXY = Model.pixelToNodeIdx([579, 341] as int[])
-
-        def nextSquares1 = nextSquares(villager, nodeXY, 45, [:])
-        /*
+        def nextSquares1 = nextSquares(
+                new Villager(),
+                Model.pixelToNodeIdx([579, 341] as int[]),
+                45,
+                [:]
+        )
         def nextSquares2 = nextSquares(
                 new Villager(),
                 Model.pixelToNodeIdx([592, 376] as int[]),
@@ -48,7 +49,7 @@ class PathfinderWorker extends Worker {
                 Model.pixelToNodeIdx([662, 208] as int[]),
                 45,
                 [:]
-        )*/
+        )
 
         int lol = 0
     }
@@ -98,7 +99,7 @@ class PathfinderWorker extends Worker {
         }
     }
 
-    private def unExhaustedSquareClosestToDest(int[] nodeXY, int degree, def exhaustedSquares, Villager villager) {
+    private static def unExhaustedSquareClosestToDest(int[] nodeXY, int degree, def exhaustedSquares, Villager villager) {
 
         def (int nodeX, int nodeY) = nodeXY
 
@@ -124,7 +125,7 @@ class PathfinderWorker extends Worker {
         candidates.min { it[0] }[1]
     }
 
-    def nextSquares(Villager villager, int[] nodeXY, int degree, Map visitedSquares) {
+    private static def nextSquares(Villager villager, int[] nodeXY, int degree, Map visitedSquares) {
 
         def (int nodeX, int nodeY) = nodeXY
 
