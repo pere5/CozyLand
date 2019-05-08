@@ -20,7 +20,7 @@ class PathfinderWorkerTest {
     }
 
     @Test
-    void name() {
+    void nextSquares() {
         def pfw = new PathfinderWorker()
 
         def nextSquares1 = pfw.nextSquares(
@@ -41,6 +41,9 @@ class PathfinderWorkerTest {
                 45,
                 [:]
         )
+
+
+        //write this stuff?!?
 
         assert nextSquares1 && Math.abs(nextSquares1.last()[0][1] - 100) < 0.00000001
 
