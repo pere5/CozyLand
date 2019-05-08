@@ -1,10 +1,9 @@
 package main.thread
 
-import main.Main
+
 import main.Model
 import main.Model.TravelType
 import main.Node
-import main.exception.PerIsBorkenException
 import main.villager.StraightPath
 import main.villager.Villager
 
@@ -21,38 +20,6 @@ class PathfinderWorker extends Worker {
           - [x] beräkna genomsnittliga sannolikheten för varje grann nod relativt till de andra noderna utifrån gradernas sannolikheter
           - [x] omfördela sannolikheterna mot vaje nod baserat på nodens movementCost relativt till de andra noderna
      */
-
-    public static void main(String[] args) {
-
-        Main.VIEWPORT_WIDTH = Main.WINDOW_WIDTH - (0)
-        Main.VIEWPORT_HEIGHT = Main.WINDOW_HEIGHT - (22)
-        Main.MAP_WIDTH = Main.VIEWPORT_WIDTH * 2
-        Main.MAP_HEIGHT = Main.VIEWPORT_HEIGHT * 2
-
-        Model.model.squareProbabilitiesForDegrees = Model.calculateProbabilitiesModel()
-        Model.model.nodeNetwork = Model.generateBackground()
-
-        def nextSquares1 = nextSquares(
-                new Villager(),
-                Model.pixelToNodeIdx([579, 341] as int[]),
-                45,
-                [:]
-        )
-        def nextSquares2 = nextSquares(
-                new Villager(),
-                Model.pixelToNodeIdx([592, 376] as int[]),
-                45,
-                [:]
-        )
-        def nextSquares3 = nextSquares(
-                new Villager(),
-                Model.pixelToNodeIdx([662, 208] as int[]),
-                45,
-                [:]
-        )
-
-        int lol = 0
-    }
 
     def update() {
 
@@ -99,7 +66,7 @@ class PathfinderWorker extends Worker {
         }
     }
 
-    private static def unExhaustedSquareClosestToDest(int[] nodeXY, int degree, def exhaustedSquares, Villager villager) {
+    def unExhaustedSquareClosestToDest(int[] nodeXY, int degree, def exhaustedSquares, Villager villager) {
 
         def (int nodeX, int nodeY) = nodeXY
 
@@ -125,7 +92,7 @@ class PathfinderWorker extends Worker {
         candidates.min { it[0] }[1]
     }
 
-    private static def nextSquares(Villager villager, int[] nodeXY, int degree, Map visitedSquares) {
+    def nextSquares(Villager villager, int[] nodeXY, int degree, Map visitedSquares) {
 
         def (int nodeX, int nodeY) = nodeXY
 
@@ -160,21 +127,19 @@ class PathfinderWorker extends Worker {
             }
         }
 
-        def globalModifier = 100 / (nextSquares.sum { it[0] } as Double)
-        nextSquares.each {
-            it[0] *= globalModifier
-        }
+        if (nextSquares) {
+            def globalModifier = 100 / (nextSquares.sum { it[0] } as Double)
+            nextSquares.each {
+                it[0] *= globalModifier
+            }
 
-        Double sum = 0
-        nextSquares.each { def square ->
-            Double from = sum
-            Double to = from + (square[0] as Double)
-            sum = to
-            square[0] = [from, to]
-        }
-
-        if (nextSquares && Math.abs(nextSquares.last()[0][1] - 100) > 0.00000001) {
-            throw new PerIsBorkenException()
+            Double sum = 0
+            nextSquares.each { def square ->
+                Double from = sum
+                Double to = from + (square[0] as Double)
+                sum = to
+                square[0] = [from, to]
+            }
         }
 
         return nextSquares
