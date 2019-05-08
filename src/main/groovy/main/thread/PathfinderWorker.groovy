@@ -1,5 +1,6 @@
 package main.thread
 
+import main.Main
 import main.Model
 import main.Model.TravelType
 import main.Node
@@ -20,6 +21,37 @@ class PathfinderWorker extends Worker {
           - [x] beräkna genomsnittliga sannolikheten för varje grann nod relativt till de andra noderna utifrån gradernas sannolikheter
           - [x] omfördela sannolikheterna mot vaje nod baserat på nodens movementCost relativt till de andra noderna
      */
+
+    public static void main(String[] args) {
+
+        Main.VIEWPORT_WIDTH = Main.WINDOW_WIDTH - (0)
+        Main.VIEWPORT_HEIGHT = Main.WINDOW_HEIGHT - (22)
+        Main.MAP_WIDTH = Main.VIEWPORT_WIDTH * 2
+        Main.MAP_HEIGHT = Main.VIEWPORT_HEIGHT * 2
+
+        Model.model.squareProbabilitiesForDegrees = Model.calculateProbabilitiesModel()
+        Model.model.nodeNetwork = Model.generateBackground()
+
+        def villager = new Villager()
+        int[] nodeXY = Model.pixelToNodeIdx([579, 341] as int[])
+
+        def nextSquares1 = nextSquares(villager, nodeXY, 45, [:])
+        /*
+        def nextSquares2 = nextSquares(
+                new Villager(),
+                Model.pixelToNodeIdx([592, 376] as int[]),
+                45,
+                [:]
+        )
+        def nextSquares3 = nextSquares(
+                new Villager(),
+                Model.pixelToNodeIdx([662, 208] as int[]),
+                45,
+                [:]
+        )*/
+
+        int lol = 0
+    }
 
     def update() {
 
@@ -72,7 +104,7 @@ class PathfinderWorker extends Worker {
 
         def candidates = []
 
-        Model.model.squareDegrees.each { def square ->
+        Model.squareDegrees.each { def square ->
             def (int sX, int sY) = square
             def nX = nodeX + sX
             def nY = nodeY + sY
@@ -113,7 +145,7 @@ class PathfinderWorker extends Worker {
                 def squareProbability = square[1] as Double
 
                 if (villager.canTravel(travelType) && squareProbability > 0) {
-                    def travelModifierMap = Model.model.travelModifier as Map<TravelType, Double>
+                    def travelModifierMap = Model.travelModifier as Map<TravelType, Double>
                     int heightDifference = neighbor.height - node.height
                     Double travelModifier = travelModifierMap[travelType]
                     Double heightModifier = (heightDifference > 0

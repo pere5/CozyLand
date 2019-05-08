@@ -17,7 +17,7 @@ class Model {
 
     static int idGenerator = 0
 
-    static model
+    static model = [:]
 
     static int getNewId() {
         idGenerator++
@@ -27,33 +27,33 @@ class Model {
         WATER, FOREST, HILL, MOUNTAIN, PLAIN, ROAD, UP_HILL, DOWN_HILL, EVEN
     }
 
+    static def travelModifier = [
+            (TravelType.WATER)    : 0.7d,
+            (TravelType.FOREST)   : 1.0d,
+            (TravelType.HILL)     : 1.1d,
+            (TravelType.MOUNTAIN) : 1.2d,
+            (TravelType.PLAIN)    : 0.9d,
+            (TravelType.ROAD)     : 0.8d,
+
+            (TravelType.UP_HILL)  : 1.1d,
+            (TravelType.EVEN)     : 1.0d,
+            (TravelType.DOWN_HILL): 1.0d,
+    ]
+
+    static def allSquares = [
+            [-1, 1],  [0,  1],  [1,  1],
+            [-1, 0],            [1,  0],
+            [-1, -1], [0, -1],  [1, -1]
+    ]
+
+    static def squareDegrees = [
+            [113, 158]: [-1,  1], [68, 113] : [0,  1], [23,   68]: [1,  1],
+            [158, 203]: [-1,  0],                      [338,  23]: [1,  0],
+            [203, 248]: [-1, -1], [248, 293]: [0, -1], [293, 338]: [1, -1]
+    ]
+
     static def init(def keyboard, def mouse) {
         def nodeNetwork = generateBackground()
-
-        def travelModifier = [
-                (TravelType.WATER)    : 0.7d,
-                (TravelType.FOREST)   : 1.0d,
-                (TravelType.HILL)     : 1.1d,
-                (TravelType.MOUNTAIN) : 1.2d,
-                (TravelType.PLAIN)    : 0.9d,
-                (TravelType.ROAD)     : 0.8d,
-
-                (TravelType.UP_HILL)  : 1.1d,
-                (TravelType.EVEN)     : 1.0d,
-                (TravelType.DOWN_HILL): 1.0d,
-        ]
-
-        def allSquares = [
-                [-1, 1],  [0,  1],  [1,  1],
-                [-1, 0],            [1,  0],
-                [-1, -1], [0, -1],  [1, -1]
-        ]
-
-        def squareDegrees = [
-                [113, 158]: [-1,  1], [68, 113] : [0,  1], [23,   68]: [1,  1],
-                [158, 203]: [-1,  0],                      [338,  23]: [1,  0],
-                [203, 248]: [-1, -1], [248, 293]: [0, -1], [293, 338]: [1, -1]
-        ]
 
         model = [
                 keyboard      : keyboard,
@@ -63,10 +63,7 @@ class Model {
                 villagers     : [],
                 frameSlots    : [0, 0, 0, 0, 0],
                 nodeNetwork   : nodeNetwork,
-                rules         : generateRules(),
-                squareDegrees : squareDegrees,
-                travelModifier: travelModifier,
-                allSquares    : allSquares
+                rules         : generateRules()
         ]
 
         model.squareProbabilitiesForDegrees = calculateProbabilitiesModel()
@@ -169,7 +166,7 @@ class Model {
     }
 
     private static List<List<Object>> squareProbabilities(List<List<Number>> degreeProbabilities) {
-        model.squareDegrees.collect { def square ->
+        Model.squareDegrees.collect { def square ->
             def squareDegrees = square.key
             def squareProbability = degreeProbabilities.sum { def degreeProbability ->
                 def degree = degreeProbability[0] as int
