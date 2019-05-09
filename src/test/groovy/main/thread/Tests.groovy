@@ -16,7 +16,7 @@ class Tests {
         Main.MAP_HEIGHT = Main.VIEWPORT_HEIGHT * 2
 
         Model.model.squareProbabilitiesForDegrees = Model.calculateProbabilitiesModel()
-        Model.model.nodeNetwork = Model.generateBackground()
+        Model.model.nodeNetwork = Model.generateBackground('lol.png')
     }
 
     @Test

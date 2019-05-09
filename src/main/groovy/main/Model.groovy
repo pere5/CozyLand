@@ -133,8 +133,12 @@ class Model {
     }
 
     static Node[][] generateBackground() {
+        generateBackground('lol.png')
+    }
+
+    static Node[][] generateBackground(String imageName) {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader()
-        BufferedImage image = ImageIO.read(classloader.getResourceAsStream('lol.png'))
+        BufferedImage image = ImageIO.read(classloader.getResourceAsStream(imageName))
 
         int[][] heightMap = buildHeightMap(image)
         shaveOffExtremeMaxMin(heightMap)
