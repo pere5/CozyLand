@@ -91,65 +91,15 @@ class Model {
     }
 
     static def calculateProbabilitiesModel() {
-        if (
-                degreeRange(45) != (315..359) + (0..135) ||
-                degreeRange(100) != 10..190 ||
-                degreeRange(300) != (210..359) + (0..30)
-        ) {
-            throw new PerIsBorkenException()
-        }
-
         (0..359).collectEntries { def degree ->
             def degreeRange = degreeRange(degree)
             def degreeProbabilities = degreeProbabilities(degreeRange)
             def squares = squareProbabilities(degreeProbabilities)
-
-            def random = round(Math.random() * 10)
-            if (random % 10 == 0) {
-                if (degreeProbabilities.collect { it[0] } != degreeRange) {
-                    throw new PerIsBorkenException()
-                }
-
-                if (Math.abs((degreeProbabilities.sum { it[1] } as Double) - 100) > 0.00000001) {
-                    throw new PerIsBorkenException()
-                }
-
-                if (Math.abs((squares.collect { it[1] }.sum() as Double) - 100) > 0.00000001) {
-                    throw new PerIsBorkenException()
-                }
-
-                reverseEngineerDegree(degree, squares)
-            }
-
             [(degree), squares]
         }
     }
 
-    static void reverseEngineerDegree(int realDegree, def squares) {
-
-        def vectors = squares.collect { def square ->
-            [square[1] * square[0][0], square[1] * square[0][1]]
-        }
-
-        def addedVector = vectors.inject([0, 0]) { def result, def elem ->
-            result[0] += elem[0]
-            result[1] += elem[1]
-            return result
-        }
-
-        def l = Math.toDegrees(Math.atan2(addedVector[1], addedVector[0]))
-
-        def reversed = l >= 0 ? l : l + 360
-
-        //https://gamedev.stackexchange.com/questions/4467/comparing-angles-and-working-out-the-difference
-        def diffDeg = 180.0 - Math.abs(Math.abs(reversed - realDegree) - 180.0)
-
-        if (diffDeg > 1.6) {
-            throw new PerIsBorkenException()
-        }
-    }
-
-    private static List<Integer> degreeRange(int degree) {
+    static List<Integer> degreeRange(int degree) {
         int u = degree + 90
         int l = degree - 90
         int upper = u % 360
@@ -157,7 +107,7 @@ class Model {
         (upper > lower) ? (lower..upper) : (lower..359) + (0..upper)
     }
 
-    private static List<List<Number>> degreeProbabilities(List<Integer> degree) {
+    static List<List<Number>> degreeProbabilities(List<Integer> degree) {
         (degree[0..35]).collect    { [it, 12.5/36] } +
         (degree[36..71]).collect   { [it, 25/36] } +
         (degree[72..108]).collect  { [it, 25/37] } +
@@ -165,7 +115,7 @@ class Model {
         (degree[145..180]).collect { [it, 12.5/36] }
     }
 
-    private static List<List<Object>> squareProbabilities(List<List<Number>> degreeProbabilities) {
+    static List<List<Object>> squareProbabilities(List<List<Number>> degreeProbabilities) {
         Model.squareDegrees.collect { def square ->
             def squareDegrees = square.key
             def squareProbability = degreeProbabilities.sum { def degreeProbability ->
