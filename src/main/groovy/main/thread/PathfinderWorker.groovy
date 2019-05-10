@@ -26,16 +26,17 @@ class PathfinderWorker extends Worker {
         for (Villager villager: Model.model.villagers) {
             if (villager.pathfinderWorker) {
 
+                def dest = Model.generateXY()
+                def bresenhamMap = [:]
                 def there = false
 
                 while (!there) {
                     def start = [villager.x, villager.y] as Double[]
-                    def dest = Model.generateXY()
                     def degree = Model.calculateDegree(start, dest)
                     def nodeXY = Model.pixelToNodeIdx(start)
                     def destXY = Model.pixelToNodeIdx(dest)
 
-                    def nextSquares = nextSquares(villager, nodeXY, destXY, degree)
+                    def nextSquares = nextSquares(villager, nodeXY, destXY, degree, bresenhamMap)
 
                     def random = Math.random() * 100
 
@@ -56,7 +57,7 @@ class PathfinderWorker extends Worker {
         }
     }
 
-    def nextSquares(Villager villager, int[] nodeXY, int[] destXY, int degree) {
+    def nextSquares(Villager villager, int[] nodeXY, int[] destXY, int degree, def bresenhamMap) {
 
         def (int nodeX, int nodeY) = nodeXY
 
@@ -69,20 +70,19 @@ class PathfinderWorker extends Worker {
 
         squareProbabilities.each { def square ->
             def (int sX, int sY) = square[0]
-            def squareXY = [nodeX + sX, nodeY + sY] as int[]
-            def (int nX, int nY) = squareXY
+            def neighborXY = [nodeX + sX, nodeY + sY] as int[]
+            def (int nX, int nY) = neighborXY
             def neighbor = nodeNetwork[nX][nY] as Node
             TravelType travelType = neighbor.travelType
             def squareProbability = square[1] as Double
 
             if (villager.canTravel(travelType)) {
                 if (squareProbability > 0) {
-                    if (hasBresenhamToDest(squareXY, destXY)) {
-                        nextSquares << calculateProbabilityForNeighbor(
-                                neighbor,
-                                node,
-                                square
-                        )
+                    if (bresenhamMap[neighborXY]) {
+                        nextSquares << calculateProbabilityForNeighbor(neighbor, node, square)
+                    } else if (hasBresenhamToDest(neighborXY, destXY)) {
+                        bresenhamMap << [(neighborXY): Boolean.TRUE]
+                        nextSquares << calculateProbabilityForNeighbor(neighbor, node, square)
                     }
                 }
             }
