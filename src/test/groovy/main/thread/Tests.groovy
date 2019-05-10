@@ -74,20 +74,20 @@ class Tests {
         def nextSquares1 = pfw.nextSquares(
                 new Villager(),
                 Model.pixelToNodeIdx([579, 341] as int[]),
-                45,
-                [:]
+                Model.pixelToNodeIdx([579 + 20, 341 + 20] as int[]),
+                45
         )
         def nextSquares2 = pfw.nextSquares(
                 new Villager(),
                 Model.pixelToNodeIdx([592, 376] as int[]),
-                45,
-                [:]
+                Model.pixelToNodeIdx([592 + 20, 376 + 20] as int[]),
+                45
         )
         def nextSquares3 = pfw.nextSquares(
                 new Villager(),
                 Model.pixelToNodeIdx([662, 208] as int[]),
-                45,
-                [:]
+                Model.pixelToNodeIdx([662 + 20, 208 + 20] as int[]),
+                45
         )
 
         assert !nextSquares3

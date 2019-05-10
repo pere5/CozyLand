@@ -26,9 +26,6 @@ class PathfinderWorker extends Worker {
         for (Villager villager: Model.model.villagers) {
             if (villager.pathfinderWorker) {
 
-                def visitedSquares = [:]
-                def exhaustedSquares = [:]
-
                 def there = false
 
                 while (!there) {
@@ -36,23 +33,16 @@ class PathfinderWorker extends Worker {
                     def dest = Model.generateXY()
                     def degree = Model.calculateDegree(start, dest)
                     def nodeXY = Model.pixelToNodeIdx(start)
+                    def destXY = Model.pixelToNodeIdx(dest)
 
-                    visitedSquares[nodeXY] = Boolean.TRUE
+                    def nextSquares = nextSquares(villager, nodeXY, destXY, degree)
 
-                    def nextSquares = nextSquares(villager, nodeXY, degree, visitedSquares)
+                    def random = Math.random() * 100
 
-                    def square
-                    if (nextSquares) {
-                        def random = Math.random() * 100
-
-                        square = nextSquares.find {
-                            def from = it[0][0] as Double
-                            def to = it[0][1] as Double
-                            random >= from && random <= to
-                        }
-                    } else {
-                        exhaustedSquares[nodeXY] = Boolean.TRUE
-                        square = unExhaustedSquareClosestToDest(nodeXY, degree, exhaustedSquares, villager)
+                    def square = nextSquares.find {
+                        def from = it[0][0] as Double
+                        def to = it[0][1] as Double
+                        random >= from && random <= to
                     }
 
                     square //yeah boi
@@ -66,33 +56,7 @@ class PathfinderWorker extends Worker {
         }
     }
 
-    def unExhaustedSquareClosestToDest(int[] nodeXY, int degree, def exhaustedSquares, Villager villager) {
-
-        def (int nodeX, int nodeY) = nodeXY
-
-        def candidates = []
-
-        Model.squareDegrees.each { def square ->
-            def (int sX, int sY) = square
-            def nX = nodeX + sX
-            def nY = nodeY + sY
-            def neighbor = nodeNetwork[nX][nY] as Node
-            TravelType travelType = neighbor.travelType
-
-            if (villager.canTravel(travelType)) {
-
-
-
-
-
-                candidates << [1d, square[0]]
-            }
-        }
-
-        candidates.min { it[0] }[1]
-    }
-
-    def nextSquares(Villager villager, int[] nodeXY, int degree, Map visitedSquares) {
+    def nextSquares(Villager villager, int[] nodeXY, int[] destXY, int degree) {
 
         def (int nodeX, int nodeY) = nodeXY
 
@@ -104,25 +68,22 @@ class PathfinderWorker extends Worker {
         final def squareProbabilities = Model.model.squareProbabilitiesForDegrees[degree]
 
         squareProbabilities.each { def square ->
-            if (!visitedSquares.containsKey(square)) {
-                def (int sX, int sY) = square[0]
-                def nX = nodeX + sX
-                def nY = nodeY + sY
-                def neighbor = nodeNetwork[nX][nY] as Node
-                TravelType travelType = neighbor.travelType
-                def squareProbability = square[1] as Double
+            def (int sX, int sY) = square[0]
+            def squareXY = [nodeX + sX, nodeY + sY] as int[]
+            def (int nX, int nY) = squareXY
+            def neighbor = nodeNetwork[nX][nY] as Node
+            TravelType travelType = neighbor.travelType
+            def squareProbability = square[1] as Double
 
-                if (villager.canTravel(travelType) && squareProbability > 0) {
-                    def travelModifierMap = Model.travelModifier as Map<TravelType, Double>
-                    int heightDifference = neighbor.height - node.height
-                    Double travelModifier = travelModifierMap[travelType]
-                    Double heightModifier = (heightDifference > 0
-                            ? travelModifierMap[TravelType.UP_HILL]
-                            : heightDifference == 0
-                            ? travelModifierMap[TravelType.EVEN]
-                            : travelModifierMap[TravelType.DOWN_HILL]) as Double
-                    Double probability = (1 / (heightModifier * travelModifier)) * squareProbability
-                    nextSquares << [probability, square[0]]
+            if (villager.canTravel(travelType)) {
+                if (squareProbability > 0) {
+                    if (hasBresenhamToDest(squareXY, destXY)) {
+                        nextSquares << calculateProbabilityForNeighbor(
+                                neighbor,
+                                node,
+                                square
+                        )
+                    }
                 }
             }
         }
@@ -143,5 +104,24 @@ class PathfinderWorker extends Worker {
         }
 
         return nextSquares
+    }
+
+    def calculateProbabilityForNeighbor(Node neighbor, Node node, def square) {
+        Double squareProbability = square[1] as Double
+        TravelType travelType = neighbor.travelType
+        def travelModifierMap = Model.travelModifier as Map<TravelType, Double>
+        int heightDifference = neighbor.height - node.height
+        Double travelModifier = travelModifierMap[travelType]
+        Double heightModifier = (heightDifference > 0
+                ? travelModifierMap[TravelType.UP_HILL]
+                : heightDifference == 0
+                ? travelModifierMap[TravelType.EVEN]
+                : travelModifierMap[TravelType.DOWN_HILL]) as Double
+        Double probability = (1 / (heightModifier * travelModifier)) * squareProbability
+        [probability, square[0]]
+    }
+
+    boolean hasBresenhamToDest(int[] start, int[] dest) {
+        true
     }
 }
