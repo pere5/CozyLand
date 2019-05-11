@@ -83,7 +83,7 @@ class PathfinderWorker extends Worker {
 
             if (villager.canTravel(travelType)) {
                 if (squareProbability > 0) {
-                    if (Model.model.bresenhamMap[neighborXY]) {
+                    if (Model.bresenhamMap[neighborXY]) {
                         nextSquares << calculateProbabilityForNeighbor(neighbor, node, square)
                     } else if (Model.hasBresenham(neighborXY, destXY)) {
                         nextSquares << calculateProbabilityForNeighbor(neighbor, node, square)

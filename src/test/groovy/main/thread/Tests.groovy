@@ -17,7 +17,6 @@ class Tests {
 
         Model.model.squareProbabilitiesForDegrees = Model.calculateProbabilitiesModel()
         Model.model.nodeNetwork = Model.generateBackground('lol.png')
-        Model.model.bresenhamMap = [:]
     }
 
     @Test
