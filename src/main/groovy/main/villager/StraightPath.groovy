@@ -37,9 +37,9 @@ class StraightPath extends Action {
     }
 
     private void testPrints(Double[] start, Double[] dest, def nextSquares) {
-        def sR = Model.round(start)
-        def dR = Model.round(dest)
-        def (int x, int y) = Model.pixelToNodeIdx(sR)
+        def pixelStart = Model.round(start)
+        def pixelDest = Model.round(dest)
+        def (int x, int y) = Model.pixelToNodeIdx(pixelStart)
         def nodeNetwork = Model.model.nodeNetwork as Node[][]
 
         if (nextSquares) {
@@ -65,8 +65,8 @@ class StraightPath extends Action {
             }
         }
 
-        def nodeIndices = Model.bresenham(sR, dR)
-        nodeIndices.each {
+        def pixelIndices = Model.bresenham(pixelStart, pixelDest)
+        pixelIndices.each {
             Model.model.drawables << new Artifact(parent: id, x: it[0], y: it[1])
         }
 

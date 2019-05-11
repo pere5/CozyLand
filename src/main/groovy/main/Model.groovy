@@ -52,6 +52,9 @@ class Model {
             [203, 248]: [-1, -1], [248, 293]: [0, -1], [293, 338]: [1, -1]
     ]
 
+    static def bresenhamMap = [:]
+    static int[][] bresenhamBufferedArray = new int[Main.WINDOW_WIDTH + Main.WINDOW_HEIGHT][2]
+
     static def init(def keyboard, def mouse) {
         def nodeNetwork = generateBackground()
 
@@ -64,7 +67,6 @@ class Model {
                 frameSlots    : [0, 0, 0, 0, 0],
                 nodeNetwork   : nodeNetwork,
                 rules         : generateRules(),
-                bresenhamMap  : [:]
         ]
 
         model.squareProbabilitiesForDegrees = calculateProbabilitiesModel()
@@ -578,5 +580,93 @@ class Model {
         }
 
         return result
+    }
+
+    static boolean hasBresenham(int[] start, int[] dest) {
+
+        def nodeNetwork = Model.model.nodeNetwork as Node[][]
+
+        def (int x1, int y1) = start
+        def (int x2, int y2) = dest
+
+        // delta of exact value and rounded value of the dependent variable
+        int d = 0
+
+        int dx = Math.abs(x2 - x1)
+        int dy = Math.abs(y2 - y1)
+
+        int dx2 = 2 * dx // slope scaling factors to
+        int dy2 = 2 * dy // avoid floating point
+
+        int ix = x1 < x2 ? 1 : -1 // increment direction
+        int iy = y1 < y2 ? 1 : -1
+
+        int x = x1
+        int y = y1
+
+        int idx = 0
+
+        if (dx >= dy) {
+            for (; idx < Model.bresenhamBufferedArray.length; idx++) {
+                def xy = ([x, y] as int[])
+                if (bresenhamMap[[xy, dest]] == true) {
+                    return true
+                } else if (bresenhamMap[[xy, dest]] == false) {
+                    return false
+                } else if (bresenhamMap[[xy, dest]] == null) {
+                    if (nodeNetwork[x][y].travelType == TravelType.WATER) {
+                        for (int i = 0; i <= idx; i++) {
+                            bresenhamMap[[Model.bresenhamBufferedArray[i], dest]] = Boolean.FALSE
+                        }
+                        return false
+                    } else {
+                        bresenhamBufferedArray[idx] = xy
+                        if (x == x2) {
+                            break
+                        }
+                        x += ix
+                        d += dy2
+                        if (d > dx) {
+                            y += iy
+                            d -= dx2
+                        }
+                    }
+                }
+            }
+        } else {
+            for (; idx < Model.bresenhamBufferedArray.length; idx++) {
+                def xy = ([x, y] as int[])
+                if (bresenhamMap[[xy, dest]] == true) {
+                    return true
+                } else if (bresenhamMap[[xy, dest]] == false) {
+                    return false
+                } else if (bresenhamMap[[xy, dest]] == null) {
+                    if (nodeNetwork[x][y].travelType == TravelType.WATER) {
+                        for (int i = 0; i <= idx; i++) {
+                            bresenhamMap[[Model.bresenhamBufferedArray[i], dest]] = Boolean.FALSE
+                        }
+                        return false
+                    } else {
+                        bresenhamBufferedArray[idx] = xy
+                        if (y == y2) {
+                            break
+                        }
+                        y += iy
+                        d += dx2
+                        if (d > dy) {
+                            x += ix
+                            d -= dy2
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i <= idx; i++) {
+            def xy = Model.bresenhamBufferedArray[i]
+            bresenhamMap[[xy, dest]] = Boolean.FALSE
+        }
+
+        return true
     }
 }

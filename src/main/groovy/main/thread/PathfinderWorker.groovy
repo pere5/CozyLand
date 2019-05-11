@@ -85,7 +85,7 @@ class PathfinderWorker extends Worker {
                 if (squareProbability > 0) {
                     if (Model.model.bresenhamMap[neighborXY]) {
                         nextSquares << calculateProbabilityForNeighbor(neighbor, node, square)
-                    } else if (hasBresenhamToDest(neighborXY, destXY)) {
+                    } else if (Model.hasBresenham(neighborXY, destXY)) {
                         nextSquares << calculateProbabilityForNeighbor(neighbor, node, square)
                     }
                 }
@@ -123,12 +123,5 @@ class PathfinderWorker extends Worker {
                 : travelModifierMap[TravelType.DOWN_HILL]) as Double
         Double probability = (1 / (heightModifier * travelModifier)) * squareProbability
         [probability, square[0]]
-    }
-
-    boolean hasBresenhamToDest(int[] start, int[] dest) {
-
-
-
-        true
     }
 }
