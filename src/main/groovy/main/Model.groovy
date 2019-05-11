@@ -63,12 +63,15 @@ class Model {
                 villagers     : [],
                 frameSlots    : [0, 0, 0, 0, 0],
                 nodeNetwork   : nodeNetwork,
-                rules         : generateRules()
+                rules         : generateRules(),
+                bresenhamMap  : [:]
         ]
 
         model.squareProbabilitiesForDegrees = calculateProbabilitiesModel()
 
         def villagers = [
+                new Villager(), new Villager(), new Villager(), new Villager(), new Villager(),
+                new Villager(), new Villager(), new Villager(), new Villager(), new Villager(),
                 new Villager(), new Villager(), new Villager(), new Villager(), new Villager()
         ]
         def stones = []

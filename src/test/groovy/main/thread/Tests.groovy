@@ -17,6 +17,7 @@ class Tests {
 
         Model.model.squareProbabilitiesForDegrees = Model.calculateProbabilitiesModel()
         Model.model.nodeNetwork = Model.generateBackground('lol.png')
+        Model.model.bresenhamMap = [:]
     }
 
     @Test
@@ -75,22 +76,19 @@ class Tests {
                 new Villager(),
                 Model.pixelToNodeIdx([579, 341] as int[]),
                 Model.pixelToNodeIdx([579 + 20, 341 + 20] as int[]),
-                45,
-                [:]
+                45
         )
         def nextSquares2 = pfw.nextSquares(
                 new Villager(),
                 Model.pixelToNodeIdx([592, 376] as int[]),
                 Model.pixelToNodeIdx([592 + 20, 376 + 20] as int[]),
-                45,
-                [:]
+                45
         )
         def nextSquares3 = pfw.nextSquares(
                 new Villager(),
                 Model.pixelToNodeIdx([662, 208] as int[]),
                 Model.pixelToNodeIdx([662 + 20, 208 + 20] as int[]),
-                45,
-                [:]
+                45
         )
 
         assert !nextSquares3

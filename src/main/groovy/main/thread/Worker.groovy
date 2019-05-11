@@ -8,7 +8,7 @@ abstract class Worker {
     int lastFramesPerSecond = 0
     long startTime = System.currentTimeMillis()
     int framesPerSecond = 0
-    int intendedFps = 8
+    int intendedFps = 60
     boolean isRunning = true
 
     int frameIndex

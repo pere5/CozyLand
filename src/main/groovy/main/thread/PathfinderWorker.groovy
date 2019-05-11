@@ -33,7 +33,6 @@ class PathfinderWorker extends Worker {
             if (villager.pathfinderWorker) {
 
                 def dest = Model.generateXY()
-                def bresenhamMap = [:]
                 def there = false
 
                 while (!there) {
@@ -42,7 +41,7 @@ class PathfinderWorker extends Worker {
                     def nodeXY = Model.pixelToNodeIdx(start)
                     def destXY = Model.pixelToNodeIdx(dest)
 
-                    def nextSquares = nextSquares(villager, nodeXY, destXY, degree, bresenhamMap)
+                    def nextSquares = nextSquares(villager, nodeXY, destXY, degree)
 
                     def random = Math.random() * 100
 
@@ -63,7 +62,7 @@ class PathfinderWorker extends Worker {
         }
     }
 
-    def nextSquares(Villager villager, int[] nodeXY, int[] destXY, int degree, def bresenhamMap) {
+    def nextSquares(Villager villager, int[] nodeXY, int[] destXY, int degree) {
 
         def (int nodeX, int nodeY) = nodeXY
 
@@ -84,9 +83,9 @@ class PathfinderWorker extends Worker {
 
             if (villager.canTravel(travelType)) {
                 if (squareProbability > 0) {
-                    if (bresenhamMap[neighborXY]) {
+                    if (Model.model.bresenhamMap[neighborXY]) {
                         nextSquares << calculateProbabilityForNeighbor(neighbor, node, square)
-                    } else if (hasBresenhamToDest(neighborXY, destXY, bresenhamMap)) {
+                    } else if (hasBresenhamToDest(neighborXY, destXY)) {
                         nextSquares << calculateProbabilityForNeighbor(neighbor, node, square)
                     }
                 }
@@ -126,7 +125,7 @@ class PathfinderWorker extends Worker {
         [probability, square[0]]
     }
 
-    boolean hasBresenhamToDest(int[] start, int[] dest, def bresenhamMap) {
+    boolean hasBresenhamToDest(int[] start, int[] dest) {
 
 
 

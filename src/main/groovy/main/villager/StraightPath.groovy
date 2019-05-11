@@ -42,25 +42,27 @@ class StraightPath extends Action {
         def (int x, int y) = Model.pixelToNodeIdx(sR)
         def nodeNetwork = Model.model.nodeNetwork as Node[][]
 
-        def maxSquare = nextSquares.max { def square ->
-            square[0][1] - square[0][0]
-        }
+        if (nextSquares) {
+            def maxSquare = nextSquares.max { def square ->
+                square[0][1] - square[0][0]
+            }
 
-        int maxProb = Model.round(maxSquare[0][1] - maxSquare[0][0] + 1)
+            int maxProb = Model.round(maxSquare[0][1] - maxSquare[0][0] + 1)
 
-        def colorGradient = Model.gradient(Color.DARK_GRAY, Color.WHITE, maxProb)
+            def colorGradient = Model.gradient(Color.DARK_GRAY, Color.WHITE, maxProb)
 
-        nextSquares.each { def square ->
-            def (int sX, int sY) = square[1]
-            def nX = x + sX
-            def nY = y + sY
-            def squareProbability = (square[0][1] - square[0][0]) as Double
-            def neighbor = nodeNetwork[nX][nY] as Node
+            nextSquares.each { def square ->
+                def (int sX, int sY) = square[1]
+                def nX = x + sX
+                def nY = y + sY
+                def squareProbability = (square[0][1] - square[0][0]) as Double
+                def neighbor = nodeNetwork[nX][nY] as Node
 
-            Model.model.drawables << new Artifact(
-                    size: neighbor.size, parent: this.id, x: neighbor.x, y: neighbor.y,
-                    color: colorGradient[Model.round(squareProbability)]
-            )
+                Model.model.drawables << new Artifact(
+                        size: neighbor.size, parent: this.id, x: neighbor.x, y: neighbor.y,
+                        color: colorGradient[Model.round(squareProbability)]
+                )
+            }
         }
 
         def nodeIndices = Model.bresenham(sR, dR)
