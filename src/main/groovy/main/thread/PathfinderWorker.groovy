@@ -10,7 +10,7 @@ import main.villager.Villager
 class PathfinderWorker extends Worker {
 
     /*
-        - [ ] optimized random path:
+        - [ ] Bresenham binary search per star algorithm, "optimized random path":
             - [ ] Kör en perStar mot målet
             - [ ] Spara perStar i en buffrad array
             - [ ] Binärsök i buffern så långa bresenham steg som möjligt
@@ -83,9 +83,7 @@ class PathfinderWorker extends Worker {
 
             if (villager.canTravel(travelType)) {
                 if (squareProbability > 0) {
-                    if (Model.bresenhamMap[neighborXY]) {
-                        nextSquares << calculateProbabilityForNeighbor(neighbor, node, square)
-                    } else if (Model.hasBresenham(neighborXY, destXY)) {
+                    if (true/*Model.hasBresenham(neighborXY, destXY)*/) {
                         nextSquares << calculateProbabilityForNeighbor(neighbor, node, square)
                     }
                 }

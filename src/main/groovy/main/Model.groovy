@@ -52,7 +52,6 @@ class Model {
             [203, 248]: [-1, -1], [248, 293]: [0, -1], [293, 338]: [1, -1]
     ]
 
-    static def bresenhamMap = [:]
     static int[][] bresenhamBufferedArray = new int[Main.WINDOW_WIDTH + Main.WINDOW_HEIGHT][2]
 
     static def init(def keyboard, def mouse) {
@@ -531,69 +530,7 @@ class Model {
         calculateDegree(round(start), round(dest))
     }
 
-    static List<int[]> bresenham(int[] start, int[] dest) {
-        def (int x1, int y1) = start
-        def (int x2, int y2) = dest
-        def result = []
-
-        // delta of exact value and rounded value of the dependent variable
-        int d = 0
-
-        int dx = Math.abs(x2 - x1)
-        int dy = Math.abs(y2 - y1)
-
-        int dx2 = 2 * dx // slope scaling factors to
-        int dy2 = 2 * dy // avoid floating point
-
-        int ix = x1 < x2 ? 1 : -1 // increment direction
-        int iy = y1 < y2 ? 1 : -1
-
-        int x = x1
-        int y = y1
-
-        if (dx >= dy) {
-            while (true) {
-                result << ([x, y] as int[])
-                if (x == x2) {
-                    break
-                }
-                x += ix
-                d += dy2
-                if (d > dx) {
-                    y += iy
-                    d -= dx2
-                }
-            }
-        } else {
-            while (true) {
-                result << ([x, y] as int[])
-                if (y == y2) {
-                    break
-                }
-                y += iy
-                d += dx2
-                if (d > dy) {
-                    x += ix
-                    d -= dy2
-                }
-            }
-        }
-
-        return result
-    }
-
-    static boolean hasBresenham(int[] start, int[] dest) {
-
-        return true
-
-        //indeed
-
-
-
-
-
-        def nodeNetwork = Model.model.nodeNetwork as Node[][]
-
+    static int bresenham(int[] start, int[] dest) {
         def (int x1, int y1) = start
         def (int x2, int y2) = dest
 
@@ -614,50 +551,37 @@ class Model {
 
         int idx = 0
 
-        for (; idx < Model.bresenhamBufferedArray.length; idx++) {
-            def xy = ([x, y] as int[])
-            if (bresenhamMap[[xy, dest]] == true) {
-                return true
-            } else if (bresenhamMap[[xy, dest]] == false) {
-                return false
-            } else if (bresenhamMap[[xy, dest]] == null) {
-                if (nodeNetwork[x][y].travelType == TravelType.WATER) {
-                    for (int i = 0; i <= idx; i++) {
-                        bresenhamMap[[Model.bresenhamBufferedArray[i], dest]] = Boolean.FALSE
-                    }
-                    return false
-                } else {
-                    bresenhamBufferedArray[idx] = xy
-                    if (dx >= dy) {
-                        if (x == x2) {
-                            break
-                        }
-                        x += ix
-                        d += dy2
-                        if (d > dx) {
-                            y += iy
-                            d -= dx2
-                        }
-                    } else {
-                        if (y == y2) {
-                            break
-                        }
-                        y += iy
-                        d += dx2
-                        if (d > dy) {
-                            x += ix
-                            d -= dy2
-                        }
-                    }
+        def nodeNetwork = Model.model.nodeNetwork as Node[][]
+
+        while (true) {
+            if (nodeNetwork[x][y].travelType == TravelType.WATER) {
+                return -1
+            }
+
+            bresenhamBufferedArray[idx] << ([x, y] as int[])
+
+            if (dx >= dy) {
+                if (x == x2) {
+                    return idx
+                }
+                x += ix
+                d += dy2
+                if (d > dx) {
+                    y += iy
+                    d -= dx2
+                }
+            } else {
+                if (y == y2) {
+                    return idx
+                }
+                y += iy
+                d += dx2
+                if (d > dy) {
+                    x += ix
+                    d -= dy2
                 }
             }
+            idx++
         }
-
-        for (int i = 0; i <= idx; i++) {
-            def xy = Model.bresenhamBufferedArray[i]
-            bresenhamMap[[xy, dest]] = Boolean.FALSE
-        }
-
-        return true
     }
 }

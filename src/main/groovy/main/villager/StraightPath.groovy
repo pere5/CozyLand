@@ -65,9 +65,10 @@ class StraightPath extends Action {
             }
         }
 
-        def pixelIndices = Model.bresenham(pixelStart, pixelDest)
-        pixelIndices.each {
-            Model.model.drawables << new Artifact(parent: id, x: it[0], y: it[1])
+        def idx = Model.bresenham(pixelStart, pixelDest)
+        idx.times {
+            def xy = Model.bresenhamBufferedArray[it]
+            Model.model.drawables << new Artifact(parent: id, x: xy[0], y: xy[1])
         }
 
     }
