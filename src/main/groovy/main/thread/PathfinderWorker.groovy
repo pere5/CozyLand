@@ -10,6 +10,10 @@ import main.villager.Villager
 class PathfinderWorker extends Worker {
 
     /*
+        - [ ] Kör en aStar mot slutmålet
+        - [ ] Dela upp den aStar i så få raka streck som möjligt
+        - [ ] Kör random enligt nedan mellan de punkterna i de raka streckenmed kriteriet att man måste ha en bresenham mot målet
+
         - [ ] kör steg nod för nod
         - [ ] för nästa steg:
           - [x] kör 90 grader med mittersta graden pekandes mot målet
@@ -80,8 +84,7 @@ class PathfinderWorker extends Worker {
                 if (squareProbability > 0) {
                     if (bresenhamMap[neighborXY]) {
                         nextSquares << calculateProbabilityForNeighbor(neighbor, node, square)
-                    } else if (hasBresenhamToDest(neighborXY, destXY)) {
-                        bresenhamMap << [(neighborXY): Boolean.TRUE]
+                    } else if (hasBresenhamToDest(neighborXY, destXY, bresenhamMap)) {
                         nextSquares << calculateProbabilityForNeighbor(neighbor, node, square)
                     }
                 }
@@ -121,7 +124,10 @@ class PathfinderWorker extends Worker {
         [probability, square[0]]
     }
 
-    boolean hasBresenhamToDest(int[] start, int[] dest) {
+    boolean hasBresenhamToDest(int[] start, int[] dest, def bresenhamMap) {
+
+
+
         true
     }
 }
