@@ -10,9 +10,11 @@ import main.villager.Villager
 class PathfinderWorker extends Worker {
 
     /*
-        - [ ] Kör en aStar mot slutmålet
-        - [ ] Dela upp den aStar i så få raka streck som möjligt
-        - [ ] Kör random enligt nedan mellan de punkterna i de raka streckenmed kriteriet att man måste ha en bresenham mot målet
+        - [ ] optimized random path:
+            - [ ] Kör en perStar mot målet
+            - [ ] Spara perStar i en buffrad array
+            - [ ] Binärsök i buffern så långa bresenham steg som möjligt
+            - [ ] Spara punkterna och kör perSquares med bresenham mellan dem.
 
         - [ ] kör steg nod för nod
         - [ ] för nästa steg:
