@@ -52,7 +52,7 @@ class Model {
             [203, 248]: [-1, -1], [248, 293]: [0, -1], [293, 338]: [1, -1]
     ]
 
-    static int[][] bresenhamBufferedArray = new int[Main.WINDOW_WIDTH + Main.WINDOW_HEIGHT][2]
+    static int[][] bufferedPathArray = new int[Main.WINDOW_WIDTH + Main.WINDOW_HEIGHT][2]
 
     static def init(def keyboard, def mouse) {
         def nodeNetwork = generateBackground()
@@ -558,8 +558,8 @@ class Model {
                 return -1
             }
 
-            bresenhamBufferedArray[idx][0] = x
-            bresenhamBufferedArray[idx][1] = y
+            bufferedPathArray[idx][0] = x
+            bufferedPathArray[idx][1] = y
 
             if (dx >= dy) {
                 if (x == x2) {
