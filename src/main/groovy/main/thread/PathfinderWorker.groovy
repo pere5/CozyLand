@@ -47,13 +47,9 @@ class PathfinderWorker extends Worker {
 
                     def random = Math.random() * 100
 
-                    def square = nextSquares.find {
-                        def from = it[0][0] as Double
-                        def to = it[0][1] as Double
-                        random >= from && random <= to
-                    }
+                    def nextSquare = nextSquares.find { random >= (it[0][0] as Double) && random <= (it[0][1] as Double) }
 
-                    def newSquare = [nodeStartXY[0] + square[1][0], nodeStartXY[1] + square[1][1]] as int[]
+                    def newSquare = [nodeStartXY[0] + nextSquare[1][0], nodeStartXY[1] + nextSquare[1][1]] as int[]
 
                     step = randomPlaceInSquare(newSquare)
 
@@ -64,6 +60,10 @@ class PathfinderWorker extends Worker {
                 villager.toWorkWorker()
             }
         }
+    }
+
+    Double[] randomPlaceInSquare(int[] ints) {
+        new java.lang.Double[0]
     }
 
     def nextSquares(Villager villager, int[] nodeStartXY, int[] nodeDestXY, int degree) {
