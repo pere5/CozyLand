@@ -33,15 +33,17 @@ class PathfinderWorker extends Worker {
             if (villager.pathfinderWorker) {
 
                 def dest = Model.generateXY()
+                def nodeDestXY = Model.pixelToNodeIdx(dest)
+                def start = [villager.x, villager.y] as Double[]
+                def step = start
                 def there = false
 
                 while (!there) {
-                    def start = [villager.x, villager.y] as Double[]
-                    def degree = Model.calculateDegree(start, dest)
-                    def nodeXY = Model.pixelToNodeIdx(start)
-                    def destXY = Model.pixelToNodeIdx(dest)
 
-                    def nextSquares = nextSquares(villager, nodeXY, destXY, degree)
+                    def degree = Model.calculateDegree(step, dest)
+                    def nodeStartXY = Model.pixelToNodeIdx(step)
+
+                    def nextSquares = nextSquares(villager, nodeStartXY, nodeDestXY, degree)
 
                     def random = Math.random() * 100
 
@@ -51,20 +53,22 @@ class PathfinderWorker extends Worker {
                         random >= from && random <= to
                     }
 
-                    square //yeah boi
+                    def newSquare = [nodeStartXY[0] + square[1][0], nodeStartXY[1] + square[1][1]] as int[]
 
-                    villager.actionQueue << new StraightPath(start, dest, nextSquares)
-                    villager.toWorkWorker()
+                    step = randomPlaceInSquare(newSquare)
 
-                    there = true
+                    villager.actionQueue << new StraightPath(start, step, nextSquares)
+                    there = StraightPath.closeEnough(step, dest)
                 }
+
+                villager.toWorkWorker()
             }
         }
     }
 
-    def nextSquares(Villager villager, int[] nodeXY, int[] destXY, int degree) {
+    def nextSquares(Villager villager, int[] nodeStartXY, int[] nodeDestXY, int degree) {
 
-        def (int nodeX, int nodeY) = nodeXY
+        def (int nodeX, int nodeY) = nodeStartXY
 
         def nextSquares = []
 
@@ -83,7 +87,7 @@ class PathfinderWorker extends Worker {
 
             if (villager.canTravel(travelType)) {
                 if (squareProbability > 0) {
-                    if (Model.bresenham(neighborXY, destXY, villager) >= 0) {
+                    if (Model.bresenham(neighborXY, nodeDestXY, villager) >= 0) {
                         nextSquares << calculateProbabilityForNeighbor(neighbor, node, square)
                     }
                 }

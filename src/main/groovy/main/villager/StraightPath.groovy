@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentLinkedQueue
 
 class StraightPath extends Action {
     Queue<Double[]> path = new LinkedList<>()
-    Double STEP = 0.7
+    static Double STEP = 0.7
     int id
 
     StraightPath(Double[] start, Double[] dest, def nextSquares) {
@@ -73,11 +73,11 @@ class StraightPath extends Action {
 
     }
 
-    boolean closeEnough(Double[] pointA, Double[] pointB, Double step) {
-        Double xBig = pointA[0] + step
-        Double xSmall = pointA[0] - step
-        Double yBig = pointA[1] + step
-        Double ySmall = pointA[1] - step
+    static boolean closeEnough(Double[] pointA, Double[] pointB) {
+        Double xBig = pointA[0] + STEP
+        Double xSmall = pointA[0] - STEP
+        Double yBig = pointA[1] + STEP
+        Double ySmall = pointA[1] - STEP
         return pointB[0] <= xBig && pointB[0] >= xSmall && pointB[1] <= yBig && pointB[1] >= ySmall
     }
 
