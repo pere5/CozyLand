@@ -558,7 +558,8 @@ class Model {
                 return -1
             }
 
-            bresenhamBufferedArray[idx] << ([x, y] as int[])
+            bresenhamBufferedArray[idx][0] = x
+            bresenhamBufferedArray[idx][1] = y
 
             if (dx >= dy) {
                 if (x == x2) {
