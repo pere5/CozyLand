@@ -1,6 +1,6 @@
 package main.thread
 
-
+import main.Main
 import main.Model
 import main.Model.TravelType
 import main.Node
@@ -32,29 +32,37 @@ class PathfinderWorker extends Worker {
         for (Villager villager: Model.model.villagers) {
             if (villager.pathfinderWorker) {
 
-                def dest = Model.generateXY()
-                def nodeDestXY = Model.pixelToNodeIdx(dest)
-                def start = [villager.x, villager.y] as Double[]
-                def step = start
+                def pixelDest = Model.generateXY()
+                def nodeDestXY = Model.pixelToNodeIdx(pixelDest)
+                def pixelStart = [villager.x, villager.y] as Double[]
+                def pixelStep = pixelStart
                 def there = false
 
                 while (!there) {
 
-                    def degree = Model.calculateDegree(step, dest)
-                    def nodeStartXY = Model.pixelToNodeIdx(step)
+                    def degree = Model.calculateDegree(pixelStep, pixelDest)
+                    def nodeStartXY = Model.pixelToNodeIdx(pixelStep)
 
                     def nextSquares = nextSquares(villager, nodeStartXY, nodeDestXY, degree)
 
-                    def random = Math.random() * 100
+                    if (nextSquares) {
+                        def random = Math.random() * 100
 
-                    def nextSquare = nextSquares.find { random >= (it[0][0] as Double) && random <= (it[0][1] as Double) }
+                        def nextSquare = nextSquares.find { random >= (it[0][0] as Double) && random <= (it[0][1] as Double) }
 
-                    def newSquare = [nodeStartXY[0] + nextSquare[1][0], nodeStartXY[1] + nextSquare[1][1]] as int[]
+                        def newSquare = [nodeStartXY[0] + nextSquare[1][0], nodeStartXY[1] + nextSquare[1][1]] as int[]
 
-                    step = randomPlaceInSquare(newSquare)
+                        def newPixelStep = randomPlaceInSquare(newSquare)
 
-                    villager.actionQueue << new StraightPath(start, step, nextSquares)
-                    there = StraightPath.closeEnough(step, dest)
+                        villager.actionQueue << new StraightPath(pixelStep, newPixelStep, nextSquares)
+
+                        pixelStep = newPixelStep
+
+                        there = newSquare == nodeDestXY
+                    } else {
+                        there = true
+                    }
+
                 }
 
                 villager.toWorkWorker()
@@ -62,8 +70,11 @@ class PathfinderWorker extends Worker {
         }
     }
 
-    Double[] randomPlaceInSquare(int[] ints) {
-        new java.lang.Double[0]
+    Double[] randomPlaceInSquare(int[] pixelIdx) {
+        pixelIdx = Model.nodeToPixelIdx(pixelIdx)
+        pixelIdx[0] += (Main.SQUARE_WIDTH * Math.random())
+        pixelIdx[1] += (Main.SQUARE_WIDTH * Math.random())
+        return pixelIdx
     }
 
     def nextSquares(Villager villager, int[] nodeStartXY, int[] nodeDestXY, int degree) {

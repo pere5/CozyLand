@@ -521,6 +521,10 @@ class Model {
         pixelToNodeIdx(round(pixels))
     }
 
+    static Double[] nodeToPixelIdx(int[] node) {
+        node.collect { (it * Main.SQUARE_WIDTH) as Double }
+    }
+
     static int calculateDegree(int[] start, int[] dest) {
         Double deg = Math.toDegrees(Math.atan2(dest[1] - start[1], dest[0] - start[0]))
         Model.round(deg >= 0 ? deg : deg + 360)

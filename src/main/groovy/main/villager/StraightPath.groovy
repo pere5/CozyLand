@@ -1,12 +1,11 @@
 package main.villager
 
+
 import main.Model
 import main.Node
 import main.things.Artifact
 import main.things.Drawable
 
-import java.awt.*
-import java.util.Queue
 import java.util.concurrent.ConcurrentLinkedQueue
 
 class StraightPath extends Action {
@@ -14,13 +13,13 @@ class StraightPath extends Action {
     static Double STEP = 0.7
     int id
 
-    StraightPath(Double[] start, Double[] dest, def nextSquares) {
+    StraightPath(Double[] start, Double[] dest, def nextSquares = null) {
         id = Model.getNewId()
 
         testPrints(start, dest, nextSquares)
 
         Double[] nextStep = start
-        while (!closeEnough(nextStep, dest, STEP)) {
+        while (!closeEnough(nextStep, dest)) {
             Double vx = dest[0] - nextStep[0]
             Double vy = dest[1] - nextStep[1]
 
@@ -42,7 +41,7 @@ class StraightPath extends Action {
         def (int x, int y) = Model.pixelToNodeIdx(pixelStart)
         def nodeNetwork = Model.model.nodeNetwork as Node[][]
 
-        if (nextSquares) {
+/*        if (nextSquares) {
             def maxSquare = nextSquares.max { def square ->
                 square[0][1] - square[0][0]
             }
@@ -63,7 +62,7 @@ class StraightPath extends Action {
                         color: colorGradient[Model.round(squareProbability)]
                 )
             }
-        }
+        }*/
 
         def idx = Model.bresenham(pixelStart, pixelDest)
         idx.times {
