@@ -530,7 +530,7 @@ class Model {
         calculateDegree(round(start), round(dest))
     }
 
-    static int bresenham(int[] start, int[] dest) {
+    static int bresenham(int[] start, int[] dest, Villager villager = null) {
         def (int x1, int y1) = start
         def (int x2, int y2) = dest
 
@@ -554,7 +554,7 @@ class Model {
         def nodeNetwork = Model.model.nodeNetwork as Node[][]
 
         while (true) {
-            if (nodeNetwork[x][y].travelType == TravelType.WATER) {
+            if (villager && !villager.canTravel(nodeNetwork[x][y].travelType)) {
                 return -1
             }
 
