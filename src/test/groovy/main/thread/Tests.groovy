@@ -41,7 +41,7 @@ class Tests {
 
             assert Math.abs((squares.collect { it[1] }.sum() as Double) - 100) < 0.00000001
 
-            assert reverseEngineerDegree(degree, squares) < 1.6
+            assert reverseEngineerDegree(degree, squares) < 0.06
         }
     }
 
