@@ -60,7 +60,7 @@ class PathfinderWorker extends Worker {
 
                         there = StraightPath.closeEnoughNode(newSquare, nodeDestXY)
                         if (there) {
-                            villager.actionQueue << new StraightPath(pixelStep, pixelDest, [[[0, 100], nodeDestXY]])
+                            villager.actionQueue << new StraightPath(pixelStep, randomPlaceInSquare(nodeDestXY), [[[0, 100], nodeDestXY]])
                         }
                     } else {
                         there = true
@@ -72,19 +72,11 @@ class PathfinderWorker extends Worker {
     }
 
     Double[] randomPlaceInSquare(int[] pixelIdx) {
-
-
-
-        //hmmmmmmmz
-
-
-
-
         pixelIdx = Model.nodeToPixelIdx(pixelIdx)
         pixelIdx[0] += 1
         pixelIdx[1] += 1
-        pixelIdx[0] += Math.max((Main.SQUARE_WIDTH * Math.random()) - 2, 0)
-        pixelIdx[1] += Math.max((Main.SQUARE_WIDTH * Math.random()) - 2, 0)
+        pixelIdx[0] += (Main.SQUARE_WIDTH - 2) * Math.random()
+        pixelIdx[1] += (Main.SQUARE_WIDTH - 2) * Math.random()
         return pixelIdx
     }
 
