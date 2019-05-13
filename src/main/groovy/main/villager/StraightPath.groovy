@@ -1,11 +1,12 @@
 package main.villager
 
-
 import main.Model
 import main.Node
 import main.things.Artifact
 import main.things.Drawable
 
+import java.awt.*
+import java.util.Queue
 import java.util.concurrent.ConcurrentLinkedQueue
 
 class StraightPath extends Action {
@@ -41,7 +42,7 @@ class StraightPath extends Action {
         def (int x, int y) = Model.pixelToNodeIdx(pixelStart)
         def nodeNetwork = Model.model.nodeNetwork as Node[][]
 
-/*        if (nextSquares) {
+        if (nextSquares) {
             def maxSquare = nextSquares.max { def square ->
                 square[0][1] - square[0][0]
             }
@@ -51,9 +52,16 @@ class StraightPath extends Action {
             def colorGradient = Model.gradient(Color.DARK_GRAY, Color.WHITE, maxProb)
 
             nextSquares.each { def square ->
-                def (int sX, int sY) = square[1]
-                def nX = x + sX
-                def nY = y + sY
+                def (int nX, int nY) = square[1]
+
+
+
+
+                //hhhmmmzzz
+
+
+                //def nX = x + sX
+                //def nY = y + sY
                 def squareProbability = (square[0][1] - square[0][0]) as Double
                 def neighbor = nodeNetwork[nX][nY] as Node
 
@@ -62,7 +70,7 @@ class StraightPath extends Action {
                         color: colorGradient[Model.round(squareProbability)]
                 )
             }
-        }*/
+        }
 
         def idx = Model.bresenham(pixelStart, pixelDest)
         idx.times {
