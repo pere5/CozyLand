@@ -80,6 +80,14 @@ class StraightPath extends Action {
         return pointB[0] <= xBig && pointB[0] >= xSmall && pointB[1] <= yBig && pointB[1] >= ySmall
     }
 
+    static boolean closeEnoughNode(int[] nodeA, int[] nodeB) {
+        int xBig = nodeA[0] + 1
+        int xSmall = nodeA[0] - 1
+        int yBig = nodeA[1] + 1
+        int ySmall = nodeA[1] - 1
+        return nodeB[0] <= xBig && nodeB[0] >= xSmall && nodeB[1] <= yBig && nodeB[1] >= ySmall
+    }
+
     @Override
     boolean doIt(Drawable drawable) {
         def (Double x, Double y) = path.poll()

@@ -58,12 +58,7 @@ class PathfinderWorker extends Worker {
 
                         pixelStep = newPixelStep
 
-                        int xBig = nodeDestXY[0] + 1
-                        int xSmall = nodeDestXY[0] - 1
-                        int yBig = nodeDestXY[1] + 1
-                        int ySmall = nodeDestXY[1] - 1
-                        there = newSquare[0] <= xBig && newSquare[0] >= xSmall && newSquare[1] <= yBig && newSquare[1] >= ySmall
-
+                        there = StraightPath.closeEnoughNode(newSquare, nodeDestXY)
                         if (there) {
                             villager.actionQueue << new StraightPath(pixelStep, pixelDest)
                         }
