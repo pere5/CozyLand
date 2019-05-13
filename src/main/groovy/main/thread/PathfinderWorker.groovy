@@ -63,6 +63,10 @@ class PathfinderWorker extends Worker {
                         int yBig = nodeDestXY[1] + 1
                         int ySmall = nodeDestXY[1] - 1
                         there = newSquare[0] <= xBig && newSquare[0] >= xSmall && newSquare[1] <= yBig && newSquare[1] >= ySmall
+
+                        if (there) {
+                            villager.actionQueue << new StraightPath(pixelStep, pixelDest)
+                        }
                     } else {
                         there = true
                     }
