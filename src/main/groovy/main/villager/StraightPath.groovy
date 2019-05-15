@@ -37,8 +37,8 @@ class StraightPath extends Action {
     }
 
     private void testPrints(Double[] start, Double[] dest, def nextSquares) {
-        def pixelStart = Model.round(start)
-        def pixelDest = Model.round(dest)
+        def pixelStart = start
+        def pixelDest = dest
         def (int x, int y) = Model.pixelToNodeIdx(pixelStart)
         def nodeNetwork = Model.model.nodeNetwork as Node[][]
 
@@ -47,7 +47,7 @@ class StraightPath extends Action {
                 square[0][1] - square[0][0]
             }
 
-            int maxProb = Model.round(maxSquare[0][1] - maxSquare[0][0] + 1)
+            int maxProb = maxSquare[0][1] - maxSquare[0][0] + 1
 
             def colorGradient = Model.gradient(Color.DARK_GRAY, Color.WHITE, maxProb)
 
@@ -67,12 +67,12 @@ class StraightPath extends Action {
 
                 Model.model.drawables << new Artifact(
                         size: neighbor.size, parent: this.id, x: neighbor.x, y: neighbor.y,
-                        color: colorGradient[Model.round(squareProbability)]
+                        color: colorGradient[squareProbability as int]
                 )
             }
         }
 
-        def idx = Model.bresenham(pixelStart, pixelDest)
+        def idx = Model.bresenham(pixelStart as int[], pixelDest as int[])
         idx.times {
             def xy = Model.bufferedPathArray[it]
             Model.model.drawables << new Artifact(parent: id, x: xy[0], y: xy[1])

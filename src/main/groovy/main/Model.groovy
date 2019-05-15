@@ -167,7 +167,7 @@ class Model {
                 Drawable drawable = nodeNetwork[x][y]
                 g2d.setPaint(drawable.color)
                 if (drawable.shape == Drawable.SHAPES.RECT) {
-                    g2d.fillRect(round(drawable.x), round(drawable.y), drawable.size, drawable.size)
+                    g2d.fillRect(drawable.x as int, drawable.y as int, drawable.size, drawable.size)
                 }
             }
         }
@@ -255,7 +255,7 @@ class Model {
         maxMin.clear()
         for (int x = 0; x < heightMap.length; x++) {
             for (int y = 0; y < heightMap[x].length; y++) {
-                heightMap[x][y] = round((((heightMap[x][y] + globalAdjustment - middle) * scale) + middle))
+                heightMap[x][y] = (((heightMap[x][y] + globalAdjustment - middle) * scale) + middle)
                 maxMin << heightMap[x][y]
             }
         }
@@ -279,8 +279,8 @@ class Model {
         int squareWidth = Main.SQUARE_WIDTH
         int squareHeight = squareWidth
 
-        int bgWidth = round(Main.MAP_WIDTH / squareWidth)
-        int bgHeight = round(Main.MAP_HEIGHT / squareHeight)
+        int bgWidth = Main.MAP_WIDTH / squareWidth
+        int bgHeight = Main.MAP_HEIGHT / squareHeight
 
         Double xStep = squareWidth * xRatio
         Double yStep = squareHeight * yRatio
@@ -309,7 +309,7 @@ class Model {
                 }
 
                 if (noPixels > 0 && xNodeIdx < nodeNetwork.length && yNodeIdx < nodeNetwork[xNodeIdx].length) {
-                    int avgAreaHeight = round(sumAreaHeight / noPixels)
+                    int avgAreaHeight = sumAreaHeight / noPixels
 
                     if (avgAreaHeight < min) {
                         min = avgAreaHeight
@@ -391,8 +391,8 @@ class Model {
         def controlUniqueHeightValues = []
 
         for (def colorRatio : colorRatios) {
-            int from = round(colorRatio.from * allNodes.size())
-            int to = round(colorRatio.to * allNodes.size())
+            int from = colorRatio.from * allNodes.size()
+            int to = colorRatio.to * allNodes.size()
             List<Node> nodeGroup = allNodes[from..to - 1]
 
             //remove from the back
@@ -460,9 +460,9 @@ class Model {
 
         for (int i = 0; i < steps; i++) {
             Double ratio = i / steps
-            int r = round(color2.getRed() * ratio + color1.getRed() * (1 - ratio))
-            int g = round(color2.getGreen() * ratio + color1.getGreen() * (1 - ratio))
-            int b = round(color2.getBlue() * ratio + color1.getBlue() * (1 - ratio))
+            int r = color2.getRed() * ratio + color1.getRed() * (1 - ratio)
+            int g = color2.getGreen() * ratio + color1.getGreen() * (1 - ratio)
+            int b = color2.getBlue() * ratio + color1.getBlue() * (1 - ratio)
             colors << new Color(r, g, b)
         }
         colors
@@ -493,12 +493,12 @@ class Model {
     }
 
     static Double[] generateXY() {
-        def xy = [
-                Main.MAP_WIDTH / 2 + generate(round(Main.MAP_WIDTH / 9)),
-                Main.MAP_HEIGHT / 2 + generate(round(Main.MAP_HEIGHT / 9))
+        Double[] xy = [
+                Main.MAP_WIDTH / 2 + generate((Main.MAP_WIDTH / 9) as int),
+                Main.MAP_HEIGHT / 2 + generate((Main.MAP_HEIGHT / 9) as int)
         ]
 
-        def nodeXY = pixelToNodeIdx(round(xy))
+        def nodeXY = pixelToNodeIdx(xy)
 
         def node = Model.model.nodeNetwork[nodeXY[0]][nodeXY[1]] as Node
 
@@ -518,7 +518,7 @@ class Model {
     }
 
     static int[] pixelToNodeIdx(Double[] pixels) {
-        pixelToNodeIdx(round(pixels))
+        pixels.collect { it / Main.SQUARE_WIDTH }
     }
 
     static int[] nodeToPixelIdx(int[] node) {
@@ -527,7 +527,7 @@ class Model {
 
     static int calculateDegree(Double[] start, Double[] dest) {
         Double deg = Math.toDegrees(Math.atan2(dest[1] - start[1], dest[0] - start[0]))
-        Model.round(deg >= 0 ? deg : deg + 360)
+        deg >= 0 ? deg : deg + 360
     }
 
     static int bresenham(int[] start, int[] dest, Villager villager = null) {
