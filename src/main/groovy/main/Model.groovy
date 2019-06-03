@@ -35,9 +35,9 @@ class Model {
             (TravelType.PLAIN)    : 0.9d,
             (TravelType.ROAD)     : 0.8d,
 
-            (TravelType.UP_HILL)  : 1.1d,
+            (TravelType.UP_HILL)  : 1.2d,
             (TravelType.EVEN)     : 1.0d,
-            (TravelType.DOWN_HILL): 1.0d,
+            (TravelType.DOWN_HILL): 0.9d,
     ]
 
     static def allSquares = [
