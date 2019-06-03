@@ -55,7 +55,7 @@ class Model {
     static int[][] bufferedPathArray = new int[Main.WINDOW_WIDTH + Main.WINDOW_HEIGHT][2]
 
     static def init(def keyboard, def mouse) {
-        def nodeNetwork = generateBackground()
+        def tileNetwork = generateBackground()
 
         model = [
                 keyboard      : keyboard,
@@ -64,7 +64,7 @@ class Model {
                 drawables     : [],
                 villagers     : [],
                 frameSlots    : [0, 0, 0, 0, 0],
-                nodeNetwork   : nodeNetwork,
+                tileNetwork   : tileNetwork,
                 rules         : generateRules(),
         ]
 
@@ -136,35 +136,35 @@ class Model {
         }
     }
 
-    static Node[][] generateBackground() {
+    static Tile[][] generateBackground() {
         generateBackground('lol.png')
     }
 
-    static Node[][] generateBackground(String imageName) {
+    static Tile[][] generateBackground(String imageName) {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader()
         BufferedImage image = ImageIO.read(classloader.getResourceAsStream(imageName))
 
         int[][] heightMap = buildHeightMap(image)
         shaveOffExtremeMaxMin(heightMap)
         maximizeScale(heightMap)
-        Node[][] nodeNetwork = buildNodeNetwork(heightMap)
-        setColors(nodeNetwork)
+        Tile[][] tileNetwork = buildTileNetwork(heightMap)
+        setColors(tileNetwork)
 
-        return nodeNetwork
+        return tileNetwork
     }
 
     static BufferedImage createBGImage() {
-        Node[][] nodeNetwork = model.nodeNetwork
+        Tile[][] tileNetwork = model.tileNetwork
         BufferedImage image = new BufferedImage(
-                nodeNetwork.length * Main.SQUARE_WIDTH,
-                nodeNetwork[0].length * Main.SQUARE_WIDTH,
+                tileNetwork.length * Main.SQUARE_WIDTH,
+                tileNetwork[0].length * Main.SQUARE_WIDTH,
                 BufferedImage.TYPE_INT_RGB
         )
         Graphics2D g2d = image.createGraphics()
 
-        for (int x = 0; x < nodeNetwork.length; x++) {
-            for (int y = 0; y < nodeNetwork[x].length; y++) {
-                Drawable drawable = nodeNetwork[x][y]
+        for (int x = 0; x < tileNetwork.length; x++) {
+            for (int y = 0; y < tileNetwork[x].length; y++) {
+                Drawable drawable = tileNetwork[x][y]
                 g2d.setPaint(drawable.color)
                 if (drawable.shape == Drawable.SHAPES.RECT) {
                     g2d.fillRect(drawable.x as int, drawable.y as int, drawable.size, drawable.size)
@@ -268,7 +268,7 @@ class Model {
         }
     }
 
-    private static Node[][] buildNodeNetwork(int[][] heightMap) {
+    private static Tile[][] buildTileNetwork(int[][] heightMap) {
 
         int imageWidth = heightMap.length
         int imageHeight = heightMap[0].length
@@ -285,10 +285,10 @@ class Model {
         Double xStep = squareWidth * xRatio
         Double yStep = squareHeight * yRatio
 
-        def nodeNetwork = new Node[bgWidth][bgHeight]
+        def tileNetwork = new Tile[bgWidth][bgHeight]
 
-        int xNodeIdx = 0
-        int yNodeIdx = 0
+        int xTileIdx = 0
+        int yTileIdx = 0
 
         def pixelReadControl = new int[heightMap.length][heightMap[0].length]
 
@@ -308,7 +308,7 @@ class Model {
                     }
                 }
 
-                if (noPixels > 0 && xNodeIdx < nodeNetwork.length && yNodeIdx < nodeNetwork[xNodeIdx].length) {
+                if (noPixels > 0 && xTileIdx < tileNetwork.length && yTileIdx < tileNetwork[xTileIdx].length) {
                     int avgAreaHeight = sumAreaHeight / noPixels
 
                     if (avgAreaHeight < min) {
@@ -317,21 +317,21 @@ class Model {
                         max = avgAreaHeight
                     }
 
-                    if (nodeNetwork[xNodeIdx][yNodeIdx]) {
+                    if (tileNetwork[xTileIdx][yTileIdx]) {
                         throw new PerIsBorkenException()
                     }
 
-                    nodeNetwork[xNodeIdx][yNodeIdx] = new Node(
+                    tileNetwork[xTileIdx][yTileIdx] = new Tile(
                             height: avgAreaHeight,
                             size: squareWidth,
-                            x: xNodeIdx * squareWidth,
-                            y: yNodeIdx * squareHeight
+                            x: xTileIdx * squareWidth,
+                            y: yTileIdx * squareHeight
                     )
                 }
-                yNodeIdx++
+                yTileIdx++
             }
-            yNodeIdx = 0
-            xNodeIdx++
+            yTileIdx = 0
+            xTileIdx++
         }
 
         def controlMap = [:]
@@ -351,25 +351,25 @@ class Model {
             throw new PerIsBorkenException()
         }
 
-        for (int x = 0; x < nodeNetwork.length; x++) {
-            for (int y = 0; y < nodeNetwork[x].length; y++) {
-                if (!nodeNetwork[x][y]) {
+        for (int x = 0; x < tileNetwork.length; x++) {
+            for (int y = 0; y < tileNetwork[x].length; y++) {
+                if (!tileNetwork[x][y]) {
                     throw new PerIsBorkenException()
                 }
             }
         }
-        return nodeNetwork
+        return tileNetwork
     }
 
-    private static void setColors(Node[][] nodeNetwork) {
+    private static void setColors(Tile[][] tileNetwork) {
 
-        List<Node> allNodes = []
-        for (int x = 0; x < nodeNetwork.length; x++) {
-            for (int y = 0; y < nodeNetwork[x].length; y++) {
-                allNodes << nodeNetwork[x][y]
+        List<Tile> allTiles = []
+        for (int x = 0; x < tileNetwork.length; x++) {
+            for (int y = 0; y < tileNetwork[x].length; y++) {
+                allTiles << tileNetwork[x][y]
             }
         }
-        allNodes.sort { it.height }
+        allTiles.sort { it.height }
 
         Color blueLow = new Color(51, 153, 255)
         Color blueHigh = new Color(153, 204, 255)
@@ -391,31 +391,31 @@ class Model {
         def controlUniqueHeightValues = []
 
         for (def colorRatio : colorRatios) {
-            int from = colorRatio.from * allNodes.size()
-            int to = colorRatio.to * allNodes.size()
-            List<Node> nodeGroup = allNodes[from..to - 1]
+            int from = colorRatio.from * allTiles.size()
+            int to = colorRatio.to * allTiles.size()
+            List<Tile> tileGroup = allTiles[from..to - 1]
 
             //remove from the back
             if (from > 0) {
-                for (int i = nodeGroup.size() - 1; i >= 0; i--) {
-                    if (nodeGroup[i].height == allNodes[from - 1].height) {
-                        nodeGroup.remove(i)
+                for (int i = tileGroup.size() - 1; i >= 0; i--) {
+                    if (tileGroup[i].height == allTiles[from - 1].height) {
+                        tileGroup.remove(i)
                     }
                 }
             }
 
             //add to the front
-            for (int i = to; i < allNodes.size(); i++) {
-                if (nodeGroup.last().height == allNodes[i].height) {
-                    nodeGroup << allNodes[i]
+            for (int i = to; i < allTiles.size(); i++) {
+                if (tileGroup.last().height == allTiles[i].height) {
+                    tileGroup << allTiles[i]
                 }
             }
 
-            def uniqueHeightValues = nodeGroup.groupBy { it.height }.collect { it.key }
+            def uniqueHeightValues = tileGroup.groupBy { it.height }.collect { it.key }
 
             List<Color> colors = gradient(colorRatio.colorFrom, colorRatio.colorTo, uniqueHeightValues.size())
             for (int i = 0; i < uniqueHeightValues.size(); i++) {
-                nodeGroup.grep { it.height == uniqueHeightValues[i] }.each {
+                tileGroup.grep { it.height == uniqueHeightValues[i] }.each {
                     it.color = colors[i]
                     it.travelType = colorRatio.travelType
                     controlMap[it.id] = controlMap[it.id] ? controlMap[it.id] + 1 : 1
@@ -426,18 +426,18 @@ class Model {
         }
 
         //test: use all colors
-        if (!(controlAllColors.flatten()*.getRGB().unique().sort() == allNodes.color*.getRGB().unique().sort())) {
+        if (!(controlAllColors.flatten()*.getRGB().unique().sort() == allTiles.color*.getRGB().unique().sort())) {
             throw new PerIsBorkenException()
         }
 
-        //test: no two heights of nodes uses the same color
-        allNodes.groupBy { it.height }.each { int height, List<Node> nodes ->
-            if (nodes.groupBy { it.color }.size() != 1) {
+        //test: no two heights of tiles uses the same color
+        allTiles.groupBy { it.height }.each { int height, List<Tile> tiles ->
+            if (tiles.groupBy { it.color }.size() != 1) {
                 throw new PerIsBorkenException()
             }
         }
 
-        if (controlMap.collect { it.key }.sort() != allNodes.id.sort()) {
+        if (controlMap.collect { it.key }.sort() != allTiles.id.sort()) {
             throw new PerIsBorkenException()
         }
         controlMap.each {
@@ -446,8 +446,8 @@ class Model {
             }
         }
 
-        if (allNodes.color.grep().size() != allNodes.size()) {
-            allNodes.grep { !it.color }.each {
+        if (allTiles.color.grep().size() != allTiles.size()) {
+            allTiles.grep { !it.color }.each {
                 it.color = new Color(255, 0, 0)
                 it.size = 20
             }
@@ -498,11 +498,11 @@ class Model {
                 Main.MAP_HEIGHT / 2 + generate((Main.MAP_HEIGHT / 9) as int)
         ]
 
-        def nodeXY = pixelToNodeIdx(xy)
+        def tileXY = pixelToTileIdx(xy)
 
-        def node = Model.model.nodeNetwork[nodeXY[0]][nodeXY[1]] as Node
+        def tile = Model.model.tileNetwork[tileXY[0]][tileXY[1]] as Tile
 
-        if (node.travelType == TravelType.WATER) {
+        if (tile.travelType == TravelType.WATER) {
             return generateXY()
         } else {
             return xy
@@ -513,16 +513,16 @@ class Model {
         return distance - ThreadLocalRandom.current().nextInt(0, distance * 2 + 1)
     }
 
-    static int[] pixelToNodeIdx(int[] pixels) {
+    static int[] pixelToTileIdx(int[] pixels) {
         pixels.collect { it / Main.SQUARE_WIDTH }
     }
 
-    static int[] pixelToNodeIdx(Double[] pixels) {
+    static int[] pixelToTileIdx(Double[] pixels) {
         pixels.collect { it / Main.SQUARE_WIDTH }
     }
 
-    static int[] nodeToPixelIdx(int[] node) {
-        node.collect { (it * Main.SQUARE_WIDTH) }
+    static int[] tileToPixelIdx(int[] tile) {
+        tile.collect { (it * Main.SQUARE_WIDTH) }
     }
 
     static int calculateDegree(Double[] start, Double[] dest) {
@@ -551,10 +551,10 @@ class Model {
 
         int idx = 0
 
-        def nodeNetwork = Model.model.nodeNetwork as Node[][]
+        def tileNetwork = Model.model.tileNetwork as Tile[][]
 
         while (true) {
-            if (villager && !villager.canTravel(nodeNetwork[x][y].travelType)) {
+            if (villager && !villager.canTravel(tileNetwork[x][y].travelType)) {
                 return -1
             }
 

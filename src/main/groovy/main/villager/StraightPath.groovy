@@ -1,7 +1,7 @@
 package main.villager
 
 import main.Model
-import main.Node
+import main.Tile
 import main.things.Artifact
 import main.things.Drawable
 
@@ -39,8 +39,8 @@ class StraightPath extends Action {
     private void testPrints(Double[] start, Double[] dest, def nextSquares) {
         def pixelStart = start
         def pixelDest = dest
-        def (int x, int y) = Model.pixelToNodeIdx(pixelStart)
-        def nodeNetwork = Model.model.nodeNetwork as Node[][]
+        def (int x, int y) = Model.pixelToTileIdx(pixelStart)
+        def tileNetwork = Model.model.tileNetwork as Tile[][]
 
         if (nextSquares) {
             def maxSquare = nextSquares.max { def square ->
@@ -63,7 +63,7 @@ class StraightPath extends Action {
                 //def nX = x + sX
                 //def nY = y + sY
                 def squareProbability = (square[0][1] - square[0][0]) as Double
-                def neighbor = nodeNetwork[nX][nY] as Node
+                def neighbor = tileNetwork[nX][nY] as Tile
 
                 Model.model.drawables << new Artifact(
                         size: neighbor.size, parent: this.id, x: neighbor.x, y: neighbor.y,
@@ -88,12 +88,12 @@ class StraightPath extends Action {
         return pointB[0] <= xBig && pointB[0] >= xSmall && pointB[1] <= yBig && pointB[1] >= ySmall
     }
 
-    static boolean closeEnoughNode(int[] nodeA, int[] nodeB) {
-        int xBig = nodeA[0] + 1
-        int xSmall = nodeA[0] - 1
-        int yBig = nodeA[1] + 1
-        int ySmall = nodeA[1] - 1
-        return nodeB[0] <= xBig && nodeB[0] >= xSmall && nodeB[1] <= yBig && nodeB[1] >= ySmall
+    static boolean closeEnoughTile(int[] tileA, int[] tileB) {
+        int xBig = tileA[0] + 1
+        int xSmall = tileA[0] - 1
+        int yBig = tileA[1] + 1
+        int ySmall = tileA[1] - 1
+        return tileB[0] <= xBig && tileB[0] >= xSmall && tileB[1] <= yBig && tileB[1] >= ySmall
     }
 
     @Override

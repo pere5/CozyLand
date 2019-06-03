@@ -3,7 +3,7 @@ package main.thread
 import main.Main
 import main.Model
 import main.Model.TravelType
-import main.Node
+import main.Tile
 import main.villager.StraightPath
 import main.villager.Villager
 
@@ -19,12 +19,12 @@ class PathfinderWorker extends Worker {
         - [ ] kör steg nod för nod
         - [ ] för nästa steg:
           - [x] kör 90 grader med mittersta graden pekandes mot målet
-          - [x] fördela ut graderna lika till grann noderna
+          - [x] fördela ut graderna lika till grann tilesen
           - [x] hårdkoda det med en färdig lösning per grad för alla 360 grader.
           - [x] lägg upp en (normal) fördelning av sannolikhet för graderna över 90 grader.
           - [x] hårdkoda fördelningen för 0 -> 90 grader med max i 45
-          - [x] beräkna genomsnittliga sannolikheten för varje grann nod relativt till de andra noderna utifrån gradernas sannolikheter
-          - [x] omfördela sannolikheterna mot vaje nod baserat på nodens movementCost relativt till de andra noderna
+          - [x] beräkna genomsnittliga sannolikheten för varje grann nod relativt till de andra tiles utifrån gradernas sannolikheter
+          - [x] omfördela sannolikheterna mot vaje nod baserat på tilens movementCost relativt till de andra tilsen
      */
 
     def update() {
@@ -33,7 +33,7 @@ class PathfinderWorker extends Worker {
             if (villager.pathfinderWorker) {
 
                 def pixelDest = Model.generateXY()
-                def nodeDestXY = Model.pixelToNodeIdx(pixelDest)
+                def tileDestXY = Model.pixelToTileIdx(pixelDest)
                 def pixelStart = [villager.x, villager.y] as Double[]
                 def pixelStep = pixelStart
                 def there = false
@@ -41,16 +41,16 @@ class PathfinderWorker extends Worker {
                 while (!there) {
 
                     def degree = Model.calculateDegree(pixelStep, pixelDest)
-                    def nodeStartXY = Model.pixelToNodeIdx(pixelStep)
+                    def tileStartXY = Model.pixelToTileIdx(pixelStep)
 
-                    def nextSquares = nextSquares(villager, nodeStartXY, nodeDestXY, degree)
+                    def nextSquares = nextSquares(villager, tileStartXY, tileDestXY, degree)
 
                     if (nextSquares) {
                         def random = Math.random() * 100
 
                         def nextSquare = nextSquares.find { random >= (it[0][0] as Double) && random <= (it[0][1] as Double) }
 
-                        def newSquare = [nodeStartXY[0] + nextSquare[1][0], nodeStartXY[1] + nextSquare[1][1]] as int[]
+                        def newSquare = [tileStartXY[0] + nextSquare[1][0], tileStartXY[1] + nextSquare[1][1]] as int[]
 
                         def newPixelStep = randomPlaceInSquare(newSquare)
 
@@ -58,9 +58,9 @@ class PathfinderWorker extends Worker {
 
                         pixelStep = newPixelStep
 
-                        there = StraightPath.closeEnoughNode(newSquare, nodeDestXY)
+                        there = StraightPath.closeEnoughTile(newSquare, tileDestXY)
                         if (there) {
-                            villager.actionQueue << new StraightPath(pixelStep, randomPlaceInSquare(nodeDestXY), [[[0, 100], nodeDestXY]])
+                            villager.actionQueue << new StraightPath(pixelStep, randomPlaceInSquare(tileDestXY), [[[0, 100], tileDestXY]])
                         }
                     } else {
                         there = true
@@ -72,7 +72,7 @@ class PathfinderWorker extends Worker {
     }
 
     Double[] randomPlaceInSquare(int[] pixelIdx) {
-        pixelIdx = Model.nodeToPixelIdx(pixelIdx)
+        pixelIdx = Model.tileToPixelIdx(pixelIdx)
         pixelIdx[0] += 1
         pixelIdx[1] += 1
         pixelIdx[0] += (Main.SQUARE_WIDTH - 2) * Math.random()
@@ -80,29 +80,29 @@ class PathfinderWorker extends Worker {
         return pixelIdx
     }
 
-    def nextSquares(Villager villager, int[] nodeStartXY, int[] nodeDestXY, int degree) {
+    def nextSquares(Villager villager, int[] tileStartXY, int[] tileDestXY, int degree) {
 
-        def (int nodeX, int nodeY) = nodeStartXY
+        def (int tileX, int tileY) = tileStartXY
 
         def nextSquares = []
 
-        def nodeNetwork = Model.model.nodeNetwork as Node[][]
-        def node = nodeNetwork[nodeX][nodeY]
+        def tileNetwork = Model.model.tileNetwork as Tile[][]
+        def tile = tileNetwork[tileX][tileY]
 
         final def squareProbabilities = Model.model.squareProbabilitiesForDegrees[degree]
 
         squareProbabilities.each { def square ->
             def (int sX, int sY) = square[0]
-            def neighborXY = [nodeX + sX, nodeY + sY] as int[]
+            def neighborXY = [tileX + sX, tileY + sY] as int[]
             def (int nX, int nY) = neighborXY
-            def neighbor = nodeNetwork[nX][nY] as Node
+            def neighbor = tileNetwork[nX][nY] as Tile
             TravelType travelType = neighbor.travelType
             def squareProbability = square[1] as Double
 
             if (villager.canTravel(travelType)) {
                 if (squareProbability > 0) {
-                    if (Model.bresenham(neighborXY, nodeDestXY, villager) >= 0) {
-                        nextSquares << calculateProbabilityForNeighbor(neighbor, node, square)
+                    if (Model.bresenham(neighborXY, tileDestXY, villager) >= 0) {
+                        nextSquares << calculateProbabilityForNeighbor(neighbor, tile, square)
                     }
                 }
             }
@@ -126,11 +126,11 @@ class PathfinderWorker extends Worker {
         return nextSquares
     }
 
-    def calculateProbabilityForNeighbor(Node neighbor, Node node, def square) {
+    def calculateProbabilityForNeighbor(Tile neighbor, Tile tile, def square) {
         Double squareProbability = square[1] as Double
         TravelType travelType = neighbor.travelType
         def travelModifierMap = Model.travelModifier as Map<TravelType, Double>
-        int heightDifference = neighbor.height - node.height
+        int heightDifference = neighbor.height - tile.height
         Double travelModifier = travelModifierMap[travelType]
         Double heightModifier = (heightDifference > 0
                 ? travelModifierMap[TravelType.UP_HILL]

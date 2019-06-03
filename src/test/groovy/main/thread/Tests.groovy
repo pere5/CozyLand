@@ -16,7 +16,7 @@ class Tests {
         Main.MAP_HEIGHT = Main.VIEWPORT_HEIGHT * 2
 
         Model.model.squareProbabilitiesForDegrees = Model.calculateProbabilitiesModel()
-        Model.model.nodeNetwork = Model.generateBackground('lol.png')
+        Model.model.tileNetwork = Model.generateBackground('lol.png')
     }
 
     @Test
@@ -72,20 +72,20 @@ class Tests {
 
         def nextSquares1 = pfw.nextSquares(
                 new Villager(),
-                Model.pixelToNodeIdx([578, 302] as int[]),
-                Model.pixelToNodeIdx([579 + 0, 341 + 20] as int[]),
+                Model.pixelToTileIdx([578, 302] as int[]),
+                Model.pixelToTileIdx([579 + 0, 341 + 20] as int[]),
                 90
         )
         def nextSquares2 = pfw.nextSquares(
                 new Villager(),
-                Model.pixelToNodeIdx([503, 214] as int[]),
-                Model.pixelToNodeIdx([592 + 20, 376 + 20] as int[]),
+                Model.pixelToTileIdx([503, 214] as int[]),
+                Model.pixelToTileIdx([592 + 20, 376 + 20] as int[]),
                 45
         )
         def nextSquares3 = pfw.nextSquares(
                 new Villager(),
-                Model.pixelToNodeIdx([722, 621] as int[]),
-                Model.pixelToNodeIdx([662 + 20, 208 + 20] as int[]),
+                Model.pixelToTileIdx([722, 621] as int[]),
+                Model.pixelToTileIdx([662 + 20, 208 + 20] as int[]),
                 45
         )
 

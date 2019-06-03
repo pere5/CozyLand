@@ -16,10 +16,10 @@
      - [ ] Walk  
      - [ ] etc...
  - [ ] Pathfinding aStar
-   - [ ] Algoritemen ska inte ta ett steg åt gången mellan noder utan hitta raka strecka mellan noder så att gubben kan vandra fritt.
- - [x] Node network
+   - [ ] Algoritemen ska inte ta ett steg åt gången mellan tiles utan hitta raka strecka mellan tiles så att gubben kan vandra fritt.
+ - [x] Tile network
    - [x] Heightmap 
-   - [x] Node
+   - [x] Tile
      - [x] Drawable
      - [x] Neighbor costs
      - [x] Accessibility
