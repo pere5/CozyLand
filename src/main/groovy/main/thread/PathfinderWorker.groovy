@@ -95,14 +95,16 @@ class PathfinderWorker extends Worker {
             def (int sX, int sY) = square[0]
             def neighborXY = [tileX + sX, tileY + sY] as int[]
             def (int nX, int nY) = neighborXY
-            def neighbor = tileNetwork[nX][nY] as Tile
-            TravelType travelType = neighbor.travelType
-            def squareProbability = square[1] as Double
+            if (nX >= 0 && nY >= 0 && nX < tileNetwork.length && nY < tileNetwork[0].length) {
+                def neighbor = tileNetwork[nX][nY] as Tile
+                TravelType travelType = neighbor.travelType
+                def squareProbability = square[1] as Double
 
-            if (villager.canTravel(travelType)) {
-                if (squareProbability > 0) {
-                    if (Model.bresenham(neighborXY, tileDestXY, villager) >= 0) {
-                        nextSquares << calculateProbabilityForNeighbor(neighbor, tile, square)
+                if (villager.canTravel(travelType)) {
+                    if (squareProbability > 0) {
+                        if (Model.bresenham(neighborXY, tileDestXY, villager) >= 0) {
+                            nextSquares << calculateProbabilityForNeighbor(neighbor, tile, square)
+                        }
                     }
                 }
             }

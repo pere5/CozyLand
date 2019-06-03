@@ -14,13 +14,15 @@ class Villager extends Drawable {
     boolean pathfinderWorker
     boolean workWorker
 
-    Villager() {
-        size = 3
-        color = Color.BLUE
+    static Villager test() {
+        def villager = new Villager()
+        villager.size = 3
+        villager.color = Color.BLUE
         def (Double x, Double y) = Model.generateXY()
-        this.x = x
-        this.y = y
-        toRuleWorker()
+        villager.x = x
+        villager.y = y
+        villager.toRuleWorker()
+        return villager
     }
 
     boolean work() {

@@ -2,6 +2,7 @@ package main.thread
 
 import main.Main
 import main.Model
+import main.Tile
 import main.villager.Villager
 import org.junit.BeforeClass
 import org.junit.Test
@@ -9,15 +10,7 @@ import org.junit.Test
 class Tests {
 
     @BeforeClass
-    static void setUp() throws Exception {
-        Main.VIEWPORT_WIDTH = Main.WINDOW_WIDTH - (0)
-        Main.VIEWPORT_HEIGHT = Main.WINDOW_HEIGHT - (22)
-        Main.MAP_WIDTH = Main.VIEWPORT_WIDTH * 2
-        Main.MAP_HEIGHT = Main.VIEWPORT_HEIGHT * 2
-
-        Model.model.squareProbabilitiesForDegrees = Model.calculateProbabilitiesModel()
-        Model.model.tileNetwork = Model.generateBackground('lol.png')
-    }
+    static void setUp() throws Exception {}
 
     @Test
     void degreeRange() {
@@ -68,25 +61,44 @@ class Tests {
 
     @Test
     void nextSquares() {
+        def sw = Main.SQUARE_WIDTH
+        def w = Model.TravelType.WATER
+        def p = Model.TravelType.PLAIN
+
+        Model.model.squareProbabilitiesForDegrees = Model.calculateProbabilitiesModel()
+        Model.model.tileNetwork = [
+                [new Tile(height: 10, size: sw, x: 0, y: 0, travelType: p), new Tile(height: 10, size: sw, x: 0, y: 1, travelType: p), new Tile(height: 10, size: sw, x: 0, y: 2, travelType: p), new Tile(height: 10, size: sw, x: 0, y: 3, travelType: p), new Tile(height: 10, size: sw, x: 0, y: 4, travelType: p)],
+                [new Tile(height: 10, size: sw, x: 1, y: 0, travelType: p), new Tile(height: 10, size: sw, x: 1, y: 1, travelType: p), new Tile(height: 10, size: sw, x: 1, y: 2, travelType: p), new Tile(height: 10, size: sw, x: 1, y: 3, travelType: p), new Tile(height: 10, size: sw, x: 1, y: 4, travelType: p)],
+                [new Tile(height: 10, size: sw, x: 2, y: 0, travelType: w), new Tile(height: 10, size: sw, x: 2, y: 1, travelType: p), new Tile(height: 10, size: sw, x: 2, y: 2, travelType: p), new Tile(height: 10, size: sw, x: 2, y: 3, travelType: p), new Tile(height: 10, size: sw, x: 2, y: 4, travelType: p)],
+                [new Tile(height: 10, size: sw, x: 3, y: 0, travelType: p), new Tile(height: 10, size: sw, x: 3, y: 1, travelType: p), new Tile(height: 10, size: sw, x: 3, y: 2, travelType: p), new Tile(height: 10, size: sw, x: 3, y: 3, travelType: w), new Tile(height: 10, size: sw, x: 3, y: 4, travelType: p)],
+                [new Tile(height: 10, size: sw, x: 4, y: 0, travelType: w), new Tile(height: 10, size: sw, x: 4, y: 1, travelType: p), new Tile(height: 10, size: sw, x: 4, y: 2, travelType: w), new Tile(height: 10, size: sw, x: 4, y: 3, travelType: p), new Tile(height: 10, size: sw, x: 4, y: 4, travelType: p)]
+        ]
+
         def pfw = new PathfinderWorker()
 
         def nextSquares1 = pfw.nextSquares(
                 new Villager(),
-                Model.pixelToTileIdx([578, 302] as int[]),
-                Model.pixelToTileIdx([579 + 0, 341 + 20] as int[]),
-                90
+                [0, 0] as int[],
+                [1, 0] as int[],
+                0
         )
         def nextSquares2 = pfw.nextSquares(
                 new Villager(),
-                Model.pixelToTileIdx([503, 214] as int[]),
-                Model.pixelToTileIdx([592 + 20, 376 + 20] as int[]),
-                45
+                [3, 0] as int[],
+                [1, 3] as int[],
+                90
         )
         def nextSquares3 = pfw.nextSquares(
                 new Villager(),
-                Model.pixelToTileIdx([722, 621] as int[]),
-                Model.pixelToTileIdx([662 + 20, 208 + 20] as int[]),
+                [3, 2] as int[],
+                [4, 3] as int[],
                 45
+        )
+        def nextSquares4 = pfw.nextSquares(
+                new Villager(),
+                [0, 1] as int[],
+                [1, 1] as int[],
+                0
         )
 
         assert !nextSquares3

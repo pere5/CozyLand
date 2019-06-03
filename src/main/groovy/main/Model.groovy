@@ -71,9 +71,9 @@ class Model {
         model.squareProbabilitiesForDegrees = calculateProbabilitiesModel()
 
         def villagers = [
-                new Villager(), new Villager(), new Villager(), new Villager(), new Villager(),
-                new Villager(), new Villager(), new Villager(), new Villager(), new Villager(),
-                new Villager(), new Villager(), new Villager(), new Villager(), new Villager()
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test()
         ]
         def stones = []
         def trees = []
