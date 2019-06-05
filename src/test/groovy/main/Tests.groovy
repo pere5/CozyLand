@@ -1,8 +1,9 @@
-package main.thread
+package main
 
 import main.Main
 import main.Model
 import main.Tile
+import main.thread.PathfinderWorker
 import main.villager.Villager
 import org.junit.BeforeClass
 import org.junit.Test
@@ -67,51 +68,68 @@ class Tests {
 
         Model.model.squareProbabilitiesForDegrees = Model.calculateProbabilitiesModel()
         Model.model.tileNetwork = [
-                [new Tile(height: 10, size: sw, x: 0, y: 0, travelType: p), new Tile(height: 10, size: sw, x: 0, y: 1, travelType: p), new Tile(height: 10, size: sw, x: 0, y: 2, travelType: p), new Tile(height: 10, size: sw, x: 0, y: 3, travelType: p), new Tile(height: 10, size: sw, x: 0, y: 4, travelType: p)],
-                [new Tile(height: 10, size: sw, x: 1, y: 0, travelType: p), new Tile(height: 10, size: sw, x: 1, y: 1, travelType: p), new Tile(height: 10, size: sw, x: 1, y: 2, travelType: p), new Tile(height: 10, size: sw, x: 1, y: 3, travelType: p), new Tile(height: 10, size: sw, x: 1, y: 4, travelType: p)],
-                [new Tile(height: 10, size: sw, x: 2, y: 0, travelType: w), new Tile(height: 10, size: sw, x: 2, y: 1, travelType: p), new Tile(height: 10, size: sw, x: 2, y: 2, travelType: p), new Tile(height: 10, size: sw, x: 2, y: 3, travelType: p), new Tile(height: 10, size: sw, x: 2, y: 4, travelType: p)],
-                [new Tile(height: 10, size: sw, x: 3, y: 0, travelType: p), new Tile(height: 10, size: sw, x: 3, y: 1, travelType: p), new Tile(height: 10, size: sw, x: 3, y: 2, travelType: p), new Tile(height: 10, size: sw, x: 3, y: 3, travelType: w), new Tile(height: 10, size: sw, x: 3, y: 4, travelType: p)],
-                [new Tile(height: 10, size: sw, x: 4, y: 0, travelType: w), new Tile(height: 10, size: sw, x: 4, y: 1, travelType: p), new Tile(height: 10, size: sw, x: 4, y: 2, travelType: w), new Tile(height: 10, size: sw, x: 4, y: 3, travelType: p), new Tile(height: 10, size: sw, x: 4, y: 4, travelType: p)]
+                [new Tile(height: 10, size: sw, x: 0, y: 0, travelType: p), new Tile(height: 10, size: sw, x: 0, y: 1, travelType: p), new Tile(height: 10, size: sw, x: 0, y: 2, travelType: p), new Tile(height: 10, size: sw, x: 0, y: 3, travelType: p)],
+                [new Tile(height: 10, size: sw, x: 1, y: 0, travelType: p), new Tile(height: 10, size: sw, x: 1, y: 1, travelType: p), new Tile(height: 10, size: sw, x: 1, y: 2, travelType: p), new Tile(height: 10, size: sw, x: 1, y: 3, travelType: p)],
+                [new Tile(height: 10, size: sw, x: 2, y: 0, travelType: w), new Tile(height: 10, size: sw, x: 2, y: 1, travelType: p), new Tile(height: 10, size: sw, x: 2, y: 2, travelType: p), new Tile(height: 10, size: sw, x: 2, y: 3, travelType: p)],
+                [new Tile(height: 10, size: sw, x: 3, y: 0, travelType: p), new Tile(height: 10, size: sw, x: 3, y: 1, travelType: p), new Tile(height: 10, size: sw, x: 3, y: 2, travelType: p), new Tile(height: 10, size: sw, x: 3, y: 3, travelType: w)],
+                [new Tile(height: 10, size: sw, x: 4, y: 0, travelType: w), new Tile(height: 10, size: sw, x: 4, y: 1, travelType: p), new Tile(height: 10, size: sw, x: 4, y: 2, travelType: w), new Tile(height: 10, size: sw, x: 4, y: 3, travelType: p)]
         ]
 
         def pfw = new PathfinderWorker()
 
-        def nextSquares1 = pfw.nextSquares(
+        def rightByWall = pfw.nextSquares(
                 new Villager(),
                 [0, 0] as int[],
                 [1, 0] as int[],
                 0
         )
-        def nextSquares2 = pfw.nextSquares(
+        def upRoundWater = pfw.nextSquares(
                 new Villager(),
                 [3, 0] as int[],
                 [1, 3] as int[],
                 90
         )
-        def nextSquares3 = pfw.nextSquares(
+        def diagonalBetweenWater = pfw.nextSquares(
                 new Villager(),
                 [3, 2] as int[],
                 [4, 3] as int[],
                 45
         )
-        def nextSquares4 = pfw.nextSquares(
+        def free = pfw.nextSquares(
                 new Villager(),
                 [0, 1] as int[],
                 [1, 1] as int[],
                 0
         )
 
-        assert !nextSquares3
+        def rightByWallRecalc = rightByWall.collect {
+            [it[0][1] - it [0][0], it[1][0], it[1][1]]
+        }
+
+        def rightByWallExpect = [[12.5, 0, 1], [25, 1, 1], [25, 1, 0]].collect {
+            it[0] *= 100 / (25 + 25 + 12.5)
+            return it
+        }
+
+        def freeRecalc = free.collect {
+            [it[0][1] - it [0][0], it[1][0], it[1][1]]
+        }
+
+        def freeExpect = [[12.5, 0, 1], [25, 1, 1], [25, 1, 0], [12.5, 0, -1], [25, 1, -1]]
+
+        assert freeRecalc == freeExpect
+
+        assert rightByWallRecalc == rightByWallExpect
 /*
 
-        assert nextSquares2.size() == 3
-        def s2 = nextSquares2.collect { it[0][1] - it[0][0] }
+        assert upRoundWater.size() == 3
+        def s2 = upRoundWater.collect { it[0][1] - it[0][0] }
         assert Math.abs(s2.sum() - 100) < 0.00000001
         assert s2.collect { Model.round(it) } == [12, 39, 49]
 */
 
-        assert nextSquares1.size() == 5
-        def s1 = nextSquares1.collect { it[0][1] - it[0][0] }
+        assert rightByWall.size() == 5
+        def s1 = rightByWall.collect { it[0][1] - it[0][0] }
         assert Math.abs(s1.sum() - 100) < 0.00000001
         assert s1.collect { Model.round(it) } == [7, 27, 31, 27, 8]
     }
