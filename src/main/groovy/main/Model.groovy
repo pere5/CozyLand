@@ -111,12 +111,9 @@ class Model {
         (upper > lower) ? (lower..upper) : (lower..359) + (0..upper)
     }
 
-    static List<List<Number>> degreeProbabilities(List<Integer> degree) {
-        (degree[0..35]).collect    { [it, 12.5/36] } +
-        (degree[36..71]).collect   { [it, 25/36] } +
-        (degree[72..108]).collect  { [it, 25/37] } +
-        (degree[109..144]).collect { [it, 25/36] } +
-        (degree[145..180]).collect { [it, 12.5/36] }
+    static List degreeProbabilities(List<Integer> degree) {
+        def probability = (100/181) as Double
+        degree.collect { [it, probability] }
     }
 
     static List<List<Object>> squareProbabilities(List<List<Number>> degreeProbabilities) {
