@@ -98,7 +98,7 @@ class Model {
         (0..359).collectEntries { def degree ->
             def degreeRange = degreeRange(degree)
             def degreeProbabilities = degreeProbabilities(degreeRange)
-            def squares = squareProbabilities(degreeProbabilities)
+            def squares = squareProbabilities(degreeProbabilities, degree)
             [(degree), squares]
         }
     }
@@ -119,27 +119,27 @@ class Model {
         (degree[145..180]).collect { [it, 20/36] }
     }
 
-    static List<List<Object>> squareProbabilities(List<List<Number>> degreeProbabilities) {
+    static List<List<Object>> squareProbabilities(List<List<Number>> degreeProbabilities, int realDegree) {
         def testCollection = []
         def result = Model.squareDegrees.collect { def square ->
             def subTestCollection = []
-            def squareDegrees = square.key
+            def sDeg = square.key
             def squareProbability = degreeProbabilities.sum { def degreeProbability ->
                 def degree = degreeProbability[0] as int
-                def probability = degreeProbability[1] as Double
+                def prob = degreeProbability[1] as Double
                 def retProb
-                if (squareDegrees[0] < squareDegrees[1]) {
-                    retProb = (degree >= squareDegrees[0] && degree <= squareDegrees[1]) ? probability : 0
+                if (sDeg[0] < sDeg[1]) {
+                    retProb = (degree >= sDeg[0] && degree <= sDeg[1]) ? prob : 0
                 } else {
-                    retProb = (degree >= squareDegrees[0] || degree <= squareDegrees[1]) ? probability : 0
+                    retProb = (degree >= sDeg[0] || degree <= sDeg[1]) ? prob : 0
                 }
-                subTestCollection << retProb
+                subTestCollection << [d: degree, p: retProb]
                 retProb
             }
             testCollection << subTestCollection
             [square.value, squareProbability]
         }
-        def probKeys = testCollection.flatten().unique()
+        def probKeys = testCollection.flatten().collect{ it.p }.unique()
         def allTheSame = [
                 [0,            [(true) :1267, (false):181]],
                 [0.4861111111, [(false):1376, (true) :72]],
@@ -147,17 +147,16 @@ class Model {
                 [0.6756756757, [(false):1411, (true) :37]]
         ]
         def thisCount = probKeys.collect { def probKey ->
-            [probKey, testCollection.flatten().countBy { probKey == it }]
+            [probKey, testCollection.flatten().collect{ it.p }.countBy { probKey == it }]
         }.sort{ it[0] }
 
-        /*
+        assert thisCount == allTheSame
+
         testCollection.each { def list ->
             assert list.size() == 181
-            assert list[0..89].sum() == list[91..180].sum()
+            assert list[90].d == realDegree
         }
-        */
 
-        assert thisCount == allTheSame
         result
     }
 

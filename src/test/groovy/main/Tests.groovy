@@ -26,9 +26,11 @@ class Tests {
         360.times { def degree ->
             def degreeRange = Model.degreeRange(degree)
             def degreeProbabilities = Model.degreeProbabilities(degreeRange)
-            def squares = Model.squareProbabilities(degreeProbabilities)
+            def squares = Model.squareProbabilities(degreeProbabilities, degree)
 
             assert degreeProbabilities.collect { it[0] } == degreeRange
+
+            assert degreeProbabilities[90][0] == degree
 
             assert degreeProbabilities[0..89].collect { it[1] }.sum() == degreeProbabilities[91..180].collect { it[1] }.sum()
 
