@@ -111,25 +111,44 @@ class Model {
         (upper > lower) ? (lower..upper) : (lower..359) + (0..upper)
     }
 
-    static List degreeProbabilities(List<Integer> degreeRange) {
-        def probability = (100/181) as Double
-        degreeRange.collect { [it, probability] }
+    static List<List<Number>> degreeProbabilities(List<Integer> degree) {
+        (degree[0..35]).collect    { [it, 20/36] } +
+        (degree[36..71]).collect   { [it, 17.5/36] } +
+        (degree[72..108]).collect  { [it, 25/37] } +
+        (degree[109..144]).collect { [it, 17.5/36] } +
+        (degree[145..180]).collect { [it, 20/36] }
     }
 
     static List<List<Object>> squareProbabilities(List<List<Number>> degreeProbabilities) {
-        Model.squareDegrees.collect { def square ->
+        def testCollection = []
+        def result = Model.squareDegrees.collect { def square ->
             def squareDegrees = square.key
             def squareProbability = degreeProbabilities.sum { def degreeProbability ->
                 def degree = degreeProbability[0] as int
                 def probability = degreeProbability[1] as Double
+                def retProb
                 if (squareDegrees[0] < squareDegrees[1]) {
-                    (degree >= squareDegrees[0] && degree <= squareDegrees[1]) ? probability : 0
+                    retProb = (degree >= squareDegrees[0] && degree <= squareDegrees[1]) ? probability : 0
                 } else {
-                    (degree >= squareDegrees[0] || degree <= squareDegrees[1]) ? probability : 0
+                    retProb = (degree >= squareDegrees[0] || degree <= squareDegrees[1]) ? probability : 0
                 }
+                testCollection << retProb
+                retProb
             }
             [square.value, squareProbability]
         }
+        def probKeys = testCollection.collect{ it }.unique()
+        def allTheSame = [
+                [0,            [(true) :1267, (false):181]],
+                [0.4861111111, [(false):1376, (true) :72]],
+                [0.5555555556, [(false):1376, (true) :72]],
+                [0.6756756757, [(false):1411, (true) :37]]
+        ]
+        def thisCount = probKeys.collect { def probKey ->
+            [probKey, testCollection.countBy { probKey == it }]
+        }.sort{ it[0] }
+        assert thisCount == allTheSame
+        result
     }
 
     static Tile[][] generateBackground() {
