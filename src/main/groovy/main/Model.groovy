@@ -152,10 +152,20 @@ class Model {
 
         assert thisCount == allTheSame
 
+        def left = 0
+        def right = 0
+        def middle = 0
+
         testCollection.each { def list ->
             assert list.size() == 181
             assert list[90].d == realDegree
+            left += list[0..89].p.sum()
+            right += list[91..180].p.sum()
+            middle += list[90].p
         }
+
+        assert Math.abs(left - right) < 0.00000000001
+        assert Math.abs((left + middle + right) - 100) < 0.0000001
 
         result
     }
