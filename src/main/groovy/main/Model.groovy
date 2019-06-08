@@ -41,15 +41,15 @@ class Model {
     ]
 
     static def allSquares = [
-            [-1, 1],  [0,  1],  [1,  1],
-            [-1, 0],            [1,  0],
+            [-1,  1], [0,  1],  [1,  1],
+            [-1,  0],           [1,  0],
             [-1, -1], [0, -1],  [1, -1]
     ]
 
     static def squareDegrees = [
-            [113, 158]: [-1,  1], [68, 113] : [0,  1], [23,   68]: [1,  1],
-            [158, 203]: [-1,  0],                      [338,  23]: [1,  0],
-            [203, 248]: [-1, -1], [248, 293]: [0, -1], [293, 338]: [1, -1]
+            [113, 157]: [-1,  1], [68, 112] : [0,  1], [23,   67]: [1,  1],
+            [158, 202]: [-1,  0],                      [338,  22]: [1,  0],
+            [203, 247]: [-1, -1], [248, 292]: [0, -1], [293, 337]: [1, -1]
     ]
 
     static int[][] bufferedPathArray = new int[Main.WINDOW_WIDTH + Main.WINDOW_HEIGHT][2]
@@ -111,9 +111,9 @@ class Model {
         (upper > lower) ? (lower..upper) : (lower..359) + (0..upper)
     }
 
-    static List degreeProbabilities(List<Integer> degree) {
+    static List degreeProbabilities(List<Integer> degreeRange) {
         def probability = (100/181) as Double
-        degree.collect { [it, probability] }
+        degreeRange.collect { [it, probability] }
     }
 
     static List<List<Object>> squareProbabilities(List<List<Number>> degreeProbabilities) {
@@ -123,11 +123,10 @@ class Model {
                 def degree = degreeProbability[0] as int
                 def probability = degreeProbability[1] as Double
                 if (squareDegrees[0] < squareDegrees[1]) {
-                    (degree >= squareDegrees[0] && degree < squareDegrees[1]) ? probability : 0
+                    (degree >= squareDegrees[0] && degree <= squareDegrees[1]) ? probability : 0
                 } else {
-                    ((degree >= squareDegrees[0] && degree < 360) || (degree < squareDegrees[1])) ? probability : 0
+                    (degree >= squareDegrees[0] || degree <= squareDegrees[1]) ? probability : 0
                 }
-
             }
             [square.value, squareProbability]
         }
