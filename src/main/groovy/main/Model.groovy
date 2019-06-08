@@ -133,7 +133,7 @@ class Model {
                 } else {
                     retProb = (degree >= sDeg[0] || degree <= sDeg[1]) ? prob : 0
                 }
-                subTestCollection << [d: degree, p: retProb]
+                subTestCollection << [d: degree, p: retProb, s: square]
                 retProb
             }
             testCollection << subTestCollection
@@ -152,20 +152,33 @@ class Model {
 
         assert thisCount == allTheSame
 
-        def left = 0
-        def right = 0
-        def middle = 0
+        def gLeft = 0
+        def gRight = 0
+        def gMiddle = 0
 
         testCollection.each { def list ->
+
+            def left = 0
+            def right = 0
+            def middle = 0
+
+            def s = list[0].s
             assert list.size() == 181
             assert list[90].d == realDegree
             left += list[0..89].p.sum()
             right += list[91..180].p.sum()
             middle += list[90].p
+
+            def resultSquare = result.find { it[0] == s.value }
+            assert Math.abs(resultSquare[1] - (left + right + middle)) < 0.0000001
+
+            gLeft += left
+            gRight += right
+            gMiddle += middle
         }
 
-        assert Math.abs(left - right) < 0.00000000001
-        assert Math.abs((left + middle + right) - 100) < 0.0000001
+        assert Math.abs(gLeft - gRight) < 0.00000000001
+        assert Math.abs((gLeft + gMiddle + gRight) - 100) < 0.0000001
 
         result
     }
