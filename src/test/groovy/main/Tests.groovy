@@ -30,6 +30,8 @@ class Tests {
 
             assert degreeProbabilities.collect { it[0] } == degreeRange
 
+            assert degreeProbabilities[0..89].collect { it[1] }.sum() == degreeProbabilities[91..180].collect { it[1] }.sum()
+
             assert Math.abs((degreeProbabilities.sum { it[1] } as Double) - 100) < 0.00000001
 
             assert Math.abs((squares.collect { it[1] }.sum() as Double) - 100) < 0.00000001

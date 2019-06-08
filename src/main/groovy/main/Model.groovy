@@ -122,6 +122,7 @@ class Model {
     static List<List<Object>> squareProbabilities(List<List<Number>> degreeProbabilities) {
         def testCollection = []
         def result = Model.squareDegrees.collect { def square ->
+            def subTestCollection = []
             def squareDegrees = square.key
             def squareProbability = degreeProbabilities.sum { def degreeProbability ->
                 def degree = degreeProbability[0] as int
@@ -132,12 +133,13 @@ class Model {
                 } else {
                     retProb = (degree >= squareDegrees[0] || degree <= squareDegrees[1]) ? probability : 0
                 }
-                testCollection << retProb
+                subTestCollection << retProb
                 retProb
             }
+            testCollection << subTestCollection
             [square.value, squareProbability]
         }
-        def probKeys = testCollection.collect{ it }.unique()
+        def probKeys = testCollection.flatten().unique()
         def allTheSame = [
                 [0,            [(true) :1267, (false):181]],
                 [0.4861111111, [(false):1376, (true) :72]],
@@ -145,8 +147,16 @@ class Model {
                 [0.6756756757, [(false):1411, (true) :37]]
         ]
         def thisCount = probKeys.collect { def probKey ->
-            [probKey, testCollection.countBy { probKey == it }]
+            [probKey, testCollection.flatten().countBy { probKey == it }]
         }.sort{ it[0] }
+
+        /*
+        testCollection.each { def list ->
+            assert list.size() == 181
+            assert list[0..89].sum() == list[91..180].sum()
+        }
+        */
+
         assert thisCount == allTheSame
         result
     }
