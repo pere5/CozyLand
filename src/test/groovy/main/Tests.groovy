@@ -23,7 +23,7 @@ class Tests {
     @Test
     void probabilitiesModel() {
 
-        360.times { def degree ->
+        [157].each { def degree ->
             def degreeRange = Model.degreeRange(degree)
             def degreeProbabilities = Model.degreeProbabilities(degreeRange)
             def squares = Model.squareProbabilities(degreeProbabilities, degree)
@@ -45,6 +45,10 @@ class Tests {
     static Double reverseEngineerDegree(int realDegree, def squares) {
 
         def vectors = squares.collect { def square ->
+
+
+            det blir kraftfullare i hörnen!
+
             [square[1] * square[0][0], square[1] * square[0][1]]
         }
 
@@ -54,10 +58,11 @@ class Tests {
             return result
         }
 
+        assert realDegree == 180 - Math.toDegrees(Math.atan(Math.abs(addedVector[1]) / Math.abs(addedVector[0])))
+
         def l = Math.toDegrees(Math.atan2(addedVector[1], addedVector[0]))
 
         def reversed = l >= 0 ? l : l + 360
-
         //https://gamedev.stackexchange.com/questions/4467/comparing-angles-and-working-out-the-difference
         def diffDeg = 180.0 - Math.abs(Math.abs(reversed - realDegree) - 180.0)
 
