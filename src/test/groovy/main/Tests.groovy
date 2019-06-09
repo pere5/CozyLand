@@ -111,11 +111,16 @@ class Tests {
 
     @Test
     void nextSquares() {
+        Model.model.squareProbabilitiesForDegrees = Model.calculateProbabilitiesModel()
+        plainTerrain()
+        unevenTerrain()
+    }
+
+    private void plainTerrain() {
         def sw = Main.SQUARE_WIDTH
         def w = Model.TravelType.WATER
         def p = Model.TravelType.PLAIN
 
-        Model.model.squareProbabilitiesForDegrees = Model.calculateProbabilitiesModel()
         Model.model.tileNetwork = [
                 [new Tile(height: 10, size: sw, x: 0, y: 0, travelType: p), new Tile(height: 10, size: sw, x: 0, y: 1, travelType: p), new Tile(height: 10, size: sw, x: 0, y: 2, travelType: p), new Tile(height: 10, size: sw, x: 0, y: 3, travelType: p)],
                 [new Tile(height: 10, size: sw, x: 1, y: 0, travelType: p), new Tile(height: 10, size: sw, x: 1, y: 1, travelType: p), new Tile(height: 10, size: sw, x: 1, y: 2, travelType: p), new Tile(height: 10, size: sw, x: 1, y: 3, travelType: p)],
@@ -161,52 +166,112 @@ class Tests {
             Rounded distribution: 13, 23, 29, 23, 13
          */
 
-        def rightByWallComp = rightByWall.collectEntries {
-            [[it[1][0], it[1][1]], Math.round(it[0][1] - it [0][0])]
-        }
-        def upRoundWaterComp = upRoundWater.collectEntries {
-            [[it[1][0], it[1][1]], Math.round(it[0][1] - it [0][0])]
-        }
-        def diagonalBetweenWaterComp = diagonalBetweenWater.collectEntries {
-            [[it[1][0], it[1][1]], Math.round(it[0][1] - it [0][0])]
-        }
-        def freeComp = free.collectEntries {
-            [[it[1][0], it[1][1]], Math.round(it[0][1] - it [0][0])]
-        }
-        def freeDiagonalComp = freeDiagonal.collectEntries {
-            [[it[1][0], it[1][1]], Math.round(it[0][1] - it [0][0])]
-        }
+        def r = 12.777777778378333
+        def rm = 22.77777777724835
+        def m = 28.88888888874665
+        def l = 12.777777778378336
+        def lm = 22.777777777248346
 
-        def rightByWallExpect = [[0, 1]: 13, [1, 1]: 23, [1, 0]: 29].each {
-            it.value = Math.round(it.value * (100 / (13 + 23 + 29)))
-        }
-        def upRoundWaterExpect = [[-1, 1]: 23, [0, 1]: 29, [1, 1]: 23].each {
-            it.value = Math.round(it.value * (100 / (23 + 29 + 23)))
-        }
-        def diagonalBetweenWaterExpect = [[1, 1]: 29, [1, 0]: 23, [1, -1]: 13].each {
-            it.value = Math.round(it.value * (100 / (29 + 23 + 13)))
-        }
-        def freeExpect = [[0, 1]: 13, [1, 1]: 23, [1, 0]: 29, [0, -1]: 13, [ 1, -1]: 23]
-        def freeDiagonalExpect = [[-1, 1]: 13, [0, 1]: 23, [1, 1]: 29, [1, 0]: 23, [1, -1]: 13]
+        def rightByWallComp = rightByWall.collectEntries { [[it[1][0], it[1][1]], it[0][1] - it[0][0]] }
+        def upRoundWaterComp = upRoundWater.collectEntries { [[it[1][0], it[1][1]], it[0][1] - it[0][0]] }
+        def diagonalBetweenWaterComp = diagonalBetweenWater.collectEntries { [[it[1][0], it[1][1]], it[0][1] - it[0][0]] }
+        def freeComp = free.collectEntries { [[it[1][0], it[1][1]], it[0][1] - it[0][0]] }
+        def freeDiagonalComp = freeDiagonal.collectEntries { [[it[1][0], it[1][1]], it[0][1] - it[0][0]] }
 
-        assert rightByWallComp == rightByWallExpect
-        assert upRoundWaterComp == upRoundWaterExpect
-        assert diagonalBetweenWaterComp == diagonalBetweenWaterExpect
-        assert freeComp == freeExpect
-        assert freeDiagonalComp == freeDiagonalExpect
-/*
+        def rightByWallExpect = [[0, 1]: l, [1, 1]: lm, [1, 0]: m].each {
+            it.value = it.value * (100 / (l + lm + m))
+        }
+        def upRoundWaterExpect = [[-1, 1]: lm, [0, 1]: m, [1, 1]: rm].each {
+            it.value = it.value * (100 / (lm + m + rm))
+        }
+        def diagonalBetweenWaterExpect = [[1, 1]: m, [1, 0]: rm, [1, -1]: r].each {
+            it.value = it.value * (100 / (m + rm + r))
+        }
+        def freeExpect = [[0, 1]: l, [1, 1]: lm, [1, 0]: m, [0, -1]: r, [1, -1]: rm]
+        def freeDiagonalExpect = [[-1, 1]: l, [0, 1]: lm, [1, 1]: m, [1, 0]: rm, [1, -1]: r]
 
-        assert upRoundWater.size() == 3
-        def s2 = upRoundWater.collect { it[0][1] - it[0][0] }
-        assert Math.abs(s2.sum() - 100) < 0.00000001
-        assert s2.collect { Model.round(it) } == [12, 39, 49]
-*/
+        def e = 0.0000000001 //in probability percent
+
+        assert rightByWallComp.each { assert Math.abs(rightByWallExpect[it.key] - it.value) < e }
+        assert upRoundWaterComp.each { assert Math.abs(upRoundWaterExpect[it.key] - it.value) < e }
+        assert diagonalBetweenWaterComp.each { assert Math.abs(diagonalBetweenWaterExpect[it.key] - it.value) < e }
+        assert freeComp.each { assert Math.abs(freeExpect[it.key] - it.value) < e }
+        assert freeDiagonalComp.each { assert Math.abs(freeDiagonalExpect[it.key] - it.value) < e }
+    }
+
+    private void unevenTerrain() {
+        def sw = Main.SQUARE_WIDTH
+        def tm = Model.travelModifier
+        def w = Model.TravelType.WATER
+        def p = Model.TravelType.PLAIN
+        def h = Model.TravelType.HILL
+        def ro = Model.TravelType.ROAD
+        def u = Model.TravelType.UP_HILL
+
+        Model.model.tileNetwork = [
+                [new Tile(height: 10, size: sw, x: 0, y: 0, travelType: p), new Tile(height: 20, size: sw, x: 0, y: 1, travelType: p),  new Tile(height: 10, size: sw, x: 0, y: 2, travelType: p),  new Tile(height: 10, size: sw, x: 0, y: 3, travelType: p)],
+                [new Tile(height: 20, size: sw, x: 1, y: 0, travelType: p), new Tile(height: 10, size: sw, x: 1, y: 1, travelType: p),  new Tile(height: 10, size: sw, x: 1, y: 2, travelType: p),  new Tile(height: 10, size: sw, x: 1, y: 3, travelType: p)],
+                [new Tile(height: 10, size: sw, x: 2, y: 0, travelType: w), new Tile(height: 10, size: sw, x: 2, y: 1, travelType: h),  new Tile(height: 20, size: sw, x: 2, y: 2, travelType: ro), new Tile(height: 10, size: sw, x: 2, y: 3, travelType: p)],
+                [new Tile(height: 10, size: sw, x: 3, y: 0, travelType: p), new Tile(height: 10, size: sw, x: 3, y: 1, travelType: p),  new Tile(height: 10, size: sw, x: 3, y: 2, travelType: p),  new Tile(height: 10, size: sw, x: 3, y: 3, travelType: w)],
+                [new Tile(height: 10, size: sw, x: 4, y: 0, travelType: w), new Tile(height: 10, size: sw, x: 4, y: 1, travelType: ro), new Tile(height: 10, size: sw, x: 4, y: 2, travelType: p),  new Tile(height: 10, size: sw, x: 4, y: 3, travelType: p)]
+        ]
+
+        def pfw = new PathfinderWorker()
+
+        def rightByWall = pfw.nextSquares(
+                new Villager(),
+                [0, 0] as int[],
+                [1, 0] as int[],
+                0
+        )
+        def upRoundWater = pfw.nextSquares(
+                new Villager(),
+                [3, 0] as int[],
+                [3, 1] as int[],
+                90
+        )
+        def freeDiagonal = pfw.nextSquares(
+                new Villager(),
+                [1, 2] as int[],
+                [2, 3] as int[],
+                45
+        )
 
         /*
-        assert rightByWall.size() == 5
-        def s1 = rightByWall.collect { it[0][1] - it[0][0] }
-        assert Math.abs(s1.sum() - 100) < 0.00000001
-        assert s1.collect { Model.round(it) } == [7, 27, 31, 27, 8]
-        */
+            Rounded distribution: 13, 23, 29, 23, 13
+         */
+
+        def r = 12.777777778378333
+        def rm = 22.77777777724835
+        def m = 28.88888888874665
+        def l = 12.777777778378336
+        def lm = 22.777777777248346
+
+        def rightByWallComp = rightByWall.collectEntries { [[it[1][0], it[1][1]], it[0][1] - it[0][0]] }
+        def upRoundWaterComp = upRoundWater.collectEntries { [[it[1][0], it[1][1]], it[0][1] - it[0][0]] }
+        def freeDiagonalComp = freeDiagonal.collectEntries { [[it[1][0], it[1][1]], it[0][1] - it[0][0]] }
+
+        def up = 1 / tm[u]
+        def rightByWallExpect = [[0, 1]: l * up, [1, 1]: lm, [1, 0]: m * up].each {
+            it.value = it.value * (100 / ((l * up) + lm + (m * up)))
+        }
+
+        def plain = 1 / tm[p]
+        def road = 1 / tm[ro]
+        def hill = 1 / tm[h]
+        def upRoundWaterExpect = [[-1, 1]: lm * hill, [0, 1]: m * plain, [1, 1]: lm * road].each {
+            it.value = it.value * (100 / ((lm * hill) + (m * plain) + (lm * road)))
+        }
+
+        def highRoad = 1 / (tm[ro] * tm[u])
+        def freeDiagonalExpect = [[-1, 1]: l * plain, [0, 1]: lm * plain, [1, 1]: m * plain, [1, 0]: rm * highRoad, [1, -1]: r * hill].each {
+            it.value = it.value * (100 / ((l * plain) + (lm * plain) + (m * plain) + (rm * highRoad) + (r * hill)))
+        }
+
+        def e = 0.0000000001 //in probability percent
+
+        assert rightByWallComp.each { assert Math.abs(rightByWallExpect[it.key] - it.value) < e }
+        assert upRoundWaterComp.each { assert Math.abs(upRoundWaterExpect[it.key] - it.value) < e }
+        assert freeDiagonalComp.each { assert Math.abs(freeDiagonalExpect[it.key] - it.value) < e }
     }
 }
