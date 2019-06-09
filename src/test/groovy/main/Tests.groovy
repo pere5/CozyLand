@@ -23,14 +23,56 @@ class Tests {
     @Test
     void probabilitiesModel() {
 
-        360.times { def degree ->
-            def degreeRange = Model.degreeRange(degree)
+        360.times { def realDegree ->
+            def degreeRange = Model.degreeRange(realDegree)
             def degreeProbabilities = Model.degreeProbabilities(degreeRange)
-            def squares = Model.squareProbabilities(degreeProbabilities, degree)
+            def (squares, testC) = Model.squareProbabilities(degreeProbabilities)
+
+            def probKeys = testC.flatten().collect{ it.p }.unique()
+            def allTheSame = [
+                    [0,            [(true) :1267, (false):181]],
+                    [0.4861111111, [(false):1376, (true) :72]],
+                    [0.5555555556, [(false):1376, (true) :72]],
+                    [0.6756756757, [(false):1411, (true) :37]]
+            ]
+            def thisCount = probKeys.collect { def probKey ->
+                [probKey, testC.flatten().collect{ it.p }.countBy { probKey == it }]
+            }.sort{ it[0] }
+
+            assert thisCount == allTheSame
+
+            def gLeft = 0
+            def gRight = 0
+            def gMiddle = 0
+
+            testC.each { def list ->
+
+                def left = 0
+                def right = 0
+                def middle = 0
+
+                def s = list[0].s
+                assert list.size() == 181
+                assert list[90].d == realDegree
+                left += list[0..89].p.sum()
+                right += list[91..180].p.sum()
+                middle += list[90].p
+
+                def resultSquare = squares.find { it[0] == s.value }
+                assert Math.abs(resultSquare[1] - (left + right + middle)) < 0.0000001
+
+                gLeft += left
+                gRight += right
+                gMiddle += middle
+            }
+
+            assert Math.abs(gLeft - gRight) < 0.00000000001
+            assert Math.abs((gLeft + gMiddle + gRight) - 100) < 0.0000001
+
 
             assert degreeProbabilities.collect { it[0] } == degreeRange
 
-            assert degreeProbabilities[90][0] == degree
+            assert degreeProbabilities[90][0] == realDegree
 
             assert degreeProbabilities[0..89].collect { it[1] }.sum() == degreeProbabilities[91..180].collect { it[1] }.sum()
 
@@ -38,7 +80,7 @@ class Tests {
 
             assert Math.abs((squares.collect { it[1] }.sum() as Double) - 100) < 0.00000001
 
-            assert reverseEngineerDegree(degree, squares) < 0.349
+            assert reverseEngineerDegree(realDegree, squares) < 0.349
         }
     }
 

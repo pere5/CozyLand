@@ -98,7 +98,7 @@ class Model {
         (0..359).collectEntries { def degree ->
             def degreeRange = degreeRange(degree)
             def degreeProbabilities = degreeProbabilities(degreeRange)
-            def squares = squareProbabilities(degreeProbabilities, degree)
+            def (squares, _) = squareProbabilities(degreeProbabilities)
             [(degree), squares]
         }
     }
@@ -119,10 +119,10 @@ class Model {
         (degree[145..180]).collect { [it, 20/36] }
     }
 
-    static List<List<Object>> squareProbabilities(List<List<Number>> degreeProbabilities, int realDegree) {
-        def testCollection = []
+    static List<List<Object>> squareProbabilities(List<List<Number>> degreeProbabilities) {
+        def testC = []
         def result = Model.squareDegrees.collect { def square ->
-            def subTestCollection = []
+            def sTestC = []
             def sDeg = square.key
             def squareProbability = degreeProbabilities.sum { def degreeProbability ->
                 def degree = degreeProbability[0] as int
@@ -133,54 +133,14 @@ class Model {
                 } else {
                     retProb = (degree >= sDeg[0] || degree <= sDeg[1]) ? prob : 0
                 }
-                subTestCollection << [d: degree, p: retProb, s: square]
+                sTestC << [d: degree, p: retProb, s: square]
                 retProb
             }
-            testCollection << subTestCollection
+            testC << sTestC
             [square.value, squareProbability]
         }
-        def probKeys = testCollection.flatten().collect{ it.p }.unique()
-        def allTheSame = [
-                [0,            [(true) :1267, (false):181]],
-                [0.4861111111, [(false):1376, (true) :72]],
-                [0.5555555556, [(false):1376, (true) :72]],
-                [0.6756756757, [(false):1411, (true) :37]]
-        ]
-        def thisCount = probKeys.collect { def probKey ->
-            [probKey, testCollection.flatten().collect{ it.p }.countBy { probKey == it }]
-        }.sort{ it[0] }
 
-        assert thisCount == allTheSame
-
-        def gLeft = 0
-        def gRight = 0
-        def gMiddle = 0
-
-        testCollection.each { def list ->
-
-            def left = 0
-            def right = 0
-            def middle = 0
-
-            def s = list[0].s
-            assert list.size() == 181
-            assert list[90].d == realDegree
-            left += list[0..89].p.sum()
-            right += list[91..180].p.sum()
-            middle += list[90].p
-
-            def resultSquare = result.find { it[0] == s.value }
-            assert Math.abs(resultSquare[1] - (left + right + middle)) < 0.0000001
-
-            gLeft += left
-            gRight += right
-            gMiddle += middle
-        }
-
-        assert Math.abs(gLeft - gRight) < 0.00000000001
-        assert Math.abs((gLeft + gMiddle + gRight) - 100) < 0.0000001
-
-        result
+        return [result, testC]
     }
 
     static Tile[][] generateBackground() {
