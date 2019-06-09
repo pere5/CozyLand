@@ -30,14 +30,14 @@ class Model {
     static def travelModifier = [
             (TravelType.WATER)    : 0.7d,
             (TravelType.FOREST)   : 1.0d,
-            (TravelType.HILL)     : 1.1d,
-            (TravelType.MOUNTAIN) : 1.2d,
-            (TravelType.PLAIN)    : 0.9d,
-            (TravelType.ROAD)     : 0.8d,
+            (TravelType.HILL)     : 1.2d,
+            (TravelType.MOUNTAIN) : 1.3d,
+            (TravelType.PLAIN)    : 0.8d,
+            (TravelType.ROAD)     : 0.4d,
 
-            (TravelType.UP_HILL)  : 1.2d,
+            (TravelType.UP_HILL)  : 1.3d,
             (TravelType.EVEN)     : 1.0d,
-            (TravelType.DOWN_HILL): 0.9d,
+            (TravelType.DOWN_HILL): 0.8d,
     ]
 
     static def allSquares = [
