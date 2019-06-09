@@ -38,18 +38,18 @@ class Tests {
 
             assert Math.abs((squares.collect { it[1] }.sum() as Double) - 100) < 0.00000001
 
-            assert reverseEngineerDegree(degree, squares) < 4.5
+            assert reverseEngineerDegree(degree, squares) < 0.05
         }
     }
 
     static Double reverseEngineerDegree(int realDegree, def squares) {
 
         def vectors = squares.collect { def square ->
-
-
-            det blir kraftfullare i hörnen!
-
-            [square[1] * square[0][0], square[1] * square[0][1]]
+            //https://stackoverflow.com/questions/12280827/find-tanget-point-in-circle
+            def sRad = Math.atan2(square[0][1], square[0][0])
+            def x = Math.cos(sRad)
+            def y = Math.sin(sRad)
+            [square[1] * x, square[1] * y]
         }
 
         def addedVector = vectors.inject([0, 0]) { def result, def elem ->
@@ -57,8 +57,6 @@ class Tests {
             result[1] += elem[1]
             return result
         }
-
-        assert realDegree == 180 - Math.toDegrees(Math.atan(Math.abs(addedVector[1]) / Math.abs(addedVector[0])))
 
         def l = Math.toDegrees(Math.atan2(addedVector[1], addedVector[0]))
 
