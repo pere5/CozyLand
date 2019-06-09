@@ -132,10 +132,16 @@ class Tests {
                 [1, 0] as int[],
                 0
         )
+        def free = pfw.nextSquares(
+                new Villager(),
+                [0, 1] as int[],
+                [1, 1] as int[],
+                0
+        )
         def upRoundWater = pfw.nextSquares(
                 new Villager(),
                 [3, 0] as int[],
-                [1, 3] as int[],
+                [3, 1] as int[],
                 90
         )
         def diagonalBetweenWater = pfw.nextSquares(
@@ -144,33 +150,36 @@ class Tests {
                 [4, 3] as int[],
                 45
         )
-        def free = pfw.nextSquares(
-                new Villager(),
-                [0, 1] as int[],
-                [1, 1] as int[],
-                0
-        )
 
         /*
             Rounded distribution: 13, 23, 29, 23, 13
          */
 
-        def rightByWallRecalc = rightByWall.collect {
-            [Math.round(it[0][1] - it [0][0]), it[1][0], it[1][1]]
+        def rightByWallRecalc = rightByWall.collectEntries {
+            [[it[1][0], it[1][1]], Math.round(it[0][1] - it [0][0])]
+        }
+        def upRoundWaterRecalc = upRoundWater.collectEntries {
+            [[it[1][0], it[1][1]], Math.round(it[0][1] - it [0][0])]
+        }
+        def diagonalBetweenWaterRecalc = diagonalBetweenWater.collectEntries {
+            [[it[1][0], it[1][1]], Math.round(it[0][1] - it [0][0])]
+        }
+        def freeRecalc = free.collectEntries {
+            [[it[1][0], it[1][1]], Math.round(it[0][1] - it [0][0])]
         }
 
-        def rightByWallExpect = [[13, 0, 1], [23, 1, 1], [29, 1, 0]].each {
-            it[0] = Math.round(it[0] * (100 / (13 + 23 + 29)))
+        def rightByWallExpect = [[0, 1]: 13, [1, 1]: 23, [1, 0]: 29].each {
+            it.value = Math.round(it.value * (100 / (13 + 23 + 29)))
         }
-
-        def freeRecalc = free.collect {
-            [Math.round(it[0][1] - it [0][0]), it[1][0], it[1][1]]
+        def upRoundWaterExpect = [[0, 1]: 13, [1, 1]: 23, [1, 0]: 29].each {
+            it.value = Math.round(it.value * (100 / (13 + 23 + 29)))
         }
-
-        def freeExpect = [[13, 0, 1], [23, 1, 1], [29, 1, 0], [13, 0, -1], [23, 1, -1]]
+        def diagonalBetweenWaterExpect = [[0, 1]: 13, [1, 1]: 23, [1, 0]: 29].each {
+            it.value = Math.round(it.value * (100 / (13 + 23 + 29)))
+        }
+        def freeExpect = [[0, 1]: 13, [1, 1]: 23, [1, 0]: 29, [0, -1]: 13, [ 1, -1]: 23]
 
         assert freeRecalc == freeExpect
-
         assert rightByWallRecalc == rightByWallExpect
 /*
 
