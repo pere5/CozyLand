@@ -121,7 +121,7 @@ class Tests {
                 [new Tile(height: 10, size: sw, x: 1, y: 0, travelType: p), new Tile(height: 10, size: sw, x: 1, y: 1, travelType: p), new Tile(height: 10, size: sw, x: 1, y: 2, travelType: p), new Tile(height: 10, size: sw, x: 1, y: 3, travelType: p)],
                 [new Tile(height: 10, size: sw, x: 2, y: 0, travelType: w), new Tile(height: 10, size: sw, x: 2, y: 1, travelType: p), new Tile(height: 10, size: sw, x: 2, y: 2, travelType: p), new Tile(height: 10, size: sw, x: 2, y: 3, travelType: p)],
                 [new Tile(height: 10, size: sw, x: 3, y: 0, travelType: p), new Tile(height: 10, size: sw, x: 3, y: 1, travelType: p), new Tile(height: 10, size: sw, x: 3, y: 2, travelType: p), new Tile(height: 10, size: sw, x: 3, y: 3, travelType: w)],
-                [new Tile(height: 10, size: sw, x: 4, y: 0, travelType: w), new Tile(height: 10, size: sw, x: 4, y: 1, travelType: p), new Tile(height: 10, size: sw, x: 4, y: 2, travelType: w), new Tile(height: 10, size: sw, x: 4, y: 3, travelType: p)]
+                [new Tile(height: 10, size: sw, x: 4, y: 0, travelType: w), new Tile(height: 10, size: sw, x: 4, y: 1, travelType: p), new Tile(height: 10, size: sw, x: 4, y: 2, travelType: p), new Tile(height: 10, size: sw, x: 4, y: 3, travelType: p)]
         ]
 
         def pfw = new PathfinderWorker()
@@ -130,12 +130,6 @@ class Tests {
                 new Villager(),
                 [0, 0] as int[],
                 [1, 0] as int[],
-                0
-        )
-        def free = pfw.nextSquares(
-                new Villager(),
-                [0, 1] as int[],
-                [1, 1] as int[],
                 0
         )
         def upRoundWater = pfw.nextSquares(
@@ -150,37 +144,56 @@ class Tests {
                 [4, 3] as int[],
                 45
         )
+        def free = pfw.nextSquares(
+                new Villager(),
+                [0, 1] as int[],
+                [1, 1] as int[],
+                0
+        )
+        def freeDiagonal = pfw.nextSquares(
+                new Villager(),
+                [1, 2] as int[],
+                [2, 3] as int[],
+                45
+        )
 
         /*
             Rounded distribution: 13, 23, 29, 23, 13
          */
 
-        def rightByWallRecalc = rightByWall.collectEntries {
+        def rightByWallComp = rightByWall.collectEntries {
             [[it[1][0], it[1][1]], Math.round(it[0][1] - it [0][0])]
         }
-        def upRoundWaterRecalc = upRoundWater.collectEntries {
+        def upRoundWaterComp = upRoundWater.collectEntries {
             [[it[1][0], it[1][1]], Math.round(it[0][1] - it [0][0])]
         }
-        def diagonalBetweenWaterRecalc = diagonalBetweenWater.collectEntries {
+        def diagonalBetweenWaterComp = diagonalBetweenWater.collectEntries {
             [[it[1][0], it[1][1]], Math.round(it[0][1] - it [0][0])]
         }
-        def freeRecalc = free.collectEntries {
+        def freeComp = free.collectEntries {
+            [[it[1][0], it[1][1]], Math.round(it[0][1] - it [0][0])]
+        }
+        def freeDiagonalComp = freeDiagonal.collectEntries {
             [[it[1][0], it[1][1]], Math.round(it[0][1] - it [0][0])]
         }
 
         def rightByWallExpect = [[0, 1]: 13, [1, 1]: 23, [1, 0]: 29].each {
             it.value = Math.round(it.value * (100 / (13 + 23 + 29)))
         }
-        def upRoundWaterExpect = [[0, 1]: 13, [1, 1]: 23, [1, 0]: 29].each {
-            it.value = Math.round(it.value * (100 / (13 + 23 + 29)))
+        def upRoundWaterExpect = [[-1, 1]: 23, [0, 1]: 29, [1, 1]: 23].each {
+            it.value = Math.round(it.value * (100 / (23 + 29 + 23)))
         }
-        def diagonalBetweenWaterExpect = [[0, 1]: 13, [1, 1]: 23, [1, 0]: 29].each {
-            it.value = Math.round(it.value * (100 / (13 + 23 + 29)))
+        def diagonalBetweenWaterExpect = [[1, 1]: 29, [1, 0]: 23, [1, -1]: 13].each {
+            it.value = Math.round(it.value * (100 / (29 + 23 + 13)))
         }
         def freeExpect = [[0, 1]: 13, [1, 1]: 23, [1, 0]: 29, [0, -1]: 13, [ 1, -1]: 23]
+        def freeDiagonalExpect = [[-1, 1]: 13, [0, 1]: 23, [1, 1]: 29, [1, 0]: 23, [1, -1]: 13]
 
-        assert freeRecalc == freeExpect
-        assert rightByWallRecalc == rightByWallExpect
+        assert rightByWallComp == rightByWallExpect
+        assert upRoundWaterComp == upRoundWaterExpect
+        assert diagonalBetweenWaterComp == diagonalBetweenWaterExpect
+        assert freeComp == freeExpect
+        assert freeDiagonalComp == freeDiagonalExpect
 /*
 
         assert upRoundWater.size() == 3
