@@ -110,19 +110,17 @@ class PathfinderWorker extends Worker {
             }
         }
 
-        if (nextSquares) {
-            def globalModifier = 100 / (nextSquares.sum { it[0] } as Double)
-            nextSquares.each {
-                it[0] *= globalModifier
-            }
+        def globalModifier = 100 / ((nextSquares.sum { it[0] } ?: 1) as Double)
+        nextSquares.each {
+            it[0] *= globalModifier
+        }
 
-            Double sum = 0
-            nextSquares.each { def square ->
-                Double from = sum
-                Double to = from + (square[0] as Double)
-                sum = to
-                square[0] = [from, to]
-            }
+        Double sum = 0
+        nextSquares.each { def square ->
+            Double from = sum
+            Double to = from + (square[0] as Double)
+            sum = to
+            square[0] = [from, to]
         }
 
         return nextSquares
