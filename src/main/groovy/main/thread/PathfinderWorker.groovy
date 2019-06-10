@@ -40,7 +40,7 @@ class PathfinderWorker extends Worker {
 
                 while (!there) {
 
-                    def degree = Model.calculateDegree(pixelStep, pixelDest)
+                    def degree = Model.calculateDegreeRound(pixelStep, pixelDest)
                     def tileStartXY = Model.pixelToTileIdx(pixelStep)
 
                     def nextSquares = nextSquares(villager, tileStartXY, tileDestXY, degree)

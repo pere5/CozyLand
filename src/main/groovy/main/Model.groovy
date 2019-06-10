@@ -532,9 +532,9 @@ class Model {
         tile.collect { (it * Main.SQUARE_WIDTH) }
     }
 
-    static int calculateDegree(Double[] start, Double[] dest) {
+    static int calculateDegreeRound(Double[] start, Double[] dest) {
         Double deg = Math.toDegrees(Math.atan2(dest[1] - start[1], dest[0] - start[0]))
-        deg >= 0 ? deg : deg + 360
+        Model.round(deg >= 0 ? deg : deg + 360)
     }
 
     static int bresenham(int[] start, int[] dest, Villager villager = null) {

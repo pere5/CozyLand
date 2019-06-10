@@ -80,7 +80,8 @@ class Tests {
 
             assert Math.abs((squares.collect { it[1] }.sum() as Double) - 100) < 0.00000001
 
-            assert reverseEngineerDegree(realDegree, squares) < 0.349
+            def diffDegree = reverseEngineerDegree(realDegree, squares)
+            assert diffDegree < 0.349 && Model.round(diffDegree) == 0
         }
     }
 
