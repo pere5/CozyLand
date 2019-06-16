@@ -29,87 +29,50 @@ class PathfinderWorker extends Worker {
 
     def update() {
 
-        for (Villager villager: Model.model.villagers) {
+        for (Villager villager : Model.model.villagers) {
+
             if (villager.pathfinderWorker) {
 
-                /*
-                    if (villager.pathfinderWorker) {
-
-                        def pixelDest = Model.generateXY()
-                        def pixelStart = [villager.x, villager.y] as Double[]
-
-
-                        def idx = perStarToGoal()
-                        def tiles = longestPossibleBresenhams(idx)
-
-                        def pixels = ([villager.x, villager.y] + tiles.collect {
-                            randomPlaceInTile(tileDestXY)
-                        }) as int[][]
-
-                        tiles.each { int[] tile ->
-                            perTilesWithBresenham(tiles[i][0], tiles[i][1], villager)
-                        }
-
-                        villager.toWorkWorker()
-                    }
-                 */
-
-
                 def pixelDest = Model.generateXY()
-                def tileDestXY = Model.pixelToTileIdx(pixelDest)
                 def pixelStart = [villager.x, villager.y] as Double[]
-                def pixelStep = pixelStart
-                def there = false
 
-                while (!there) {
+                def idx = perStarToGoal(pixelStart, pixelDest, villager)
+                def tiles = longestPossibleBresenhams(idx)
 
-                    def degree = Model.calculateDegreeRound(pixelStep, pixelDest)
-                    def tileStartXY = Model.pixelToTileIdx(pixelStep)
+                def pixels = ([villager.x, villager.y] + tiles.collect { randomPlaceInTile(it) }) as Double[][]
 
-                    def nextTiles = nextTiles(villager, tileStartXY, tileDestXY, degree)
 
-                    if (nextTiles) {
-                        def random = Math.random() * 100
+                def pixels2 = [[villager.x, villager.y] as Double[], Model.generateXY()] as Double[][]
 
-                        def nextTile = nextTiles.find { random >= (it[0][0] as Double) && random <= (it[0][1] as Double) }
+                for (int i = 0; i < (pixels2.length - 1); i++) {
+                    def a = pixels2[i]
+                    def b = pixels2[i + 1]
+                    if (!b) break
 
-                        def newTile = [tileStartXY[0] + nextTile[1][0], tileStartXY[1] + nextTile[1][1]] as int[]
-
-                        def newPixelStep = randomPlaceInTile(newTile)
-
-                        villager.actionQueue << new StraightPath(pixelStep, newPixelStep)
-
-                        pixelStep = newPixelStep
-
-                        there = StraightPath.closeEnoughTile(newTile, tileDestXY)
-                        if (there) {
-                            villager.actionQueue << new StraightPath(pixelStep, randomPlaceInTile(tileDestXY), [[[0, 100], tileDestXY]])
-                        }
-                    } else {
-                        there = true
-                    }
+                    perTilesWithBresenham(a, b, villager)
                 }
                 villager.toWorkWorker()
             }
         }
     }
 
-    int[][] longestPossibleBresenhams(int i) {
-        null
-    }
-
-    int perStarToGoal() {
+    int perStarToGoal(Double[] pixelA, Double[] pixelB, Villager villager) {
         0
     }
 
-    private void perTilesWithBresenham(Double[] pixelDest, Double[] pixelStart, Villager villager) {
-        def tileDestXY = Model.pixelToTileIdx(pixelDest)
-        def pixelStep = pixelStart
+    int[][] longestPossibleBresenhams(int i) {
+        []
+    }
+
+
+    private void perTilesWithBresenham(Double[] pixelA, Double[] pixelB, Villager villager) {
+        def tileDestXY = Model.pixelToTileIdx(pixelB)
+        def pixelStep = pixelA
         def there = false
 
         while (!there) {
 
-            def degree = Model.calculateDegreeRound(pixelStep, pixelDest)
+            def degree = Model.calculateDegreeRound(pixelStep, pixelB)
             def tileStartXY = Model.pixelToTileIdx(pixelStep)
 
             def nextTiles = nextTiles(villager, tileStartXY, tileDestXY, degree)
