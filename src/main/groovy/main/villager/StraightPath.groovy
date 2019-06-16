@@ -14,10 +14,10 @@ class StraightPath extends Action {
     static Double STEP = 0.7
     int id
 
-    StraightPath(Double[] start, Double[] dest, def nextSquares = null) {
+    StraightPath(Double[] start, Double[] dest, def nextTiles = null) {
         id = Model.getNewId()
 
-        testPrints(start, dest, nextSquares)
+        testPrints(start, dest, nextTiles)
 
         Double[] nextStep = start
         while (!closeEnough(nextStep, dest)) {
@@ -36,23 +36,23 @@ class StraightPath extends Action {
         path.add(dest)
     }
 
-    private void testPrints(Double[] start, Double[] dest, def nextSquares) {
+    private void testPrints(Double[] start, Double[] dest, def nextTiles) {
         def pixelStart = start
         def pixelDest = dest
         def (int x, int y) = Model.pixelToTileIdx(pixelStart)
         def tileNetwork = Model.model.tileNetwork as Tile[][]
 
-        if (nextSquares) {
-            def maxSquare = nextSquares.max { def square ->
-                square[0][1] - square[0][0]
+        if (nextTiles) {
+            def maxTile = nextTiles.max { def tile ->
+                tile[0][1] - tile[0][0]
             }
 
-            int maxProb = maxSquare[0][1] - maxSquare[0][0] + 1
+            int maxProb = maxTile[0][1] - maxTile[0][0] + 1
 
             def colorGradient = Model.gradient(Color.DARK_GRAY, Color.WHITE, maxProb)
 
-            nextSquares.each { def square ->
-                def (int nX, int nY) = square[1]
+            nextTiles.each { def tile ->
+                def (int nX, int nY) = tile[1]
 
 
 
@@ -62,12 +62,12 @@ class StraightPath extends Action {
 
                 //def nX = x + sX
                 //def nY = y + sY
-                def squareProbability = (square[0][1] - square[0][0]) as Double
+                def tileProbability = (tile[0][1] - tile[0][0]) as Double
                 def neighbor = tileNetwork[nX][nY] as Tile
 
                 Model.model.drawables << new Artifact(
                         size: neighbor.size, parent: this.id, x: neighbor.x, y: neighbor.y,
-                        color: colorGradient[squareProbability as int]
+                        color: colorGradient[tileProbability as int]
                 )
             }
         }

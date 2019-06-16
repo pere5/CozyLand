@@ -1,8 +1,6 @@
 package main
 
-import main.Main
-import main.Model
-import main.Tile
+
 import main.thread.PathfinderWorker
 import main.villager.Villager
 import org.junit.BeforeClass
@@ -26,7 +24,7 @@ class Tests {
         360.times { def realDegree ->
             def degreeRange = Model.degreeRange(realDegree)
             def degreeProbabilities = Model.degreeProbabilities(degreeRange)
-            def (squares, testC) = Model.squareProbabilities(degreeProbabilities)
+            def (tiles, testC) = Model.tileProbabilities(degreeProbabilities)
 
             def probKeys = testC.flatten().collect{ it.p }.unique()
             def allTheSame = [
@@ -58,8 +56,8 @@ class Tests {
                 right += list[91..180].p.sum()
                 middle += list[90].p
 
-                def resultSquare = squares.find { it[0] == s.value }
-                assert Math.abs(resultSquare[1] - (left + right + middle)) < 0.0000001
+                def resultTile = tiles.find { it[0] == s.value }
+                assert Math.abs(resultTile[1] - (left + right + middle)) < 0.0000001
 
                 gLeft += left
                 gRight += right
@@ -78,21 +76,21 @@ class Tests {
 
             assert Math.abs((degreeProbabilities.sum { it[1] } as Double) - 100) < 0.00000001
 
-            assert Math.abs((squares.collect { it[1] }.sum() as Double) - 100) < 0.00000001
+            assert Math.abs((tiles.collect { it[1] }.sum() as Double) - 100) < 0.00000001
 
-            def diffDegree = reverseEngineerDegree(realDegree, squares)
+            def diffDegree = reverseEngineerDegree(realDegree, tiles)
             assert diffDegree < 0.349 && Model.round(diffDegree) == 0
         }
     }
 
-    static Double reverseEngineerDegree(int realDegree, def squares) {
+    static Double reverseEngineerDegree(int realDegree, def tiles) {
 
-        def vectors = squares.collect { def square ->
+        def vectors = tiles.collect { def tile ->
             //https://stackoverflow.com/questions/12280827/find-tanget-point-in-circle
-            def sRad = Math.atan2(square[0][1], square[0][0])
+            def sRad = Math.atan2(tile[0][1], tile[0][0])
             def x = Math.cos(sRad)
             def y = Math.sin(sRad)
-            [square[1] * x, square[1] * y]
+            [tile[1] * x, tile[1] * y]
         }
 
         def addedVector = vectors.inject([0, 0]) { def result, def elem ->
@@ -111,14 +109,14 @@ class Tests {
     }
 
     @Test
-    void nextSquares() {
-        Model.model.squareProbabilitiesForDegrees = Model.calculateProbabilitiesModel()
+    void nextTiles() {
+        Model.model.tileProbabilitiesForDegrees = Model.calculateProbabilitiesModel()
         plainTerrain()
         unevenTerrain()
     }
 
     private void plainTerrain() {
-        def sw = Main.SQUARE_WIDTH
+        def sw = Main.TILE_WIDTH
         def w = Model.TravelType.WATER
         def p = Model.TravelType.PLAIN
 
@@ -132,31 +130,31 @@ class Tests {
 
         def pfw = new PathfinderWorker()
 
-        def rightByWall = pfw.nextSquares(
+        def rightByWall = pfw.nextTiles(
                 new Villager(),
                 [0, 0] as int[],
                 [1, 0] as int[],
                 0
         )
-        def upRoundWater = pfw.nextSquares(
+        def upRoundWater = pfw.nextTiles(
                 new Villager(),
                 [3, 0] as int[],
                 [3, 1] as int[],
                 90
         )
-        def diagonalBetweenWater = pfw.nextSquares(
+        def diagonalBetweenWater = pfw.nextTiles(
                 new Villager(),
                 [3, 2] as int[],
                 [4, 3] as int[],
                 45
         )
-        def free = pfw.nextSquares(
+        def free = pfw.nextTiles(
                 new Villager(),
                 [0, 1] as int[],
                 [1, 1] as int[],
                 0
         )
-        def freeDiagonal = pfw.nextSquares(
+        def freeDiagonal = pfw.nextTiles(
                 new Villager(),
                 [1, 2] as int[],
                 [2, 3] as int[],
@@ -201,7 +199,7 @@ class Tests {
     }
 
     private void unevenTerrain() {
-        def sw = Main.SQUARE_WIDTH
+        def sw = Main.TILE_WIDTH
         def tm = Model.travelModifier
         def w = Model.TravelType.WATER
         def p = Model.TravelType.PLAIN
@@ -219,19 +217,19 @@ class Tests {
 
         def pfw = new PathfinderWorker()
 
-        def rightByWall = pfw.nextSquares(
+        def rightByWall = pfw.nextTiles(
                 new Villager(),
                 [0, 0] as int[],
                 [1, 0] as int[],
                 0
         )
-        def upRoundWater = pfw.nextSquares(
+        def upRoundWater = pfw.nextTiles(
                 new Villager(),
                 [3, 0] as int[],
                 [3, 1] as int[],
                 90
         )
-        def freeDiagonal = pfw.nextSquares(
+        def freeDiagonal = pfw.nextTiles(
                 new Villager(),
                 [1, 2] as int[],
                 [2, 3] as int[],

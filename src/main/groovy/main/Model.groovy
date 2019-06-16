@@ -40,19 +40,20 @@ class Model {
             (TravelType.DOWN_HILL): 0.8d,
     ]
 
-    static def allSquares = [
+    static def allNeighborTiles = [
             [-1,  1], [0,  1],  [1,  1],
             [-1,  0],           [1,  0],
             [-1, -1], [0, -1],  [1, -1]
     ]
 
-    static def squareDegrees = [
+    static def tileDegrees = [
             [113, 157]: [-1,  1], [68, 112] : [0,  1], [23,   67]: [1,  1],
             [158, 202]: [-1,  0],                      [338,  22]: [1,  0],
             [203, 247]: [-1, -1], [248, 292]: [0, -1], [293, 337]: [1, -1]
     ]
 
     static int[][] bufferedPathArray = new int[Main.WINDOW_WIDTH + Main.WINDOW_HEIGHT][2]
+    static int[][] bufferedPerStarArray = new int[Main.WINDOW_WIDTH + Main.WINDOW_HEIGHT][2]
 
     static def init(def keyboard, def mouse) {
         def tileNetwork = generateBackground()
@@ -68,7 +69,7 @@ class Model {
                 rules         : generateRules(),
         ]
 
-        model.squareProbabilitiesForDegrees = calculateProbabilitiesModel()
+        model.tileProbabilitiesForDegrees = calculateProbabilitiesModel()
 
         def villagers = [
                 Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
@@ -98,8 +99,8 @@ class Model {
         (0..359).collectEntries { def degree ->
             def degreeRange = degreeRange(degree)
             def degreeProbabilities = degreeProbabilities(degreeRange)
-            def (squares, _) = squareProbabilities(degreeProbabilities)
-            [(degree), squares]
+            def (tiles, _) = tileProbabilities(degreeProbabilities)
+            [(degree), tiles]
         }
     }
 
@@ -119,12 +120,12 @@ class Model {
         (degree[145..180]).collect { [it, 20/36] }
     }
 
-    static List<List<Object>> squareProbabilities(List<List<Number>> degreeProbabilities) {
+    static List<List<Object>> tileProbabilities(List<List<Number>> degreeProbabilities) {
         def testC = []
-        def result = Model.squareDegrees.collect { def square ->
+        def result = Model.tileDegrees.collect { def tile ->
             def sTestC = []
-            def sDeg = square.key
-            def squareProbability = degreeProbabilities.sum { def degreeProbability ->
+            def sDeg = tile.key
+            def tileProbability = degreeProbabilities.sum { def degreeProbability ->
                 def degree = degreeProbability[0] as int
                 def prob = degreeProbability[1] as Double
                 def retProb
@@ -133,11 +134,11 @@ class Model {
                 } else {
                     retProb = (degree >= sDeg[0] || degree <= sDeg[1]) ? prob : 0
                 }
-                sTestC << [d: degree, p: retProb, s: square]
+                sTestC << [d: degree, p: retProb, s: tile]
                 retProb
             }
             testC << sTestC
-            [square.value, squareProbability]
+            [tile.value, tileProbability]
         }
 
         return [result, testC]
@@ -163,8 +164,8 @@ class Model {
     static BufferedImage createBGImage() {
         Tile[][] tileNetwork = model.tileNetwork
         BufferedImage image = new BufferedImage(
-                tileNetwork.length * Main.SQUARE_WIDTH,
-                tileNetwork[0].length * Main.SQUARE_WIDTH,
+                tileNetwork.length * Main.TILE_WIDTH,
+                tileNetwork[0].length * Main.TILE_WIDTH,
                 BufferedImage.TYPE_INT_RGB
         )
         Graphics2D g2d = image.createGraphics()
@@ -283,14 +284,14 @@ class Model {
         Double xRatio = imageWidth / Main.MAP_WIDTH
         Double yRatio = imageHeight / Main.MAP_HEIGHT
 
-        int squareWidth = Main.SQUARE_WIDTH
-        int squareHeight = squareWidth
+        int tileWidth = Main.TILE_WIDTH
+        int tileHeight = tileWidth
 
-        int bgWidth = Main.MAP_WIDTH / squareWidth
-        int bgHeight = Main.MAP_HEIGHT / squareHeight
+        int bgWidth = Main.MAP_WIDTH / tileWidth
+        int bgHeight = Main.MAP_HEIGHT / tileHeight
 
-        Double xStep = squareWidth * xRatio
-        Double yStep = squareHeight * yRatio
+        Double xStep = tileWidth * xRatio
+        Double yStep = tileHeight * yRatio
 
         def tileNetwork = new Tile[bgWidth][bgHeight]
 
@@ -330,9 +331,9 @@ class Model {
 
                     tileNetwork[xTileIdx][yTileIdx] = new Tile(
                             height: avgAreaHeight,
-                            size: squareWidth,
-                            x: xTileIdx * squareWidth,
-                            y: yTileIdx * squareHeight
+                            size: tileWidth,
+                            x: xTileIdx * tileWidth,
+                            y: yTileIdx * tileHeight
                     )
                 }
                 yTileIdx++
@@ -521,15 +522,15 @@ class Model {
     }
 
     static int[] pixelToTileIdx(int[] pixels) {
-        pixels.collect { it / Main.SQUARE_WIDTH }
+        pixels.collect { it / Main.TILE_WIDTH }
     }
 
     static int[] pixelToTileIdx(Double[] pixels) {
-        pixels.collect { it / Main.SQUARE_WIDTH }
+        pixels.collect { it / Main.TILE_WIDTH }
     }
 
     static int[] tileToPixelIdx(int[] tile) {
-        tile.collect { (it * Main.SQUARE_WIDTH) }
+        tile.collect { (it * Main.TILE_WIDTH) }
     }
 
     static int calculateDegreeRound(Double[] start, Double[] dest) {
