@@ -74,7 +74,7 @@ class StraightPath extends Action {
 
         def idx = Model.bresenham(pixelStart as int[], pixelDest as int[])
         idx.times {
-            def xy = Model.bufferedPathArray[it]
+            def xy = Model.bufferedBresenhamResultArray[it]
             Model.model.drawables << new Artifact(parent: id, x: xy[0], y: xy[1])
         }
 

@@ -1,5 +1,7 @@
 package main.thread
 
+import javaSrc.LinkedBinaryTree
+import javaSrc.Position
 import main.Main
 import main.Model
 import main.Model.TravelType
@@ -36,7 +38,10 @@ class PathfinderWorker extends Worker {
                 def pixelDest = Model.generateXY()
                 def pixelStart = [villager.x, villager.y] as Double[]
 
-                def idx = perStarToGoal(pixelStart, pixelDest, villager)
+                def tileStartXY = Model.pixelToTileIdx(pixelDest)
+                def tileDestXY = Model.pixelToTileIdx(pixelStart)
+
+                def idx = perStarToGoal(tileStartXY, tileDestXY, villager)
                 def tiles = longestPossibleBresenhams(idx)
 
                 def pixels = ([villager.x, villager.y] + tiles.collect { randomPlaceInTile(it) }) as Double[][]
@@ -56,11 +61,37 @@ class PathfinderWorker extends Worker {
         }
     }
 
-    int perStarToGoal(Double[] pixelA, Double[] pixelB, Villager villager) {
+    int perStarToGoal(int[] tileStart, int[] tileDest, Villager villager = null) {
+
+        int tooFar = 500
+        int idx = 0
+        Queue<Position<int[]>> queue = new LinkedList<>()
+        LinkedBinaryTree<int[]> lbt = new LinkedBinaryTree<>()
+        lbt.addRoot(tileStart)
+        queue.add(lbt.root())
+
+        while (!tooFar) {
+
+            Position<int[]> position = queue.poll()
+
+            def bresenhamIdx = Model.bresenham(tileStart, tileDest, villager)
+            def xy = Model.bufferedBresenhamResultArray[bresenhamIdx]
+
+            Model.bufferedPerStarResultArray[idx]
+            if (xy == tileDest) {
+
+            } else {
+                bufferedPerStarResultArray
+            }
+
+            tooFar++
+        }
+
         0
     }
 
     int[][] longestPossibleBresenhams(int i) {
+        bufferedPerStarResultArray
         []
     }
 
@@ -75,7 +106,7 @@ class PathfinderWorker extends Worker {
             def degree = Model.calculateDegreeRound(pixelStep, pixelB)
             def tileStartXY = Model.pixelToTileIdx(pixelStep)
 
-            def nextTiles = nextTiles(villager, tileStartXY, tileDestXY, degree)
+            def nextTiles = nextTilesWithBresenham(villager, tileStartXY, tileDestXY, degree)
 
             if (nextTiles) {
                 def random = Math.random() * 100
@@ -109,7 +140,7 @@ class PathfinderWorker extends Worker {
         return pixelIdx
     }
 
-    def nextTiles(Villager villager, int[] tileStartXY, int[] tileDestXY, int degree) {
+    def nextTilesWithBresenham(Villager villager, int[] tileStartXY, int[] tileDestXY, int degree) {
 
         def (int tileX, int tileY) = tileStartXY
 
@@ -131,7 +162,9 @@ class PathfinderWorker extends Worker {
 
                 if (villager.canTravel(travelType)) {
                     if (tileProbability > 0) {
-                        if (Model.bresenham(neighborXY, tileDestXY, villager) >= 0) {
+                        def idx = Model.bresenham(neighborXY, tileDestXY, villager)
+                        def xy = Model.bufferedBresenhamResultArray[idx]
+                        if (xy == tileDestXY) {
                             nextTiles << calculateProbabilityForNeighbor(neighbor, tile, neighborTile)
                         }
                     }

@@ -130,31 +130,31 @@ class Tests {
 
         def pfw = new PathfinderWorker()
 
-        def rightByWall = pfw.nextTiles(
+        def rightByWall = pfw.nextTilesWithBresenham(
                 new Villager(),
                 [0, 0] as int[],
                 [1, 0] as int[],
                 0
         )
-        def upRoundWater = pfw.nextTiles(
+        def upRoundWater = pfw.nextTilesWithBresenham(
                 new Villager(),
                 [3, 0] as int[],
                 [3, 1] as int[],
                 90
         )
-        def diagonalBetweenWater = pfw.nextTiles(
+        def diagonalBetweenWater = pfw.nextTilesWithBresenham(
                 new Villager(),
                 [3, 2] as int[],
                 [4, 3] as int[],
                 45
         )
-        def free = pfw.nextTiles(
+        def free = pfw.nextTilesWithBresenham(
                 new Villager(),
                 [0, 1] as int[],
                 [1, 1] as int[],
                 0
         )
-        def freeDiagonal = pfw.nextTiles(
+        def freeDiagonal = pfw.nextTilesWithBresenham(
                 new Villager(),
                 [1, 2] as int[],
                 [2, 3] as int[],
@@ -217,19 +217,19 @@ class Tests {
 
         def pfw = new PathfinderWorker()
 
-        def rightByWall = pfw.nextTiles(
+        def rightByWall = pfw.nextTilesWithBresenham(
                 new Villager(),
                 [0, 0] as int[],
                 [1, 0] as int[],
                 0
         )
-        def upRoundWater = pfw.nextTiles(
+        def upRoundWater = pfw.nextTilesWithBresenham(
                 new Villager(),
                 [3, 0] as int[],
                 [3, 1] as int[],
                 90
         )
-        def freeDiagonal = pfw.nextTiles(
+        def freeDiagonal = pfw.nextTilesWithBresenham(
                 new Villager(),
                 [1, 2] as int[],
                 [2, 3] as int[],

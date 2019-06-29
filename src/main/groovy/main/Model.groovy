@@ -52,8 +52,8 @@ class Model {
             [203, 247]: [-1, -1], [248, 292]: [0, -1], [293, 337]: [1, -1]
     ]
 
-    static int[][] bufferedPathArray = new int[Main.WINDOW_WIDTH + Main.WINDOW_HEIGHT][2]
-    static int[][] bufferedPerStarArray = new int[Main.WINDOW_WIDTH + Main.WINDOW_HEIGHT][2]
+    static int[][] bufferedBresenhamResultArray = new int[Main.WINDOW_WIDTH + Main.WINDOW_HEIGHT][2]
+    static int[][] bufferedPerStarResultArray = new int[Main.WINDOW_WIDTH + Main.WINDOW_HEIGHT][2]
 
     static def init(def keyboard, def mouse) {
         def tileNetwork = generateBackground()
@@ -502,8 +502,8 @@ class Model {
 
     static Double[] generateXY() {
         Double[] xy = [
-                Main.MAP_WIDTH / 2 + generate((Main.MAP_WIDTH / 9) as int),
-                Main.MAP_HEIGHT / 2 + generate((Main.MAP_HEIGHT / 9) as int)
+                Main.MAP_WIDTH / 2 + generate((Main.MAP_WIDTH / 2.1) as int),
+                Main.MAP_HEIGHT / 2 + generate((Main.MAP_HEIGHT / 2.1) as int)
         ]
 
         def tileXY = pixelToTileIdx(xy)
@@ -538,9 +538,9 @@ class Model {
         Model.round(deg >= 0 ? deg : deg + 360)
     }
 
-    static int bresenham(int[] start, int[] dest, Villager villager = null) {
-        def (int x1, int y1) = start
-        def (int x2, int y2) = dest
+    static int bresenham(int[] tileStart, int[] tileDest, Villager villager = null) {
+        def (int x1, int y1) = tileStart
+        def (int x2, int y2) = tileDest
 
         // delta of exact value and rounded value of the dependent variable
         int d = 0
@@ -563,11 +563,11 @@ class Model {
 
         while (true) {
             if (villager && !villager.canTravel(tileNetwork[x][y].travelType)) {
-                return -1
+                return idx
             }
 
-            bufferedPathArray[idx][0] = x
-            bufferedPathArray[idx][1] = y
+            bufferedBresenhamResultArray[idx][0] = x
+            bufferedBresenhamResultArray[idx][1] = y
 
             if (dx >= dy) {
                 if (x == x2) {
