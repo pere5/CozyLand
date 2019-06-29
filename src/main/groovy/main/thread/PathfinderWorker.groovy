@@ -1,7 +1,7 @@
 package main.thread
 
-import javaSrc.LinkedBinaryTree
-import javaSrc.Position
+import javaSrc.linkedbinarytree.LinkedBinaryTree
+import javaSrc.linkedbinarytree.Position
 import main.Main
 import main.Model
 import main.Model.TravelType
@@ -63,31 +63,45 @@ class PathfinderWorker extends Worker {
 
     int perStarToGoal(int[] tileStart, int[] tileDest, Villager villager = null) {
 
-        int tooFar = 500
-        int idx = 0
         Queue<Position<int[]>> queue = new LinkedList<>()
         LinkedBinaryTree<int[]> lbt = new LinkedBinaryTree<>()
+
         lbt.addRoot(tileStart)
         queue.add(lbt.root())
 
-        while (!tooFar) {
+        int i = 0
+        Position<int[]> goal = null
 
-            Position<int[]> position = queue.poll()
+        while (i < 500) {
 
-            def bresenhamIdx = Model.bresenham(tileStart, tileDest, villager)
+            Position<int[]> currentXY = queue.poll()
+
+            def bresenhamIdx = Model.bresenham(currentXY.element, tileDest, villager)
             def xy = Model.bufferedBresenhamResultArray[bresenhamIdx]
 
-            Model.bufferedPerStarResultArray[idx]
             if (xy == tileDest) {
-
+                lbt.addLeft(currentXY, xy)
+                goal = lbt.left(currentXY)
+                break
             } else {
-                bufferedPerStarResultArray
-            }
 
-            tooFar++
+                //split here...
+
+            }
+            i++
         }
 
-        0
+        if (goal) {
+            Position<int[]> current = goal
+            int depth = lbt.depth(goal)
+            for (int j = depth; j >= 0; j--) {
+                Model.bufferedPerStarResultArray[j] = current.element
+                current = lbt.parent(current)
+            }
+            return depth
+        } else {
+            return -1
+        }
     }
 
     int[][] longestPossibleBresenhams(int i) {
