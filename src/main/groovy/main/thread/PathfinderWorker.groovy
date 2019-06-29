@@ -85,7 +85,14 @@ class PathfinderWorker extends Worker {
                 break
             } else {
 
-                //split here...
+                int[] neighborLeft = null
+                int[] neighborRight = null
+
+                lbt.addLeft(currentXY, neighborLeft)
+                lbt.addRight(currentXY, neighborRight)
+
+                queue.add(lbt.left(currentXY))
+                queue.add(lbt.right(currentXY))
 
             }
             i++
