@@ -1,5 +1,6 @@
 package main
 
+import javaSrc.circulararray.CircularArrayList
 import main.exception.PerIsBorkenException
 import main.rule.Rule
 import main.rule.Walk
@@ -40,11 +41,8 @@ class Model {
             (TravelType.DOWN_HILL): 0.8d,
     ]
 
-    static def allNeighborTiles = [
-            [-1,  1], [0,  1],  [1,  1],
-            [-1,  0],           [1,  0],
-            [-1, -1], [0, -1],  [1, -1]
-    ]
+
+    static List<int[]> circularTileList = [[-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0] ] as CircularArrayList<int[]>
 
     static def tileDegrees = [
             [113, 157]: [-1,  1], [68, 112] : [0,  1], [23,   67]: [1,  1],
@@ -562,12 +560,13 @@ class Model {
         def tileNetwork = Model.model.tileNetwork as Tile[][]
 
         while (true) {
-            if (villager && !villager.canTravel(tileNetwork[x][y].travelType)) {
-                return idx
-            }
 
             bufferedBresenhamResultArray[idx][0] = x
             bufferedBresenhamResultArray[idx][1] = y
+
+            if (villager && !villager.canTravel(tileNetwork[x][y].travelType)) {
+                return idx
+            }
 
             if (dx >= dy) {
                 if (x == x2) {

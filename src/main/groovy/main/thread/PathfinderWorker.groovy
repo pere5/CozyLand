@@ -40,12 +40,12 @@ class PathfinderWorker extends Worker {
 
                 def tileStartXY = Model.pixelToTileIdx(pixelDest)
                 def tileDestXY = Model.pixelToTileIdx(pixelStart)
-
+/*
                 def idx = perStarToGoal(tileStartXY, tileDestXY, villager)
                 def tiles = longestPossibleBresenhams(idx)
 
                 def pixels = ([villager.x, villager.y] + tiles.collect { randomPlaceInTile(it) }) as Double[][]
-
+*/
 
                 def pixels2 = [[villager.x, villager.y] as Double[], Model.generateXY()] as Double[][]
 
@@ -61,7 +61,9 @@ class PathfinderWorker extends Worker {
         }
     }
 
-    int perStarToGoal(int[] tileStart, int[] tileDest, Villager villager = null) {
+    int perStarToGoal(int[] tileStart, int[] tileDest, Villager villager) {
+
+        def tileNetwork = Model.model.tileNetwork as Tile[][]
 
         Queue<Position<int[]>> queue = new LinkedList<>()
         LinkedBinaryTree<int[]> lbt = new LinkedBinaryTree<>()
@@ -75,15 +77,26 @@ class PathfinderWorker extends Worker {
         while (i < 500) {
 
             Position<int[]> currentXY = queue.poll()
+            def current = currentXY.element
 
-            def bresenhamIdx = Model.bresenham(currentXY.element, tileDest, villager)
-            def xy = Model.bufferedBresenhamResultArray[bresenhamIdx]
+            def idx = Model.bresenham(current, tileDest, villager)
+            def nextStep = Model.bufferedBresenhamResultArray[idx]
 
-            if (xy == tileDest) {
-                lbt.addLeft(currentXY, xy)
+            if (nextStep == tileDest) {
+                lbt.addLeft(currentXY, nextStep)
                 goal = lbt.left(currentXY)
                 break
             } else {
+
+                // we can't travel to nextStep
+                def previousStep = Model.bufferedBresenhamResultArray[idx - 2]
+
+                def obstacleDelta = [current[0] - nextStep[0], current[1] - nextStep[1]] as int[]
+                def previousStepDelta = [current[0] - nextStep[0], current[1] - nextStep[1]] as int[]
+                def obstacleIdx = Model.circularTileList.find { it == obstacleDelta }
+                def previousStepIdx = Model.circularTileList.find { it == previousStepDelta }
+
+
 
                 int[] neighborLeft = null
                 int[] neighborRight = null
