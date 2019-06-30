@@ -65,19 +65,22 @@ class PathfinderWorker extends Worker {
 
         def tileNetwork = Model.model.tileNetwork as Tile[][]
 
+        Set<int[]> visited = new HashSet<>()
         Queue<Position<int[]>> queue = new LinkedList<>()
         LinkedBinaryTree<int[]> lbt = new LinkedBinaryTree<>()
 
         lbt.addRoot(tileStart)
         queue.add(lbt.root())
+        visited.add(tileStart)
 
-        int i = 0
+        int repetition = 0
         Position<int[]> goal = null
 
-        while (i < 500) {
+        while (repetition < 500) {
 
             Position<int[]> currentXY = queue.poll()
             def current = currentXY.element
+            visited.add(current)
 
             def idx = Model.bresenham(current, tileDest, villager)
             def nextStep = Model.bufferedBresenhamResultArray[idx]
@@ -89,14 +92,18 @@ class PathfinderWorker extends Worker {
             } else {
 
                 // we can't travel to nextStep
-                def previousStep = Model.bufferedBresenhamResultArray[idx - 2]
+                def previousStep = idx >= 2 ? Model.bufferedBresenhamResultArray[idx - 2] : null
 
                 def obstacleDelta = [current[0] - nextStep[0], current[1] - nextStep[1]] as int[]
-                def previousStepDelta = [current[0] - nextStep[0], current[1] - nextStep[1]] as int[]
                 def obstacleIdx = Model.circularTileList.find { it == obstacleDelta }
-                def previousStepIdx = Model.circularTileList.find { it == previousStepDelta }
 
-
+                for (int i = obstacleIdx + 1; obstacleIdx < obstacleIdx + Model.circularTileList.size(); obstacleIdx++) {
+                    def a = Model.circularTileList[i]
+                    def boll = [current[0] + a[0], current[1] + a[1]] as int[]
+                    if (neighbor != previousStep) {
+                        jfjfrjfker
+                    }
+                }
 
                 int[] neighborLeft = null
                 int[] neighborRight = null
@@ -108,7 +115,7 @@ class PathfinderWorker extends Worker {
                 queue.add(lbt.right(currentXY))
 
             }
-            i++
+            repetition++
         }
 
         if (goal) {
