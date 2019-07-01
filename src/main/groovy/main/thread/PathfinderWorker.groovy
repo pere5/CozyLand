@@ -74,32 +74,33 @@ class PathfinderWorker extends Worker {
         visited.add(tileStart)
 
         int repetition = 0
-        Position<int[]> goal = null
+        Position<int[]> currentPos = null
+        boolean foundIt = false
 
         while (repetition < 500) {
 
-            Position<int[]> currentXY = queue.poll()
-            def current = currentXY.element
-            visited.add(current)
+            currentPos = queue.poll()
+            def currentXY = currentPos.element
+            visited.add(currentXY)
 
-            def idx = Model.bresenham(current, tileDest, villager)
+            def idx = Model.bresenham(currentXY, tileDest, villager)
             def nextStep = Model.bufferedBresenhamResultArray[idx]
 
             if (nextStep == tileDest) {
-                lbt.addLeft(currentXY, nextStep)
-                goal = lbt.left(currentXY)
+                lbt.addLeft(currentPos, nextStep)
+                foundIt = true
                 break
             } else {
 
                 // we can't travel to nextStep
                 def previousStep = idx >= 2 ? Model.bufferedBresenhamResultArray[idx - 2] : null
 
-                def obstacleDelta = [current[0] - nextStep[0], current[1] - nextStep[1]] as int[]
+                def obstacleDelta = [currentXY[0] - nextStep[0], currentXY[1] - nextStep[1]] as int[]
                 def obstacleIdx = Model.circularTileList.find { it == obstacleDelta }
 
                 for (int i = obstacleIdx + 1; obstacleIdx < obstacleIdx + Model.circularTileList.size(); obstacleIdx++) {
                     def a = Model.circularTileList[i]
-                    def boll = [current[0] + a[0], current[1] + a[1]] as int[]
+                    def boll = [currentXY[0] + a[0], currentXY[1] + a[1]] as int[]
                     if (neighbor != previousStep) {
                         jfjfrjfker
                     }
@@ -108,27 +109,29 @@ class PathfinderWorker extends Worker {
                 int[] neighborLeft = null
                 int[] neighborRight = null
 
-                lbt.addLeft(currentXY, neighborLeft)
-                lbt.addRight(currentXY, neighborRight)
+                lbt.addLeft(currentPos, neighborLeft)
+                lbt.addRight(currentPos, neighborRight)
 
-                queue.add(lbt.left(currentXY))
-                queue.add(lbt.right(currentXY))
+                queue.add(lbt.left(currentPos))
+                queue.add(lbt.right(currentPos))
 
             }
             repetition++
         }
 
-        if (goal) {
-            Position<int[]> current = goal
-            int depth = lbt.depth(goal)
-            for (int j = depth; j >= 0; j--) {
-                Model.bufferedPerStarResultArray[j] = current.element
-                current = lbt.parent(current)
+        if (!foundIt) {
+            //remove 66% of the wrong path
+            (lbt.depth(currentPos) / 1.5).times {
+                currentPos = lbt.parent(currentPos)
             }
-            return depth
-        } else {
-            return -1
         }
+
+        int depth = lbt.depth(currentPos)
+        for (int j = depth; j >= 0; j--) {
+            Model.bufferedPerStarResultArray[j] = currentPos.element
+            currentPos = lbt.parent(currentPos)
+        }
+        return depth
     }
 
     int[][] longestPossibleBresenhams(int i) {
