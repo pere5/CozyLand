@@ -136,9 +136,24 @@ class PathfinderWorker extends Worker {
             def n = [currentStep[0] + a[0], currentStep[1] + a[1]] as int[]
             def tile = tileNetwork[n[0]][n[1]]
             if (n != previousStep && n != nextStep && !visited.contains(n) && villager.canTravel(tile.travelType)) {
-                //we can go here!!!
+                right = n
+                break
             }
         }
+        def left = null
+        for (int i = deltaIdx - 1; i > deltaIdx - circularTileList.size(); i--) {
+            def a = circularTileList[i]
+            def n = [currentStep[0] + a[0], currentStep[1] + a[1]] as int[]
+            def tile = tileNetwork[n[0]][n[1]]
+            if (n != previousStep && n != nextStep && !visited.contains(n) && villager.canTravel(tile.travelType)) {
+                left = n
+                break
+            }
+        }
+
+        if (left && right && left != right) {
+            ....
+        } ...
 
         int[] neighborLeft = null
         int[] neighborRight = null
