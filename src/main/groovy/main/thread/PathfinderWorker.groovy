@@ -93,14 +93,14 @@ class PathfinderWorker extends Worker {
 
                 // nextStep is blocked
                 def previousStep = idx >= 2 ? Model.bufferedBresenhamResultArray[idx - 2] : null
-                def (int[] neighborLeft, int[] neighborRight) = findPath(previousStep, currentStep, nextStep, visited)
+                def (int[] left, int[] right) = findPath(previousStep, currentStep, nextStep, visited, villager)
 
-                if (neighborLeft) {
-                    lbt.addLeft(currentStepPos, neighborLeft)
+                if (left) {
+                    lbt.addLeft(currentStepPos, left)
                     queue.add(lbt.left(currentStepPos))
                 }
-                if (neighborRight) {
-                    lbt.addRight(currentStepPos, neighborRight)
+                if (right) {
+                    lbt.addRight(currentStepPos, right)
                     queue.add(lbt.right(currentStepPos))
                 }
             }
@@ -125,39 +125,35 @@ class PathfinderWorker extends Worker {
     private List<int[]> findPath(int[] previousStep, int[] currentStep, int[] nextStep, Set<int[]> visited, Villager villager) {
 
         def tileNetwork = Model.model.tileNetwork as Tile[][]
-        def circularTileList = Model.circularTileList as List<int[]>
+        def ctl = Model.circularTileList as List<int[]>
 
         def delta = [nextStep[0] - currentStep[0], nextStep[1] - currentStep[1]] as int[]
-        def deltaIdx = circularTileList.findIndexOf { it == delta }
+        def deltaIdx = ctl.findIndexOf { it == delta }
 
-        def right = null
-        for (int i = deltaIdx + 1; i < deltaIdx + circularTileList.size(); i++) {
-            def a = circularTileList[i]
-            def n = [currentStep[0] + a[0], currentStep[1] + a[1]] as int[]
+        int[] right = null
+        for (int i = deltaIdx + 1; i < deltaIdx + ctl.size(); i++) {
+            def n = [currentStep[0] + ctl[i][0], currentStep[1] + ctl[i][1]] as int[]
             def tile = tileNetwork[n[0]][n[1]]
-            if (n != previousStep && n != nextStep && !visited.contains(n) && villager.canTravel(tile.travelType)) {
+            if (n != previousStep && n != nextStep && villager.canTravel(tile.travelType) && !visited.contains(n)) {
                 right = n
                 break
             }
         }
-        def left = null
-        for (int i = deltaIdx - 1; i > deltaIdx - circularTileList.size(); i--) {
-            def a = circularTileList[i]
-            def n = [currentStep[0] + a[0], currentStep[1] + a[1]] as int[]
+        int[] left = null
+        for (int i = deltaIdx - 1; i > deltaIdx - ctl.size(); i--) {
+            def n = [currentStep[0] + ctl[i][0], currentStep[1] + ctl[i][1]] as int[]
             def tile = tileNetwork[n[0]][n[1]]
-            if (n != previousStep && n != nextStep && !visited.contains(n) && villager.canTravel(tile.travelType)) {
+            if (n != previousStep && n != nextStep && villager.canTravel(tile.travelType) && !visited.contains(n)) {
                 left = n
                 break
             }
         }
 
-        if (left && right && left != right) {
-            ....
-        } ...
-
-        int[] neighborLeft = null
-        int[] neighborRight = null
-        [neighborLeft, neighborRight]
+        if ((left && right && left != right) || ((left && !right) || (!left && right))) {
+            return [left, right]
+        } else {
+            return [null, null]
+        }
     }
 
     int[][] longestPossibleBresenhams(int i) {

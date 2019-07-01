@@ -6,12 +6,11 @@ public class CircularArrayList<E> extends ArrayList<E> {
 
     @Override
     public E get(int index) {
-
-
-
-        negative stuff here
-
-
-        return super.get(index % super.size());
+        int number = index % size();
+        if (number < 0) {
+            return super.get(size() + number);
+        } else {
+            return super.get(number);
+        }
     }
 }
