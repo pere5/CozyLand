@@ -71,69 +71,72 @@ class PathfinderWorker extends Worker {
         queue.add(lbt.root())
         visited.add(tileStart)
 
-        Position<int[]> currentPos = null
+        Position<int[]> currentStepPos = null
 
         int repetition = 0
         boolean foundIt = false
 
         while (repetition < 500) {
 
-            currentPos = queue.poll()
-            def currentXY = currentPos.element
-            visited.add(currentXY)
+            currentStepPos = queue.poll()
+            def currentStep = currentStepPos.element
+            visited.add(currentStep)
 
-            def idx = Model.bresenham(currentXY, tileDest, villager)
+            def idx = Model.bresenham(currentStep, tileDest, villager, visited)
             def nextStep = Model.bufferedBresenhamResultArray[idx]
 
             if (nextStep == tileDest) {
-                lbt.addLeft(currentPos, nextStep)
+                lbt.addLeft(currentStepPos, nextStep)
                 foundIt = true
                 break
             } else {
 
-                // nextStep is an obstacle
-                def (int[] neighborLeft, int[] neighborRight) = findPath(idx, currentXY, nextStep)
+                // nextStep is blocked
+                def previousStep = idx >= 2 ? Model.bufferedBresenhamResultArray[idx - 2] : null
+                def (int[] neighborLeft, int[] neighborRight) = findPath(previousStep, currentStep, nextStep, visited)
 
-                lbt.addLeft(currentPos, neighborLeft)
-                lbt.addRight(currentPos, neighborRight)
-
-                queue.add(lbt.left(currentPos))
-                queue.add(lbt.right(currentPos))
-
+                if (neighborLeft) {
+                    lbt.addLeft(currentStepPos, neighborLeft)
+                    queue.add(lbt.left(currentStepPos))
+                }
+                if (neighborRight) {
+                    lbt.addRight(currentStepPos, neighborRight)
+                    queue.add(lbt.right(currentStepPos))
+                }
             }
             repetition++
         }
 
         if (!foundIt) {
             //remove 60% of the wrong path
-            (lbt.depth(currentPos) * 0.4).times {
-                currentPos = lbt.parent(currentPos)
+            (lbt.depth(currentStepPos) * 0.4).times {
+                currentStepPos = lbt.parent(currentStepPos)
             }
         }
 
-        int depth = lbt.depth(currentPos)
+        int depth = lbt.depth(currentStepPos)
         for (int j = depth; j >= 0; j--) {
-            Model.bufferedPerStarResultArray[j] = currentPos.element
-            currentPos = lbt.parent(currentPos)
+            Model.bufferedPerStarResultArray[j] = currentStepPos.element
+            currentStepPos = lbt.parent(currentStepPos)
         }
         return depth
     }
 
-    private List<int[]> findPath(int obstacleIdx, int[] currentXY, int[] nextStep) {
+    private List<int[]> findPath(int[] previousStep, int[] currentStep, int[] nextStep, Set<int[]> visited, Villager villager) {
 
         def tileNetwork = Model.model.tileNetwork as Tile[][]
         def circularTileList = Model.circularTileList as List<int[]>
 
-        def previousStep = obstacleIdx >= 2 ? Model.bufferedBresenhamResultArray[obstacleIdx - 2] : null
+        def delta = [nextStep[0] - currentStep[0], nextStep[1] - currentStep[1]] as int[]
+        def deltaIdx = circularTileList.findIndexOf { it == delta }
 
-        def obstDelta = [currentXY[0] - nextStep[0], currentXY[1] - nextStep[1]] as int[]
-        def obstIdx = circularTileList.findIndexOf { it == obstDelta }
-
-        for (int i = obstIdx + 1; i < obstIdx + circularTileList.size(); i++) {
+        def right = null
+        for (int i = deltaIdx + 1; i < deltaIdx + circularTileList.size(); i++) {
             def a = circularTileList[i]
-            def boll = [currentXY[0] + a[0], currentXY[1] + a[1]] as int[]
-            if (neighbor != previousStep) {
-                jfjfrjfker
+            def n = [currentStep[0] + a[0], currentStep[1] + a[1]] as int[]
+            def tile = tileNetwork[n[0]][n[1]]
+            if (n != previousStep && n != nextStep && !visited.contains(n) && villager.canTravel(tile.travelType)) {
+                //we can go here!!!
             }
         }
 
