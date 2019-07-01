@@ -500,8 +500,8 @@ class Model {
 
     static Double[] generateXY() {
         Double[] xy = [
-                Main.MAP_WIDTH / 2 + generate((Main.MAP_WIDTH / 2.1) as int),
-                Main.MAP_HEIGHT / 2 + generate((Main.MAP_HEIGHT / 2.1) as int)
+                Main.MAP_WIDTH / 2 + generate((Main.MAP_WIDTH / 3) as int),
+                Main.MAP_HEIGHT / 2 + generate((Main.MAP_HEIGHT / 3) as int)
         ]
 
         def tileXY = pixelToTileIdx(xy)
@@ -536,7 +536,7 @@ class Model {
         Model.round(deg >= 0 ? deg : deg + 360)
     }
 
-    static int bresenham(int[] tileStart, int[] tileDest, Villager villager = null, Set<int[]> visited) {
+    static int bresenham(int[] tileStart, int[] tileDest, Villager villager = null, Set<int[]> visited = null) {
         def (int x1, int y1) = tileStart
         def (int x2, int y2) = tileDest
 
@@ -564,7 +564,7 @@ class Model {
             bufferedBresenhamResultArray[idx][0] = x
             bufferedBresenhamResultArray[idx][1] = y
 
-            if (visited.contains([x, y] as int[]) || !villager?.canTravel(tileNetwork[x][y].travelType)) {
+            if ((visited && visited.contains([x, y] as int[])) || (villager && !villager.canTravel(tileNetwork[x][y].travelType))) {
                 return idx
             }
 

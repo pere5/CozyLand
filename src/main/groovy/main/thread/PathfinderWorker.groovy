@@ -40,18 +40,23 @@ class PathfinderWorker extends Worker {
 
                 def tileStartXY = Model.pixelToTileIdx(pixelDest)
                 def tileDestXY = Model.pixelToTileIdx(pixelStart)
-/*
+
                 def idx = perStarToGoal(tileStartXY, tileDestXY, villager)
+
+/*
                 def tiles = longestPossibleBresenhams(idx)
-
-                def pixels = ([villager.x, villager.y] + tiles.collect { randomPlaceInTile(it) }) as Double[][]
 */
+                def pixels = (0..idx).collect {
+                    def tile = Model.bufferedPerStarResultArray[it]
+                    randomPlaceInTile(tile)
+                } as Double[][]
 
-                def pixels2 = [[villager.x, villager.y] as Double[], Model.generateXY()] as Double[][]
 
-                for (int i = 0; i < (pixels2.length - 1); i++) {
-                    def a = pixels2[i]
-                    def b = pixels2[i + 1]
+                //def pixels2 = [[villager.x, villager.y] as Double[], Model.generateXY()] as Double[][]
+
+                for (int i = 0; i < (pixels.length - 1); i++) {
+                    def a = pixels[i]
+                    def b = pixels[i + 1]
                     if (!b) break
 
                     perTilesWithBresenham(a, b, villager)
@@ -67,41 +72,45 @@ class PathfinderWorker extends Worker {
         Queue<Position<int[]>> queue = new LinkedList<>()
         LinkedBinaryTree<int[]> lbt = new LinkedBinaryTree<>()
 
-        lbt.addRoot(tileStart)
-        queue.add(lbt.root())
         visited.add(tileStart)
+        def rootPos = lbt.addRoot(tileStart)
+        queue.add(rootPos)
 
-        Position<int[]> currentStepPos = null
+        Position<int[]> stepPos = null
 
         int repetition = 0
         boolean foundIt = false
 
-        while (repetition < 500) {
+        while (repetition < 50) {
 
-            currentStepPos = queue.poll()
-            def currentStep = currentStepPos.element
-            visited.add(currentStep)
+            if (!queue.peek()) break
+            stepPos = queue.poll()
 
-            def idx = Model.bresenham(currentStep, tileDest, villager, visited)
+            def idx = Model.bresenham(stepPos.element, tileDest, villager, visited)
             def nextStep = Model.bufferedBresenhamResultArray[idx]
+            def currentStep = idx >= 1 ? Model.bufferedBresenhamResultArray[idx - 1] : null
+            def previousStep = idx >= 2 ? Model.bufferedBresenhamResultArray[idx - 2] : null
 
             if (nextStep == tileDest) {
-                lbt.addLeft(currentStepPos, nextStep)
+                stepPos = lbt.addLeft(stepPos, nextStep)
                 foundIt = true
                 break
             } else {
-
                 // nextStep is blocked
-                def previousStep = idx >= 2 ? Model.bufferedBresenhamResultArray[idx - 2] : null
+                visited.add(currentStep)
+                stepPos = lbt.addLeft(stepPos, currentStep)
+
                 def (int[] left, int[] right) = findPath(previousStep, currentStep, nextStep, visited, villager)
 
                 if (left) {
-                    lbt.addLeft(currentStepPos, left)
-                    queue.add(lbt.left(currentStepPos))
+                    visited.add(left)
+                    def leftPos = lbt.addLeft(stepPos, left)
+                    queue.add(leftPos)
                 }
                 if (right) {
-                    lbt.addRight(currentStepPos, right)
-                    queue.add(lbt.right(currentStepPos))
+                    visited.add(right)
+                    def rightPos = lbt.addRight(stepPos, right)
+                    queue.add(rightPos)
                 }
             }
             repetition++
@@ -109,15 +118,15 @@ class PathfinderWorker extends Worker {
 
         if (!foundIt) {
             //remove 60% of the wrong path
-            (lbt.depth(currentStepPos) * 0.4).times {
-                currentStepPos = lbt.parent(currentStepPos)
+            (lbt.depth(stepPos) * 0.4).times {
+                stepPos = lbt.parent(stepPos)
             }
         }
 
-        int depth = lbt.depth(currentStepPos)
+        int depth = lbt.depth(stepPos)
         for (int j = depth; j >= 0; j--) {
-            Model.bufferedPerStarResultArray[j] = currentStepPos.element
-            currentStepPos = lbt.parent(currentStepPos)
+            Model.bufferedPerStarResultArray[j] = stepPos.element
+            stepPos = lbt.parent(stepPos)
         }
         return depth
     }
@@ -132,7 +141,7 @@ class PathfinderWorker extends Worker {
 
         int[] right = null
         for (int i = deltaIdx + 1; i < deltaIdx + ctl.size(); i++) {
-            def n = [currentStep[0] + ctl[i][0], currentStep[1] + ctl[i][1]] as int[]
+            def n = [currentStep[0] + ctl.get(i)[0], currentStep[1] + ctl.get(i)[1]] as int[]
             def tile = tileNetwork[n[0]][n[1]]
             if (n != previousStep && n != nextStep && villager.canTravel(tile.travelType) && !visited.contains(n)) {
                 right = n
