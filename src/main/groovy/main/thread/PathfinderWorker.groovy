@@ -63,8 +63,6 @@ class PathfinderWorker extends Worker {
 
     int perStarToGoal(int[] tileStart, int[] tileDest, Villager villager) {
 
-        def tileNetwork = Model.model.tileNetwork as Tile[][]
-
         Set<int[]> visited = new HashSet<>()
         Queue<Position<int[]>> queue = new LinkedList<>()
         LinkedBinaryTree<int[]> lbt = new LinkedBinaryTree<>()
@@ -73,8 +71,9 @@ class PathfinderWorker extends Worker {
         queue.add(lbt.root())
         visited.add(tileStart)
 
-        int repetition = 0
         Position<int[]> currentPos = null
+
+        int repetition = 0
         boolean foundIt = false
 
         while (repetition < 500) {
@@ -92,22 +91,8 @@ class PathfinderWorker extends Worker {
                 break
             } else {
 
-                // we can't travel to nextStep
-                def previousStep = idx >= 2 ? Model.bufferedBresenhamResultArray[idx - 2] : null
-
-                def obstacleDelta = [currentXY[0] - nextStep[0], currentXY[1] - nextStep[1]] as int[]
-                def obstacleIdx = Model.circularTileList.find { it == obstacleDelta }
-
-                for (int i = obstacleIdx + 1; obstacleIdx < obstacleIdx + Model.circularTileList.size(); obstacleIdx++) {
-                    def a = Model.circularTileList[i]
-                    def boll = [currentXY[0] + a[0], currentXY[1] + a[1]] as int[]
-                    if (neighbor != previousStep) {
-                        jfjfrjfker
-                    }
-                }
-
-                int[] neighborLeft = null
-                int[] neighborRight = null
+                // nextStep is an obstacle
+                def (int[] neighborLeft, int[] neighborRight) = findPath(idx, currentXY, nextStep)
 
                 lbt.addLeft(currentPos, neighborLeft)
                 lbt.addRight(currentPos, neighborRight)
@@ -120,8 +105,8 @@ class PathfinderWorker extends Worker {
         }
 
         if (!foundIt) {
-            //remove 66% of the wrong path
-            (lbt.depth(currentPos) / 1.5).times {
+            //remove 60% of the wrong path
+            (lbt.depth(currentPos) * 0.4).times {
                 currentPos = lbt.parent(currentPos)
             }
         }
@@ -132,6 +117,29 @@ class PathfinderWorker extends Worker {
             currentPos = lbt.parent(currentPos)
         }
         return depth
+    }
+
+    private List<int[]> findPath(int obstacleIdx, int[] currentXY, int[] nextStep) {
+
+        def tileNetwork = Model.model.tileNetwork as Tile[][]
+        def circularTileList = Model.circularTileList as List<int[]>
+
+        def previousStep = obstacleIdx >= 2 ? Model.bufferedBresenhamResultArray[obstacleIdx - 2] : null
+
+        def obstDelta = [currentXY[0] - nextStep[0], currentXY[1] - nextStep[1]] as int[]
+        def obstIdx = circularTileList.findIndexOf { it == obstDelta }
+
+        for (int i = obstIdx + 1; i < obstIdx + circularTileList.size(); i++) {
+            def a = circularTileList[i]
+            def boll = [currentXY[0] + a[0], currentXY[1] + a[1]] as int[]
+            if (neighbor != previousStep) {
+                jfjfrjfker
+            }
+        }
+
+        int[] neighborLeft = null
+        int[] neighborRight = null
+        [neighborLeft, neighborRight]
     }
 
     int[][] longestPossibleBresenhams(int i) {
