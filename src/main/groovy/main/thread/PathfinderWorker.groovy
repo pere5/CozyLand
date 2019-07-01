@@ -38,8 +38,8 @@ class PathfinderWorker extends Worker {
                 def pixelDest = Model.generateXY()
                 def pixelStart = [villager.x, villager.y] as Double[]
 
-                def tileStartXY = Model.pixelToTileIdx(pixelDest)
-                def tileDestXY = Model.pixelToTileIdx(pixelStart)
+                def tileStartXY = Model.pixelToTileIdx(pixelStart)
+                def tileDestXY = Model.pixelToTileIdx(pixelDest)
 
                 def idx = perStarToGoal(tileStartXY, tileDestXY, villager)
 
