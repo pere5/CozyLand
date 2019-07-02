@@ -175,6 +175,10 @@ class PathfinderWorker extends Worker {
         def delta = [nextStep[0] - currentStep[0], nextStep[1] - currentStep[1]] as int[]
         def deltaIdx = ctl.findIndexOf { it == delta }
 
+
+
+        ta bort dessa två? Lägga till alla?
+
         int[] right = null
         for (int i = deltaIdx + 1; i < deltaIdx + ctl.size(); i++) {
             def n = [currentStep[0] + ctl.get(i)[0], currentStep[1] + ctl.get(i)[1]] as int[]
