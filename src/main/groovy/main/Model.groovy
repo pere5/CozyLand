@@ -51,7 +51,6 @@ class Model {
     ]
 
     static int[][] bufferedBresenhamResultArray = new int[Main.WINDOW_WIDTH + Main.WINDOW_HEIGHT][2]
-    static int[][] bufferedPerStarResultArray = new int[Main.WINDOW_WIDTH + Main.WINDOW_HEIGHT][2]
 
     static def init(def keyboard, def mouse) {
         def tileNetwork = generateBackground()
