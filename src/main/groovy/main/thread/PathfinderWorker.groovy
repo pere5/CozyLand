@@ -83,7 +83,7 @@ class PathfinderWorker extends Worker {
     List<int[]> perStar(int[] tileStart, int[] tileDest, Villager villager) {
 
         //visited is broken!
-        Set<int[]> visited = new HashSet<>()
+        Set<List<Integer>> visited = new HashSet<>()
         Queue<Position<int[]>> queue = new LinkedList<>()
         LinkedBinaryTree<int[]> lbt = new LinkedBinaryTree<>()
 
@@ -91,7 +91,7 @@ class PathfinderWorker extends Worker {
 
         def rootPos = lbt.addRoot(tileStart)
         queue << rootPos
-        visited << tileStart
+        visited << [tileStart[0], tileStart[1]]
         testList << tileStart
 
         Position<int[]> stepPos = null
@@ -130,13 +130,13 @@ class PathfinderWorker extends Worker {
                 if (left) {
                     def leftPos = lbt.addLeft(stepPos, left)
                     queue << leftPos
-                    visited << left
+                    visited << [left[0], left[1]]
                     testList << left
                 }
                 if (right) {
                     def rightPos = lbt.addRight(stepPos, right)
                     queue << rightPos
-                    visited << right
+                    visited << [right[0], right[1]]
                     testList << right
                 }
             }
@@ -153,7 +153,7 @@ class PathfinderWorker extends Worker {
         //return testList
     }
 
-    private List<int[]> findPath(int[] previousStep, int[] currentStep, int[] nextStep, Set<int[]> visited, Villager villager) {
+    private List<int[]> findPath(int[] previousStep, int[] currentStep, int[] nextStep, Set<List<Integer>> visited, Villager villager) {
 
         def tileNetwork = Model.model.tileNetwork as Tile[][]
         def ctl = Model.circularTileList as List<int[]>
@@ -170,7 +170,7 @@ class PathfinderWorker extends Worker {
             if (n != previousStep
                     && n != nextStep
                     && villager.canTravel(tile.travelType)
-                    && !visited.find { it[0] == n[0] && it[1] == n[1] }
+                    && !visited.contains([n[0], n[1]])
             ) {
                 right = n
                 break
@@ -183,7 +183,7 @@ class PathfinderWorker extends Worker {
             if (n != previousStep
                     && n != nextStep
                     && villager.canTravel(tile.travelType)
-                    && !visited.find { it[0] == n[0] && it[1] == n[1] }
+                    && !visited.contains([n[0], n[1]])
             ) {
                 left = n
                 break
