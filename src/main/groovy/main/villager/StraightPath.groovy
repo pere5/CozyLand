@@ -1,7 +1,7 @@
 package main.villager
 
 import main.Model
-import main.Tile
+import main.model.Tile
 import main.things.Artifact
 import main.things.Drawable
 

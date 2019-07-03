@@ -1,5 +1,6 @@
-package main
+package main.model
 
+import main.Model
 import main.things.Drawable
 
 class Tile extends Drawable {

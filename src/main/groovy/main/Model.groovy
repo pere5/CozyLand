@@ -2,6 +2,7 @@ package main
 
 import javaSrc.circulararray.CircularArrayList
 import main.exception.PerIsBorkenException
+import main.model.Tile
 import main.rule.Rule
 import main.rule.Walk
 import main.things.Drawable

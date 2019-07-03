@@ -1,6 +1,6 @@
 package main
 
-
+import main.model.Tile
 import main.thread.PathfinderWorker
 import main.villager.Villager
 import org.junit.BeforeClass

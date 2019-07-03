@@ -5,7 +5,7 @@ import javaSrc.linkedbinarytree.Position
 import main.Main
 import main.Model
 import main.Model.TravelType
-import main.Tile
+import main.model.Tile
 import main.villager.StraightPath
 import main.villager.Villager
 
@@ -82,7 +82,7 @@ class PathfinderWorker extends Worker {
 
     List<int[]> perStar(int[] tileStart, int[] tileDest, Villager villager) {
 
-        visited is broken!
+        //visited is broken!
         Set<int[]> visited = new HashSet<>()
         Queue<Position<int[]>> queue = new LinkedList<>()
         LinkedBinaryTree<int[]> lbt = new LinkedBinaryTree<>()
