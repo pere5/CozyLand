@@ -2,6 +2,8 @@ package main
 
 import javaSrc.circulararray.CircularArrayList
 import main.exception.PerIsBorkenException
+import main.model.DXY
+import main.model.IXY
 import main.model.Tile
 import main.rule.Rule
 import main.rule.Walk
@@ -43,7 +45,7 @@ class Model {
     ]
 
 
-    static List<int[]> circularTileList = [[-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0] ] as CircularArrayList<int[]>
+    static List<IXY> circularTileList = [[-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0] ] as CircularArrayList<IXY>
 
     static def tileDegrees = [
             [113, 157]: [-1,  1], [68, 112] : [0,  1], [23,   67]: [1,  1],
@@ -490,19 +492,19 @@ class Model {
         }
     }
 
-    static int[] round(Double[] numbers) {
+    static IXY round(DXY numbers) {
         numbers.collect { round(it) }
     }
 
-    static int[] round(List<Double> numbers) {
+    static IXY round(List<Double> numbers) {
         numbers.collect { round(it) }
     }
 
-    static Double[] generateXY() {
-        Double[] xy = [
+    static DXY generateXY() {
+        DXY xy = [
                 Main.MAP_WIDTH / 2 + generate((Main.MAP_WIDTH / 3) as int),
                 Main.MAP_HEIGHT / 2 + generate((Main.MAP_HEIGHT / 3) as int)
-        ]
+        ] as DXY
 
         def tileXY = pixelToTileIdx(xy)
 
@@ -519,24 +521,24 @@ class Model {
         return distance - ThreadLocalRandom.current().nextInt(0, distance * 2 + 1)
     }
 
-    static int[] pixelToTileIdx(int[] pixels) {
+    static IXY pixelToTileIdx(IXY pixels) {
         pixels.collect { it / Main.TILE_WIDTH }
     }
 
-    static int[] pixelToTileIdx(Double[] pixels) {
-        pixels.collect { it / Main.TILE_WIDTH }
+    static IXY pixelToTileIdx(DXY pixels) {
+        pixels.collect { (it / Main.TILE_WIDTH) as Integer } as IXY
     }
 
-    static int[] tileToPixelIdx(int[] tile) {
-        tile.collect { (it * Main.TILE_WIDTH) }
+    static DXY tileToPixelIdx(IXY tile) {
+        tile.collect { (it * Main.TILE_WIDTH) as Double } as DXY
     }
 
-    static int calculateDegreeRound(Double[] start, Double[] dest) {
+    static int calculateDegreeRound(DXY start, DXY dest) {
         Double deg = Math.toDegrees(Math.atan2(dest[1] - start[1], dest[0] - start[0]))
         Model.round(deg >= 0 ? deg : deg + 360)
     }
 
-    static int bresenham(int[] tileStart, int[] tileDest, Villager villager = null, Set<int[]> visited = null) {
+    static int bresenham(IXY tileStart, IXY tileDest, Villager villager = null, Set<IXY> visited = null) {
         def (int x1, int y1) = tileStart
         def (int x2, int y2) = tileDest
 
@@ -564,7 +566,7 @@ class Model {
             bufferedBresenhamResultArray[idx][0] = x
             bufferedBresenhamResultArray[idx][1] = y
 
-            if ((visited && visited.contains([x, y] as int[])) || (villager && !villager.canTravel(tileNetwork[x][y].travelType))) {
+            if ((visited && visited.contains([x, y] as IXY)) || (villager && !villager.canTravel(tileNetwork[x][y].travelType))) {
                 return idx
             }
 
