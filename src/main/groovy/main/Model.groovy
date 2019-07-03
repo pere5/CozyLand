@@ -536,7 +536,7 @@ class Model {
         Model.round(deg >= 0 ? deg : deg + 360)
     }
 
-    static int bresenham(int[] tileStart, int[] tileDest, Villager villager = null, Set<List<Integer>> visited = null) {
+    static int bresenham(int[] tileStart, int[] tileDest, Villager villager = null) {
         def (int x1, int y1) = tileStart
         def (int x2, int y2) = tileDest
 
@@ -564,9 +564,7 @@ class Model {
             bufferedBresenhamResultArray[idx][0] = x
             bufferedBresenhamResultArray[idx][1] = y
 
-            now we are broken
-
-            if ((visited && visited.contains([x, y])) || (villager && !villager.canTravel(tileNetwork[x][y].travelType))) {
+            if ((villager && !villager.canTravel(tileNetwork[x][y].travelType))) {
                 return idx
             }
 

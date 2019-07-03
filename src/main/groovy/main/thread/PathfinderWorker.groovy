@@ -103,7 +103,7 @@ class PathfinderWorker extends Worker {
             if (!queue.peek()) break
             stepPos = queue.poll()
 
-            def idx = Model.bresenham(stepPos.element, tileDest, villager, visited)
+            def idx = Model.bresenham(stepPos.element, tileDest, villager)
             def nextStep = Model.bufferedBresenhamResultArray[idx]
             def currentStep = Model.bufferedBresenhamResultArray[idx - 1]
             def previousStep = idx >= 2 ? Model.bufferedBresenhamResultArray[idx - 2] : null
