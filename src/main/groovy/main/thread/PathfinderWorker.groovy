@@ -6,6 +6,7 @@ import main.Main
 import main.Model
 import main.Model.TravelType
 import main.model.Tile
+import main.things.Artifact
 import main.villager.StraightPath
 import main.villager.Villager
 
@@ -34,7 +35,6 @@ class PathfinderWorker extends Worker {
      */
 
     def update() {
-        Random rand = new Random()
 
         for (Villager villager : Model.model.villagers) {
 
@@ -56,19 +56,11 @@ class PathfinderWorker extends Worker {
                 } as Double[][]
 
                 //def pixels2 = [[villager.x, villager.y] as Double[], Model.generateXY()] as Double[][]
-                def randColor = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
 
-                for (int i = 0; i < pixels.size() - 1; i++) {
+                for (int i = 0; i < pixels.length - 1; i++) {
                     def a = pixels[i]
                     def b = pixels[i + 1]
                     if (!b) break
-
-                    //Börja räkna dubbletter här
-
-                    /*Model.model.drawables << new Artifact(
-                            size: 3, parent: villager.id, x: b[0], y: b[1],
-                            color: randColor
-                    )*/
 
                     //villager.actionQueue << new Wait()
                     villager.actionQueue << new StraightPath(a, b)
@@ -149,6 +141,17 @@ class PathfinderWorker extends Worker {
             retList << stepPos.element
             stepPos = lbt.parent(stepPos)
         }
+        Random rand = new Random()
+        def randColor = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
+        testList.collect{Model.tileToPixelIdx(it)}.each {
+            Model.model.drawables << new Artifact(
+                    size: 3, parent: villager.id, x: it[0], y: it[1],
+                    color: randColor
+            )
+        }
+
+
+
         return retList.reverse()
         //return testList
     }
