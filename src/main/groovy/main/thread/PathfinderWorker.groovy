@@ -5,9 +5,9 @@ import javaSrc.linkedbinarytree.Position
 import main.Main
 import main.Model
 import main.Model.TravelType
-import main.model.DXY
-import main.model.IXY
 import main.model.Tile
+import main.model.XYD
+import main.model.XYI
 import main.villager.StraightPath
 import main.villager.Villager
 
@@ -43,7 +43,7 @@ class PathfinderWorker extends Worker {
             if (villager.pathfinderWorker) {
 
                 def pixelDest = Model.generateXY()
-                def pixelStart = [villager.x, villager.y] as DXY
+                def pixelStart = [villager.x, villager.y] as XYD
 
                 def tileStartXY = Model.pixelToTileIdx(pixelStart)
                 def tileDestXY = Model.pixelToTileIdx(pixelDest)
@@ -55,7 +55,7 @@ class PathfinderWorker extends Worker {
 */
                 def pixels = perStarList.collect {
                     Model.tileToPixelIdx(it)
-                } as List<DXY>
+                } as List<XYD>
 
                 //def pixels2 = [[villager.x, villager.y] as DXY, Model.generateXY()] as DXY
                 def randColor = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
@@ -82,12 +82,12 @@ class PathfinderWorker extends Worker {
         }
     }
 
-    List<IXY> perStar(IXY tileStart, IXY tileDest, Villager villager) {
+    List<XYI> perStar(XYI tileStart, XYI tileDest, Villager villager) {
 
         //visited is broken!
-        Set<IXY> visited = new HashSet<>()
-        Queue<Position<IXY>> queue = new LinkedList<>()
-        LinkedBinaryTree<IXY> lbt = new LinkedBinaryTree<>()
+        Set<XYI> visited = new HashSet<>()
+        Queue<Position<XYI>> queue = new LinkedList<>()
+        LinkedBinaryTree<XYI> lbt = new LinkedBinaryTree<>()
 
         def testList = []
 
@@ -96,7 +96,7 @@ class PathfinderWorker extends Worker {
         visited << tileStart
         testList << tileStart
 
-        Position<IXY> stepPos = null
+        Position<XYI> stepPos = null
 
         int repetition = 0
 
@@ -106,9 +106,9 @@ class PathfinderWorker extends Worker {
             stepPos = queue.poll()
 
             def idx = Model.bresenham(stepPos.element, tileDest, villager, visited)
-            def nextStep = Model.bufferedBresenhamResultArray[idx] as IXY
-            def currentStep = Model.bufferedBresenhamResultArray[idx - 1] as IXY
-            def previousStep = (idx >= 2 ? Model.bufferedBresenhamResultArray[idx - 2] : null) as IXY
+            def nextStep = Model.bufferedBresenhamResultArray[idx] as XYI
+            def currentStep = Model.bufferedBresenhamResultArray[idx - 1] as XYI
+            def previousStep = (idx >= 2 ? Model.bufferedBresenhamResultArray[idx - 2] : null) as XYI
 
             if (nextStep == tileDest) {
                 stepPos = lbt.addLeft(stepPos, nextStep)
@@ -127,7 +127,7 @@ class PathfinderWorker extends Worker {
                 */
 
 
-                def (IXY left, IXY right) = findPath(previousStep, currentStep, nextStep, visited, villager)
+                def (XYI left, XYI right) = findPath(previousStep, currentStep, nextStep, visited, villager)
 
                 if (left) {
                     def leftPos = lbt.addLeft(stepPos, left)
@@ -155,19 +155,19 @@ class PathfinderWorker extends Worker {
         //return testList
     }
 
-    private List<IXY> findPath(IXY previousStep, IXY currentStep, IXY nextStep, Set<IXY> visited, Villager villager) {
+    private List<XYI> findPath(XYI previousStep, XYI currentStep, XYI nextStep, Set<XYI> visited, Villager villager) {
 
         def tileNetwork = Model.model.tileNetwork as Tile[][]
-        def ctl = Model.circularTileList as List<IXY>
+        def ctl = Model.circularTileList as List<XYI>
 
-        def delta = [nextStep[0] - currentStep[0], nextStep[1] - currentStep[1]] as IXY
+        def delta = [nextStep[0] - currentStep[0], nextStep[1] - currentStep[1]] as XYI
         def deltaIdx = ctl.findIndexOf { it == delta }
 
         //ta bort dessa två? Lägga till alla?
 
-        IXY right = null
+        XYI right = null
         for (int i = deltaIdx + 1; i < deltaIdx + ctl.size(); i++) {
-            def n = [currentStep[0] + ctl.get(i)[0], currentStep[1] + ctl.get(i)[1]] as IXY
+            def n = [currentStep[0] + ctl.get(i)[0], currentStep[1] + ctl.get(i)[1]] as XYI
             def tile = tileNetwork[n[0]][n[1]]
             if (n != previousStep
                     && n != nextStep
@@ -178,9 +178,9 @@ class PathfinderWorker extends Worker {
                 break
             }
         }
-        IXY left = null
+        XYI left = null
         for (int i = deltaIdx - 1; i > deltaIdx - ctl.size(); i--) {
-            def n = [currentStep[0] + ctl[i][0], currentStep[1] + ctl[i][1]] as IXY
+            def n = [currentStep[0] + ctl[i][0], currentStep[1] + ctl[i][1]] as XYI
             def tile = tileNetwork[n[0]][n[1]]
             if (n != previousStep
                     && n != nextStep
@@ -201,12 +201,12 @@ class PathfinderWorker extends Worker {
         }
     }
 
-    IXY[] longestPossibleBresenhams(int i) {
+    XYI[] longestPossibleBresenhams(int i) {
         []
     }
 
 
-    private void perTilesWithBresenham(DXY pixelA, DXY pixelB, Villager villager) {
+    private void perTilesWithBresenham(XYD pixelA, XYD pixelB, Villager villager) {
         def tileDestXY = Model.pixelToTileIdx(pixelB)
         def pixelStep = pixelA
         def there = false
@@ -223,7 +223,7 @@ class PathfinderWorker extends Worker {
 
                 def nextTile = nextTiles.find { random >= (it[0][0] as Double) && random <= (it[0][1] as Double) }
 
-                def newTile = [tileStartXY[0] + nextTile[1][0], tileStartXY[1] + nextTile[1][1]] as IXY
+                def newTile = [tileStartXY[0] + nextTile[1][0], tileStartXY[1] + nextTile[1][1]] as XYI
 
                 def newPixelStep = randomPlaceInTile(newTile)
 
@@ -241,7 +241,7 @@ class PathfinderWorker extends Worker {
         }
     }
 
-    DXY randomPlaceInTile(IXY pixelIdx) {
+    XYD randomPlaceInTile(XYI pixelIdx) {
         pixelIdx = Model.tileToPixelIdx(pixelIdx)
         pixelIdx[0] += 1
         pixelIdx[1] += 1
@@ -250,7 +250,7 @@ class PathfinderWorker extends Worker {
         return pixelIdx
     }
 
-    def nextTilesWithBresenham(Villager villager, IXY tileStartXY, IXY tileDestXY, int degree) {
+    def nextTilesWithBresenham(Villager villager, XYI tileStartXY, XYI tileDestXY, int degree) {
 
         def (int tileX, int tileY) = tileStartXY
 
@@ -263,7 +263,7 @@ class PathfinderWorker extends Worker {
 
         tileProbabilities.each { def neighborTile ->
             def (int sX, int sY) = neighborTile[0]
-            def neighborXY = [tileX + sX, tileY + sY] as IXY
+            def neighborXY = [tileX + sX, tileY + sY] as XYI
             def (int nX, int nY) = neighborXY
             if (nX >= 0 && nY >= 0 && nX < tileNetwork.length && nY < tileNetwork[0].length) {
                 def neighbor = tileNetwork[nX][nY] as Tile
@@ -273,7 +273,7 @@ class PathfinderWorker extends Worker {
                 if (villager.canTravel(travelType)) {
                     if (tileProbability > 0) {
                         def idx = Model.bresenham(neighborXY, tileDestXY, villager)
-                        def xy = Model.bufferedBresenhamResultArray[idx] as IXY
+                        def xy = Model.bufferedBresenhamResultArray[idx] as XYI
                         if (xy == tileDestXY) {
                             nextTiles << calculateProbabilityForNeighbor(neighbor, tile, neighborTile)
                         }

@@ -1,7 +1,7 @@
 package main
 
-import main.model.IXY
 import main.model.Tile
+import main.model.XYI
 import main.thread.PathfinderWorker
 import main.villager.Villager
 import org.junit.BeforeClass
@@ -133,32 +133,32 @@ class Tests {
 
         def rightByWall = pfw.nextTilesWithBresenham(
                 new Villager(),
-                [0, 0] as IXY,
-                [1, 0] as IXY,
+                [0, 0] as XYI,
+                [1, 0] as XYI,
                 0
         )
         def upRoundWater = pfw.nextTilesWithBresenham(
                 new Villager(),
-                [3, 0] as IXY,
-                [3, 1] as IXY,
+                [3, 0] as XYI,
+                [3, 1] as XYI,
                 90
         )
         def diagonalBetweenWater = pfw.nextTilesWithBresenham(
                 new Villager(),
-                [3, 2] as IXY,
-                [4, 3] as IXY,
+                [3, 2] as XYI,
+                [4, 3] as XYI,
                 45
         )
         def free = pfw.nextTilesWithBresenham(
                 new Villager(),
-                [0, 1] as IXY,
-                [1, 1] as IXY,
+                [0, 1] as XYI,
+                [1, 1] as XYI,
                 0
         )
         def freeDiagonal = pfw.nextTilesWithBresenham(
                 new Villager(),
-                [1, 2] as IXY,
-                [2, 3] as IXY,
+                [1, 2] as XYI,
+                [2, 3] as XYI,
                 45
         )
 
@@ -220,20 +220,20 @@ class Tests {
 
         def rightByWall = pfw.nextTilesWithBresenham(
                 new Villager(),
-                [0, 0] as IXY,
-                [1, 0] as IXY,
+                [0, 0] as XYI,
+                [1, 0] as XYI,
                 0
         )
         def upRoundWater = pfw.nextTilesWithBresenham(
                 new Villager(),
-                [3, 0] as IXY,
-                [3, 1] as IXY,
+                [3, 0] as XYI,
+                [3, 1] as XYI,
                 90
         )
         def freeDiagonal = pfw.nextTilesWithBresenham(
                 new Villager(),
-                [1, 2] as IXY,
-                [2, 3] as IXY,
+                [1, 2] as XYI,
+                [2, 3] as XYI,
                 45
         )
 
