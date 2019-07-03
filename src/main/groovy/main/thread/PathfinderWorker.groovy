@@ -106,7 +106,11 @@ class PathfinderWorker extends Worker {
                     visited << [nextStep[0], nextStep[1]]
                     testList << [nextStep[0], nextStep[1]]
                     break
-                } else {
+                }/* else if (currentStep && !visited.contains([currentStep[0], currentStep[1]])) {
+                    queue << lbt.addLeft(stepPos, currentStep)
+                    visited << [currentStep[0], currentStep[1]]
+                    testList << [currentStep[0], currentStep[1]]
+                }*/ else {
                     def (int[] left, int[] right) = findPath(nextStep, currentStep, previousStep, visited, villager)
 
                     if (left) {
