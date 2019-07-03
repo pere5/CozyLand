@@ -531,6 +531,10 @@ class Model {
         tile.collect { (it * Main.TILE_WIDTH) }
     }
 
+    static int[] tileToPixelIdx(List<Integer> tile) {
+        tile.collect { (it * Main.TILE_WIDTH) }
+    }
+
     static int calculateDegreeRound(Double[] start, Double[] dest) {
         Double deg = Math.toDegrees(Math.atan2(dest[1] - start[1], dest[0] - start[0]))
         Model.round(deg >= 0 ? deg : deg + 360)
