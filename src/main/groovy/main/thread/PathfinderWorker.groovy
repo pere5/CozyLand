@@ -168,8 +168,8 @@ class PathfinderWorker extends Worker {
         for (int i = deltaIdx + 1; i < deltaIdx + ctl.size(); i++) {
             def n = [currentStep[0] + ctl.get(i)[0], currentStep[1] + ctl.get(i)[1]] as int[]
             def tile = tileNetwork[n[0]][n[1]]
-            if (n != previousStep
-                    && n != nextStep
+            if (n == previousStep) break
+            if (n != nextStep
                     && villager.canTravel(tile.travelType)
                     && !visited.contains([n[0], n[1]])
             ) {
@@ -181,8 +181,8 @@ class PathfinderWorker extends Worker {
         for (int i = deltaIdx - 1; i > deltaIdx - ctl.size(); i--) {
             def n = [currentStep[0] + ctl[i][0], currentStep[1] + ctl[i][1]] as int[]
             def tile = tileNetwork[n[0]][n[1]]
-            if (n != previousStep
-                    && n != nextStep
+            if (n == previousStep) break
+            if (n != nextStep
                     && villager.canTravel(tile.travelType)
                     && !visited.contains([n[0], n[1]])
             ) {
