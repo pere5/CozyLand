@@ -566,7 +566,7 @@ class Model {
             bufferedBresenhamResultArray[idx][0] = x
             bufferedBresenhamResultArray[idx][1] = y
 
-            if ((visited && visited.contains([x, y] as IXY)) || (villager && !villager.canTravel(tileNetwork[x][y].travelType))) {
+            if ((/*visited && visited.contains([x, y] as IXY)*/false) || (villager && !villager.canTravel(tileNetwork[x][y].travelType))) {
                 return idx
             }
 
