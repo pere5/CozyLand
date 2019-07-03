@@ -7,13 +7,14 @@ import main.Model
 import main.Model.TravelType
 import main.model.Tile
 import main.things.Artifact
+import main.things.Drawable
 import main.villager.StraightPath
 import main.villager.Villager
-import main.villager.Wait
 
 import java.awt.*
 import java.util.List
 import java.util.Queue
+import java.util.concurrent.ConcurrentLinkedQueue
 
 class PathfinderWorker extends Worker {
 
@@ -58,12 +59,10 @@ class PathfinderWorker extends Worker {
                     } as Double[][]
 
                     //def pixels2 = [[villager.x, villager.y] as Double[], Model.generateXY()] as Double[][]
-                    villager.actionQueue << new Wait()
+                    //villager.actionQueue << new Wait()
                     for (int i = 0; i < pixels.length - 1; i++) {
                         def a = pixels[i]
                         def b = pixels[i + 1]
-                        if (!b) break
-
                         villager.actionQueue << new StraightPath(a, b)
                         //perTilesWithBresenham(a, b, villager)
                     }
@@ -96,27 +95,30 @@ class PathfinderWorker extends Worker {
         while (repetition < 500) {
 
             def idx = Model.bresenham(stepPos.element, tileDest, villager)
-            def nextStep = Model.bufferedBresenhamResultArray[idx]
-            def currentStep = Model.bufferedBresenhamResultArray[idx - 1]
-            def previousStep = idx >= 2 ? Model.bufferedBresenhamResultArray[idx - 2] : null
 
-            if (nextStep == tileDest) {
-                queue << lbt.addLeft(stepPos, nextStep)
-                visited << [nextStep[0], nextStep[1]]
-                testList << [nextStep[0], nextStep[1]]
-                break
-            } else {
-                def (int[] left, int[] right) = findPath(previousStep, currentStep, nextStep, visited, villager)
+            if (idx != 0) {
+                def nextStep = Model.bufferedBresenhamResultArray[idx]
+                def currentStep = Model.bufferedBresenhamResultArray[idx - 1]
+                def previousStep = idx >= 2 ? Model.bufferedBresenhamResultArray[idx - 2] : null
 
-                if (left) {
-                    queue << lbt.addLeft(stepPos, left)
-                    visited << [left[0], left[1]]
-                    testList << [left[0], left[1]]
-                }
-                if (right) {
-                    queue << lbt.addRight(stepPos, right)
-                    visited << [right[0], right[1]]
-                    testList << [right[0], right[1]]
+                if (nextStep == tileDest) {
+                    queue << lbt.addLeft(stepPos, nextStep)
+                    visited << [nextStep[0], nextStep[1]]
+                    testList << [nextStep[0], nextStep[1]]
+                    break
+                } else {
+                    def (int[] left, int[] right) = findPath(nextStep, currentStep, previousStep, visited, villager)
+
+                    if (left) {
+                        queue << lbt.addLeft(stepPos, left)
+                        visited << [left[0], left[1]]
+                        testList << [left[0], left[1]]
+                    }
+                    if (right) {
+                        queue << lbt.addRight(stepPos, right)
+                        visited << [right[0], right[1]]
+                        testList << [right[0], right[1]]
+                    }
                 }
             }
 
@@ -141,6 +143,7 @@ class PathfinderWorker extends Worker {
         }
         Random rand = new Random()
         def randColor = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
+        (Model.model.drawables as ConcurrentLinkedQueue<Drawable>).removeAll { it.parent == villager.id }
 
         testList.collect{ Model.tileToPixelIdx(it) }.each {
             Model.model.drawables << new Artifact(
@@ -153,15 +156,13 @@ class PathfinderWorker extends Worker {
         //return testList
     }
 
-    private List<int[]> findPath(int[] previousStep, int[] currentStep, int[] nextStep, Set<List<Integer>> visited, Villager villager) {
+    private List<int[]> findPath(int[] nextStep, int[] currentStep, int[] previousStep, Set<List<Integer>> visited, Villager villager) {
 
         def tileNetwork = Model.model.tileNetwork as Tile[][]
         def ctl = Model.circularTileList as List<int[]>
 
         def delta = [nextStep[0] - currentStep[0], nextStep[1] - currentStep[1]] as int[]
         def deltaIdx = ctl.findIndexOf { it == delta }
-
-        //ta bort dessa två? Lägga till alla?
 
         int[] right = null
         for (int i = deltaIdx + 1; i < deltaIdx + ctl.size(); i++) {
