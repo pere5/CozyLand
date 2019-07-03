@@ -136,6 +136,10 @@ class PathfinderWorker extends Worker {
         }
 
         def retList = []
+
+
+        hitta den djupaste vägen!
+
         int depth = lbt.depth(stepPos)
         for (int i = 0; i < depth; i++) {
             retList << stepPos.element
