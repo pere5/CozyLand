@@ -75,7 +75,6 @@ class PathfinderWorker extends Worker {
 
     List<int[]> perStar(int[] tileStart, int[] tileDest, Villager villager) {
 
-        //visited is broken!
         Set<List<Integer>> visited = new HashSet<>()
         Queue<Position<int[]>> queue = new LinkedList<>()
         LinkedBinaryTree<int[]> lbt = new LinkedBinaryTree<>()
@@ -106,7 +105,7 @@ class PathfinderWorker extends Worker {
                     visited << [nextStep[0], nextStep[1]]
                     testList << [nextStep[0], nextStep[1]]
                     break
-                }/* else if (currentStep && !visited.contains([currentStep[0], currentStep[1]])) {
+                }/* else if (stepPos.element != currentStep && stepPos.element != nextStep && !visited.contains([currentStep[0], currentStep[1]])) {
                     queue << lbt.addLeft(stepPos, currentStep)
                     visited << [currentStep[0], currentStep[1]]
                     testList << [currentStep[0], currentStep[1]]
@@ -145,19 +144,29 @@ class PathfinderWorker extends Worker {
             retList << stepPos.element
             stepPos = lbt.parent(stepPos)
         }
+
+        testPrints(villager, testList)
+
+        /*def s = testList.size()
+        if (testList.unique().size() != s) {
+            throw new PerIsBorkenException()
+        }*/
+
+        return retList.reverse()
+        //return testList
+    }
+
+    private void testPrints(villager, List<List<Integer>> testList) {
         Random rand = new Random()
         def randColor = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
         (Model.model.drawables as ConcurrentLinkedQueue<Drawable>).removeAll { it.parent == villager.id }
 
-        testList.collect{ Model.tileToPixelIdx(it) }.each {
+        testList.collect { Model.tileToPixelIdx(it) }.each {
             Model.model.drawables << new Artifact(
                     size: 3, parent: villager.id, x: it[0], y: it[1],
                     color: randColor
             )
         }
-
-        return retList.reverse()
-        //return testList
     }
 
     private List<int[]> findPath(int[] nextStep, int[] currentStep, int[] previousStep, Set<List<Integer>> visited, Villager villager) {
