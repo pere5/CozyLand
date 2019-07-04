@@ -90,6 +90,7 @@ class PathfinderWorker extends Worker {
         int deepestDepth = 0
 
         int repetition = 0
+        def foundIt = false
 
         while (repetition < 500) {
 
@@ -107,6 +108,7 @@ class PathfinderWorker extends Worker {
                     queue << lbt.addLeft(stepPos, nextStep)
                     visited << [nextStep[0], nextStep[1]]
                     testList << [nextStep[0], nextStep[1]]
+                    foundIt = true
                     break
                 }/* else if (stepPos.element != currentStep && stepPos.element != nextStep && !visited.contains([currentStep[0], currentStep[1]])) {
                     queue << lbt.addLeft(stepPos, currentStep)
@@ -142,10 +144,12 @@ class PathfinderWorker extends Worker {
 
         def retList = []
 
-        int depth = lbt.depth(deepestPath)
+        def path = foundIt ? stepPos : deepestPath
+
+        int depth = lbt.depth(path)
         for (int i = 0; i <= depth; i++) {
-            retList << stepPos.element
-            stepPos = lbt.parent(stepPos)
+            retList << path.element
+            path = lbt.parent(path)
         }
 
         testPrints(villager, testList)
