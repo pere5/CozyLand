@@ -87,17 +87,13 @@ class PathfinderWorker extends Worker {
         int repetition = 0
         def foundIt = false
 
-        while (repetition < 500) {
+        while (repetition < 50000000) {
 
             def idx = Model.bresenham(stepPos.element, tileDest, villager)
 
-            //varför kan idx bli 0?
-            //kan det returnas vatten?
-            //varför funkar inte else if där nere?
-
-            def nextStep = Model.bufferedBresenhamResultArray[idx]
-            def currentStep = Model.bufferedBresenhamResultArray[idx - 1]
-            def previousStep = idx >= 2 ? Model.bufferedBresenhamResultArray[idx - 2] : null
+            def nextStep = Model.bufferedBresenhamResultArray[idx].clone()
+            def currentStep = Model.bufferedBresenhamResultArray[idx - 1].clone()
+            def previousStep = idx >= 2 ? Model.bufferedBresenhamResultArray[idx - 2].clone() : null
 
             if (nextStep == tileDest) {
                 stepPos = lbt.addLeft(stepPos, nextStep)
@@ -105,7 +101,7 @@ class PathfinderWorker extends Worker {
                 testList << [nextStep[0], nextStep[1]]
                 foundIt = true
                 break
-            }/* else if (stepPos.element != currentStep && stepPos.element != nextStep && !visited.contains([currentStep[0], currentStep[1]])) {
+            }/* else if (!visited.contains([currentStep[0], currentStep[1]])) {
                 queue << lbt.addLeft(stepPos, currentStep)
                 visited << [currentStep[0], currentStep[1]]
                 testList << [currentStep[0], currentStep[1]]
@@ -276,7 +272,7 @@ class PathfinderWorker extends Worker {
                 if (villager.canTravel(travelType)) {
                     if (tileProbability > 0) {
                         def idx = Model.bresenham(neighborXY, tileDestXY, villager)
-                        def xy = Model.bufferedBresenhamResultArray[idx]
+                        def xy = Model.bufferedBresenhamResultArray[idx].clone()
                         if (xy == tileDestXY) {
                             nextTiles << calculateProbabilityForNeighbor(neighbor, tile, neighborTile)
                         }

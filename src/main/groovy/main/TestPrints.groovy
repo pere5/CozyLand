@@ -49,7 +49,7 @@ class TestPrints {
 
         def idx = Model.bresenham(pixelStart as int[], pixelDest as int[])
         (0..idx).each {
-            def xy = Model.bufferedBresenhamResultArray[it]
+            def xy = Model.bufferedBresenhamResultArray[it].clone()
             Model.model.drawables << new Artifact(parent: villager.id, x: xy[0], y: xy[1], color: villager.color)
         }
 
