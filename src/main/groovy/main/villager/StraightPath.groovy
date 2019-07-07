@@ -1,23 +1,13 @@
 package main.villager
 
-import main.Model
-import main.model.Tile
-import main.things.Artifact
-import main.things.Drawable
 
-import java.awt.*
-import java.util.Queue
-import java.util.concurrent.ConcurrentLinkedQueue
+import main.things.Drawable
 
 class StraightPath extends Action {
     Queue<Double[]> path = new LinkedList<>()
     static Double STEP = 0.7
-    int id
 
-    StraightPath(Double[] start, Double[] dest, def nextTiles = null) {
-        id = Model.getNewId()
-
-        testPrints(start, dest, nextTiles)
+    StraightPath(Double[] start, Double[] dest) {
 
         Double[] nextStep = start
         while (!closeEnough(nextStep, dest)) {
@@ -34,50 +24,6 @@ class StraightPath extends Action {
             path.add(nextStep)
         }
         path.add(dest)
-    }
-
-    private void testPrints(Double[] start, Double[] dest, def nextTiles) {
-        def pixelStart = start
-        def pixelDest = dest
-        def (int x, int y) = Model.pixelToTileIdx(pixelStart)
-        def tileNetwork = Model.model.tileNetwork as Tile[][]
-
-        if (nextTiles) {
-            def maxTile = nextTiles.max { def tile ->
-                tile[0][1] - tile[0][0]
-            }
-
-            int maxProb = maxTile[0][1] - maxTile[0][0] + 1
-
-            def colorGradient = Model.gradient(Color.DARK_GRAY, Color.WHITE, maxProb)
-
-            nextTiles.each { def tile ->
-                def (int nX, int nY) = tile[1]
-
-
-
-
-                //hhhmmmzzz
-
-
-                //def nX = x + sX
-                //def nY = y + sY
-                def tileProbability = (tile[0][1] - tile[0][0]) as Double
-                def neighbor = tileNetwork[nX][nY] as Tile
-
-                Model.model.drawables << new Artifact(
-                        size: neighbor.size, parent: this.id, x: neighbor.x, y: neighbor.y,
-                        color: colorGradient[tileProbability as int]
-                )
-            }
-        }
-
-        def idx = Model.bresenham(pixelStart as int[], pixelDest as int[])
-        (0..idx).each {
-            def xy = Model.bufferedBresenhamResultArray[it]
-            Model.model.drawables << new Artifact(parent: id, x: xy[0], y: xy[1])
-        }
-
     }
 
     static boolean closeEnough(Double[] pointA, Double[] pointB) {
@@ -101,10 +47,6 @@ class StraightPath extends Action {
         def (Double x, Double y) = path.poll()
         drawable.x = x
         drawable.y = y
-        def resolution = path ? CONTINUE : DONE
-        if (resolution == DONE) {
-            (Model.model.drawables as ConcurrentLinkedQueue<Drawable>).removeAll { it.parent == id }
-        }
-        return resolution
+        return  path ? CONTINUE : DONE
     }
 }

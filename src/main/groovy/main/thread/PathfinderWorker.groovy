@@ -5,16 +5,10 @@ import javaSrc.linkedbinarytree.Position
 import main.Main
 import main.Model
 import main.Model.TravelType
+import main.TestPrints
 import main.model.Tile
-import main.things.Artifact
-import main.things.Drawable
 import main.villager.StraightPath
 import main.villager.Villager
-
-import java.awt.*
-import java.util.List
-import java.util.Queue
-import java.util.concurrent.ConcurrentLinkedQueue
 
 class PathfinderWorker extends Worker {
 
@@ -45,25 +39,23 @@ class PathfinderWorker extends Worker {
                 def pixelDest = Model.generateXY()
                 def pixelStart = [villager.x, villager.y] as Double[]
 
-                def tileStartXY = Model.pixelToTileIdx(pixelStart)
-                def tileDestXY = Model.pixelToTileIdx(pixelDest)
-
-                def perStarList = perStar(tileStartXY, tileDestXY, villager)
+                def psList = perStar(pixelStart, pixelDest, villager)
 
 /*
                 def tiles = longestPossibleBresenhams(idx)
 */
-                if (perStarList) {
-                    def pixels = perStarList.collect {
+                if (psList) {
+                    def psListPixels = psList.collect {
                         Model.tileToPixelIdx(it)
                     } as Double[][]
 
                     //def pixels2 = [[villager.x, villager.y] as Double[], Model.generateXY()] as Double[][]
                     //villager.actionQueue << new Wait()
-                    for (int i = 0; i < pixels.length - 1; i++) {
-                        def a = pixels[i]
-                        def b = pixels[i + 1]
+                    for (int i = 0; i < psListPixels.length - 1; i++) {
+                        def a = psListPixels[i]
+                        def b = psListPixels[i + 1]
                         villager.actionQueue << new StraightPath(a, b)
+                        TestPrints.testPrints(a, b, null, villager)
                         //perTilesWithBresenham(a, b, villager)
                     }
                 }
@@ -73,7 +65,10 @@ class PathfinderWorker extends Worker {
         }
     }
 
-    List<int[]> perStar(int[] tileStart, int[] tileDest, Villager villager) {
+    List<int[]> perStar(Double[] pixelStart, Double[] pixelDest, Villager villager) {
+
+        def tileStart = Model.pixelToTileIdx(pixelStart)
+        def tileDest = Model.pixelToTileIdx(pixelDest)
 
         Set<List<Integer>> visited = new HashSet<>()
         Queue<Position<int[]>> queue = new LinkedList<>()
@@ -105,7 +100,7 @@ class PathfinderWorker extends Worker {
                 def previousStep = idx >= 2 ? Model.bufferedBresenhamResultArray[idx - 2] : null
 
                 if (nextStep == tileDest) {
-                    queue << lbt.addLeft(stepPos, nextStep)
+                    stepPos = lbt.addLeft(stepPos, nextStep)
                     visited << [nextStep[0], nextStep[1]]
                     testList << [nextStep[0], nextStep[1]]
                     foundIt = true
@@ -146,13 +141,16 @@ class PathfinderWorker extends Worker {
 
         def path = foundIt ? stepPos : deepestPath
 
-        int depth = lbt.depth(path)
-        for (int i = 0; i <= depth; i++) {
-            retList << path.element
-            path = lbt.parent(path)
+        while (true) {
+            if (path) {
+                retList << path.element
+                path = lbt.parent(path)
+            } else {
+                break
+            }
         }
 
-        testPrints(villager, testList)
+        TestPrints.testPrints(pixelStart, pixelDest, villager, testList)
 
         /*def s = testList.size()
         if (testList.unique().size() != s) {
@@ -161,19 +159,6 @@ class PathfinderWorker extends Worker {
 
         return retList.reverse()
         //return testList
-    }
-
-    private void testPrints(villager, List<List<Integer>> testList) {
-        Random rand = new Random()
-        def randColor = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
-        (Model.model.drawables as ConcurrentLinkedQueue<Drawable>).removeAll { it.parent == villager.id }
-
-        testList.collect { Model.tileToPixelIdx(it) }.each {
-            Model.model.drawables << new Artifact(
-                    size: 3, parent: villager.id, x: it[0], y: it[1],
-                    color: randColor
-            )
-        }
     }
 
     private List<int[]> findPath(int[] nextStep, int[] currentStep, int[] previousStep, Set<List<Integer>> visited, Villager villager) {
