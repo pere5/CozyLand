@@ -94,34 +94,32 @@ class PathfinderWorker extends Worker {
             //varför kan idx bli 0?
             //varför funkar inte else if där nere?
 
-            if (idx != 0) {
-                def nextStep = Model.bufferedBresenhamResultArray[idx]
-                def currentStep = Model.bufferedBresenhamResultArray[idx - 1]
-                def previousStep = idx >= 2 ? Model.bufferedBresenhamResultArray[idx - 2] : null
+            def nextStep = Model.bufferedBresenhamResultArray[idx]
+            def currentStep = Model.bufferedBresenhamResultArray[idx - 1]
+            def previousStep = idx >= 2 ? Model.bufferedBresenhamResultArray[idx - 2] : null
 
-                if (nextStep == tileDest) {
-                    stepPos = lbt.addLeft(stepPos, nextStep)
-                    visited << [nextStep[0], nextStep[1]]
-                    testList << [nextStep[0], nextStep[1]]
-                    foundIt = true
-                    break
-                }/* else if (stepPos.element != currentStep && stepPos.element != nextStep && !visited.contains([currentStep[0], currentStep[1]])) {
-                    queue << lbt.addLeft(stepPos, currentStep)
-                    visited << [currentStep[0], currentStep[1]]
-                    testList << [currentStep[0], currentStep[1]]
-                }*/ else {
-                    def (int[] left, int[] right) = findPath(nextStep, currentStep, previousStep, visited, villager)
+            if (nextStep == tileDest) {
+                stepPos = lbt.addLeft(stepPos, nextStep)
+                visited << [nextStep[0], nextStep[1]]
+                testList << [nextStep[0], nextStep[1]]
+                foundIt = true
+                break
+            }/* else if (stepPos.element != currentStep && stepPos.element != nextStep && !visited.contains([currentStep[0], currentStep[1]])) {
+                queue << lbt.addLeft(stepPos, currentStep)
+                visited << [currentStep[0], currentStep[1]]
+                testList << [currentStep[0], currentStep[1]]
+            }*/ else {
+                def (int[] left, int[] right) = findPath(nextStep, currentStep, previousStep, visited, villager)
 
-                    if (left) {
-                        queue << lbt.addLeft(stepPos, left)
-                        visited << [left[0], left[1]]
-                        testList << [left[0], left[1]]
-                    }
-                    if (right) {
-                        queue << lbt.addRight(stepPos, right)
-                        visited << [right[0], right[1]]
-                        testList << [right[0], right[1]]
-                    }
+                if (left) {
+                    queue << lbt.addLeft(stepPos, left)
+                    visited << [left[0], left[1]]
+                    testList << [left[0], left[1]]
+                }
+                if (right) {
+                    queue << lbt.addRight(stepPos, right)
+                    visited << [right[0], right[1]]
+                    testList << [right[0], right[1]]
                 }
             }
 
