@@ -92,6 +92,7 @@ class PathfinderWorker extends Worker {
             def idx = Model.bresenham(stepPos.element, tileDest, villager)
 
             //varför kan idx bli 0?
+            //kan det returnas vatten?
             //varför funkar inte else if där nere?
 
             def nextStep = Model.bufferedBresenhamResultArray[idx]
