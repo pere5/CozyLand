@@ -1,13 +1,15 @@
 package main.villager
 
-
+import main.TestPrints
 import main.things.Drawable
 
 class StraightPath extends Action {
     Queue<Double[]> path = new LinkedList<>()
     static Double STEP = 0.7
 
-    StraightPath(Double[] start, Double[] dest) {
+    StraightPath(Double[] start, Double[] dest, Villager villager) {
+
+        TestPrints.testPrints(start, dest, null, villager)
 
         Double[] nextStep = start
         while (!closeEnough(nextStep, dest)) {

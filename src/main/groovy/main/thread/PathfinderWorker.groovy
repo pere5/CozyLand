@@ -14,13 +14,12 @@ class PathfinderWorker extends Worker {
 
     /*
         - [ ] Bresenham binary search per star algorithm, "optimized random path":
-            - [ ] Kör en perStar mot målet
-            - [ ] Spara perStar i en buffrad array
-            - [ ] Binärsök i buffern så långa bresenham steg som möjligt
-            - [ ] Spara punkterna och kör perTiles med bresenham mellan dem.
+            - [x] Kör en perStar mot målet
+            - [x] Spara perStar i en lista
+            - [ ] Binärsök i listan så långa bresenham steg som möjligt
+            - [x] Spara punkterna och kör perTiles med bresenham mellan dem.
 
-        - [ ] kör steg nod för nod
-        - [ ] för nästa steg:
+        - [x] kör steg nod för nod, för nästa steg:
           - [x] kör 90 grader med mittersta graden pekandes mot målet
           - [x] fördela ut graderna lika till grann tilesen
           - [x] hårdkoda det med en färdig lösning per grad för alla 360 grader.
@@ -40,7 +39,6 @@ class PathfinderWorker extends Worker {
                 def pixelStart = [villager.x, villager.y] as Double[]
 
                 def psList = perStar(pixelStart, pixelDest, villager)
-
 /*
                 def tiles = longestPossibleBresenhams(idx)
 */
@@ -49,13 +47,10 @@ class PathfinderWorker extends Worker {
                         Model.tileToPixelIdx(it)
                     } as Double[][]
 
-                    //def pixels2 = [[villager.x, villager.y] as Double[], Model.generateXY()] as Double[][]
-                    //villager.actionQueue << new Wait()
                     for (int i = 0; i < psListPixels.length - 1; i++) {
                         def a = psListPixels[i]
                         def b = psListPixels[i + 1]
-                        villager.actionQueue << new StraightPath(a, b)
-                        TestPrints.testPrints(a, b, null, villager)
+                        villager.actionQueue << new StraightPath(a, b, villager)
                         //perTilesWithBresenham(a, b, villager)
                     }
                 }
@@ -228,13 +223,13 @@ class PathfinderWorker extends Worker {
 
                 def newPixelStep = randomPlaceInTile(newTile)
 
-                villager.actionQueue << new StraightPath(pixelStep, newPixelStep)
+                villager.actionQueue << new StraightPath(pixelStep, newPixelStep, villager)
 
                 pixelStep = newPixelStep
 
                 there = StraightPath.closeEnoughTile(newTile, tileDestXY)
                 if (there) {
-                    villager.actionQueue << new StraightPath(pixelStep, randomPlaceInTile(tileDestXY), [[[0, 100], tileDestXY]])
+                    villager.actionQueue << new StraightPath(pixelStep, randomPlaceInTile(tileDestXY), villager)
                 }
             } else {
                 there = true
