@@ -55,11 +55,11 @@ class TestPrints {
 
     }
 
-    static void testPrints(Double[] pixelStart, Double[] pixelDest, Villager villager, List<List<Integer>> testList) {
+    static void testPrints(Double[] pixelStart, Double[] pixelDest, Villager villager, Set<List<Integer>> visited) {
         Random rand = new Random()
         villager.color = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
 
-        testList.collect { Model.tileToPixelIdx(it) }.each {
+        visited.collect { Model.tileToPixelIdx(it) }.each {
             Model.model.drawables << new Artifact(
                     size: 3, parent: villager.id, x: it[0], y: it[1],
                     color: villager.color

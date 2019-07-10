@@ -65,15 +65,12 @@ class PathfinderWorker extends Worker {
         def tileStart = Model.pixelToTileIdx(pixelStart)
         def tileDest = Model.pixelToTileIdx(pixelDest)
 
-        Set<List<Integer>> visited = new HashSet<>()
+        Set<List<Integer>> visited = new LinkedHashSet<>()
         Queue<Position<int[]>> queue = new LinkedList<>()
         LinkedBinaryTree<int[]> lbt = new LinkedBinaryTree<>()
 
-        List<List<Integer>> testList = []
-
         def rootPos = lbt.addRoot(tileStart)
         visited << [tileStart[0], tileStart[1]]
-        testList << [tileStart[0], tileStart[1]]
 
         Position<int[]> stepPos = rootPos
         Position<int[]> deepestPath = rootPos
@@ -93,7 +90,6 @@ class PathfinderWorker extends Worker {
             if (nextStep == tileDest) {
                 stepPos = lbt.addLeft(stepPos, nextStep)
                 visited << [nextStep[0], nextStep[1]]
-                testList << [nextStep[0], nextStep[1]]
                 foundIt = true
                 break
             } else {
@@ -102,18 +98,16 @@ class PathfinderWorker extends Worker {
                 /*
                 stepPos = lbt.addLeft(stepPos, currentStep)
                 visited << [currentStep[0], currentStep[1]]
-                testList << [currentStep[0], currentStep[1]]
+                allPoints << [currentStep[0], currentStep[1]]
                 */
 
                 if (left) {
                     queue << lbt.addLeft(stepPos, left)
                     visited << [left[0], left[1]]
-                    testList << [left[0], left[1]]
                 }
                 if (right) {
                     queue << lbt.addRight(stepPos, right)
                     visited << [right[0], right[1]]
-                    testList << [right[0], right[1]]
                 }
             }
 
@@ -142,15 +136,15 @@ class PathfinderWorker extends Worker {
             }
         }
 
-        TestPrints.testPrints(pixelStart, pixelDest, villager, testList)
+        TestPrints.testPrints(pixelStart, pixelDest, villager, visited)
 
-        /*def s = testList.size()
-        if (testList.unique().size() != s) {
+        /*def s = allPoints.size()
+        if (allPoints.unique().size() != s) {
             throw new PerIsBorkenException()
         }*/
 
         return retList.reverse()
-        //return testList
+        //return allPoints
     }
 
     private List<int[]> findPath(int[] nextStep, int[] currentStep, int[] previousStep, Set<List<Integer>> visited, Villager villager) {
