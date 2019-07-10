@@ -16,6 +16,7 @@ class PathfinderWorker extends Worker {
         - [ ] Bresenham binary search per star algorithm, "optimized random path":
             - [x] Kör en perStar mot målet
             - [x] Spara perStar i en lista
+            - [ ] Ändra bresenham till att innehålla visited. Då kommer den att krocka och man får en cirkulär fanning out effect istället för en krypa längt kusten effekt
             - [ ] Binärsök i listan så långa bresenham steg som möjligt
             - [x] Spara punkterna och kör perTiles med bresenham mellan dem.
 
