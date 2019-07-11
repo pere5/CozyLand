@@ -10,6 +10,7 @@ import main.villager.Villager
 
 import javax.imageio.ImageIO
 import java.awt.*
+import java.awt.geom.Point2D
 import java.awt.image.BufferedImage
 import java.util.List
 import java.util.concurrent.ConcurrentLinkedQueue
@@ -527,7 +528,7 @@ class Model {
         pixels.collect { it / Main.TILE_WIDTH }
     }
 
-    static int[] tileToPixelIdx(int[] tile) {
+    static Double[] tileToPixelIdx(int[] tile) {
         tile.collect { (it * Main.TILE_WIDTH) }
     }
 
@@ -538,6 +539,10 @@ class Model {
     static int calculateDegreeRound(Double[] start, Double[] dest) {
         Double deg = Math.toDegrees(Math.atan2(dest[1] - start[1], dest[0] - start[0]))
         Model.round(deg >= 0 ? deg : deg + 360)
+    }
+
+    static int distance(int[] a, int[] b) {
+        Point2D.distance(a[0], a[1], b[0], b[1])
     }
 
     static int bresenham(int[] tileStart, int[] tileDest, Villager villager = null) {

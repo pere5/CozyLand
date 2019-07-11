@@ -46,15 +46,22 @@ class PathfinderWorker extends Worker {
                     //def tiles = longestPossibleBresenhams(idx)
 
                     if (psList) {
-                        def psListPixels = psList.collect {
-                            Model.tileToPixelIdx(it)
-                        } as Double[][]
+                        for (int i = 0; i < psList.size() - 1; i++) {
+                            def aT = psList[i]
+                            def bT = psList[i + 1]
+                            def aP = Model.tileToPixelIdx(aT)
+                            def bP = Model.tileToPixelIdx(bT)
+                            if (Model.distance(aT, bT) > 5) {
 
-                        for (int i = 0; i < psListPixels.length - 1; i++) {
-                            def a = psListPixels[i]
-                            def b = psListPixels[i + 1]
-                            //villager.actionQueue << new StraightPath(a, b, villager)
-                            perTilesWithBresenham(a, b, villager)
+
+                                //bresenham kan tappa steg?
+                                //testa bresenham ett par commits bakåt
+
+
+                                perTilesWithBresenham(aP, bP, villager)
+                            } else {
+                                villager.actionQueue << new StraightPath(aP, bP, villager)
+                            }
                         }
                     }
                     pixelDest = villager.pointQueue.poll()
