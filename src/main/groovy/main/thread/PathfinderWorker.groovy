@@ -36,26 +36,29 @@ class PathfinderWorker extends Worker {
 
             if (villager.pathfinderWorker) {
 
-                def pixelDest = Model.generateXY()
-                def pixelStart = [villager.x, villager.y] as Double[]
+                def pixelDest = villager.pointQueue.poll()
+                while (pixelDest) {
 
-                def psList = perStar(pixelStart, pixelDest, villager)
-/*
-                def tiles = longestPossibleBresenhams(idx)
-*/
-                if (psList) {
-                    def psListPixels = psList.collect {
-                        Model.tileToPixelIdx(it)
-                    } as Double[][]
+                    def pixelStart = [villager.x, villager.y] as Double[]
 
-                    for (int i = 0; i < psListPixels.length - 1; i++) {
-                        def a = psListPixels[i]
-                        def b = psListPixels[i + 1]
-                        //villager.actionQueue << new StraightPath(a, b, villager)
-                        perTilesWithBresenham(a, b, villager)
+                    def psList = perStar(pixelStart, pixelDest, villager)
+
+                    //def tiles = longestPossibleBresenhams(idx)
+
+                    if (psList) {
+                        def psListPixels = psList.collect {
+                            Model.tileToPixelIdx(it)
+                        } as Double[][]
+
+                        for (int i = 0; i < psListPixels.length - 1; i++) {
+                            def a = psListPixels[i]
+                            def b = psListPixels[i + 1]
+                            //villager.actionQueue << new StraightPath(a, b, villager)
+                            perTilesWithBresenham(a, b, villager)
+                        }
                     }
+                    pixelDest = villager.pointQueue.poll()
                 }
-
                 villager.toWorkWorker()
             }
         }

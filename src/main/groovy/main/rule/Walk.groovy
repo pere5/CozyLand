@@ -1,6 +1,6 @@
 package main.rule
 
-
+import main.Model
 import main.villager.Villager
 
 class Walk extends Rule {
@@ -12,8 +12,8 @@ class Walk extends Rule {
 
     @Override
     void startWork(Villager villager, int status) {
-        //gotta setup the actual points to travel here
-        //then let PathfinderWorker calculate path between them
+        def pixelDest = Model.generateXY()
+        villager.pointQueue << pixelDest
     }
 
     @Override
