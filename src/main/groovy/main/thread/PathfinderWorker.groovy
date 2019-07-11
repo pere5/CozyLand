@@ -51,8 +51,8 @@ class PathfinderWorker extends Worker {
                     for (int i = 0; i < psListPixels.length - 1; i++) {
                         def a = psListPixels[i]
                         def b = psListPixels[i + 1]
-                        villager.actionQueue << new StraightPath(a, b, villager)
-                        //perTilesWithBresenham(a, b, villager)
+                        //villager.actionQueue << new StraightPath(a, b, villager)
+                        perTilesWithBresenham(a, b, villager)
                     }
                 }
 
