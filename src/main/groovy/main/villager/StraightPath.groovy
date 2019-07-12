@@ -5,9 +5,13 @@ import main.things.Drawable
 
 class StraightPath extends Action {
     Queue<Double[]> path = new LinkedList<>()
+
+    Double[] a
+
     static Double STEP = 0.7
 
     StraightPath(Double[] start, Double[] dest, Villager villager) {
+        a = start
 
         TestPrints.testPrints(start, dest, villager)
 

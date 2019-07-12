@@ -66,6 +66,20 @@ class PathfinderWorker extends Worker {
                     }
                     pixelDest = villager.pointQueue.poll()
                 }
+
+                def count = 0
+                for (int i = 0; i < villager.actionQueue.size() - 1; i++) {
+                    int[] a = Model.pixelToTileIdx((villager.actionQueue[i] as StraightPath).a)
+                    int[] b = Model.pixelToTileIdx((villager.actionQueue[i + 1] as StraightPath).a)
+                    if (Model.bufferedBresenhamResultArray[Model.bresenham(a, b, villager)].clone() != b) {
+                        count++
+                    }
+                }
+                if (count > 0) {
+                    println("${villager.testColor}:${count}")
+                }
+
+
                 villager.toWorkWorker()
             }
         }
