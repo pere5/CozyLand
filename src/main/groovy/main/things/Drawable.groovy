@@ -13,6 +13,7 @@ abstract class Drawable {
     int id
     int parent
     Color color
+    Color testColor
     SHAPES shape = SHAPES.RECT
     int size = 10
     Double x = 0

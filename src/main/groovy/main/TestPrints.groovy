@@ -11,9 +11,7 @@ import java.util.concurrent.ConcurrentLinkedQueue
 
 class TestPrints {
 
-    static void testPrints(Double[] start, Double[] dest, def nextTiles, Villager villager) {
-        def pixelStart = start
-        def pixelDest = dest
+    static void testPrintsNextTiles(Double[] pixelStart, Double[] pixelDest, def nextTiles, Villager villager) {
         def (int x, int y) = Model.pixelToTileIdx(pixelStart)
         def tileNetwork = Model.model.tileNetwork as Tile[][]
 
@@ -29,11 +27,7 @@ class TestPrints {
             nextTiles.each { def tile ->
                 def (int nX, int nY) = tile[1]
 
-
-
-
                 //hhhmmmzzz
-
 
                 //def nX = x + sX
                 //def nY = y + sY
@@ -41,33 +35,35 @@ class TestPrints {
                 def neighbor = tileNetwork[nX][nY] as Tile
 
                 Model.model.drawables << new Artifact(
-                        size: neighbor.size, parent: this.id, x: neighbor.x, y: neighbor.y,
+                        size: neighbor.size, parent: villager.id, x: neighbor.x, y: neighbor.y,
                         color: colorGradient[tileProbability as int]
                 )
             }
         }
+    }
 
+    static void testPrints(Double[] pixelStart, Double[] pixelDest, Villager villager) {
         def idx = Model.bresenham(pixelStart as int[], pixelDest as int[])
         (0..idx).each {
             def xy = Model.bufferedBresenhamResultArray[it].clone()
-            Model.model.drawables << new Artifact(parent: villager.id, x: xy[0], y: xy[1], color: villager.color)
+            Model.model.drawables << new Artifact(parent: villager.id, x: xy[0], y: xy[1], color: villager.testColor)
         }
 
     }
 
     static void testPrints(Double[] pixelStart, Double[] pixelDest, Villager villager, Set<List<Integer>> visited) {
         Random rand = new Random()
-        villager.color = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
+        villager.testColor = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
 
         visited.collect { Model.tileToPixelIdx(it) }.each {
             Model.model.drawables << new Artifact(
                     size: 3, parent: villager.id, x: it[0], y: it[1],
-                    color: villager.color
+                    color: villager.testColor
             )
         }
         Model.model.drawables << new Artifact(
                 size: 5, parent: villager.id, x: pixelDest[0], y: pixelDest[1],
-                color: villager.color
+                color: villager.testColor
         )
     }
 

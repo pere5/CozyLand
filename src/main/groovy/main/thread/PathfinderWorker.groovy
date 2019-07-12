@@ -51,7 +51,7 @@ class PathfinderWorker extends Worker {
                             def bT = psList[i + 1]
                             def aP = Model.tileToPixelIdx(aT)
                             def bP = Model.tileToPixelIdx(bT)
-                            if (Model.distance(aT, bT) > 5) {
+                            if (Model.distance(aT, bT) > 2) {
 
 
                                 //bresenham kan tappa steg?
@@ -86,11 +86,9 @@ class PathfinderWorker extends Worker {
         Position<int[]> stepPos = rootPos
         Position<int[]> deepestPath = rootPos
         int deepestDepth = 0
-
-        int repetition = 0
         def foundIt = false
 
-        while (repetition < 50000000) {
+        while (true) {
 
             def idx = Model.bresenham(stepPos.element, tileDest, villager)
 
@@ -106,11 +104,8 @@ class PathfinderWorker extends Worker {
             } else {
                 def (int[] left, int[] right) = findPath(nextStep, currentStep, previousStep, visited, villager)
 
-                /*
                 stepPos = lbt.addLeft(stepPos, currentStep)
                 visited << [currentStep[0], currentStep[1]]
-                allPoints << [currentStep[0], currentStep[1]]
-                */
 
                 if (left) {
                     queue << lbt.addLeft(stepPos, left)
@@ -130,8 +125,6 @@ class PathfinderWorker extends Worker {
                 deepestPath = stepPos
                 deepestDepth = currentDepth
             }
-
-            repetition++
         }
 
         def retList = []
@@ -226,7 +219,7 @@ class PathfinderWorker extends Worker {
 
                 def newTile = [tileStartXY[0] + nextTile[1][0], tileStartXY[1] + nextTile[1][1]] as int[]
 
-                def newPixelStep = randomPlaceInTile(newTile)
+                def newPixelStep = Model.tileToPixelIdx(newTile)
 
                 villager.actionQueue << new StraightPath(pixelStep, newPixelStep, villager)
 
@@ -234,7 +227,7 @@ class PathfinderWorker extends Worker {
 
                 there = StraightPath.closeEnoughTile(newTile, tileDestXY)
                 if (there) {
-                    villager.actionQueue << new StraightPath(pixelStep, randomPlaceInTile(tileDestXY), villager)
+                    villager.actionQueue << new StraightPath(pixelStep, Model.tileToPixelIdx(tileDestXY), villager)
                 }
             } else {
                 there = true

@@ -9,7 +9,7 @@ class StraightPath extends Action {
 
     StraightPath(Double[] start, Double[] dest, Villager villager) {
 
-        TestPrints.testPrints(start, dest, null, villager)
+        TestPrints.testPrints(start, dest, villager)
 
         Double[] nextStep = start
         while (!closeEnough(nextStep, dest)) {
