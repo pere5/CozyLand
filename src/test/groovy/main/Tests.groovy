@@ -133,32 +133,27 @@ class Tests {
         def rightByWall = pfw.nextTilesWithBresenham(
                 new Villager(),
                 [0, 0] as int[],
-                [1, 0] as int[],
-                0
+                [1, 0] as int[]
         )
         def upRoundWater = pfw.nextTilesWithBresenham(
                 new Villager(),
                 [3, 0] as int[],
-                [3, 1] as int[],
-                90
+                [3, 1] as int[]
         )
         def diagonalBetweenWater = pfw.nextTilesWithBresenham(
                 new Villager(),
                 [3, 2] as int[],
-                [4, 3] as int[],
-                45
+                [4, 3] as int[]
         )
         def free = pfw.nextTilesWithBresenham(
                 new Villager(),
                 [0, 1] as int[],
-                [1, 1] as int[],
-                0
+                [1, 1] as int[]
         )
         def freeDiagonal = pfw.nextTilesWithBresenham(
                 new Villager(),
                 [1, 2] as int[],
-                [2, 3] as int[],
-                45
+                [2, 3] as int[]
         )
 
         /*
@@ -220,20 +215,17 @@ class Tests {
         def rightByWall = pfw.nextTilesWithBresenham(
                 new Villager(),
                 [0, 0] as int[],
-                [1, 0] as int[],
-                0
+                [1, 0] as int[]
         )
         def upRoundWater = pfw.nextTilesWithBresenham(
                 new Villager(),
                 [3, 0] as int[],
-                [3, 1] as int[],
-                90
+                [3, 1] as int[]
         )
         def freeDiagonal = pfw.nextTilesWithBresenham(
                 new Villager(),
                 [1, 2] as int[],
-                [2, 3] as int[],
-                45
+                [2, 3] as int[]
         )
 
         /*

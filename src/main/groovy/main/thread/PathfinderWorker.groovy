@@ -42,7 +42,10 @@ class PathfinderWorker extends Worker {
 
                     def pixelStart = [villager.x, villager.y] as Double[]
 
-                    def psList = perStar(pixelStart, pixelDest, villager)
+                    def tileStart = Model.pixelToTileIdx(pixelStart)
+                    def tileDest = Model.pixelToTileIdx(pixelDest)
+
+                    def psList = perStar(tileStart, tileDest, villager)
 
                     //def tiles = longestPossibleBresenhams(idx)
 
@@ -52,14 +55,14 @@ class PathfinderWorker extends Worker {
                             def bT = psList[i + 1]
                             def aP = Model.tileToPixelIdx(aT)
                             def bP = Model.tileToPixelIdx(bT)
-                            if (false && Model.distance(aT, bT) > 2) {
+                            if (Model.distance(aT, bT) > 2) {
 
 
                                 //bresenham kan tappa steg?
                                 //testa bresenham ett par commits bakåt
 
 
-                                perTilesWithBresenham(aP, bP, villager)
+                                perTilesWithBresenham(aT, bT, villager)
                             } else {
                                 villager.actionQueue << new StraightPath(aP, bP, villager)
                             }
@@ -86,15 +89,7 @@ class PathfinderWorker extends Worker {
         }
     }
 
-    List<int[]> perStar(Double[] pixelStart, Double[] pixelDest, Villager villager) {
-
-
-        gör om denna att bara hantera tiles och returna en lista
-
-
-
-        def tileStart = Model.pixelToTileIdx(pixelStart)
-        def tileDest = Model.pixelToTileIdx(pixelDest)
+    List<int[]> perStar(int[] tileStart, int[] tileDest, Villager villager) {
 
         Set<List<Integer>> visited = new LinkedHashSet<>()
         Queue<Position<int[]>> queue = new LinkedList<>()
@@ -160,7 +155,7 @@ class PathfinderWorker extends Worker {
             }
         }
 
-        TestPrints.testPrints(pixelStart, pixelDest, villager, visited)
+        TestPrints.testPrints(tileStart, tileDest, villager, visited)
 
         /*def s = allPoints.size()
         if (allPoints.unique().size() != s) {
@@ -220,41 +215,32 @@ class PathfinderWorker extends Worker {
     }
 
 
-    private void perTilesWithBresenham(Double[] pixelA, Double[] pixelB, Villager villager) {
+    private void perTilesWithBresenham(int[] tileStart, int[] tileDest, Villager villager) {
 
 
-
-
-        gör om denna att bara hantera tiles och returna en lista
-
-
-        def tileDestXY = Model.pixelToTileIdx(pixelB)
-        def pixelStep = pixelA
+        int[] tileStep = tileStart
         def there = false
 
         while (!there) {
 
-            def degree = Model.calculateDegreeRound(pixelStep, pixelB)
-            def tileStartXY = Model.pixelToTileIdx(pixelStep)
+            def nextTileDirections = nextTilesWithBresenham(villager, tileStep, tileDest)
 
-            def nextTiles = nextTilesWithBresenham(villager, tileStartXY, tileDestXY, degree)
-
-            if (nextTiles) {
+            if (nextTileDirections) {
                 def random = Math.random() * 100
 
-                def nextTile = nextTiles.find { random >= (it[0][0] as Double) && random <= (it[0][1] as Double) }
+                def nextTileDirection = nextTileDirections.find { random >= (it[0][0] as Double) && random <= (it[0][1] as Double) }
 
-                def newTile = [tileStartXY[0] + nextTile[1][0], tileStartXY[1] + nextTile[1][1]] as int[]
+                def nextTile = [tileStep[0] + nextTileDirection[1][0], tileStep[1] + nextTileDirection[1][1]] as int[]
 
-                def newPixelStep = Model.tileToPixelIdx(newTile)
+                def pixelStep = Model.tileToPixelIdx(tileStep)
+                def nextPixelStep = Model.tileToPixelIdx(nextTile)
+                villager.actionQueue << new StraightPath(pixelStep, nextPixelStep, villager)
 
-                villager.actionQueue << new StraightPath(pixelStep, newPixelStep, villager)
+                tileStep = nextTile
 
-                pixelStep = newPixelStep
-
-                there = StraightPath.closeEnoughTile(newTile, tileDestXY)
+                there = StraightPath.closeEnoughTile(nextTile, tileDest)
                 if (there) {
-                    villager.actionQueue << new StraightPath(pixelStep, Model.tileToPixelIdx(tileDestXY), villager)
+                    villager.actionQueue << new StraightPath(nextPixelStep, Model.tileToPixelIdx(tileDest), villager)
                 }
             } else {
                 there = true
@@ -271,9 +257,10 @@ class PathfinderWorker extends Worker {
         return pixelIdx
     }
 
-    def nextTilesWithBresenham(Villager villager, int[] tileStartXY, int[] tileDestXY, int degree) {
+    def nextTilesWithBresenham(Villager villager, int[] tileStart, int[] tileDest) {
 
-        def (int tileX, int tileY) = tileStartXY
+        def degree = Model.calculateDegreeRound(tileStart, tileDest)
+        def (int tileX, int tileY) = tileStart
 
         def nextTiles = []
 
@@ -293,9 +280,9 @@ class PathfinderWorker extends Worker {
 
                 if (villager.canTravel(travelType)) {
                     if (tileProbability > 0) {
-                        def idx = Model.bresenham(neighborXY, tileDestXY, villager)
+                        def idx = Model.bresenham(neighborXY, tileDest, villager)
                         def xy = Model.bresenhamBuffer[idx].clone()
-                        if (xy == tileDestXY) {
+                        if (xy == tileDest) {
                             nextTiles << calculateProbabilityForNeighbor(neighbor, tile, neighborTile)
                         }
                     }

@@ -51,7 +51,10 @@ class TestPrints {
 
     }
 
-    static void testPrints(Double[] pixelStart, Double[] pixelDest, Villager villager, Set<List<Integer>> visited) {
+    static void testPrints(int[] tileStart, int[] tileDest, Villager villager, Set<List<Integer>> visited) {
+        def pixelStart = Model.tileToPixelIdx(tileStart)
+        def pixelDest = Model.tileToPixelIdx(tileDest)
+
         Random rand = new Random()
         villager.testColor = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
 
