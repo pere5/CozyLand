@@ -62,6 +62,10 @@ class PathfinderWorker extends Worker {
                                 //testa bresenham ett par commits bakåt
 
 
+
+                                testa bresenham online och se om en pixel mindre kan ändra hela linjen?
+
+
                                 perTilesWithBresenham(aT, bT, villager)
                             } else {
                                 villager.actionQueue << new StraightPath(aP, bP, villager)
