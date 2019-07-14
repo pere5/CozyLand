@@ -73,19 +73,7 @@ class Model {
         def villagers = [
                 Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
                 Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test()
         ]
         def stones = []
         def trees = []

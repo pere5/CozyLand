@@ -1,5 +1,6 @@
 package main.thread
 
+import javaSrc.color.ColorUtils
 import javaSrc.linkedbinarytree.LinkedBinaryTree
 import javaSrc.linkedbinarytree.Position
 import main.Main
@@ -7,11 +8,8 @@ import main.Model
 import main.Model.TravelType
 import main.TestPrints
 import main.model.Tile
-import main.things.Drawable
 import main.villager.StraightPath
 import main.villager.Villager
-
-import java.util.concurrent.ConcurrentLinkedQueue
 
 class PathfinderWorker extends Worker {
 
@@ -79,14 +77,7 @@ class PathfinderWorker extends Worker {
                     }
                 }
                 if (count > 0) {
-                    Model.model.villagers.each {
-                        if (it.id != villager.id) {
-                            (Model.model.drawables as ConcurrentLinkedQueue<Drawable>).removeAll { it.parent != villager.id }
-                            (Model.model.drawables as ConcurrentLinkedQueue<Drawable>).removeAll { it.id != villager.id }
-                        }
-                    }
-
-                    println("${villager.testColor}:${count}")
+                    println("${new ColorUtils().getColorNameFromRgb(villager.testColor.red, villager.testColor.green, villager.testColor.blue)}:${count}")
                 }
 
 
