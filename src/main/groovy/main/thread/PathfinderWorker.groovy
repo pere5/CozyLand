@@ -52,7 +52,7 @@ class PathfinderWorker extends Worker {
                             def bT = psList[i + 1]
                             def aP = Model.tileToPixelIdx(aT)
                             def bP = Model.tileToPixelIdx(bT)
-                            if (Model.distance(aT, bT) > 2) {
+                            if (false && Model.distance(aT, bT) > 2) {
 
 
                                 //bresenham kan tappa steg?
@@ -72,7 +72,7 @@ class PathfinderWorker extends Worker {
                 for (int i = 0; i < villager.actionQueue.size() - 1; i++) {
                     int[] a = Model.pixelToTileIdx((villager.actionQueue[i] as StraightPath).a)
                     int[] b = Model.pixelToTileIdx((villager.actionQueue[i + 1] as StraightPath).a)
-                    if (Model.bufferedBresenhamResultArray[Model.bresenham(a, b, villager)].clone() != b) {
+                    if (Model.bresenhamBuffer[Model.bresenham(a, b, villager)].clone() != b) {
                         count++
                     }
                 }
@@ -87,6 +87,11 @@ class PathfinderWorker extends Worker {
     }
 
     List<int[]> perStar(Double[] pixelStart, Double[] pixelDest, Villager villager) {
+
+
+        gör om denna att bara hantera tiles och returna en lista
+
+
 
         def tileStart = Model.pixelToTileIdx(pixelStart)
         def tileDest = Model.pixelToTileIdx(pixelDest)
@@ -107,9 +112,9 @@ class PathfinderWorker extends Worker {
 
             def idx = Model.bresenham(stepPos.element, tileDest, villager)
 
-            def nextStep = Model.bufferedBresenhamResultArray[idx].clone()
-            def currentStep = Model.bufferedBresenhamResultArray[idx - 1].clone()
-            def previousStep = idx >= 2 ? Model.bufferedBresenhamResultArray[idx - 2].clone() : null
+            def nextStep = Model.bresenhamBuffer[idx].clone()
+            def currentStep = Model.bresenhamBuffer[idx - 1].clone()
+            def previousStep = idx >= 2 ? Model.bresenhamBuffer[idx - 2].clone() : null
 
             if (nextStep == tileDest) {
                 stepPos = lbt.addLeft(stepPos, nextStep)
@@ -179,7 +184,7 @@ class PathfinderWorker extends Worker {
             def n = [currentStep[0] + ctl.get(i)[0], currentStep[1] + ctl.get(i)[1]] as int[]
             def tile = tileNetwork[n[0]][n[1]]
             if (n == previousStep) break
-            if (n != nextStep
+            if (n != nextStep && n != currentStep
                     && villager.canTravel(tile.travelType)
                     && !visited.contains([n[0], n[1]])
             ) {
@@ -192,7 +197,7 @@ class PathfinderWorker extends Worker {
             def n = [currentStep[0] + ctl[i][0], currentStep[1] + ctl[i][1]] as int[]
             def tile = tileNetwork[n[0]][n[1]]
             if (n == previousStep) break
-            if (n != nextStep
+            if (n != nextStep && n != currentStep
                     && villager.canTravel(tile.travelType)
                     && !visited.contains([n[0], n[1]])
             ) {
@@ -216,6 +221,13 @@ class PathfinderWorker extends Worker {
 
 
     private void perTilesWithBresenham(Double[] pixelA, Double[] pixelB, Villager villager) {
+
+
+
+
+        gör om denna att bara hantera tiles och returna en lista
+
+
         def tileDestXY = Model.pixelToTileIdx(pixelB)
         def pixelStep = pixelA
         def there = false
@@ -282,7 +294,7 @@ class PathfinderWorker extends Worker {
                 if (villager.canTravel(travelType)) {
                     if (tileProbability > 0) {
                         def idx = Model.bresenham(neighborXY, tileDestXY, villager)
-                        def xy = Model.bufferedBresenhamResultArray[idx].clone()
+                        def xy = Model.bresenhamBuffer[idx].clone()
                         if (xy == tileDestXY) {
                             nextTiles << calculateProbabilityForNeighbor(neighbor, tile, neighborTile)
                         }

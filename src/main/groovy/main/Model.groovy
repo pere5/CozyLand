@@ -52,7 +52,7 @@ class Model {
             [203, 247]: [-1, -1], [248, 292]: [0, -1], [293, 337]: [1, -1]
     ]
 
-    static int[][] bufferedBresenhamResultArray = new int[Main.WINDOW_WIDTH + Main.WINDOW_HEIGHT][2]
+    static int[][] bresenhamBuffer = new int[Main.WINDOW_WIDTH + Main.WINDOW_HEIGHT][2]
 
     static def init(def keyboard, def mouse) {
         def tileNetwork = generateBackground()
@@ -423,7 +423,7 @@ class Model {
             List<Color> colors = gradient(colorRatio.colorFrom, colorRatio.colorTo, uniqueHeightValues.size())
             for (int i = 0; i < uniqueHeightValues.size(); i++) {
                 tileGroup.grep { it.height == uniqueHeightValues[i] }.each {
-                    it.color = colors[i]
+                    it.color = colorRatio.travelType == TravelType.WATER ? colors[i] : Color.LIGHT_GRAY
                     it.travelType = colorRatio.travelType
                     controlMap[it.id] = controlMap[it.id] ? controlMap[it.id] + 1 : 1
                 }
@@ -434,7 +434,7 @@ class Model {
 
         //test: use all colors
         if (!(controlAllColors.flatten()*.getRGB().unique().sort() == allTiles.color*.getRGB().unique().sort())) {
-            throw new PerIsBorkenException()
+            //throw new PerIsBorkenException()
         }
 
         //test: no two heights of tiles uses the same color
@@ -570,8 +570,8 @@ class Model {
 
         while (true) {
 
-            bufferedBresenhamResultArray[idx][0] = x
-            bufferedBresenhamResultArray[idx][1] = y
+            bresenhamBuffer[idx][0] = x
+            bresenhamBuffer[idx][1] = y
 
             if ((villager && !villager.canTravel(tileNetwork[x][y].travelType))) {
                 return idx
