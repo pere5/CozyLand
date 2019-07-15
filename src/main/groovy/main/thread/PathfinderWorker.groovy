@@ -66,7 +66,13 @@ class PathfinderWorker extends Worker {
                                 testa bresenham online och se om en pixel mindre kan ändra hela linjen?
 
 
-                                perTilesWithBresenham(aT, bT, villager)
+                                def perTiles = perTilesWithBresenham(aT, bT, villager)
+                                for (int j = 0; j < perTiles.size() - 1; j++) {
+                                    aP = Model.tileToPixelIdx(perTiles[j])
+                                    bP = Model.tileToPixelIdx(perTiles[j + 1])
+
+                                    villager.actionQueue << new StraightPath(aP, bP, villager)
+                                }
                             } else {
                                 villager.actionQueue << new StraightPath(aP, bP, villager)
                             }
@@ -219,12 +225,10 @@ class PathfinderWorker extends Worker {
     }
 
 
-    private void perTilesWithBresenham(int[] tileStart, int[] tileDest, Villager villager) {
-
-
+    private List<int[]> perTilesWithBresenham(int[] tileStart, int[] tileDest, Villager villager) {
+        def retList = [tileStart] as List<int[]>
         int[] tileStep = tileStart
         def there = false
-
         while (!there) {
 
             def nextTileDirections = nextTilesWithBresenham(villager, tileStep, tileDest)
@@ -233,23 +237,19 @@ class PathfinderWorker extends Worker {
                 def random = Math.random() * 100
 
                 def nextTileDirection = nextTileDirections.find { random >= (it[0][0] as Double) && random <= (it[0][1] as Double) }
-
                 def nextTile = [tileStep[0] + nextTileDirection[1][0], tileStep[1] + nextTileDirection[1][1]] as int[]
-
-                def pixelStep = Model.tileToPixelIdx(tileStep)
-                def nextPixelStep = Model.tileToPixelIdx(nextTile)
-                villager.actionQueue << new StraightPath(pixelStep, nextPixelStep, villager)
-
+                retList << nextTile
                 tileStep = nextTile
-
                 there = StraightPath.closeEnoughTile(nextTile, tileDest)
                 if (there) {
-                    villager.actionQueue << new StraightPath(nextPixelStep, Model.tileToPixelIdx(tileDest), villager)
+                    retList << tileDest
                 }
             } else {
                 there = true
             }
         }
+
+        return retList
     }
 
     Double[] randomPlaceInTile(int[] pixelIdx) {
