@@ -1,6 +1,6 @@
 package main.thread
 
-import javaSrc.color.ColorUtils
+
 import javaSrc.linkedbinarytree.LinkedBinaryTree
 import javaSrc.linkedbinarytree.Position
 import main.Main
@@ -66,18 +66,7 @@ class PathfinderWorker extends Worker {
                     tileDest = villager.tileQueue.poll()
                 }
 
-                def count = 0
-                for (int i = 0; i < villager.actionQueue.size() - 1; i++) {
-                    int[] a = Model.pixelToTileIdx((villager.actionQueue[i] as StraightPath).a)
-                    int[] b = Model.pixelToTileIdx((villager.actionQueue[i + 1] as StraightPath).a)
-                    if (Model.bresenhamBuffer[Model.bresenham(a, b, villager)].clone() != b) {
-                        count++
-                    }
-                }
-                if (count > 0) {
-                    println("${new ColorUtils().getColorNameFromRgb(villager.testColor.red, villager.testColor.green, villager.testColor.blue)}:${count}")
-                }
-
+                TestPrints.printBresenhamMisses(villager)
 
                 villager.toWorkWorker()
             }

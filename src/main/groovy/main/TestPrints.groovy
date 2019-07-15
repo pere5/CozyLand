@@ -1,8 +1,10 @@
 package main
 
+import javaSrc.color.ColorUtils
 import main.model.Tile
 import main.things.Artifact
 import main.things.Drawable
+import main.villager.StraightPath
 import main.villager.Villager
 
 import java.awt.*
@@ -73,4 +75,19 @@ class TestPrints {
     static void clearPrints(Villager villager) {
         (Model.model.drawables as ConcurrentLinkedQueue<Drawable>).removeAll { it.parent == villager.id }
     }
+
+    static void printBresenhamMisses(Villager villager) {
+        def count = 0
+        for (int i = 0; i < villager.actionQueue.size() - 1; i++) {
+            int[] a = Model.pixelToTileIdx((villager.actionQueue[i] as StraightPath).a)
+            int[] b = Model.pixelToTileIdx((villager.actionQueue[i + 1] as StraightPath).a)
+            if (Model.bresenhamBuffer[Model.bresenham(a, b, villager)].clone() != b) {
+                count++
+            }
+        }
+        if (count > 0) {
+            println("${new ColorUtils().getColorNameFromRgb(villager.testColor.red, villager.testColor.green, villager.testColor.blue)}:${count}")
+        }
+    }
+
 }
