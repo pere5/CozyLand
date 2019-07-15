@@ -12,8 +12,8 @@ class Walk extends Rule {
 
     @Override
     void startWork(Villager villager, int status) {
-        def pixelDest = Model.generateXY()
-        villager.pointQueue << pixelDest
+        def pixelDest = Model.generateTileXY()
+        villager.tileQueue << pixelDest
     }
 
     @Override

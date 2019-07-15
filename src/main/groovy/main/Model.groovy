@@ -516,6 +516,23 @@ class Model {
         }
     }
 
+    static int[] generateTileXY() {
+        def tileNetwork = Model.model.tileNetwork as Tile[][]
+
+        int[] tileXY = [
+                tileNetwork.length / 2 + generate((tileNetwork.length / 3) as int),
+                tileNetwork[0].length / 2 + generate((tileNetwork[0].length / 3) as int)
+        ]
+
+        def tile = Model.model.tileNetwork[tileXY[0]][tileXY[1]] as Tile
+
+        if (tile.travelType == TravelType.WATER) {
+            return generateTileXY()
+        } else {
+            return tileXY
+        }
+    }
+
     static Double generate(int distance) {
         return distance - ThreadLocalRandom.current().nextInt(0, distance * 2 + 1)
     }

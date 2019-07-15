@@ -10,7 +10,7 @@ import java.util.Queue
 class Villager extends Drawable {
 
     Queue<Action> actionQueue = new LinkedList<>()
-    Queue<Double[]> pointQueue = new LinkedList<>()
+    Queue<int[]> tileQueue = new LinkedList<>()
     boolean ruleWorker
     boolean pathfinderWorker
     boolean workWorker

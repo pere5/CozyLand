@@ -37,13 +37,9 @@ class PathfinderWorker extends Worker {
 
             if (villager.pathfinderWorker) {
 
-                def pixelDest = villager.pointQueue.poll()
-                while (pixelDest) {
-
-                    def pixelStart = [villager.x, villager.y] as Double[]
-
-                    def tileStart = Model.pixelToTileIdx(pixelStart)
-                    def tileDest = Model.pixelToTileIdx(pixelDest)
+                def tileDest = villager.tileQueue.poll()
+                def tileStart = Model.pixelToTileIdx([villager.x, villager.y] as Double[])
+                while (tileDest) {
 
                     def psList = perStar(tileStart, tileDest, villager)
 
@@ -67,7 +63,7 @@ class PathfinderWorker extends Worker {
                         }
                     }
 
-                    pixelDest = villager.pointQueue.poll()
+                    tileDest = villager.tileQueue.poll()
                 }
 
                 def count = 0
