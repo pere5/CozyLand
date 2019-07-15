@@ -117,7 +117,7 @@ class PathfinderWorker extends Worker {
                 Instead of fixing this side of the problem,
                 we add a jump in perTilesWithBresenham:
                     retList << tileDest
-                    there = true
+                    break
              */
 
             if (nextStep == tileDest) {
@@ -227,24 +227,20 @@ class PathfinderWorker extends Worker {
     private List<int[]> perTilesWithBresenham(int[] tileStart, int[] tileDest, Villager villager) {
         def retList = [tileStart] as List<int[]>
         int[] tileStep = tileStart
-        def there = false
-        while (!there) {
-
+        while (true) {
             def nextTileDirections = nextTilesWithBresenham(villager, tileStep, tileDest)
-
             if (nextTileDirections) {
                 def random = Math.random() * 100
-
                 def nextTileDirection = nextTileDirections.find { random >= (it[0][0] as Double) && random <= (it[0][1] as Double) }
                 tileStep = [tileStep[0] + nextTileDirection[1][0], tileStep[1] + nextTileDirection[1][1]] as int[]
                 retList << tileStep
-                there = StraightPath.closeEnoughTile(tileStep, tileDest)
-                if (there) {
+                if (StraightPath.closeEnoughTile(tileStep, tileDest)) {
                     retList << tileDest
+                    break
                 }
             } else {
                 retList << tileDest
-                there = true
+                break
             }
         }
 

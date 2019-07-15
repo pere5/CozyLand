@@ -423,7 +423,7 @@ class Model {
             List<Color> colors = gradient(colorRatio.colorFrom, colorRatio.colorTo, uniqueHeightValues.size())
             for (int i = 0; i < uniqueHeightValues.size(); i++) {
                 tileGroup.grep { it.height == uniqueHeightValues[i] }.each {
-                    it.color = colorRatio.travelType == TravelType.WATER ? colors[i] : Color.LIGHT_GRAY
+                    it.color = colors[i]
                     it.travelType = colorRatio.travelType
                     controlMap[it.id] = controlMap[it.id] ? controlMap[it.id] + 1 : 1
                 }
@@ -434,7 +434,7 @@ class Model {
 
         //test: use all colors
         if (!(controlAllColors.flatten()*.getRGB().unique().sort() == allTiles.color*.getRGB().unique().sort())) {
-            //throw new PerIsBorkenException()
+            throw new PerIsBorkenException()
         }
 
         //test: no two heights of tiles uses the same color
