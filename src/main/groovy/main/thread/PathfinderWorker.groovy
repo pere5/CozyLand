@@ -56,16 +56,6 @@ class PathfinderWorker extends Worker {
                             def aP = Model.tileToPixelIdx(aT)
                             def bP = Model.tileToPixelIdx(bT)
                             if (Model.distance(aT, bT) > 2) {
-
-
-                                //bresenham kan tappa steg?
-                                //testa bresenham ett par commits bakåt
-
-
-
-                                //testa bresenham online och se om en pixel mindre kan ändra hela linjen?
-
-
                                 def perTiles = perTilesWithBresenham(aT, bT, villager)
                                 for (int j = 0; j < perTiles.size() - 1; j++) {
                                     aP = Model.tileToPixelIdx(perTiles[j])
@@ -120,6 +110,15 @@ class PathfinderWorker extends Worker {
             def nextStep = Model.bresenhamBuffer[idx].clone()
             def currentStep = Model.bresenhamBuffer[idx - 1].clone()
             def previousStep = idx >= 2 ? Model.bresenhamBuffer[idx - 2].clone() : null
+
+            /*
+                Bug: nextStep is reachable by bresenham but current step might not be.
+                This causes trouble for perTilesWithBresenham.
+                Instead of fixing this side of the problem,
+                we add a jump in perTilesWithBresenham:
+                    retList << tileDest
+                    there = true
+             */
 
             if (nextStep == tileDest) {
                 stepPos = lbt.addLeft(stepPos, nextStep)
@@ -244,6 +243,7 @@ class PathfinderWorker extends Worker {
                     retList << tileDest
                 }
             } else {
+                retList << tileDest
                 there = true
             }
         }
@@ -251,8 +251,8 @@ class PathfinderWorker extends Worker {
         return retList
     }
 
-    Double[] randomPlaceInTile(int[] pixelIdx) {
-        pixelIdx = Model.tileToPixelIdx(pixelIdx)
+    Double[] randomPlaceInTile(int[] tile) {
+        def pixelIdx = Model.tileToPixelIdx(tile)
         pixelIdx[0] += 1
         pixelIdx[1] += 1
         pixelIdx[0] += (Main.TILE_WIDTH - 2) * Math.random()
