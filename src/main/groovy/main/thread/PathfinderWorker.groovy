@@ -63,7 +63,7 @@ class PathfinderWorker extends Worker {
 
 
 
-                                testa bresenham online och se om en pixel mindre kan ändra hela linjen?
+                                //testa bresenham online och se om en pixel mindre kan ändra hela linjen?
 
 
                                 def perTiles = perTilesWithBresenham(aT, bT, villager)
@@ -237,10 +237,9 @@ class PathfinderWorker extends Worker {
                 def random = Math.random() * 100
 
                 def nextTileDirection = nextTileDirections.find { random >= (it[0][0] as Double) && random <= (it[0][1] as Double) }
-                def nextTile = [tileStep[0] + nextTileDirection[1][0], tileStep[1] + nextTileDirection[1][1]] as int[]
-                retList << nextTile
-                tileStep = nextTile
-                there = StraightPath.closeEnoughTile(nextTile, tileDest)
+                tileStep = [tileStep[0] + nextTileDirection[1][0], tileStep[1] + nextTileDirection[1][1]] as int[]
+                retList << tileStep
+                there = StraightPath.closeEnoughTile(tileStep, tileDest)
                 if (there) {
                     retList << tileDest
                 }
