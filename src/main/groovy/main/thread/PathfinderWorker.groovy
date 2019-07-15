@@ -49,25 +49,24 @@ class PathfinderWorker extends Worker {
 
                     //def tiles = longestPossibleBresenhams(idx)
 
-                    if (psList) {
-                        for (int i = 0; i < psList.size() - 1; i++) {
-                            def aT = psList[i]
-                            def bT = psList[i + 1]
-                            def aP = Model.tileToPixelIdx(aT)
-                            def bP = Model.tileToPixelIdx(bT)
-                            if (Model.distance(aT, bT) > 2) {
-                                def perTiles = perTilesWithBresenham(aT, bT, villager)
-                                for (int j = 0; j < perTiles.size() - 1; j++) {
-                                    aP = Model.tileToPixelIdx(perTiles[j])
-                                    bP = Model.tileToPixelIdx(perTiles[j + 1])
+                    for (int i = 0; i < psList.size() - 1; i++) {
+                        def aT = psList[i]
+                        def bT = psList[i + 1]
+                        def aP = Model.tileToPixelIdx(aT)
+                        def bP = Model.tileToPixelIdx(bT)
+                        if (Model.distance(aT, bT) > 2) {
+                            def perTiles = perTilesWithBresenham(aT, bT, villager)
+                            for (int j = 0; j < perTiles.size() - 1; j++) {
+                                aP = Model.tileToPixelIdx(perTiles[j])
+                                bP = Model.tileToPixelIdx(perTiles[j + 1])
 
-                                    villager.actionQueue << new StraightPath(aP, bP, villager)
-                                }
-                            } else {
                                 villager.actionQueue << new StraightPath(aP, bP, villager)
                             }
+                        } else {
+                            villager.actionQueue << new StraightPath(aP, bP, villager)
                         }
                     }
+
                     pixelDest = villager.pointQueue.poll()
                 }
 
