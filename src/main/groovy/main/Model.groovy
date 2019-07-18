@@ -3,8 +3,8 @@ package main
 import javaSrc.circulararray.CircularArrayList
 import main.exception.PerIsBorkenException
 import main.model.Tile
+import main.rule.Affinity
 import main.rule.Rule
-import main.rule.Walk
 import main.things.Drawable
 import main.villager.Villager
 
@@ -91,7 +91,7 @@ class Model {
 
     static List<Rule> generateRules() {
         int rank = Integer.MAX_VALUE
-        [new Walk(rank: --rank)]
+        [new Affinity(rank: --rank)]
     }
 
     static def calculateProbabilitiesModel() {
