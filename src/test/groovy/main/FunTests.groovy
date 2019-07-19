@@ -1,5 +1,6 @@
 package main
 
+import javaSrc.circulararray.CircularArrayList
 import main.calculator.Path
 import main.model.Tile
 import main.villager.Villager
@@ -20,5 +21,11 @@ class FunTests {
         def idx = Path.bresenham([0, 0] as int[], [0, 1] as int[], new Villager())
 
         assert idx != 0
+    }
+
+    @Test
+    void circularArray() {
+        def l = [1, 2, 3] as CircularArrayList
+        assert (-10..10).collect {l.get(it)} == [3,1,2,3,1,2,3,1,2,3, 1,2,3,1,2,3,1,2,3,1,2]
     }
 }
