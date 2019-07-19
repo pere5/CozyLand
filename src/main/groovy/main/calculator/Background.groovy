@@ -1,0 +1,312 @@
+package main.calculator
+
+import main.Main
+import main.Model
+import main.exception.PerIsBorkenException
+import main.model.Tile
+
+import javax.imageio.ImageIO
+import java.awt.*
+import java.awt.image.BufferedImage
+import java.util.List
+
+class Background {
+
+    static Tile[][] generateBackground() {
+        generateBackground('lol.png')
+    }
+
+    static Tile[][] generateBackground(String imageName) {
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader()
+        BufferedImage image = ImageIO.read(classloader.getResourceAsStream(imageName))
+
+        int[][] heightMap = buildHeightMap(image)
+        shaveOffExtremeMaxMin(heightMap)
+        maximizeScale(heightMap)
+        Tile[][] tileNetwork = buildTileNetwork(heightMap)
+        setColors(tileNetwork)
+
+        return tileNetwork
+    }
+
+    private static int[][] buildHeightMap(BufferedImage image) {
+        int[][] heightMap = new int[image.getWidth()][image.getHeight()]
+
+        for (int x = 0; x < image.getWidth(); x++) {
+            for (int y = 0; y < image.getHeight(); y++) {
+                /*
+                    (getAlpha(inData) << 24)
+                    | (getRed(inData) << 16)
+                    | (getGreen(inData) << 8)
+                    | (getBlue(inData) << 0)
+                 */
+                int rgb = image.getRGB(x, y)
+                int blue = rgb & 0x0000FF
+                int green = rgb & 0x00FF00 >> 8
+                int red = rgb & 0xFF0000 >> 16
+                if (blue == green && blue == red) {
+                    heightMap[x][y] = blue
+                } else {
+                    throw new PerIsBorkenException()
+                }
+            }
+        }
+        return heightMap
+    }
+
+    private static void shaveOffExtremeMaxMin(int[][] heightMap) {
+
+        List<Integer> maxMin = []
+        for (int x = 0; x < heightMap.length; x++) {
+            for (int y = 0; y < heightMap[x].length; y++) {
+                maxMin << heightMap[x][y]
+            }
+        }
+        int max = maxMin.max()
+        int min = maxMin.min()
+
+        int nextMax = maxMin.toSet().sort().reverse()[1]
+        int nextMin = maxMin.toSet().sort()[1]
+        boolean shaveMax = Math.abs(max - nextMax) > 5
+        boolean shaveMin = Math.abs(min - nextMin) > 5
+
+        for (int x = 0; x < heightMap.length; x++) {
+            for (int y = 0; y < heightMap[x].length; y++) {
+                if (shaveMax && heightMap[x][y] == max) {
+                    heightMap[x][y] = nextMax
+                }
+                if (shaveMin && heightMap[x][y] == min) {
+                    heightMap[x][y] = nextMin
+                }
+            }
+        }
+    }
+
+    private static void maximizeScale(int[][] heightMap) {
+        Double middle = 255 / 2
+        List<Integer> maxMin = []
+        for (int x = 0; x < heightMap.length; x++) {
+            for (int y = 0; y < heightMap[x].length; y++) {
+                maxMin << heightMap[x][y]
+            }
+        }
+
+        int max = maxMin.max()
+        int min = maxMin.min()
+
+        Double globalAdjustment = middle - ((max + min) / 2)
+        Double newMax = max + globalAdjustment - middle
+        Double newMin = min + globalAdjustment - middle
+        Double scaleMax = middle / newMax
+        Double scaleMin = -middle / newMin
+
+        if (scaleMax != scaleMin) {
+            throw new PerIsBorkenException()
+        }
+
+        Double scale = scaleMax
+
+        maxMin.clear()
+        for (int x = 0; x < heightMap.length; x++) {
+            for (int y = 0; y < heightMap[x].length; y++) {
+                heightMap[x][y] = (((heightMap[x][y] + globalAdjustment - middle) * scale) + middle)
+                maxMin << heightMap[x][y]
+            }
+        }
+
+        max = maxMin.max()
+        min = maxMin.min()
+
+        if (max != 255 || min != 0) {
+            throw new PerIsBorkenException()
+        }
+    }
+
+    private static Tile[][] buildTileNetwork(int[][] heightMap) {
+
+        int imageWidth = heightMap.length
+        int imageHeight = heightMap[0].length
+
+        Double xRatio = imageWidth / Main.MAP_WIDTH
+        Double yRatio = imageHeight / Main.MAP_HEIGHT
+
+        int tileWidth = Main.TILE_WIDTH
+        int tileHeight = tileWidth
+
+        int bgWidth = Main.MAP_WIDTH / tileWidth
+        int bgHeight = Main.MAP_HEIGHT / tileHeight
+
+        Double xStep = tileWidth * xRatio
+        Double yStep = tileHeight * yRatio
+
+        def tileNetwork = new Tile[bgWidth][bgHeight]
+
+        int xTileIdx = 0
+        int yTileIdx = 0
+
+        def pixelReadControl = new int[heightMap.length][heightMap[0].length]
+
+        int max = 128
+        int min = 128
+
+        for (Double x = 0; Model.round(x) < heightMap.length; x += xStep) {
+            for (Double y = 0; Model.round(y) < heightMap[Model.round(x)].length; y += yStep) {
+                int sumAreaHeight = 0
+                int noPixels = 0
+
+                for (int xx = Model.round(x); xx < Math.min(Model.round(x + xStep), heightMap.length); xx++) {
+                    for (int yy = Model.round(y); yy < Math.min(Model.round(y + yStep), heightMap[xx].length); yy++) {
+                        pixelReadControl[xx][yy] += 1
+                        sumAreaHeight += heightMap[xx][yy]
+                        noPixels++
+                    }
+                }
+
+                if (noPixels > 0 && xTileIdx < tileNetwork.length && yTileIdx < tileNetwork[xTileIdx].length) {
+                    int avgAreaHeight = sumAreaHeight / noPixels
+
+                    if (avgAreaHeight < min) {
+                        min = avgAreaHeight
+                    } else if (avgAreaHeight > max) {
+                        max = avgAreaHeight
+                    }
+
+                    if (tileNetwork[xTileIdx][yTileIdx]) {
+                        throw new PerIsBorkenException()
+                    }
+
+                    tileNetwork[xTileIdx][yTileIdx] = new Tile(
+                            height: avgAreaHeight,
+                            size: tileWidth,
+                            x: xTileIdx * tileWidth,
+                            y: yTileIdx * tileHeight
+                    )
+                }
+                yTileIdx++
+            }
+            yTileIdx = 0
+            xTileIdx++
+        }
+
+        def controlMap = [:]
+
+        for (int x = 0; x < pixelReadControl.length; x++) {
+            for (int y = 0; y < pixelReadControl[x].length; y++) {
+                def xy = controlMap["${pixelReadControl[x][y]}"]
+                if (xy == null) {
+                    controlMap["${pixelReadControl[x][y]}"] = 1
+                } else {
+                    controlMap["${pixelReadControl[x][y]}"] += 1
+                }
+            }
+        }
+
+        if (controlMap['1'] != imageHeight * imageWidth) {
+            throw new PerIsBorkenException()
+        }
+
+        for (int x = 0; x < tileNetwork.length; x++) {
+            for (int y = 0; y < tileNetwork[x].length; y++) {
+                if (!tileNetwork[x][y]) {
+                    throw new PerIsBorkenException()
+                }
+            }
+        }
+        return tileNetwork
+    }
+
+    private static void setColors(Tile[][] tileNetwork) {
+
+        List<Tile> allTiles = []
+        for (int x = 0; x < tileNetwork.length; x++) {
+            for (int y = 0; y < tileNetwork[x].length; y++) {
+                allTiles << tileNetwork[x][y]
+            }
+        }
+        allTiles.sort { it.height }
+
+        Color blueLow = new Color(51, 153, 255)
+        Color blueHigh = new Color(153, 204, 255)
+        Color greenLow = new Color(102, 204, 0)
+        Color greenHigh = new Color(0, 102, 51)
+        Color mountainEdgeGreen = new Color(0, 100, 0)
+        Color mountainLower = new Color(75, 75, 75)
+        Color mountainLow = new Color(90, 90, 90)
+        Color mountainHigh = new Color(255, 255, 255)
+        def colorRatios = [
+                [from: 0.0,  to: 0.2,  colorFrom: blueLow,           colorTo: blueHigh,         travelType: Model.TravelType.WATER],
+                [from: 0.2,  to: 0.85, colorFrom: greenLow,          colorTo: greenHigh,        travelType: Model.TravelType.FOREST],
+                [from: 0.85, to: 0.93, colorFrom: mountainEdgeGreen, colorTo: mountainLower,    travelType: Model.TravelType.HILL],
+                [from: 0.93, to: 1.0,  colorFrom: mountainLow,       colorTo: mountainHigh,     travelType: Model.TravelType.MOUNTAIN]
+        ]
+
+        def controlMap = [:]
+        def controlAllColors = []
+        def controlUniqueHeightValues = []
+
+        for (def colorRatio : colorRatios) {
+            int from = colorRatio.from * allTiles.size()
+            int to = colorRatio.to * allTiles.size()
+            List<Tile> tileGroup = allTiles[from..to - 1]
+
+            //remove from the back
+            if (from > 0) {
+                for (int i = tileGroup.size() - 1; i >= 0; i--) {
+                    if (tileGroup[i].height == allTiles[from - 1].height) {
+                        tileGroup.remove(i)
+                    }
+                }
+            }
+
+            //add to the front
+            for (int i = to; i < allTiles.size(); i++) {
+                if (tileGroup.last().height == allTiles[i].height) {
+                    tileGroup << allTiles[i]
+                }
+            }
+
+            def uniqueHeightValues = tileGroup.groupBy { it.height }.collect { it.key }
+
+            List<Color> colors = Model.gradient(colorRatio.colorFrom, colorRatio.colorTo, uniqueHeightValues.size())
+            for (int i = 0; i < uniqueHeightValues.size(); i++) {
+                tileGroup.grep { it.height == uniqueHeightValues[i] }.each {
+                    it.color = colors[i]
+                    it.travelType = colorRatio.travelType
+                    controlMap[it.id] = controlMap[it.id] ? controlMap[it.id] + 1 : 1
+                }
+            }
+            controlAllColors << colors
+            controlUniqueHeightValues << uniqueHeightValues
+        }
+
+        //test: use all colors
+        if (!(controlAllColors.flatten()*.getRGB().unique().sort() == allTiles.color*.getRGB().unique().sort())) {
+            throw new PerIsBorkenException()
+        }
+
+        //test: no two heights of tiles uses the same color
+        allTiles.groupBy { it.height }.each { int height, List<Tile> tiles ->
+            if (tiles.groupBy { it.color }.size() != 1) {
+                throw new PerIsBorkenException()
+            }
+        }
+
+        if (controlMap.collect { it.key }.sort() != allTiles.id.sort()) {
+            throw new PerIsBorkenException()
+        }
+        controlMap.each {
+            if (it.value != 1) {
+                throw new PerIsBorkenException()
+            }
+        }
+
+        if (allTiles.color.grep().size() != allTiles.size()) {
+            allTiles.grep { !it.color }.each {
+                it.color = new Color(255, 0, 0)
+                it.size = 20
+            }
+            throw new PerIsBorkenException()
+        }
+    }
+
+}
