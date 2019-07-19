@@ -1,6 +1,7 @@
 package main
 
 import javaSrc.color.ColorUtils
+import main.calculator.Path
 import main.model.Tile
 import main.things.Artifact
 import main.things.Drawable
@@ -45,9 +46,9 @@ class TestPrints {
     }
 
     static void testPrints(Double[] pixelStart, Double[] pixelDest, Villager villager) {
-        def idx = Model.bresenham(pixelStart as int[], pixelDest as int[])
+        def idx = Path.bresenham(pixelStart as int[], pixelDest as int[])
         (0..idx).each {
-            def xy = Model.bresenhamBuffer[it].clone()
+            def xy = Path.bresenhamBuffer[it].clone()
             Model.drawables << new Artifact(size: 2, parent: villager.id, x: xy[0], y: xy[1], color: villager.testColor)
         }
 
@@ -81,7 +82,7 @@ class TestPrints {
         for (int i = 0; i < villager.actionQueue.size() - 1; i++) {
             int[] a = Model.pixelToTileIdx((villager.actionQueue[i] as StraightPath).a)
             int[] b = Model.pixelToTileIdx((villager.actionQueue[i + 1] as StraightPath).a)
-            if (Model.bresenhamBuffer[Model.bresenham(a, b, villager)].clone() != b) {
+            if (Path.bresenhamBuffer[Path.bresenham(a, b, villager)].clone() != b) {
                 count++
             }
         }

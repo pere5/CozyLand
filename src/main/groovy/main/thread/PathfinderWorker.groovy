@@ -7,6 +7,7 @@ import main.Main
 import main.Model
 import main.Model.TravelType
 import main.TestPrints
+import main.calculator.Path
 import main.model.Tile
 import main.villager.StraightPath
 import main.villager.Villager
@@ -89,11 +90,11 @@ class PathfinderWorker extends Worker {
 
         while (true) {
 
-            def idx = Model.bresenham(stepPos.element, tileDest, villager)
+            def idx = Path.bresenham(stepPos.element, tileDest, villager)
 
-            def nextStep = Model.bresenhamBuffer[idx].clone()
-            def currentStep = Model.bresenhamBuffer[idx - 1].clone()
-            def previousStep = idx >= 2 ? Model.bresenhamBuffer[idx - 2].clone() : null
+            def nextStep = Path.bresenhamBuffer[idx].clone()
+            def currentStep = Path.bresenhamBuffer[idx - 1].clone()
+            def previousStep = idx >= 2 ? Path.bresenhamBuffer[idx - 2].clone() : null
 
             /*
                 Bug: nextStep is reachable by bresenham but current step might not be.
@@ -263,8 +264,8 @@ class PathfinderWorker extends Worker {
 
                 if (villager.canTravel(travelType)) {
                     if (tileProbability > 0) {
-                        def idx = Model.bresenham(neighborXY, tileDest, villager)
-                        def xy = Model.bresenhamBuffer[idx].clone()
+                        def idx = Path.bresenham(neighborXY, tileDest, villager)
+                        def xy = Path.bresenhamBuffer[idx].clone()
                         if (xy == tileDest) {
                             nextTiles << calculateProbabilityForNeighbor(neighbor, tile, neighborTile)
                         }
