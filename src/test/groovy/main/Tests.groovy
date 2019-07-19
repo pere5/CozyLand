@@ -1,5 +1,6 @@
 package main
 
+import main.calculator.Probabilities
 import main.model.Tile
 import main.thread.PathfinderWorker
 import main.villager.Villager
@@ -13,18 +14,18 @@ class Tests {
 
     @Test
     void degreeRange() {
-        assert Model.degreeRange(45) == (315..359) + (0..135)
-        assert Model.degreeRange(100) == 10..190
-        assert Model.degreeRange(300) == (210..359) + (0..30)
+        assert Probabilities.degreeRange(45) == (315..359) + (0..135)
+        assert Probabilities.degreeRange(100) == 10..190
+        assert Probabilities.degreeRange(300) == (210..359) + (0..30)
     }
 
     @Test
     void probabilitiesModel() {
 
         360.times { def realDegree ->
-            def degreeRange = Model.degreeRange(realDegree)
-            def degreeProbabilities = Model.degreeProbabilities(degreeRange)
-            def (tiles, testC) = Model.tileProbabilities(degreeProbabilities)
+            def degreeRange = Probabilities.degreeRange(realDegree)
+            def degreeProbabilities = Probabilities.degreeProbabilities(degreeRange)
+            def (tiles, testC) = Probabilities.tileProbabilities(degreeProbabilities)
 
             def probKeys = testC.flatten().collect{ it.p }.unique()
             def allTheSame = [
@@ -110,7 +111,7 @@ class Tests {
 
     @Test
     void nextTiles() {
-        Model.tileProbabilitiesForDegrees = Model.calculateProbabilitiesModel()
+        Model.tileProbabilitiesForDegrees = Probabilities.calculateProbabilitiesModel()
         plainTerrain()
         unevenTerrain()
     }
