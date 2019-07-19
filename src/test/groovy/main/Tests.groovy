@@ -110,7 +110,7 @@ class Tests {
 
     @Test
     void nextTiles() {
-        Model.model.tileProbabilitiesForDegrees = Model.calculateProbabilitiesModel()
+        Model.tileProbabilitiesForDegrees = Model.calculateProbabilitiesModel()
         plainTerrain()
         unevenTerrain()
     }
@@ -120,7 +120,7 @@ class Tests {
         def w = Model.TravelType.WATER
         def p = Model.TravelType.PLAIN
 
-        Model.model.tileNetwork = [
+        Model.tileNetwork = [
                 [new Tile(height: 10, size: sw, x: 0, y: 0, travelType: p), new Tile(height: 10, size: sw, x: 0, y: 1, travelType: p), new Tile(height: 10, size: sw, x: 0, y: 2, travelType: p), new Tile(height: 10, size: sw, x: 0, y: 3, travelType: p)],
                 [new Tile(height: 10, size: sw, x: 1, y: 0, travelType: p), new Tile(height: 10, size: sw, x: 1, y: 1, travelType: p), new Tile(height: 10, size: sw, x: 1, y: 2, travelType: p), new Tile(height: 10, size: sw, x: 1, y: 3, travelType: p)],
                 [new Tile(height: 10, size: sw, x: 2, y: 0, travelType: w), new Tile(height: 10, size: sw, x: 2, y: 1, travelType: p), new Tile(height: 10, size: sw, x: 2, y: 2, travelType: p), new Tile(height: 10, size: sw, x: 2, y: 3, travelType: p)],
@@ -202,7 +202,7 @@ class Tests {
         def ro = Model.TravelType.ROAD
         def u = Model.TravelType.UP_HILL
 
-        Model.model.tileNetwork = [
+        Model.tileNetwork = [
                 [new Tile(height: 10, size: sw, x: 0, y: 0, travelType: p), new Tile(height: 20, size: sw, x: 0, y: 1, travelType: p),  new Tile(height: 10, size: sw, x: 0, y: 2, travelType: p),  new Tile(height: 10, size: sw, x: 0, y: 3, travelType: p)],
                 [new Tile(height: 20, size: sw, x: 1, y: 0, travelType: p), new Tile(height: 10, size: sw, x: 1, y: 1, travelType: p),  new Tile(height: 10, size: sw, x: 1, y: 2, travelType: p),  new Tile(height: 10, size: sw, x: 1, y: 3, travelType: p)],
                 [new Tile(height: 10, size: sw, x: 2, y: 0, travelType: w), new Tile(height: 10, size: sw, x: 2, y: 1, travelType: h),  new Tile(height: 20, size: sw, x: 2, y: 2, travelType: ro), new Tile(height: 10, size: sw, x: 2, y: 3, travelType: p)],

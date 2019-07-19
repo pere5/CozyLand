@@ -25,13 +25,13 @@ class Surface extends JPanel implements ActionListener {
     @Override
     void actionPerformed(ActionEvent e) {
 
-        MyKeyboardListener keyboard = Model.model.keyboard
+        MyKeyboardListener keyboard = Model.keyboard
 
         if (keyboard.keyHasBeenPressed(KeyEvent.VK_SPACE)) {
-            Model.model.pause = !Model.model.pause
+            Model.pause = !Model.pause
         }
 
-        if (!Model.model.pause) {
+        if (!Model.pause) {
             xOffset = keyboard.isKeyDown(KeyEvent.VK_LEFT) ? xOffset + 12 : xOffset
             xOffset = keyboard.isKeyDown(KeyEvent.VK_RIGHT) ? xOffset - 12 : xOffset
             yOffset = keyboard.isKeyDown(KeyEvent.VK_UP) ? yOffset + 12 : yOffset
@@ -46,7 +46,7 @@ class Surface extends JPanel implements ActionListener {
         super.paintComponent(g)
         Graphics2D g2d = (Graphics2D) g
 
-        Image backgroundImage = Model.model.backgroundImage
+        Image backgroundImage = Model.backgroundImage
 
         int left = - xOffset
         int right = Main.VIEWPORT_WIDTH - xOffset
@@ -55,7 +55,7 @@ class Surface extends JPanel implements ActionListener {
 
         g2d.drawImage(backgroundImage, xOffset, yOffset, null)
 
-        ConcurrentLinkedQueue<Drawable> drawables = Model.model.drawables
+        ConcurrentLinkedQueue<Drawable> drawables = Model.drawables
         for (Drawable drawable : drawables) {
             if (inView(drawable, left, right, top, bottom)) {
                 g2d.setPaint(drawable.color)
@@ -69,7 +69,7 @@ class Surface extends JPanel implements ActionListener {
     }
 
     void drawFPS(Graphics2D g2d) {
-        def frameSlots = Model.model.frameSlots as List
+        def frameSlots = Model.frameSlots as List
         long currentTime = System.currentTimeMillis()
         framesPerSecond++
         if (currentTime - startTime > 1000) {

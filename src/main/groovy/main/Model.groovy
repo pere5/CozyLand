@@ -2,6 +2,8 @@ package main
 
 import javaSrc.circulararray.CircularArrayList
 import main.exception.PerIsBorkenException
+import main.input.MyKeyboardListener
+import main.input.MyMouseListener
 import main.model.Tile
 import main.rule.Affinity
 import main.rule.Rule
@@ -19,8 +21,6 @@ import java.util.concurrent.ThreadLocalRandom
 class Model {
 
     static int idGenerator = 0
-
-    static model = [:]
 
     static int getNewId() {
         idGenerator++
@@ -54,22 +54,22 @@ class Model {
 
     static int[][] bresenhamBuffer = new int[Main.WINDOW_WIDTH + Main.WINDOW_HEIGHT][2]
 
+    static MyKeyboardListener keyboard
+    static MyMouseListener mouse
+    static Tile[][] tileNetwork
+    static boolean pause = false
+    static List<Villager> villagers = []
+    static ConcurrentLinkedQueue<Drawable> drawables = []
+    static List<Integer> frameSlots = [0, 0, 0, 0, 0]
+    static List<Rule> rules = generateRules()
+    static def tileProbabilitiesForDegrees = calculateProbabilitiesModel()
+    static BufferedImage backgroundImage
+
     static def init(def keyboard, def mouse) {
-        def tileNetwork = generateBackground()
-
-        model = [
-                keyboard      : keyboard,
-                mouse         : mouse,
-                pause         : false,
-                drawables     : [],
-                villagers     : [],
-                frameSlots    : [0, 0, 0, 0, 0],
-                tileNetwork   : tileNetwork,
-                rules         : generateRules(),
-        ]
-
-        model.tileProbabilitiesForDegrees = calculateProbabilitiesModel()
-
+        Model.keyboard = keyboard
+        Model.mouse = mouse
+        tileNetwork = generateBackground()
+        backgroundImage = createBGImage()
         def villagers = [
                 Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
                 Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
@@ -83,10 +83,8 @@ class Model {
                 artifacts, stones, trees, villagers
         ].flatten() as List<Drawable>)
 
-        model.villagers = villagers
-        model.drawables = drawables
-
-        model.backgroundImage = createBGImage()
+        Model.villagers = villagers
+        Model.drawables = drawables
     }
 
     static List<Rule> generateRules() {
@@ -161,7 +159,7 @@ class Model {
     }
 
     static BufferedImage createBGImage() {
-        Tile[][] tileNetwork = model.tileNetwork
+        Tile[][] tileNetwork = tileNetwork
         BufferedImage image = new BufferedImage(
                 tileNetwork.length * Main.TILE_WIDTH,
                 tileNetwork[0].length * Main.TILE_WIDTH,
@@ -507,7 +505,7 @@ class Model {
 
         def tileXY = pixelToTileIdx(xy)
 
-        def tile = Model.model.tileNetwork[tileXY[0]][tileXY[1]] as Tile
+        def tile = Model.tileNetwork[tileXY[0]][tileXY[1]] as Tile
 
         if (tile.travelType == TravelType.WATER) {
             return generateXY()
@@ -517,14 +515,14 @@ class Model {
     }
 
     static int[] generateTileXY() {
-        def tileNetwork = Model.model.tileNetwork as Tile[][]
+        def tileNetwork = Model.tileNetwork as Tile[][]
 
         int[] tileXY = [
                 tileNetwork.length / 2 + generate((tileNetwork.length / 3) as int),
                 tileNetwork[0].length / 2 + generate((tileNetwork[0].length / 3) as int)
         ]
 
-        def tile = Model.model.tileNetwork[tileXY[0]][tileXY[1]] as Tile
+        def tile = Model.tileNetwork[tileXY[0]][tileXY[1]] as Tile
 
         if (tile.travelType == TravelType.WATER) {
             return generateTileXY()
@@ -583,7 +581,7 @@ class Model {
 
         int idx = 0
 
-        def tileNetwork = Model.model.tileNetwork as Tile[][]
+        def tileNetwork = Model.tileNetwork as Tile[][]
 
         while (true) {
 

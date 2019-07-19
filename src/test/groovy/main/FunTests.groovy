@@ -12,7 +12,7 @@ class FunTests {
         def w = Model.TravelType.WATER
         def p = Model.TravelType.PLAIN
 
-        Model.model.tileNetwork = [
+        Model.tileNetwork = [
                 [new Tile(height: 10, size: sw, x: 0, y: 0, travelType: p), new Tile(height: 10, size: sw, x: 0, y: 1, travelType: w)]
         ]
 

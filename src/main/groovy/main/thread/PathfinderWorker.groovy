@@ -33,7 +33,7 @@ class PathfinderWorker extends Worker {
 
     def update() {
 
-        for (Villager villager : Model.model.villagers) {
+        for (Villager villager : Model.villagers) {
 
             if (villager.pathfinderWorker) {
 
@@ -161,7 +161,7 @@ class PathfinderWorker extends Worker {
 
     private List<int[]> findPath(int[] nextStep, int[] currentStep, int[] previousStep, Set<List<Integer>> visited, Villager villager) {
 
-        def tileNetwork = Model.model.tileNetwork as Tile[][]
+        def tileNetwork = Model.tileNetwork as Tile[][]
         def ctl = Model.circularTileList as List<int[]>
 
         def delta = [nextStep[0] - currentStep[0], nextStep[1] - currentStep[1]] as int[]
@@ -247,10 +247,10 @@ class PathfinderWorker extends Worker {
 
         def nextTiles = []
 
-        def tileNetwork = Model.model.tileNetwork as Tile[][]
+        def tileNetwork = Model.tileNetwork as Tile[][]
         def tile = tileNetwork[tileX][tileY]
 
-        final def tileProbabilities = Model.model.tileProbabilitiesForDegrees[degree]
+        final def tileProbabilities = Model.tileProbabilitiesForDegrees[degree]
 
         tileProbabilities.each { def neighborTile ->
             def (int sX, int sY) = neighborTile[0]

@@ -8,7 +8,7 @@ import main.villager.Villager
 class WorkWorker extends Worker {
 
     def update() {
-        for (Villager villager: Model.model.villagers) {
+        for (Villager villager: Model.villagers) {
             if (villager.workWorker) {
                 def resolution = villager.work()
                 if (resolution == Action.DONE) {

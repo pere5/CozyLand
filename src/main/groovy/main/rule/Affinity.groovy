@@ -7,8 +7,8 @@ class Affinity extends Rule {
 
     @Override
     int status(Villager me) {
-
-        for (Villager villager: Model.model.villagers) {
+/*
+        for (Villager villager: Model.villagers) {
             double range = villager != me ? range(villager, me): Double.MAX_VALUE;
             if (range < Const.COMFORT_ZONE) {
                 result += 1;
@@ -17,7 +17,7 @@ class Affinity extends Rule {
                 me.addTarget(villager);
             }
         }
-
+*/
         if (1) {
             BAD
         } else if (2) {

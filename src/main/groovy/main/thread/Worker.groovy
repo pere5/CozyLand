@@ -27,7 +27,7 @@ abstract class Worker {
                 }
             }
 
-            if (!Model.model.pause) {
+            if (!Model.pause) {
 
                 update()
 
@@ -39,7 +39,7 @@ abstract class Worker {
                     framesPerSecond = 0
                 }
 
-                def frameSlots = Model.model.frameSlots as List
+                def frameSlots = Model.frameSlots as List
                 frameSlots[frameIndex] = lastFramesPerSecond
             }
         }

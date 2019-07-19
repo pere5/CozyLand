@@ -15,7 +15,7 @@ class TestPrints {
 
     static void testPrintsNextTiles(Double[] pixelStart, Double[] pixelDest, def nextTiles, Villager villager) {
         def (int x, int y) = Model.pixelToTileIdx(pixelStart)
-        def tileNetwork = Model.model.tileNetwork as Tile[][]
+        def tileNetwork = Model.tileNetwork as Tile[][]
 
         if (nextTiles) {
             def maxTile = nextTiles.max { def tile ->
@@ -36,7 +36,7 @@ class TestPrints {
                 def tileProbability = (tile[0][1] - tile[0][0]) as Double
                 def neighbor = tileNetwork[nX][nY] as Tile
 
-                Model.model.drawables << new Artifact(
+                Model.drawables << new Artifact(
                         size: neighbor.size, parent: villager.id, x: neighbor.x, y: neighbor.y,
                         color: colorGradient[tileProbability as int]
                 )
@@ -48,7 +48,7 @@ class TestPrints {
         def idx = Model.bresenham(pixelStart as int[], pixelDest as int[])
         (0..idx).each {
             def xy = Model.bresenhamBuffer[it].clone()
-            Model.model.drawables << new Artifact(size: 2, parent: villager.id, x: xy[0], y: xy[1], color: villager.testColor)
+            Model.drawables << new Artifact(size: 2, parent: villager.id, x: xy[0], y: xy[1], color: villager.testColor)
         }
 
     }
@@ -61,19 +61,19 @@ class TestPrints {
         villager.testColor = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
 
         visited.collect { Model.tileToPixelIdx(it) }.each {
-            Model.model.drawables << new Artifact(
+            Model.drawables << new Artifact(
                     size: 3, parent: villager.id, x: it[0], y: it[1],
                     color: villager.testColor
             )
         }
-        Model.model.drawables << new Artifact(
+        Model.drawables << new Artifact(
                 size: 5, parent: villager.id, x: pixelDest[0], y: pixelDest[1],
                 color: villager.testColor
         )
     }
 
     static void clearPrints(Villager villager) {
-        (Model.model.drawables as ConcurrentLinkedQueue<Drawable>).removeAll { it.parent == villager.id }
+        (Model.drawables as ConcurrentLinkedQueue<Drawable>).removeAll { it.parent == villager.id }
     }
 
     static void printBresenhamMisses(Villager villager) {
