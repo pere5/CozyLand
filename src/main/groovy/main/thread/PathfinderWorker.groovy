@@ -160,7 +160,7 @@ class PathfinderWorker extends Worker {
         //return allPoints
     }
 
-    private List<int[]> findPath(int[] nextStep, int[] currentStep, int[] previousStep, Set<List<Integer>> visited, Villager villager) {
+    List<int[]> findPath(int[] nextStep, int[] currentStep, int[] previousStep, Set<List<Integer>> visited, Villager villager) {
 
         def tileNetwork = Model.tileNetwork as Tile[][]
         def ctl = Model.circularTileList as List<int[]>
