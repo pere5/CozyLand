@@ -37,6 +37,6 @@ class Tests2 {
         ]
         def (int[] left, int[] right) = new PathfinderWorker().findPath([2,2] as int[], [1,1] as int[], [0,0] as int[], [] as Set<List<Integer>>, new Villager())
 
-        do stuff here
+        //do stuff here
     }
 }

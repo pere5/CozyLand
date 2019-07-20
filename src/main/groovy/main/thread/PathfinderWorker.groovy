@@ -57,6 +57,8 @@ class PathfinderWorker extends Worker {
                                 aP = Model.tileToPixelIdx(perTiles[j])
                                 bP = Model.tileToPixelIdx(perTiles[j + 1])
 
+                                //random place in tile here somewhere
+
                                 villager.actionQueue << new StraightPath(aP, bP, villager)
                             }
                         } else {
