@@ -20,8 +20,8 @@ class Main extends JFrame {
 
     static int TILE_WIDTH = 6
 
-    static int MAP_WIDTH
-    static int MAP_HEIGHT
+    static int MAP_WIDTH = WINDOW_WIDTH * 2
+    static int MAP_HEIGHT = WINDOW_HEIGHT * 2
 
     static int VIEWPORT_WIDTH
     static int VIEWPORT_HEIGHT
@@ -35,8 +35,6 @@ class Main extends JFrame {
         pack()
         VIEWPORT_WIDTH = WINDOW_WIDTH - (getWidth() - getContentPane().getWidth())
         VIEWPORT_HEIGHT = WINDOW_HEIGHT - (getHeight() - getContentPane().getHeight())
-        MAP_WIDTH = VIEWPORT_WIDTH * 2
-        MAP_HEIGHT = VIEWPORT_HEIGHT * 2
 
         myKeyboardListener = new MyKeyboardListener()
         myMouseListener = new MyMouseListener()

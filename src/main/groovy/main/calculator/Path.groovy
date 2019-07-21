@@ -7,7 +7,7 @@ import main.villager.Villager
 
 class Path {
 
-    static int[][] bresenhamBuffer = new int[Main.WINDOW_WIDTH + Main.WINDOW_HEIGHT][2]
+    static int[][] bresenhamBuffer = new int[Main.MAP_WIDTH + Main.MAP_HEIGHT][2]
 
     static int bresenham(int[] tileStart, int[] tileDest, Villager villager = null) {
         def (int x1, int y1) = tileStart
