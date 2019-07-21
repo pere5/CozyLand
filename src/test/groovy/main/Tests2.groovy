@@ -33,15 +33,21 @@ class Tests2 {
     @Test
     void findPath() {
         Model.tileNetwork = [
-                [Tile.p(0,0), Tile.p(0,1), Tile.p(0,2), Tile.p(0,3)],
-                [Tile.p(1,0), Tile.p(1,1), Tile.w(1,2), Tile.w(1,3)],
-                [Tile.p(2,0), Tile.w(2,1), Tile.w(2,2), Tile.w(2,3)],
-                [Tile.p(3,0), Tile.w(3,1), Tile.w(3,2), Tile.w(3,3)]
+                [Tile.p(0,0), Tile.p(0,1), Tile.p(0,2)],
+                [Tile.p(1,0), Tile.p(1,1), Tile.w(1,2)],
+                [Tile.p(2,0), Tile.w(2,1), Tile.w(2,2)]
         ]
-        def (int[] left, int[] right) = new PathfinderWorker().findPath([2,2] as int[], [1,1] as int[], [0,0] as int[], [] as Set<List<Integer>>, new Villager())
+        Set<List<Integer>> v = []
 
-        assert left == [0, 2] as int[]
-        assert right == [2, 0] as int[]
+        def vi = new Villager()
+
+        def (int[] left0, int[] right0) = new PathfinderWorker().findPath([2,2] as int[], [1,1] as int[], [0,0] as int[], v, vi)
+        def (int[] left1, int[] right1) = new PathfinderWorker().findPath([2,1] as int[], [1,1] as int[], [0,1] as int[], v, vi)
+        def (int[] left2, int[] right2) = new PathfinderWorker().findPath([2,0] as int[], [1,1] as int[], [0,2] as int[], v, vi)
+
+        assert left0 == [0, 2] as int[] && right0 == [2, 0] as int[]
+        assert left1 == [0, 2] as int[] && right1 == [2, 0] as int[]
+        assert left2 == null && right2 == [1, 0] as int[]
         //do stuff here
     }
 }
