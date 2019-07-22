@@ -164,51 +164,51 @@ class PathfinderWorker extends Worker {
 
     List<int[]> findPath(int[] nextStep, int[] currentStep, int[] previousStep, Set<List<Integer>> visited, Villager villager) {
 
-        def tileNetwork = Model.tileNetwork as Tile[][]
         def ctl = Model.circularTileList as List<int[]>
 
         def delta = [nextStep[0] - currentStep[0], nextStep[1] - currentStep[1]] as int[]
         def deltaIdx = ctl.findIndexOf { it == delta }
 
         int[] right = null
-        for (int i = deltaIdx + 1; i < deltaIdx + ctl.size(); i++) {
-
-            ska väll va max 3 steg här och där???????
-
-            println(">>${i}")
-            def n = [currentStep[0] + ctl.get(i)[0], currentStep[1] + ctl.get(i)[1]] as int[]
-            def tile = tileNetwork[n[0]][n[1]]
-            if (n == previousStep) break
-            if (n != nextStep && n != currentStep
-                    && villager.canTravel(tile.travelType)
-                    && !visited.contains([n[0], n[1]])
-            ) {
-                right = n
+        for (int i = deltaIdx + 1; i < deltaIdx + 4; i++) {
+            def (boolean done, result) = leftRight(nextStep, currentStep, previousStep, ctl.get(i) as int[], villager, visited)
+            if (done) {
+                right = result as int[]
                 break
             }
         }
+
         int[] left = null
-        for (int i = deltaIdx - 1; i > deltaIdx - ctl.size(); i--) {
-            println("   <<${i}")
-            def n = [currentStep[0] + ctl.get(i)[0], currentStep[1] + ctl.get(i)[1]] as int[]
-            def tile = tileNetwork[n[0]][n[1]]
-            if (n == previousStep) break
-            if (n != nextStep && n != currentStep
-                    && villager.canTravel(tile.travelType)
-                    && !visited.contains([n[0], n[1]])
-            ) {
-                left = n
+        for (int i = deltaIdx - 1; i > deltaIdx - 4; i--) {
+            def (boolean done, result) = leftRight(nextStep, currentStep, previousStep, ctl.get(i) as int[], villager, visited)
+            if (done) {
+                left = result as int[]
                 break
             }
         }
 
-        if ((left && right && left != right) || ((left && !right) || (!left && right))) {
-            return [left, right]
-        } else if (left && right && left == right) {
+        if (left && right && left == right) {
             return [left, null]
         } else {
-            return [null, null]
+            return [left, right]
         }
+    }
+
+    private def leftRight(int[] nextStep, int[] currentStep, int[] previousStep, int[] neighbor, Villager villager, Set<List<Integer>> visited) {
+
+        boolean done = true
+
+        def n = [currentStep[0] + neighbor[0], currentStep[1] + neighbor[1]] as int[]
+        def tile = (Model.tileNetwork as Tile[][])[n[0]][n[1]]
+
+        if (n == previousStep) {
+            return [done, null]
+        }
+        if (n != nextStep && n != currentStep && villager.canTravel(tile.travelType) && !visited.contains([n[0], n[1]])) {
+            return [done, n]
+        }
+
+        return [!done, null]
     }
 
     int[][] longestPossibleBresenhams(int i) {
