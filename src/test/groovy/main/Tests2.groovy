@@ -41,9 +41,9 @@ class Tests2 {
 
         def vi = new Villager()
 
-        def (int[] left0, int[] right0) = new PathfinderWorker().findPath([2,2] as int[], [1,1] as int[], [0,0] as int[], v, vi)
-        def (int[] left1, int[] right1) = new PathfinderWorker().findPath([2,1] as int[], [1,1] as int[], [0,1] as int[], v, vi)
-        def (int[] left2, int[] right2) = new PathfinderWorker().findPath([2,0] as int[], [1,1] as int[], [0,2] as int[], v, vi)
+        def (int[] left0, int[] right0) = new PathfinderWorker().leftRight([2, 2] as int[], [1, 1] as int[], [0, 0] as int[], v, vi)
+        def (int[] left1, int[] right1) = new PathfinderWorker().leftRight([2, 1] as int[], [1, 1] as int[], [0, 1] as int[], v, vi)
+        def (int[] left2, int[] right2) = new PathfinderWorker().leftRight([2, 0] as int[], [1, 1] as int[], [0, 2] as int[], v, vi)
 
         assert left0 == [0, 2] as int[] && right0 == [2, 0] as int[]
         assert left1 == [0, 2] as int[] && right1 == [2, 0] as int[]

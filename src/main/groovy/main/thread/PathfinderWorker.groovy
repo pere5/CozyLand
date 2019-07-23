@@ -113,7 +113,7 @@ class PathfinderWorker extends Worker {
                 foundIt = true
                 break
             } else {
-                def (int[] left, int[] right) = findPath(nextStep, currentStep, previousStep, visited, villager)
+                def (int[] left, int[] right) = leftRight(nextStep, currentStep, previousStep, visited, villager)
 
                 stepPos = lbt.addLeft(stepPos, currentStep)
                 visited << [currentStep[0], currentStep[1]]
@@ -162,7 +162,7 @@ class PathfinderWorker extends Worker {
         //return allPoints
     }
 
-    List<int[]> findPath(int[] nextStep, int[] currentStep, int[] previousStep, Set<List<Integer>> visited, Villager villager) {
+    List<int[]> leftRight(int[] nextStep, int[] currentStep, int[] previousStep, Set<List<Integer>> visited, Villager villager) {
 
         def ctl = Model.circularTileList as List<int[]>
 
@@ -171,8 +171,8 @@ class PathfinderWorker extends Worker {
 
         int[] right = null
         for (int i = deltaIdx + 1; i < deltaIdx + 4; i++) {
-            def (boolean done, result) = leftRight(nextStep, currentStep, previousStep, ctl.get(i) as int[], villager, visited)
-            if (done) {
+            def (boolean ok, result) = okStep(nextStep, currentStep, previousStep, ctl.get(i) as int[], villager, visited)
+            if (ok) {
                 right = result as int[]
                 break
             }
@@ -180,8 +180,8 @@ class PathfinderWorker extends Worker {
 
         int[] left = null
         for (int i = deltaIdx - 1; i > deltaIdx - 4; i--) {
-            def (boolean done, result) = leftRight(nextStep, currentStep, previousStep, ctl.get(i) as int[], villager, visited)
-            if (done) {
+            def (boolean ok, result) = okStep(nextStep, currentStep, previousStep, ctl.get(i) as int[], villager, visited)
+            if (ok) {
                 left = result as int[]
                 break
             }
@@ -194,21 +194,21 @@ class PathfinderWorker extends Worker {
         }
     }
 
-    private def leftRight(int[] nextStep, int[] currentStep, int[] previousStep, int[] neighbor, Villager villager, Set<List<Integer>> visited) {
+    private def okStep(int[] nextStep, int[] currentStep, int[] previousStep, int[] neighbor, Villager villager, Set<List<Integer>> visited) {
 
-        boolean done = true
+        boolean ok = true
 
         def n = [currentStep[0] + neighbor[0], currentStep[1] + neighbor[1]] as int[]
         def tile = (Model.tileNetwork as Tile[][])[n[0]][n[1]]
 
         if (n == previousStep) {
-            return [done, null]
+            return [ok, null]
         }
         if (n != nextStep && n != currentStep && villager.canTravel(tile.travelType) && !visited.contains([n[0], n[1]])) {
-            return [done, n]
+            return [ok, n]
         }
 
-        return [!done, null]
+        return [!ok, null]
     }
 
     int[][] longestPossibleBresenhams(int i) {
