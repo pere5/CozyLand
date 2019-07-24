@@ -15,15 +15,14 @@ class RuleWorker extends Worker {
 
                 for (Rule newRule : Model.rules) {
                     int newStatus = newRule.status(villager)
-                    if (newStatus < status || (newStatus == status && newRule.rank > rule.rank)) {
+                    if ((newStatus < status) || (rule ? (newStatus == status && newRule.rank > rule.rank) : true)) {
                         status = newStatus
                         rule = newRule
                     }
                 }
-                if (rule) {
-                    rule.startWork(villager, status)
-                    rule.stateWhenDone(villager)
-                }
+
+                rule.startWork(villager, status)
+                rule.toNewState(villager)
             }
         }
     }

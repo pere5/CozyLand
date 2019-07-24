@@ -12,5 +12,5 @@ abstract class Rule {
     int rank
     abstract int status(Villager villager)
     abstract void startWork(Villager villager, int status)
-    abstract void stateWhenDone(Villager villager)
+    abstract void toNewState(Villager villager)
 }

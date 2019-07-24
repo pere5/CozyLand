@@ -71,7 +71,43 @@ class Model {
         def villagers = [
                 Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
                 Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test()
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
+                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
         ]
         def stones = []
         def trees = []
@@ -166,6 +202,12 @@ class Model {
         }
     }
 
+    static int[] generateTileXY(Drawable drawable, Integer dist) {
+        Double r1 = 1 - ThreadLocalRandom.current().nextInt(0, 2 + 1)
+        Double r2 = 1 - ThreadLocalRandom.current().nextInt(0, 2 + 1)
+        return [drawable.x + dist * r1, drawable.y + dist * r2] as int[]
+    }
+
     static int[] generateTileXY() {
         def tileNetwork = Model.tileNetwork as Tile[][]
 
@@ -187,8 +229,8 @@ class Model {
         return distance - ThreadLocalRandom.current().nextInt(0, distance * 2 + 1)
     }
 
-    static int[] pixelToTileIdx(int[] pixels) {
-        pixels.collect { it / Main.TILE_WIDTH }
+    static int pixelToTileIdx(Double pixel) {
+        pixel / Main.TILE_WIDTH
     }
 
     static int[] pixelToTileIdx(Double[] pixels) {
@@ -211,4 +253,6 @@ class Model {
     static int distance(int[] a, int[] b) {
         Point2D.distance(a[0], a[1], b[0], b[1])
     }
+
+    static Double
 }

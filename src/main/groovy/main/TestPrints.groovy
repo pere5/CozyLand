@@ -5,6 +5,7 @@ import main.calculator.Path
 import main.model.Tile
 import main.things.Artifact
 import main.things.Drawable
+import main.thread.PathfinderWorker
 import main.villager.StraightPath
 import main.villager.Villager
 
@@ -46,6 +47,9 @@ class TestPrints {
     }
 
     static void testPrints(Double[] pixelStart, Double[] pixelDest, Villager villager) {
+
+        if (!PathfinderWorker.pathPrints) return
+
         def idx = Path.bresenham(pixelStart as int[], pixelDest as int[])
         (0..idx).each {
             def xy = Path.bresenhamBuffer[it].clone()
@@ -55,6 +59,9 @@ class TestPrints {
     }
 
     static void testPrints(int[] tileStart, int[] tileDest, Villager villager, Set<List<Integer>> visited) {
+
+        if (!PathfinderWorker.pathPrints) return
+
         def pixelStart = Model.tileToPixelIdx(tileStart)
         def pixelDest = Model.tileToPixelIdx(tileDest)
 
@@ -78,6 +85,9 @@ class TestPrints {
     }
 
     static void printBresenhamMisses(Villager villager) {
+
+        if (!PathfinderWorker.pathPrints) return
+
         def count = 0
         for (int i = 0; i < villager.actionQueue.size() - 1; i++) {
             int[] a = Model.pixelToTileIdx((villager.actionQueue[i] as StraightPath).a)

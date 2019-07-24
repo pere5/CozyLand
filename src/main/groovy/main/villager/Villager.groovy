@@ -9,6 +9,10 @@ import java.util.Queue
 
 class Villager extends Drawable {
 
+    static int COMFORT_ZONE_TILES = 4
+    static int VISIBLE_ZONE_TILES = 8
+    static int WALK_DISTANCE_TILES = 8
+
     Queue<Action> actionQueue = new LinkedList<>()
     Queue<int[]> tileQueue = new LinkedList<>()
     boolean ruleWorker
@@ -17,7 +21,7 @@ class Villager extends Drawable {
 
     static Villager test() {
         def villager = new Villager()
-        villager.size = 5
+        villager.size = 3
         villager.color = Color.BLUE
         def (Double x, Double y) = Model.generateXY()
         villager.x = x

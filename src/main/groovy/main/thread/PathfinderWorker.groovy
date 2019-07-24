@@ -14,6 +14,8 @@ import main.villager.Villager
 
 class PathfinderWorker extends Worker {
 
+    static boolean pathPrints = true
+
     /*
         - [ ] Bresenham binary search per star algorithm, "optimized random path":
             - [x] Kör en perStar mot målet
