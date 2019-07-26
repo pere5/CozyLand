@@ -202,12 +202,6 @@ class Model {
         }
     }
 
-    static int[] generateTileXY(Drawable drawable, Integer dist) {
-        Double r1 = 1 - ThreadLocalRandom.current().nextDouble(0, 2)
-        Double r2 = 1 - ThreadLocalRandom.current().nextDouble(0, 2)
-        return [pixelToTileIdx(drawable.x) + dist * r1, pixelToTileIdx(drawable.y) + dist * r2] as int[]
-    }
-
     static int[] generateTileXY() {
         def tileNetwork = Model.tileNetwork as Tile[][]
 
@@ -220,6 +214,21 @@ class Model {
 
         if (tile.travelType == TravelType.WATER) {
             return generateTileXY()
+        } else {
+            return tileXY
+        }
+    }
+
+    static int[] closeRandomTile(Drawable drawable, Integer maxTileDist) {
+        def maxPixelDist = tileToPixelIdx(maxTileDist)
+        Double r1 = 1 - ThreadLocalRandom.current().nextDouble(0, 2)
+        Double r2 = 1 - ThreadLocalRandom.current().nextDouble(0, 2)
+
+        def tileXY = pixelToTileIdx([drawable.x + maxPixelDist * r1, drawable.y + maxPixelDist * r2])
+        def tile = Model.tileNetwork[tileXY[0]][tileXY[1]] as Tile
+
+        if (tile.travelType == TravelType.WATER) {
+            return closeRandomTile(drawable, maxTileDist)
         } else {
             return tileXY
         }
@@ -242,7 +251,7 @@ class Model {
         def tile = Model.tileNetwork[centroidT[0]][centroidT[1]] as Tile
 
         if (tile.travelType == TravelType.WATER) {
-            return generateTileXY(me, dist)
+            return closeRandomTile(me, dist)
         } else {
             return centroidT
         }
@@ -270,6 +279,10 @@ class Model {
 
     static int[] pixelToTileIdx(Double[] pixels) {
         pixels.collect { it / Main.TILE_WIDTH }
+    }
+
+    static Double tileToPixelIdx(int tile) {
+        tile * Main.TILE_WIDTH
     }
 
     static Double[] tileToPixelIdx(int[] tile) {

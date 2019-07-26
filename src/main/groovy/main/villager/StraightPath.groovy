@@ -11,6 +11,9 @@ class StraightPath extends Action {
     static Double STEP = 0.7
 
     StraightPath(Double[] start, Double[] dest, Villager villager) {
+
+        //random place in tile here somewhere
+
         a = start
 
         TestPrints.testPrints(start, dest, villager)

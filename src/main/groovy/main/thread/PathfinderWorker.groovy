@@ -41,8 +41,10 @@ class PathfinderWorker extends Worker {
             if (villager.pathfinderWorker) {
                 def tileDest = null
                 while (villager.tileQueue.peek()) {
-                    def tileStart = tileDest ?: Model.pixelToTileIdx([villager.x, villager.y] as Double[])
+                    def tileStart = tileDest ?: Model.pixelToTileIdx([villager.x, villager.y])
                     tileDest = villager.tileQueue.poll()
+                    if (tileStart == tileDest) continue
+
                     def psList = perStar(tileStart, tileDest, villager)
 
                     //def tiles = longestPossibleBresenhams(idx)
@@ -57,9 +59,6 @@ class PathfinderWorker extends Worker {
                             for (int j = 0; j < perTiles.size() - 1; j++) {
                                 aP = Model.tileToPixelIdx(perTiles[j])
                                 bP = Model.tileToPixelIdx(perTiles[j + 1])
-
-                                //random place in tile here somewhere
-
                                 villager.actionQueue << new StraightPath(aP, bP, villager)
                             }
                         } else {

@@ -42,17 +42,13 @@ class Affinity extends Rule {
         Model.tileNetwork.length
 
         int[] dest
-        if (!targets) {
-            dest = Model.generateTileXY(me, Villager.WALK_DISTANCE_TILES)
-            def boll = Model.pixelToTileIdx([me.x, me.y])
-            int lol = 0
+        if (true || !targets) {
+            dest = Model.closeRandomTile(me, Villager.WALK_DISTANCE_TILES)
         } else {
             dest = Model.centroidTile(targets, me, Villager.WALK_DISTANCE_TILES)
-            def boll = Model.pixelToTileIdx([me.x, me.y])
-            int lol = 0
         }
 
-        if (dest[0]<10) {
+        if (Model.tileNetwork[dest[0]][dest[1]].travelType == Model.TravelType.WATER) {
             throw new PerIsBorkenException()
         }
 
