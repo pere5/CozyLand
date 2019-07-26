@@ -1,7 +1,6 @@
 package main.rule
 
 import main.Model
-import main.exception.PerIsBorkenException
 import main.things.Drawable
 import main.villager.Villager
 
@@ -42,14 +41,10 @@ class Affinity extends Rule {
         Model.tileNetwork.length
 
         int[] dest
-        if (true || !targets) {
+        if (!targets) {
             dest = Model.closeRandomTile(me, Villager.WALK_DISTANCE_TILES)
         } else {
             dest = Model.centroidTile(targets, me, Villager.WALK_DISTANCE_TILES)
-        }
-
-        if (Model.tileNetwork[dest[0]][dest[1]].travelType == Model.TravelType.WATER) {
-            throw new PerIsBorkenException()
         }
 
         me.tileQueue << dest

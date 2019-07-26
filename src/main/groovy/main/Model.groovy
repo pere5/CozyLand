@@ -235,25 +235,24 @@ class Model {
     }
 
     static int[] centroidTile(List<Drawable> drawables, Drawable me, Integer dist) {
-        def centroidP = [0, 0] as Double[]
+        def cPixel = [0, 0] as Double[]
 
         for (Drawable drawable: drawables) {
-            centroidP[0] += drawable.x
-            centroidP[1] += drawable.y
+            cPixel[0] += drawable.x
+            cPixel[1] += drawable.y
         }
 
-        int totalPoints = drawables.size()
-        centroidP[0] = centroidP[0] / totalPoints
-        centroidP[1] = centroidP[1] / totalPoints
+        cPixel[0] = cPixel[0] / drawables.size()
+        cPixel[1] = cPixel[1] / drawables.size()
 
-        def centroidT = pixelToTileIdx(centroidP)
+        def cTile = pixelToTileIdx(cPixel)
 
-        def tile = Model.tileNetwork[centroidT[0]][centroidT[1]] as Tile
+        def tile = Model.tileNetwork[cTile[0]][cTile[1]] as Tile
 
         if (tile.travelType == TravelType.WATER) {
             return closeRandomTile(me, dist)
         } else {
-            return centroidT
+            return cTile
         }
     }
 
