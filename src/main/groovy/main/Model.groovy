@@ -124,7 +124,7 @@ class Model {
     static List<Rule> generateRules() {
         int rank = Integer.MAX_VALUE
         [
-                //[new RandomBigWalk(rank: --rank)]
+                //new RandomBigWalk(rank: --rank)
                 new Affinity(rank: --rank)
         ]
     }
