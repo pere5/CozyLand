@@ -1,5 +1,5 @@
 
- - [ ] Rule thread
+ - [x] Rule thread
  - [x] Worker thread
  - [ ] Interruption thread
  - [x] Draw thread
@@ -16,7 +16,7 @@
      - [ ] Walk  
      - [ ] etc...
  - [ ] Pathfinding aStar
-   - [ ] Algoritemen ska inte ta ett steg åt gången mellan tiles utan hitta raka strecka mellan tiles så att gubben kan vandra fritt.
+   - [x] Algoritemen ska inte ta ett steg åt gången mellan tiles utan hitta raka strecka mellan tiles så att gubben kan vandra fritt.
  - [x] Tile network
    - [x] Heightmap 
    - [x] Tile
@@ -26,4 +26,3 @@
  - [x] Testa: scaling helt med alla maps
  - [x] Add some simple FPS stats for all threads and estimated load on cpu
  - [x] 6x6 -> 3x3 tiles med 2x zoom och panning m.h.a att helt enkelt flytta på jPanelen
- - [ ] remove all BigDecimals
