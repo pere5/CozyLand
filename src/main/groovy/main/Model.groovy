@@ -123,7 +123,10 @@ class Model {
 
     static List<Rule> generateRules() {
         int rank = Integer.MAX_VALUE
-        [new Affinity(rank: --rank)]
+        [
+                //[new RandomBigWalk(rank: --rank)]
+                new Affinity(rank: --rank)
+        ]
     }
 
     static BufferedImage createBGImage() {
