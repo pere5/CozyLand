@@ -9,9 +9,9 @@ import java.util.Queue
 
 class Villager extends Drawable {
 
-    static int COMFORT_ZONE_TILES = 4
-    static int VISIBLE_ZONE_TILES = 8
-    static int WALK_DISTANCE_TILES = 8
+    static int COMFORT_ZONE_TILES = 3
+    static int VISIBLE_ZONE_TILES = 6
+    static int WALK_DISTANCE_TILES = 9
 
     Queue<Action> actionQueue = new LinkedList<>()
     Queue<int[]> tileQueue = new LinkedList<>()

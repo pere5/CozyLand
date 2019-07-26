@@ -30,21 +30,19 @@ class Affinity extends Rule {
 
     @Override
     void startWork(Villager me, int status) {
-        List<Drawable> targets = []
+        List<Drawable> closeVillagers = [me]
         for (Villager villager: Model.villagers) {
             Double range = Model.tileRange(villager, me)
             if (range < Villager.VISIBLE_ZONE_TILES) {
-                targets << villager
+                closeVillagers << villager
             }
         }
 
-        Model.tileNetwork.length
-
         int[] dest
-        if (!targets) {
+        if (closeVillagers.size() == 1) {
             dest = Model.closeRandomTile(me, Villager.WALK_DISTANCE_TILES)
         } else {
-            dest = Model.centroidTile(targets, me, Villager.WALK_DISTANCE_TILES)
+            dest = Model.centroidTile(closeVillagers, me, Villager.WALK_DISTANCE_TILES)
         }
 
         me.tileQueue << dest
