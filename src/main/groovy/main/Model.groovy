@@ -203,9 +203,9 @@ class Model {
     }
 
     static int[] generateTileXY(Drawable drawable, Integer dist) {
-        Double r1 = 1 - ThreadLocalRandom.current().nextInt(0, 2 + 1)
-        Double r2 = 1 - ThreadLocalRandom.current().nextInt(0, 2 + 1)
-        return [drawable.x + dist * r1, drawable.y + dist * r2] as int[]
+        Double r1 = 1 - ThreadLocalRandom.current().nextDouble(0, 2)
+        Double r2 = 1 - ThreadLocalRandom.current().nextDouble(0, 2)
+        return [pixelToTileIdx(drawable.x) + dist * r1, pixelToTileIdx(drawable.y) + dist * r2] as int[]
     }
 
     static int[] generateTileXY() {
@@ -225,12 +225,47 @@ class Model {
         }
     }
 
+    static int[] centroidTile(List<Drawable> drawables, Drawable me, Integer dist) {
+        def centroidP = [0, 0] as Double[]
+
+        for (Drawable drawable: drawables) {
+            centroidP[0] += drawable.x
+            centroidP[1] += drawable.y
+        }
+
+        int totalPoints = drawables.size()
+        centroidP[0] = centroidP[0] / totalPoints
+        centroidP[1] = centroidP[1] / totalPoints
+
+        def centroidT = pixelToTileIdx(centroidP)
+
+        def tile = Model.tileNetwork[centroidT[0]][centroidT[1]] as Tile
+
+        if (tile.travelType == TravelType.WATER) {
+            return generateTileXY(me, dist)
+        } else {
+            return centroidT
+        }
+    }
+
+    static int tileRange(Drawable a, Drawable b) {
+        pixelToTileIdx(pixelRange(a, b))
+    }
+
+    static Double pixelRange(Drawable a, Drawable b) {
+        return a.id != b.id ? (Math.sqrt(Math.pow((a.x - b.x), 2) + Math.pow((a.y - b.y), 2))) : java.lang.Double.MAX_VALUE
+    }
+
     static Double generate(int distance) {
         return distance - ThreadLocalRandom.current().nextInt(0, distance * 2 + 1)
     }
 
     static int pixelToTileIdx(Double pixel) {
         pixel / Main.TILE_WIDTH
+    }
+
+    static int[] pixelToTileIdx(List<Double> pixels) {
+        pixels.collect { it / Main.TILE_WIDTH }
     }
 
     static int[] pixelToTileIdx(Double[] pixels) {

@@ -1,7 +1,7 @@
 package main.rule
 
 import main.Model
-import main.calculator.RuleCalcs
+import main.exception.PerIsBorkenException
 import main.things.Drawable
 import main.villager.Villager
 
@@ -12,7 +12,7 @@ class Affinity extends Rule {
 
         int withinRange = 0
         for (Villager villager: Model.villagers) {
-            Double range = RuleCalcs.tileRange(villager, me)
+            Double range = Model.tileRange(villager, me)
             if (range < Villager.COMFORT_ZONE_TILES) {
                 withinRange++
             }
@@ -33,21 +33,30 @@ class Affinity extends Rule {
     void startWork(Villager me, int status) {
         List<Drawable> targets = []
         for (Villager villager: Model.villagers) {
-            Double range = RuleCalcs.tileRange(villager, me)
+            Double range = Model.tileRange(villager, me)
             if (range < Villager.VISIBLE_ZONE_TILES) {
                 targets << villager
             }
         }
 
-        Double[] dest
+        Model.tileNetwork.length
+
+        int[] dest
         if (!targets) {
             dest = Model.generateTileXY(me, Villager.WALK_DISTANCE_TILES)
+            def boll = Model.pixelToTileIdx([me.x, me.y])
+            int lol = 0
         } else {
-            dest = RuleCalcs.centroid(targets)
+            dest = Model.centroidTile(targets, me, Villager.WALK_DISTANCE_TILES)
+            def boll = Model.pixelToTileIdx([me.x, me.y])
+            int lol = 0
         }
 
-        stuff here lol
-        me.tileQueue << [me.x, me.y] as Double[], dest, me)
+        if (dest[0]<10) {
+            throw new PerIsBorkenException()
+        }
+
+        me.tileQueue << dest
     }
 
     @Override
