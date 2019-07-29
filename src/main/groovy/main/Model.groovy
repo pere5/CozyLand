@@ -58,7 +58,7 @@ class Model {
     static boolean pause = false
     static List<Villager> villagers = []
     static ConcurrentLinkedQueue<Drawable> drawables = []
-    static List<Integer> frameSlots = [0, 0, 0, 0, 0]
+    static List<Map> frameSlots = []
     static List<Rule> rules = generateRules()
     static def tileProbabilitiesForDegrees = Probabilities.calculateProbabilitiesModel()
     static BufferedImage backgroundImage

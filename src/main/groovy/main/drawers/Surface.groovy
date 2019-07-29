@@ -10,7 +10,6 @@ import java.awt.*
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
 import java.awt.event.KeyEvent
-import java.util.List
 import java.util.concurrent.ConcurrentLinkedQueue
 
 class Surface extends JPanel implements ActionListener {
@@ -69,19 +68,18 @@ class Surface extends JPanel implements ActionListener {
     }
 
     void drawFPS(Graphics2D g2d) {
-        def frameSlots = Model.frameSlots as List
         long currentTime = System.currentTimeMillis()
         framesPerSecond++
         if (currentTime - startTime > 1000) {
             startTime = currentTime
             lastFramesPerSecond = framesPerSecond
             framesPerSecond = 0
-            frameSlots[0] = lastFramesPerSecond
+            Model.frameSlots[0].fps = lastFramesPerSecond
         }
         g2d.setColor(Color.CYAN)
 
-        for (int i = 0; i < frameSlots.size(); i++) {
-            g2d.drawString("FPS: " + frameSlots[i], 20, 20 * (i + 1))
+        for (int i = 0; i < Model.frameSlots.size(); i++) {
+            g2d.drawString("${Model.frameSlots[i].name}: ${Model.frameSlots[i].fps}", 20, 20 * (i + 1))
         }
     }
 

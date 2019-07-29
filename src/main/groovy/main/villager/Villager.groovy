@@ -21,7 +21,7 @@ class Villager extends Drawable {
 
     static Villager test() {
         def villager = new Villager()
-        villager.size = 3
+        villager.size = 4
         villager.color = Color.BLUE
         def (Double x, Double y) = Model.generateXY()
         villager.x = x

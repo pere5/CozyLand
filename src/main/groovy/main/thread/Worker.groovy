@@ -39,8 +39,8 @@ abstract class Worker {
                     framesPerSecond = 0
                 }
 
-                def frameSlots = Model.frameSlots as List
-                frameSlots[frameIndex] = lastFramesPerSecond
+                def frameSlots = Model.frameSlots
+                frameSlots[frameIndex].fps = lastFramesPerSecond
             }
         }
     }

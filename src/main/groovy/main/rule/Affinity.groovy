@@ -19,7 +19,7 @@ class Affinity extends Rule {
 
         if (withinRange == 0) {
             BAD
-        } else if (withinRange >= 1 && withinRange <= 5) {
+        } else if (withinRange >= 2 && withinRange <= 5) {
             GOOD
         } else if (withinRange >= 6) {
             GREAT

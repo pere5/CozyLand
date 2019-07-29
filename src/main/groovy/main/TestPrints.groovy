@@ -4,14 +4,12 @@ import javaSrc.color.ColorUtils
 import main.calculator.Path
 import main.model.Tile
 import main.things.Artifact
-import main.things.Drawable
 import main.thread.PathfinderWorker
 import main.villager.StraightPath
 import main.villager.Villager
 
 import java.awt.*
 import java.util.List
-import java.util.concurrent.ConcurrentLinkedQueue
 
 class TestPrints {
 
@@ -81,7 +79,7 @@ class TestPrints {
     }
 
     static void clearPrints(Villager villager) {
-        (Model.drawables as ConcurrentLinkedQueue<Drawable>).removeAll { it.parent == villager.id }
+        Model.drawables.removeAll { it.parent == villager.id }
     }
 
     static void printBresenhamMisses(Villager villager) {

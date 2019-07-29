@@ -6,6 +6,12 @@ import main.villager.Villager
 
 class RuleWorker extends Worker {
 
+    @Override
+    def run() {
+        super.intendedFps = 2
+        super.run()
+    }
+
     def update() {
 
         for (Villager villager: Model.villagers) {

@@ -3,10 +3,7 @@ package main
 import main.drawers.Surface
 import main.input.MyKeyboardListener
 import main.input.MyMouseListener
-import main.thread.InterruptionWorker
-import main.thread.PathfinderWorker
-import main.thread.RuleWorker
-import main.thread.WorkWorker
+import main.thread.*
 
 import javax.swing.*
 import java.awt.*
@@ -61,6 +58,16 @@ class Main extends JFrame {
         Thread.start {
             new InterruptionWorker(frameIndex: 4).run()
         }
+        Thread.start {
+            new VillagerWorker(frameIndex: 5).run()
+        }
+
+        Model.frameSlots << [name: 'surface', fps: 0]
+        Model.frameSlots << [name: 'work', fps: 0]
+        Model.frameSlots << [name: 'rule', fps: 0]
+        Model.frameSlots << [name: 'pathfinder', fps: 0]
+        Model.frameSlots << [name: 'interruption', fps: 0]
+        Model.frameSlots << [name: 'villager', fps: 0]
 
         addWindowListener(new WindowAdapter() {
             @Override
