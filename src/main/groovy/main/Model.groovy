@@ -68,47 +68,7 @@ class Model {
         Model.mouse = mouse
         tileNetwork = Background.generateBackground()
         backgroundImage = createBGImage()
-        def villagers = [
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-                Villager.test(), Villager.test(), Villager.test(), Villager.test(), Villager.test(),
-        ]
+        def villagers = (0..200).collect { Villager.test() }
         def stones = []
         def trees = []
         def artifacts = []
