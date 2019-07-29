@@ -19,7 +19,7 @@ class RuleWorker extends Worker {
                 def rule = null
                 int status = Rule.UNREACHABLE
 
-                for (Rule newRule : Model.rules) {
+                for (Rule newRule : villager.rules) {
                     int newStatus = newRule.status(villager)
                     if ((newStatus < status) || (rule ? (newStatus == status && newRule.rank > rule.rank) : true)) {
                         status = newStatus

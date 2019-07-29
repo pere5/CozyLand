@@ -2,9 +2,11 @@ package main.villager
 
 import main.Model
 import main.Model.TravelType
+import main.rule.Rule
 import main.things.Drawable
 
 import java.awt.*
+import java.util.List
 import java.util.Queue
 
 class Villager extends Drawable {
@@ -13,6 +15,7 @@ class Villager extends Drawable {
     static int VISIBLE_ZONE_TILES = 6
     static int WALK_DISTANCE_TILES = 9
 
+    List<Rule> rules = Model.generateStandardRules()
     Queue<Action> actionQueue = new LinkedList<>()
     Queue<int[]> tileQueue = new LinkedList<>()
     boolean ruleWorker

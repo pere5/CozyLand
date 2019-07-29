@@ -19,6 +19,8 @@ class VillagerWorker extends Worker {
                 trädstruktur med ledarskapsnivåer
                 en ledare lägger in rules i sin undersåters privata ruleLists
              */
+
+            Model.roleTree
         }
     }
 }

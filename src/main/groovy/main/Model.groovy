@@ -59,9 +59,10 @@ class Model {
     static List<Villager> villagers = []
     static ConcurrentLinkedQueue<Drawable> drawables = []
     static List<Map> frameSlots = []
-    static List<Rule> rules = generateRules()
     static def tileProbabilitiesForDegrees = Probabilities.calculateProbabilitiesModel()
     static BufferedImage backgroundImage
+
+    static def roleTree = generateRoleTree()
 
     static def init(def keyboard, def mouse) {
         Model.keyboard = keyboard
@@ -81,7 +82,13 @@ class Model {
         Model.drawables = drawables
     }
 
-    static List<Rule> generateRules() {
+    static Object generateRoleTree() {
+        [
+                shaman: []
+        ]
+    }
+
+    static List<Rule> generateStandardRules() {
         int rank = Integer.MAX_VALUE
         [
                 //new RandomBigWalk(rank: --rank)
