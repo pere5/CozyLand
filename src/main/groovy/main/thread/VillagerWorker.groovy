@@ -14,7 +14,11 @@ class VillagerWorker extends Worker {
     @Override
     def update() {
         for (Villager villager: Model.villagers) {
-
+            /*
+                Okej
+                trädstruktur med ledarskapsnivåer
+                en ledare lägger in rules i sin undersåters privata ruleLists
+             */
         }
     }
 }
