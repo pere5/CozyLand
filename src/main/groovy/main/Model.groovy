@@ -8,6 +8,7 @@ import main.input.MyMouseListener
 import main.model.Tile
 import main.rule.Affinity
 import main.rule.Rule
+import main.rule.shaman.Migrate
 import main.things.Drawable
 import main.villager.Villager
 
@@ -83,8 +84,16 @@ class Model {
     }
 
     static Object generateRoleTree() {
+
+        //chieftain: handle village
+        //shaman: migrate
+
+
         [
-                shaman: []
+                shaman: [
+                        roles: [new Migrate()],
+                        villages: []
+                ]
         ]
     }
 

@@ -18,6 +18,9 @@ class VillagerWorker extends Worker {
                 Okej
                 trädstruktur med ledarskapsnivåer
                 en ledare lägger in rules i sin undersåters privata ruleLists
+
+                 - [ ] Man måste tracka villagerna status för ress olika roller.
+                 - [ ] Assigna roller baserat på villagers status i dess rules.
              */
 
             Model.roleTree
