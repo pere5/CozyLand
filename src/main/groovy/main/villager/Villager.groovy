@@ -4,6 +4,7 @@ import main.Model
 import main.Model.TravelType
 import main.rule.Rule
 import main.things.Drawable
+import main.thread.RuleWorker
 
 import java.awt.*
 import java.util.List
@@ -15,7 +16,7 @@ class Villager extends Drawable {
     static int VISIBLE_ZONE_TILES = 6
     static int WALK_DISTANCE_TILES = 9
 
-    List<Rule> rules = Model.generateStandardRules()
+    List<Rule> rules = RuleWorker.generateStandardRules()
     Queue<Action> actionQueue = new LinkedList<>()
     Queue<int[]> tileQueue = new LinkedList<>()
     boolean ruleWorker

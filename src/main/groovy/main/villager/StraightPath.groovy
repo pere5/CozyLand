@@ -53,11 +53,6 @@ class StraightPath extends Action {
 
     @Override
     boolean doIt(Drawable drawable) {
-
-
-
-        här kan man sätta villagerna i korrekt tile
-
         def (Double x, Double y) = path.poll()
         drawable.x = x
         drawable.y = y

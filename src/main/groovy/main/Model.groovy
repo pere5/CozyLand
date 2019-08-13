@@ -6,8 +6,6 @@ import main.calculator.Probabilities
 import main.input.MyKeyboardListener
 import main.input.MyMouseListener
 import main.model.Tile
-import main.rule.Affinity
-import main.rule.Rule
 import main.rule.shaman.Migrate
 import main.things.Drawable
 import main.villager.Villager
@@ -94,14 +92,6 @@ class Model {
                         roles: [new Migrate()],
                         villages: []
                 ]
-        ]
-    }
-
-    static List<Rule> generateStandardRules() {
-        int rank = Integer.MAX_VALUE
-        [
-                //new RandomBigWalk(rank: --rank)
-                new Affinity(rank: --rank)
         ]
     }
 
@@ -203,7 +193,7 @@ class Model {
         Double r1 = 1 - ThreadLocalRandom.current().nextDouble(0, 2)
         Double r2 = 1 - ThreadLocalRandom.current().nextDouble(0, 2)
 
-        def tileXY = pixelToTileIdx([drawable.x + maxPixelDist * r1, drawable.y + maxPixelDist * r2])
+        def tileXY = pixelToTileIdx(drawable.x + maxPixelDist * r1, drawable.y + maxPixelDist * r2)
         def tile = Model.tileNetwork[tileXY[0]][tileXY[1]] as Tile
 
         if (tile.travelType == TravelType.WATER) {
@@ -253,6 +243,10 @@ class Model {
 
     static int[] pixelToTileIdx(List<Double> pixels) {
         pixels.collect { it / Main.TILE_WIDTH }
+    }
+
+    static int[] pixelToTileIdx(Double a, Double b) {
+        [ a / Main.TILE_WIDTH, b / Main.TILE_WIDTH ] as int[]
     }
 
     static int[] pixelToTileIdx(Double[] pixels) {

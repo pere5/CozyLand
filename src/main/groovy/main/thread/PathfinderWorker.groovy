@@ -44,7 +44,7 @@ class PathfinderWorker extends Worker {
             if (villager.pathfinderWorker) {
                 def tileDest = null
                 while (villager.tileQueue.peek()) {
-                    def tileStart = tileDest ?: Model.pixelToTileIdx([villager.x, villager.y])
+                    def tileStart = tileDest ?: villager.getTile()
                     tileDest = villager.tileQueue.poll()
                     if (tileStart == tileDest) continue
 

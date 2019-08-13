@@ -22,4 +22,23 @@ abstract class Drawable {
     Drawable() {
         this.id = Model.getNewId()
     }
+
+    int[] getTile() {
+        Model.pixelToTileIdx(x, y)
+    }
+
+    boolean equals(o) {
+        if (this.is(o)) return true
+        if (!(o instanceof Drawable)) return false
+
+        Drawable drawable = (Drawable) o
+
+        if (id != drawable.id) return false
+
+        return true
+    }
+
+    int hashCode() {
+        return id
+    }
 }

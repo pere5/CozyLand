@@ -1,6 +1,7 @@
 package main.rule
 
 import main.Model
+import main.model.Tile
 import main.things.Drawable
 import main.villager.Villager
 
@@ -10,6 +11,19 @@ class Affinity extends Rule {
     int status(Villager me) {
 
         int withinRange = 0
+        def tileNetwork = Model.tileNetwork as Tile[][]
+        int[] meTileXY = me.getTile()
+
+
+        do stuff hääär!!
+
+        for (int x = -1; x < tileNetwork.length; x++) {
+            for (int y = -1; y < tileNetwork[x].length; y++) {
+                withinRange += tileNetwork[x][y].villagers.size()
+            }
+        }
+
+
         for (Villager villager: Model.villagers) {
             Double range = Model.tileRange(villager, me)
             if (range < Villager.COMFORT_ZONE_TILES) {

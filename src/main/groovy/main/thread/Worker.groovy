@@ -5,10 +5,11 @@ import main.exception.PerIsBorkenException
 
 abstract class Worker {
 
+    boolean first = true
     int lastFramesPerSecond = 0
     long startTime = System.currentTimeMillis()
     int framesPerSecond = 0
-    int intendedFps = 16
+    Double intendedFps = 16
     boolean isRunning = true
 
     int frameIndex
