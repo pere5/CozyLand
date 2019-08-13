@@ -12,22 +12,22 @@ class Affinity extends Rule {
 
         int withinRange = 0
         def tileNetwork = Model.tileNetwork as Tile[][]
-        int[] meTileXY = me.getTile()
+        def (int tX, int tY) = me.getTile()
 
+        //Double range = Model.tileRange(villager, me)
 
-        do stuff hääär!!
-
-        for (int x = -1; x < tileNetwork.length; x++) {
-            for (int y = -1; y < tileNetwork[x].length; y++) {
-                withinRange += tileNetwork[x][y].villagers.size()
-            }
-        }
-
-
-        for (Villager villager: Model.villagers) {
-            Double range = Model.tileRange(villager, me)
-            if (range < Villager.COMFORT_ZONE_TILES) {
-                withinRange++
+        //https://stackoverflow.com/questions/40779343/java-loop-through-all-pixels-in-a-2d-circle-with-center-x-y-and-radius?noredirect=1&lq=1
+        int r = Villager.COMFORT_ZONE_TILES
+        int r2 = r*r;
+        // iterate through all x-coordinates
+        for (int x = tY - r; x <= tY + r; x++) {
+            int di2 = (x - tY) * (x - tY)
+            // iterate through all y-coordinates
+            for (int y = tX - r; y <= tX + r; y++) {
+                // test if in-circle
+                if ((y - tX) * (y - tX) + di2 <= r2) {
+                    withinRange += tileNetwork[x][y].villagers.size()
+                }
             }
         }
 
