@@ -26,6 +26,7 @@ class Affinity extends Rule {
             for (int x = tX - r; x <= tX + r; x++) {
                 // test if in-circle
                 if ((x - tX) * (x - tX) + di2 <= r2) {
+                    //TestPrints.printRadii(x, y, me)
                     withinRange += tileNetwork[x][y].villagers.size()
                 }
             }

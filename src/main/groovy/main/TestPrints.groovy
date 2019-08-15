@@ -99,4 +99,10 @@ class TestPrints {
         }
     }
 
+    static def printRadii(int x, int y, Villager me) {
+        Model.drawables << new Artifact(
+                size: 3, parent: me.id, x: Model.tileToPixelIdx(x), y: Model.tileToPixelIdx(y),
+                color: me.testColor
+        )
+    }
 }
