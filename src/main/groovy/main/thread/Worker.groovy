@@ -5,7 +5,7 @@ import main.exception.PerIsBorkenException
 
 abstract class Worker {
 
-    boolean first = true
+    int counter = 0
     int lastFramesPerSecond = 0
     long startTime = System.currentTimeMillis()
     int framesPerSecond = 0
@@ -31,6 +31,7 @@ abstract class Worker {
             if (!Model.pause) {
 
                 update()
+                counter++
 
                 long currentTime = System.currentTimeMillis()
                 framesPerSecond++

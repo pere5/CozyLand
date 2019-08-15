@@ -17,5 +17,5 @@ class Tile extends Drawable {
 
     int height = 0
     Model.TravelType travelType
-    List<Villager> villagers
+    List<Villager> villagers = []
 }

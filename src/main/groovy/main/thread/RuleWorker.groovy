@@ -10,7 +10,7 @@ class RuleWorker extends Worker {
 
     @Override
     def run() {
-        super.intendedFps = 2/3
+        super.intendedFps = 3
         super.run()
     }
 
@@ -26,17 +26,17 @@ class RuleWorker extends Worker {
 
         def tileNetwork = Model.tileNetwork as Tile[][]
 
-        if (first) {
+        if (counter == 0) {
             for (Villager villager: Model.villagers) {
                 int[] tileXY = villager.getTile()
                 tileNetwork[tileXY[0]][tileXY[1]].villagers << villager
             }
-            first = false
-        } else {
+        } else if (counter % 3 == 0) {
             for (int x = 0; x < tileNetwork.length; x++) {
                 for (int y = 0; y < tileNetwork[x].length; y++) {
                     def tile = tileNetwork[x][y]
-                    for (Villager villager: tile.villagers) {
+                    for (int i = tile.villagers.size() - 1; i >= 0; i--) {
+                        def villager = tile.villagers[i]
                         int[] tileXY = villager.getTile()
                         if (tileXY[0] != x || tileXY[1] != y) {
                             tile.villagers.remove(villager)
@@ -46,6 +46,15 @@ class RuleWorker extends Worker {
                 }
             }
         }
+
+        /*
+            Okej
+            trädstruktur med ledarskapsnivåer
+            en ledare lägger in rules i sin undersåters privata ruleLists
+
+             - [ ] Man måste tracka villagerna status för ress olika roller.
+             - [ ] Assigna roller baserat på villagers status i dess rules.
+         */
 
         for (Villager villager: Model.villagers) {
             if (villager.ruleWorker) {

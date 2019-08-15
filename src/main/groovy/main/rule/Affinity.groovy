@@ -18,14 +18,14 @@ class Affinity extends Rule {
 
         //https://stackoverflow.com/questions/40779343/java-loop-through-all-pixels-in-a-2d-circle-with-center-x-y-and-radius?noredirect=1&lq=1
         int r = Villager.COMFORT_ZONE_TILES
-        int r2 = r*r;
-        // iterate through all x-coordinates
-        for (int x = tY - r; x <= tY + r; x++) {
-            int di2 = (x - tY) * (x - tY)
-            // iterate through all y-coordinates
-            for (int y = tX - r; y <= tX + r; y++) {
+        int r2 = r*r
+        // iterate through all y-coordinates
+        for (int y = tY - r; y <= tY + r; y++) {
+            int di2 = (y - tY) * (y - tY)
+            // iterate through all x-coordinates
+            for (int x = tX - r; x <= tX + r; x++) {
                 // test if in-circle
-                if ((y - tX) * (y - tX) + di2 <= r2) {
+                if ((x - tX) * (x - tX) + di2 <= r2) {
                     withinRange += tileNetwork[x][y].villagers.size()
                 }
             }
