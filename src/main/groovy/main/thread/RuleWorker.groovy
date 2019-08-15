@@ -39,10 +39,18 @@ class RuleWorker extends Worker {
 
     def update() {
 
+        prepareVillagers()
+
+        assignShamans()
+
+        assignRules()
+    }
+
+    private void prepareVillagers() {
         def tileNetwork = Model.tileNetwork as Tile[][]
 
         if (counter == 0) {
-            for (Villager villager: Model.villagers) {
+            for (Villager villager : Model.villagers) {
                 int[] tileXY = villager.getTile()
                 tileNetwork[tileXY[0]][tileXY[1]].villagers << villager
             }
@@ -61,7 +69,9 @@ class RuleWorker extends Worker {
                 }
             }
         }
+    }
 
+    private void assignShamans() {
         /*
             Okej
             trädstruktur med ledarskapsnivåer
@@ -71,7 +81,11 @@ class RuleWorker extends Worker {
              - [ ] Assigna roller baserat på villagers status i dess rules.
          */
 
-        for (Villager villager: Model.villagers) {
+
+    }
+
+    private void assignRules() {
+        for (Villager villager : Model.villagers) {
             if (villager.ruleWorker) {
                 def rule = null
                 int status = Rule.UNREACHABLE

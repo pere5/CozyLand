@@ -8,7 +8,7 @@ abstract class Worker {
     long counter = 0
     long startTime = System.currentTimeMillis()
     int framesPerSecond = 0
-    Double intendedFps = 16
+    Double intendedFps = 4
     boolean isRunning = true
 
     int frameIndex

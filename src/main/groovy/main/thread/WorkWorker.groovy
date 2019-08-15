@@ -7,6 +7,12 @@ import main.villager.Villager
 
 class WorkWorker extends Worker {
 
+    @Override
+    def run() {
+        super.intendedFps = 16
+        super.run()
+    }
+
     def update() {
         for (Villager villager: Model.villagers) {
             if (villager.workWorker) {
