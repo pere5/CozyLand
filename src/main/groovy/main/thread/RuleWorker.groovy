@@ -5,7 +5,11 @@ import main.model.Tile
 import main.rule.Affinity
 import main.rule.Rule
 import main.rule.shaman.Migrate
+import main.rule.shaman.Shaman
 import main.villager.Villager
+
+import java.awt.*
+import java.util.List
 
 class RuleWorker extends Worker {
 
@@ -81,7 +85,35 @@ class RuleWorker extends Worker {
              - [ ] Assigna roller baserat på villagers status i dess rules.
          */
 
+        for (int i = 0; i < Model.villagers.size(); i++) {
+            def me = Model.villagers[i]
 
+            if (me.boss == null && me.role == null) {
+                def (int tX, int tY) = me.getTile()
+
+                List<Villager> dudes = []
+
+                Model.calculateWithinRadii(tY, tX, Villager.COMFORT_ZONE_TILES) { int x, int y ->
+                    Model.tileNetwork[x][y].villagers.each { Villager dude ->
+                        if (dude.id != me.id) {
+                            dudes << dude
+                        }
+                    }
+                }
+
+                def myDudes = dudes.findAll { it.boss == null && it.role == null }
+                if (myDudes.size() >= 1) {
+                    me.role = new Shaman()
+                    me.subjects.addAll(dudes)
+                    me.color = Color.GREEN
+                    myDudes.each {
+                        it.boss = me
+                        it.color = Color.LIGHT_GRAY
+                        it.rules.addAll(me.role.rules)
+                    }
+                }
+            }
+        }
     }
 
     private void assignRules() {
