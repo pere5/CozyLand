@@ -4,6 +4,7 @@ import main.Model
 import main.model.Tile
 import main.rule.Affinity
 import main.rule.Rule
+import main.rule.shaman.Migrate
 import main.villager.Villager
 
 class RuleWorker extends Worker {
@@ -19,6 +20,20 @@ class RuleWorker extends Worker {
         [
                 //new RandomBigWalk(rank: --rank)
                 new Affinity(rank: --rank)
+        ]
+    }
+
+    static Object generateRoleTree() {
+
+        //chieftain: handle village
+        //shaman: migrate
+
+
+        [
+                shaman: [
+                        roles: [new Migrate()],
+                        villages: []
+                ]
         ]
     }
 
