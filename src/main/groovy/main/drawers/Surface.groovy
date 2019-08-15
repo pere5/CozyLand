@@ -75,11 +75,15 @@ class Surface extends JPanel implements ActionListener {
             lastFramesPerSecond = framesPerSecond
             framesPerSecond = 0
             Model.frameSlots[0].fps = lastFramesPerSecond
+
+            for (int i = 0; i < Model.frameSlots.size(); i++) {
+                Model.frameSlots[i].string = "${Model.frameSlots[i].name}: ${Model.frameSlots[i].fps}, ${String.format("%.2f", Model.frameSlots[i].time)}"
+            }
         }
         g2d.setColor(Color.CYAN)
 
         for (int i = 0; i < Model.frameSlots.size(); i++) {
-            g2d.drawString("${Model.frameSlots[i].name}: ${Model.frameSlots[i].fps}", 20, 20 * (i + 1))
+            g2d.drawString(Model.frameSlots[i].string as String, 20, 20 * (i + 1))
         }
     }
 

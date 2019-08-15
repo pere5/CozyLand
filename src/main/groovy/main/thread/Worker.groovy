@@ -5,8 +5,7 @@ import main.exception.PerIsBorkenException
 
 abstract class Worker {
 
-    int counter = 0
-    int lastFramesPerSecond = 0
+    long counter = 0
     long startTime = System.currentTimeMillis()
     int framesPerSecond = 0
     Double intendedFps = 16
@@ -17,32 +16,33 @@ abstract class Worker {
     def run() {
 
         while(isRunning) {
-            long timeBeforeFrame = System.currentTimeMillis()
-            //  delay for each frame - time it took for one frame
-            long time = (1000 / intendedFps) - (System.currentTimeMillis() - timeBeforeFrame)
-            if (time > 0) {
-                try {
-                    Thread.sleep(time)
-                } catch(Exception e) {
-                    throw new PerIsBorkenException()
-                }
-            }
-
             if (!Model.pause) {
+                long timeBeforeFrame = System.currentTimeMillis()
 
                 update()
                 counter++
+
+                //  delay for each frame - time it took for one frame
+                long time = (1000 / intendedFps) - (System.currentTimeMillis() - timeBeforeFrame)
+                if (time > 0) {
+                    try {
+                        Thread.sleep(time)
+                    } catch(Exception e) {
+                        throw new PerIsBorkenException()
+                    }
+                }
 
                 long currentTime = System.currentTimeMillis()
                 framesPerSecond++
                 if (currentTime - startTime > 1000) {
                     startTime = currentTime
-                    lastFramesPerSecond = framesPerSecond
+                    def frameSlots = Model.frameSlots
+                    frameSlots[frameIndex].fps = framesPerSecond
+                    frameSlots[frameIndex].time = time / (1000 / intendedFps)
                     framesPerSecond = 0
                 }
 
-                def frameSlots = Model.frameSlots
-                frameSlots[frameIndex].fps = lastFramesPerSecond
+
             }
         }
     }

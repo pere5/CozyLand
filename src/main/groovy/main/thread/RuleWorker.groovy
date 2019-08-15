@@ -31,7 +31,7 @@ class RuleWorker extends Worker {
                 int[] tileXY = villager.getTile()
                 tileNetwork[tileXY[0]][tileXY[1]].villagers << villager
             }
-        } else if (counter % 3 == 0) {
+        } else {
             for (int x = 0; x < tileNetwork.length; x++) {
                 for (int y = 0; y < tileNetwork[x].length; y++) {
                     def tile = tileNetwork[x][y]
