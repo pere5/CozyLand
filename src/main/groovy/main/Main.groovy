@@ -62,11 +62,11 @@ class Main extends JFrame {
             new InterruptionWorker(frameIndex: 4).run()
         }
 
-        Model.frameSlots << [name: 'surface', fps: 0, time: 0d, string: '']
-        Model.frameSlots << [name: 'work', fps: 0, time: 0d, string: '']
-        Model.frameSlots << [name: 'rule', fps: 0, time: 0d, string: '']
-        Model.frameSlots << [name: 'pathfinder', fps: 0, time: 0d, string: '']
-        Model.frameSlots << [name: 'interruption', fps: 0, time: 0d, string: '']
+        Model.frameSlots << [name: 'surface', fps: 0, timeSpent: 0d, string: '']
+        Model.frameSlots << [name: 'work', fps: 0, timeSpent: 0d, string: '']
+        Model.frameSlots << [name: 'rule', fps: 0, timeSpent: 0d, string: '']
+        Model.frameSlots << [name: 'pathfinder', fps: 0, timeSpent: 0d, string: '']
+        Model.frameSlots << [name: 'interruption', fps: 0, timeSpent: 0d, string: '']
 
         addWindowListener(new WindowAdapter() {
             @Override

@@ -38,7 +38,7 @@ abstract class Worker {
                     startTime = currentTime
                     def frameSlots = Model.frameSlots
                     frameSlots[frameIndex].fps = framesPerSecond
-                    frameSlots[frameIndex].time = time / (1000 / intendedFps)
+                    frameSlots[frameIndex].timeSpent = 100 * (1 - (time / (1000 / intendedFps)))
                     framesPerSecond = 0
                 }
 
