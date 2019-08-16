@@ -1,11 +1,16 @@
-package main.rule
+package main.rule.norole
 
 import main.Model
 import main.model.Tile
+import main.rule.Rule
 import main.things.Drawable
 import main.villager.Villager
 
 class Affinity extends Rule {
+
+    Affinity() {
+        super(Integer.MAX_VALUE - 1)
+    }
 
     @Override
     int status(Villager me) {

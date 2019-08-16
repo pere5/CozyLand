@@ -6,6 +6,10 @@ import main.villager.Villager
 
 class Migrate extends Rule {
 
+    Migrate() {
+        super(Integer.MAX_VALUE - 100)
+    }
+
     @Override
     int status(Villager me) {
         GREAT

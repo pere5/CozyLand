@@ -2,9 +2,8 @@ package main.thread
 
 import main.Model
 import main.model.Tile
-import main.rule.Affinity
 import main.rule.Rule
-import main.rule.shaman.Migrate
+import main.rule.norole.NoRole
 import main.rule.shaman.Shaman
 import main.villager.Villager
 
@@ -17,28 +16,6 @@ class RuleWorker extends Worker {
     def run() {
         super.intendedFps = 3
         super.run()
-    }
-
-    static List<Rule> generateStandardRules() {
-        int rank = Integer.MAX_VALUE
-        [
-                //new RandomBigWalk(rank: --rank)
-                new Affinity(rank: --rank)
-        ]
-    }
-
-    static Object generateRoleTree() {
-
-        //chieftain: handle village
-        //shaman: migrate
-
-
-        [
-                shaman: [
-                        roles: [new Migrate()],
-                        villages: []
-                ]
-        ]
     }
 
     def update() {
@@ -76,6 +53,12 @@ class RuleWorker extends Worker {
     }
 
     private void assignShamans() {
+
+        /*
+            Optimization: Use a dude buffer
+            private static final List<Villager> dudes = new ArrayList<>(Model.villagers.size())
+        */
+
         /*
             Okej
             trädstruktur med ledarskapsnivåer
@@ -88,7 +71,7 @@ class RuleWorker extends Worker {
         for (int i = 0; i < Model.villagers.size(); i++) {
             def me = Model.villagers[i]
 
-            if (me.boss == null && me.role == null) {
+            if (!me.boss && (me.role instanceof NoRole)) {
                 def (int tX, int tY) = me.getTile()
 
                 List<Villager> dudes = []
@@ -101,15 +84,20 @@ class RuleWorker extends Worker {
                     }
                 }
 
-                def myDudes = dudes.findAll { it.boss == null && it.role == null }
-                if (myDudes.size() >= 1) {
-                    me.role = new Shaman()
-                    me.subjects.addAll(dudes)
-                    me.color = Color.GREEN
-                    myDudes.each {
-                        it.boss = me
-                        it.color = Color.LIGHT_GRAY
-                        it.rules.addAll(me.role.rules)
+                if (dudes) {
+                    def noBossAround = dudes.size() == dudes.count { it.boss == null && it.role == null }
+
+                    if (noBossAround) {
+                        me.role = new Shaman()
+                        me.subjects.addAll(dudes)
+                        me.color = Color.GREEN
+                        dudes.each {
+                            it.boss = me
+                            it.color = Color.LIGHT_GRAY
+                            it.rules.addAll(me.role.rules)
+                        }
+                    } else {
+
                     }
                 }
             }

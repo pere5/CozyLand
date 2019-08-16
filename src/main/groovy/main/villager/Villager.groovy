@@ -4,8 +4,8 @@ import main.Model
 import main.Model.TravelType
 import main.rule.Role
 import main.rule.Rule
+import main.rule.norole.NoRole
 import main.things.Drawable
-import main.thread.RuleWorker
 
 import java.awt.*
 import java.util.List
@@ -17,7 +17,7 @@ class Villager extends Drawable {
     static int VISIBLE_ZONE_TILES = 6
     static int WALK_DISTANCE_TILES = 9
 
-    List<Rule> rules = RuleWorker.generateStandardRules()
+    List<Rule> rules = []
     Queue<Action> actionQueue = new LinkedList<>()
     Queue<int[]> tileQueue = new LinkedList<>()
     boolean ruleWorker
@@ -30,6 +30,8 @@ class Villager extends Drawable {
 
     static Villager test() {
         def villager = new Villager()
+        villager.role = new NoRole()
+        villager.rules.addAll(villager.role.rules)
         villager.size = 4
         villager.color = Color.BLUE
         def (Double x, Double y) = Model.generateXY()

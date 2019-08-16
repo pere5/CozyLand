@@ -7,7 +7,6 @@ import main.input.MyKeyboardListener
 import main.input.MyMouseListener
 import main.model.Tile
 import main.things.Drawable
-import main.thread.RuleWorker
 import main.villager.Villager
 
 import java.awt.*
@@ -60,8 +59,6 @@ class Model {
     static List<Map> frameSlots = []
     static def tileProbabilitiesForDegrees = Probabilities.calculateProbabilitiesModel()
     static BufferedImage backgroundImage
-
-    static def roleTree = RuleWorker.generateRoleTree()
 
     static def init(def keyboard, def mouse) {
         Model.keyboard = keyboard

@@ -4,6 +4,10 @@ import main.villager.Villager
 
 abstract class Rule {
 
+    Rule (int rank) {
+        this.rank = rank
+    }
+
     static int UNREACHABLE = 3
     static int GREAT = 2
     static int GOOD = 1
