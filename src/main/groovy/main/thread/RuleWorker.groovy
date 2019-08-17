@@ -3,9 +3,9 @@ package main.thread
 import main.Model
 import main.model.Tile
 import main.rule.Affinity
+import main.rule.Role
 import main.rule.Rule
 import main.rule.shaman.Migrate
-import main.rule.shaman.Shaman
 import main.villager.Villager
 
 import java.awt.*
@@ -34,9 +34,9 @@ class RuleWorker extends Worker {
 
 
         [
-                shaman: [
-                        roles: [new Migrate()],
-                        villages: []
+                (Role.SHAMAN): [
+                        rules: [new Migrate()],
+                        villagers: []
                 ]
         ]
     }
@@ -101,15 +101,20 @@ class RuleWorker extends Worker {
                     }
                 }
 
-                def myDudes = dudes.findAll { it.boss == null && it.role == null }
-                if (myDudes.size() >= 1) {
-                    me.role = new Shaman()
-                    me.subjects.addAll(dudes)
-                    me.color = Color.GREEN
-                    myDudes.each {
-                        it.boss = me
-                        it.color = Color.LIGHT_GRAY
-                        it.rules.addAll(me.role.rules)
+                if (dudes) {
+                    def noBossAround = dudes.size() == dudes.count { it.boss == null && it.role == null }
+
+                    if (noBossAround) {
+                        me.role = Model.roleTree[Role.SHAMAN]
+                        me.role.villagers.addAll(dudes)
+                        me.color = Color.GREEN
+                        dudes.each {
+                            it.boss = me
+                            it.color = Color.LIGHT_GRAY
+                            it.rules.addAll(me.role.rules)
+                        }
+                    } else {
+
                     }
                 }
             }

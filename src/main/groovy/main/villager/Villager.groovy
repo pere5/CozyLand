@@ -2,7 +2,6 @@ package main.villager
 
 import main.Model
 import main.Model.TravelType
-import main.rule.Role
 import main.rule.Rule
 import main.things.Drawable
 import main.thread.RuleWorker
@@ -25,8 +24,7 @@ class Villager extends Drawable {
     boolean workWorker
 
     Villager boss
-    Role role
-    List<Villager> subjects = []
+    def role
 
     static Villager test() {
         def villager = new Villager()
