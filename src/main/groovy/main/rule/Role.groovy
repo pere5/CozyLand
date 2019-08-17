@@ -1,7 +1,10 @@
 package main.rule
 
+import main.villager.Villager
+
 abstract class Role {
 
-    int id
+    String id
     List<Rule> rules = []
+    List<Villager> villages = []
 }

@@ -3,7 +3,7 @@ package main.thread
 import main.Model
 import main.model.Tile
 import main.rule.Rule
-import main.rule.norole.NoRole
+import main.rule.alive.Alive
 import main.rule.shaman.Shaman
 import main.villager.Villager
 
@@ -71,7 +71,7 @@ class RuleWorker extends Worker {
         for (int i = 0; i < Model.villagers.size(); i++) {
             def me = Model.villagers[i]
 
-            if (!me.boss && (me.role instanceof NoRole)) {
+            if (me.boss == null && me.role.id == Alive.ID) {
                 def (int tX, int tY) = me.getTile()
 
                 List<Villager> dudes = []
@@ -85,11 +85,11 @@ class RuleWorker extends Worker {
                 }
 
                 if (dudes) {
-                    def noBossAround = dudes.size() == dudes.count { it.boss == null && it.role == null }
+                    def noBossAround = dudes.size() == dudes.count { it.boss == null && me.role.id == Alive.ID }
 
                     if (noBossAround) {
                         me.role = new Shaman()
-                        me.subjects.addAll(dudes)
+                        me.role.villages.addAll(dudes)
                         me.color = Color.GREEN
                         dudes.each {
                             it.boss = me

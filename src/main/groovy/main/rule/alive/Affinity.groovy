@@ -1,4 +1,4 @@
-package main.rule.norole
+package main.rule.alive
 
 import main.Model
 import main.model.Tile
