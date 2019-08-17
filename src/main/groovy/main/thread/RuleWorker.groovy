@@ -3,7 +3,9 @@ package main.thread
 import main.Model
 import main.model.Tile
 import main.rule.Rule
+import main.rule.alive.Affinity
 import main.rule.alive.Alive
+import main.rule.shaman.Migrate
 import main.rule.shaman.Shaman
 import main.villager.Villager
 
@@ -16,6 +18,21 @@ class RuleWorker extends Worker {
     def run() {
         super.intendedFps = 3
         super.run()
+    }
+
+    static List<Rule> aliveRules() {
+        int rank = Integer.MAX_VALUE
+        [
+                //new RandomBigWalk(rank: --rank)
+                new Affinity(rank: --rank)
+        ]
+    }
+
+    static List<Rule> shamanRules() {
+        int rank = Integer.MAX_VALUE - 100
+        [
+                new Migrate(rank: --rank)
+        ]
     }
 
     def update() {

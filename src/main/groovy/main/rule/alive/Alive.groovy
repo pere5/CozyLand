@@ -1,6 +1,7 @@
 package main.rule.alive
 
 import main.rule.Role
+import main.thread.RuleWorker
 
 class Alive extends Role {
 
@@ -8,6 +9,6 @@ class Alive extends Role {
 
     Alive() {
         super.id = ID
-        super.rules << new Affinity()
+        super.rules.addAll(RuleWorker.aliveRules())
     }
 }

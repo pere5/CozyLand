@@ -1,6 +1,7 @@
 package main.rule.shaman
 
 import main.rule.Role
+import main.thread.RuleWorker
 
 class Shaman extends Role {
 
@@ -8,7 +9,7 @@ class Shaman extends Role {
 
     Shaman () {
         super.id = ID
-        super.rules << new Migrate()
+        super.rules.addAll(RuleWorker.shamanRules())
     }
 
 }

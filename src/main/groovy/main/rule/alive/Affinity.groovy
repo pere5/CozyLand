@@ -8,10 +8,6 @@ import main.villager.Villager
 
 class Affinity extends Rule {
 
-    Affinity() {
-        super(Integer.MAX_VALUE - 1)
-    }
-
     @Override
     int status(Villager me) {
 
