@@ -2,6 +2,7 @@ package main.thread
 
 import main.Model
 import main.model.Tile
+import main.rule.RandomBigWalk
 import main.rule.Rule
 import main.rule.alive.Affinity
 import main.rule.alive.Alive
@@ -21,15 +22,21 @@ class RuleWorker extends Worker {
     }
 
     static List<Rule> aliveRules() {
-        int rank = Integer.MAX_VALUE
+        int rank = Integer.MAX_VALUE - 100
         [
-                //new RandomBigWalk(rank: --rank)
                 new Affinity(rank: --rank)
         ]
     }
 
-    static List<Rule> shamanRules() {
-        int rank = Integer.MAX_VALUE - 100
+    static Collection<? extends Rule> shamanRules() {
+        int rank = Integer.MAX_VALUE - 200
+        [
+                new RandomBigWalk(rank: --rank)
+        ]
+    }
+
+    static List<Rule> shamanSubjectRules() {
+        int rank = Integer.MAX_VALUE
         [
                 new Migrate(rank: --rank)
         ]
@@ -70,21 +77,6 @@ class RuleWorker extends Worker {
     }
 
     private void assignShamans() {
-
-        /*
-            Optimization: Use a dude buffer
-            private static final List<Villager> dudes = new ArrayList<>(Model.villagers.size())
-        */
-
-        /*
-            Okej
-            trädstruktur med ledarskapsnivåer
-            en ledare lägger in rules i sin undersåters privata ruleLists
-
-             - [ ] Man måste tracka villagerna status för ress olika roller.
-             - [ ] Assigna roller baserat på villagers status i dess rules.
-         */
-
         for (int i = 0; i < Model.villagers.size(); i++) {
             def me = Model.villagers[i]
 
@@ -93,7 +85,7 @@ class RuleWorker extends Worker {
 
                 List<Villager> dudes = []
 
-                Model.calculateWithinRadii(tY, tX, Villager.COMFORT_ZONE_TILES) { int x, int y ->
+                Model.getPointsWithinRadii(tY, tX, Villager.COMFORT_ZONE_TILES) { int x, int y ->
                     Model.tileNetwork[x][y].villagers.each { Villager dude ->
                         if (dude.id != me.id) {
                             dudes << dude
@@ -107,10 +99,11 @@ class RuleWorker extends Worker {
                     if (boss) {
                         me.boss = boss
                         me.color = Color.LIGHT_GRAY
-                        me.rules.addAll(boss.role.rules)
+                        me.rules.addAll(boss.role.subjectRules)
                         boss.role.villagers << me
                     } else {
                         me.role = new Shaman()
+                        me.rules.addAll(me.role.rules)
                         me.color = Color.GREEN
                     }
                 }

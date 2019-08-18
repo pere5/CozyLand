@@ -5,10 +5,6 @@ import main.villager.Villager
 
 class RandomBigWalk extends Rule {
 
-    RandomBigWalk(int rank) {
-        super(rank)
-    }
-
     @Override
     int status(Villager me) {
         BAD

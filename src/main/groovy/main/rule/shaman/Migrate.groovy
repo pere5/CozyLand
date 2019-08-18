@@ -1,6 +1,6 @@
 package main.rule.shaman
 
-
+import main.Model
 import main.rule.Rule
 import main.villager.Villager
 
@@ -8,17 +8,17 @@ class Migrate extends Rule {
 
     @Override
     int status(Villager me) {
-        GREAT
+        BAD
     }
 
     @Override
-    void startWork(Villager villager, int status) {
-        null
+    void startWork(Villager me, int status) {
+        me.tileQueue << Model.closeRandomTile(me.boss, Villager.COMFORT_ZONE_TILES)
     }
 
     @Override
     void toNewState(Villager villager) {
-        null
+        villager.toPathfinderWorker()
     }
 }
 

@@ -9,6 +9,6 @@ class Alive extends Role {
 
     Alive() {
         super.id = ID
-        super.rules.addAll(RuleWorker.aliveRules())
+        super.subjectRules.addAll(RuleWorker.aliveRules())
     }
 }

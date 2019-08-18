@@ -9,6 +9,7 @@ class Shaman extends Role {
 
     Shaman () {
         super.id = ID
+        super.subjectRules.addAll(RuleWorker.shamanSubjectRules())
         super.rules.addAll(RuleWorker.shamanRules())
     }
 

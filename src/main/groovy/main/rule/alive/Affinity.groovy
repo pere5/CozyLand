@@ -15,7 +15,7 @@ class Affinity extends Rule {
         def (int tX, int tY) = me.getTile()
 
         int withinRange = 0
-        Model.calculateWithinRadii(tY, tX, Villager.COMFORT_ZONE_TILES) { int x, int y ->
+        Model.getPointsWithinRadii(tY, tX, Villager.COMFORT_ZONE_TILES) { int x, int y ->
             withinRange += tileNetwork[x][y].villagers.size()
         }
 
@@ -32,16 +32,18 @@ class Affinity extends Rule {
 
     @Override
     void startWork(Villager me, int status) {
-        List<Drawable> closeVillagers = [me]
+        List<Drawable> closeVillagers = []
         for (Villager villager: Model.villagers) {
-            Double range = Model.tileRange(villager, me)
-            if (range < Villager.VISIBLE_ZONE_TILES) {
-                closeVillagers << villager
+            if (me.id != villager.id) {
+                Double range = Model.tileRange(villager, me)
+                if (range < Villager.VISIBLE_ZONE_TILES) {
+                    closeVillagers << villager
+                }
             }
         }
 
         int[] dest
-        if (closeVillagers.size() == 1) {
+        if (closeVillagers.size() == 0) {
             dest = Model.closeRandomTile(me, Villager.WALK_DISTANCE_TILES)
         } else {
             dest = Model.centroidTile(closeVillagers, me, Villager.WALK_DISTANCE_TILES)
