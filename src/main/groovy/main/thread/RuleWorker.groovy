@@ -102,19 +102,16 @@ class RuleWorker extends Worker {
                 }
 
                 if (dudes) {
-                    def noBossAround = dudes.size() == dudes.count { it.boss == null && me.role.id == Alive.ID }
+                    def boss = dudes.find { it.role.id != Alive.ID } ?: dudes.find { it.boss != null }?.boss
 
-                    if (noBossAround) {
-                        me.role = new Shaman()
-                        me.role.villages.addAll(dudes)
-                        me.color = Color.GREEN
-                        dudes.each {
-                            it.boss = me
-                            it.color = Color.LIGHT_GRAY
-                            it.rules.addAll(me.role.rules)
-                        }
+                    if (boss) {
+                        me.boss = boss
+                        me.color = Color.LIGHT_GRAY
+                        me.rules.addAll(boss.role.rules)
+                        boss.role.villagers << me
                     } else {
-
+                        me.role = new Shaman()
+                        me.color = Color.GREEN
                     }
                 }
             }

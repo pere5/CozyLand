@@ -6,5 +6,5 @@ abstract class Role {
 
     String id
     List<Rule> rules = []
-    List<Villager> villages = []
+    List<Villager> villagers = []
 }
