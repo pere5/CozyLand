@@ -2,12 +2,12 @@ package main.thread
 
 import main.Model
 import main.model.Tile
-import main.rule.RandomBigWalk
 import main.rule.Rule
 import main.rule.alive.Affinity
 import main.rule.alive.Alive
 import main.rule.shaman.Migrate
 import main.rule.shaman.Shaman
+import main.rule.shaman.VillageSearch
 import main.villager.Villager
 
 import java.awt.*
@@ -22,21 +22,21 @@ class RuleWorker extends Worker {
     }
 
     static List<Rule> aliveRules() {
-        int rank = Integer.MAX_VALUE - 100
+        int rank = Integer.MAX_VALUE - 300
         [
                 new Affinity(rank: --rank)
         ]
     }
 
     static Collection<? extends Rule> shamanRules() {
-        int rank = Integer.MAX_VALUE - 200
+        int rank = Integer.MAX_VALUE - 100
         [
-                new RandomBigWalk(rank: --rank)
+                new VillageSearch(rank: --rank)
         ]
     }
 
     static List<Rule> shamanSubjectRules() {
-        int rank = Integer.MAX_VALUE
+        int rank = Integer.MAX_VALUE - 200
         [
                 new Migrate(rank: --rank)
         ]
