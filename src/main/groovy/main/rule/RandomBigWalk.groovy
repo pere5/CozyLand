@@ -1,6 +1,7 @@
 package main.rule
 
 import main.Model
+import main.action.PathfinderAction
 import main.model.Villager
 
 class RandomBigWalk extends Rule {
@@ -13,7 +14,7 @@ class RandomBigWalk extends Rule {
     @Override
     void startWork(Villager villager, int status) {
         def pixelDest = Model.generateTileXY()
-        villager.tileQueue << pixelDest
+        villager.actionQueue << new PathfinderAction(pixelDest)
     }
 
     @Override

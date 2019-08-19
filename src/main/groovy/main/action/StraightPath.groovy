@@ -2,9 +2,8 @@ package main.action
 
 import main.TestPrints
 import main.model.Villager
-import main.things.Drawable
 
-class StraightPath extends Action {
+class StraightPath {
     Queue<Double[]> path = new LinkedList<>()
 
     Double[] a
@@ -50,13 +49,5 @@ class StraightPath extends Action {
         int yBig = tileA[1] + 1
         int ySmall = tileA[1] - 1
         return tileB[0] <= xBig && tileB[0] >= xSmall && tileB[1] <= yBig && tileB[1] >= ySmall
-    }
-
-    @Override
-    boolean doIt(Drawable drawable) {
-        def (Double x, Double y) = path.poll()
-        drawable.x = x
-        drawable.y = y
-        return  path ? CONTINUE : DONE
     }
 }

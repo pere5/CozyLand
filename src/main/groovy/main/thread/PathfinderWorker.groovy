@@ -6,6 +6,8 @@ import main.Main
 import main.Model
 import main.Model.TravelType
 import main.TestPrints
+import main.action.Action
+import main.action.PathfinderAction
 import main.action.StraightPath
 import main.calculator.Path
 import main.model.Tile
@@ -41,35 +43,38 @@ class PathfinderWorker extends Worker {
         for (Villager villager : Model.villagers) {
 
             if (villager.pathfinderWorker) {
-                def tileDest = null
-                while (villager.tileQueue.peek()) {
-                    def tileStart = tileDest ?: villager.getTile()
-                    tileDest = villager.tileQueue.poll()
-                    if (tileStart == tileDest) continue
 
-                    def psList = perStar(tileStart, tileDest, villager)
+                for (Action action : villager.actionQueue) {
+                    if (action instanceof PathfinderAction) {
+                        def pathfinderAction = action as PathfinderAction
+                        def tileStart = villager.getTile()
+                        def tileDest = pathfinderAction.tileDest
+                        if (tileStart == tileDest) continue
 
-                    //def tiles = longestPossibleBresenhams(idx)
+                        def psList = perStar(tileStart, tileDest, villager)
 
-                    for (int i = 0; i < psList.size() - 1; i++) {
-                        def aT = psList[i]
-                        def bT = psList[i + 1]
-                        def aP = Model.tileToPixelIdx(aT)
-                        def bP = Model.tileToPixelIdx(bT)
-                        if (Model.distance(aT, bT) > 2) {
-                            def perTiles = perTilesWithBresenham(aT, bT, villager)
-                            for (int j = 0; j < perTiles.size() - 1; j++) {
-                                aP = Model.tileToPixelIdx(perTiles[j])
-                                bP = Model.tileToPixelIdx(perTiles[j + 1])
-                                villager.actionQueue << new StraightPath(aP, bP, villager)
+                        //def tiles = longestPossibleBresenhams(idx)
+
+                        for (int i = 0; i < psList.size() - 1; i++) {
+                            def aT = psList[i]
+                            def bT = psList[i + 1]
+                            def aP = Model.tileToPixelIdx(aT)
+                            def bP = Model.tileToPixelIdx(bT)
+                            if (Model.distance(aT, bT) > 2) {
+                                def perTiles = perTilesWithBresenham(aT, bT, villager)
+                                for (int j = 0; j < perTiles.size() - 1; j++) {
+                                    aP = Model.tileToPixelIdx(perTiles[j])
+                                    bP = Model.tileToPixelIdx(perTiles[j + 1])
+                                    pathfinderAction.pathQueue << new StraightPath(aP, bP, villager)
+                                }
+                            } else {
+                                pathfinderAction.pathQueue << new StraightPath(aP, bP, villager)
                             }
-                        } else {
-                            villager.actionQueue << new StraightPath(aP, bP, villager)
                         }
                     }
                 }
 
-                TestPrints.printBresenhamMisses(villager)
+                //TestPrints.printBresenhamMisses(villager)
 
                 villager.toWorkWorker()
             }

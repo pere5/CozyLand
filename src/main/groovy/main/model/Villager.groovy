@@ -21,7 +21,6 @@ class Villager extends Drawable {
 
     List<Rule> rules = []
     Queue<Action> actionQueue = new LinkedList<>()
-    Queue<int[]> tileQueue = new LinkedList<>()
     boolean ruleWorker
     boolean pathfinderWorker
     boolean workWorker

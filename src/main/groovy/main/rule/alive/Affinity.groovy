@@ -1,6 +1,7 @@
 package main.rule.alive
 
 import main.Model
+import main.action.PathfinderAction
 import main.model.Tile
 import main.model.Villager
 import main.rule.Rule
@@ -49,7 +50,7 @@ class Affinity extends Rule {
             dest = Model.centroidTile(closeVillagers, me, Villager.WALK_DISTANCE_TILES)
         }
 
-        me.tileQueue << dest
+        me.actionQueue << new PathfinderAction(dest)
     }
 
     @Override
