@@ -1,7 +1,7 @@
 package main.rule
 
 import main.Model
-import main.villager.Villager
+import main.model.Villager
 
 class RandomBigWalk extends Rule {
 

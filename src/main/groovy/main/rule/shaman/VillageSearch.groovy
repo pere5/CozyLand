@@ -1,8 +1,8 @@
 package main.rule.shaman
 
 import main.Model
+import main.model.Villager
 import main.rule.Rule
-import main.villager.Villager
 
 class VillageSearch extends Rule {
 
@@ -15,6 +15,7 @@ class VillageSearch extends Rule {
     void startWork(Villager shaman, int status) {
         assert shaman.role instanceof Shaman
         shaman.tileQueue << Model.closeRandomTile(shaman, Villager.SHAMAN_DISTANCE_TILES)
+        //shaman.actionQueue << 0
     }
 
     @Override

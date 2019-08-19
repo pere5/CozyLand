@@ -3,8 +3,8 @@ package main
 import javaSrc.circulararray.CircularArrayList
 import main.calculator.Path
 import main.model.Tile
+import main.model.Villager
 import main.thread.PathfinderWorker
-import main.villager.Villager
 import org.junit.Test
 
 class Tests2 {

@@ -2,13 +2,13 @@ package main.thread
 
 import main.Model
 import main.model.Tile
+import main.model.Villager
 import main.rule.Rule
 import main.rule.alive.Affinity
 import main.rule.alive.Alive
 import main.rule.shaman.Migrate
 import main.rule.shaman.Shaman
 import main.rule.shaman.VillageSearch
-import main.villager.Villager
 
 import java.awt.*
 import java.util.List

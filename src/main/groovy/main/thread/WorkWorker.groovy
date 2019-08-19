@@ -2,8 +2,8 @@ package main.thread
 
 import main.Model
 import main.TestPrints
-import main.villager.Action
-import main.villager.Villager
+import main.action.Action
+import main.model.Villager
 
 class WorkWorker extends Worker {
 

@@ -6,8 +6,8 @@ import main.calculator.Probabilities
 import main.input.MyKeyboardListener
 import main.input.MyMouseListener
 import main.model.Tile
+import main.model.Villager
 import main.things.Drawable
-import main.villager.Villager
 
 import java.awt.*
 import java.awt.geom.Point2D

@@ -2,9 +2,9 @@ package main.rule.alive
 
 import main.Model
 import main.model.Tile
+import main.model.Villager
 import main.rule.Rule
 import main.things.Drawable
-import main.villager.Villager
 
 class Affinity extends Rule {
 

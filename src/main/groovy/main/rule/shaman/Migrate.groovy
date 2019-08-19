@@ -1,8 +1,8 @@
 package main.rule.shaman
 
 import main.Model
+import main.model.Villager
 import main.rule.Rule
-import main.villager.Villager
 
 class Migrate extends Rule {
 

@@ -3,7 +3,7 @@ package main.calculator
 import main.Main
 import main.Model
 import main.model.Tile
-import main.villager.Villager
+import main.model.Villager
 
 class Path {
 

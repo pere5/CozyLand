@@ -2,8 +2,8 @@ package main
 
 import main.calculator.Probabilities
 import main.model.Tile
+import main.model.Villager
 import main.thread.PathfinderWorker
-import main.villager.Villager
 import org.junit.BeforeClass
 import org.junit.Test
 

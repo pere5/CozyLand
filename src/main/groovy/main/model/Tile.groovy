@@ -2,8 +2,8 @@ package main.model
 
 import main.Main
 import main.Model
+import main.model.Villager
 import main.things.Drawable
-import main.villager.Villager
 
 class Tile extends Drawable {
 

@@ -1,7 +1,8 @@
-package main.villager
+package main.model
 
 import main.Model
 import main.Model.TravelType
+import main.action.Action
 import main.rule.Role
 import main.rule.Rule
 import main.rule.alive.Alive

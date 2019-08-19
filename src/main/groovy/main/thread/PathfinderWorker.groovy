@@ -1,16 +1,15 @@
 package main.thread
 
-
 import javaSrc.linkedbinarytree.LinkedBinaryTree
 import javaSrc.linkedbinarytree.Position
 import main.Main
 import main.Model
 import main.Model.TravelType
 import main.TestPrints
+import main.action.StraightPath
 import main.calculator.Path
 import main.model.Tile
-import main.villager.StraightPath
-import main.villager.Villager
+import main.model.Villager
 
 class PathfinderWorker extends Worker {
 

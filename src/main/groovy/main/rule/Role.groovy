@@ -1,6 +1,6 @@
 package main.rule
 
-import main.villager.Villager
+import main.model.Villager
 
 abstract class Role {
 

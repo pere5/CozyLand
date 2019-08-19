@@ -1,6 +1,7 @@
-package main.villager
+package main.action
 
 import main.TestPrints
+import main.model.Villager
 import main.things.Drawable
 
 class StraightPath extends Action {

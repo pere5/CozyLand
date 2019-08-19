@@ -1,12 +1,12 @@
 package main
 
 import javaSrc.color.ColorUtils
+import main.action.StraightPath
 import main.calculator.Path
 import main.model.Tile
+import main.model.Villager
 import main.things.Artifact
 import main.thread.PathfinderWorker
-import main.villager.StraightPath
-import main.villager.Villager
 
 import java.awt.*
 import java.util.List
