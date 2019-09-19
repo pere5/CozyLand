@@ -8,7 +8,7 @@ class Wait extends Action {
     Date time
 
     Wait () {
-        time = LocalDateTime.now().plusSeconds(20).toDate()
+        time = LocalDateTime.now().plusSeconds(5).toDate()
     }
 
     @Override

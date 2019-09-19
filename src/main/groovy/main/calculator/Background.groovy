@@ -13,7 +13,7 @@ import java.util.List
 class Background {
 
     static Tile[][] generateBackground() {
-        generateBackground('lol.png')
+        generateBackground('lol2.png')
     }
 
     static Tile[][] generateBackground(String imageName) {

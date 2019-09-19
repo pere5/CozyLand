@@ -65,7 +65,7 @@ class Model {
         Model.mouse = mouse
         tileNetwork = Background.generateBackground()
         backgroundImage = createBGImage()
-        def villagers = (0..120).collect { Villager.test() }
+        def villagers = (0..100).collect { Villager.test() }
         def stones = []
         def trees = []
         def artifacts = []

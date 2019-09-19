@@ -15,7 +15,6 @@ class VillageSearch extends Rule {
 
     @Override
     void startWork(Villager shaman, int status) {
-        assert shaman.role instanceof Shaman
         shaman.actionQueue << new PathfinderAction(Model.closeRandomTile(shaman, Villager.SHAMAN_DISTANCE_TILES))
         shaman.actionQueue << new Wait()
     }

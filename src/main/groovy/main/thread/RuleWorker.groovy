@@ -25,10 +25,11 @@ class RuleWorker extends Worker {
         int rank = Integer.MAX_VALUE - 300
         [
                 new Affinity(rank: --rank)
+                //new RandomBigWalk(rank: --rank)
         ]
     }
 
-    static Collection<? extends Rule> shamanRules() {
+    static List<Rule> shamanRules() {
         int rank = Integer.MAX_VALUE - 100
         [
                 new VillageSearch(rank: --rank)

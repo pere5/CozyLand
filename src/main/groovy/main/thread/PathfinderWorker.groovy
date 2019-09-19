@@ -51,24 +51,23 @@ class PathfinderWorker extends Worker {
                         def tileDest = pathfinderAction.tileDest
                         if (tileStart == tileDest) continue
 
-                        def psList = perStar(tileStart, tileDest, villager)
+                        def perStarTiles = perStar(tileStart, tileDest, villager)
 
                         //def tiles = longestPossibleBresenhams(idx)
 
-                        for (int i = 0; i < psList.size() - 1; i++) {
-                            def aT = psList[i]
-                            def bT = psList[i + 1]
-                            def aP = Model.tileToPixelIdx(aT)
-                            def bP = Model.tileToPixelIdx(bT)
+                        def randPxlA = randomPlacesInTileList(perStarTiles)
+
+                        for (int i = 0; i < perStarTiles.size() - 1; i++) {
+                            def aT = perStarTiles[i]
+                            def bT = perStarTiles[i + 1]
                             if (Model.distance(aT, bT) > 2) {
-                                def perTiles = perTilesWithBresenham(aT, bT, villager)
-                                for (int j = 0; j < perTiles.size() - 1; j++) {
-                                    aP = Model.tileToPixelIdx(perTiles[j])
-                                    bP = Model.tileToPixelIdx(perTiles[j + 1])
-                                    pathfinderAction.pathQueue << new StraightPath(aP, bP, villager)
+                                def randomTiles = randomTilesWithBresenham(aT, bT, villager)
+                                def randPxlB = randomPlacesInTileList(randomTiles)
+                                for (int j = 0; j < randomTiles.size() - 1; j++) {
+                                    pathfinderAction.pathQueue << new StraightPath(randPxlB[j], randPxlB[j + 1], villager)
                                 }
                             } else {
-                                pathfinderAction.pathQueue << new StraightPath(aP, bP, villager)
+                                pathfinderAction.pathQueue << new StraightPath(randPxlA[i], randPxlA[i + 1], villager)
                             }
                         }
                     }
@@ -105,9 +104,9 @@ class PathfinderWorker extends Worker {
 
             /*
                 Bug: nextStep is reachable by bresenham but current step might not be.
-                This causes trouble for perTilesWithBresenham.
+                This causes trouble for randomTilesWithBresenham.
                 Instead of fixing this side of the problem,
-                we add a jump in perTilesWithBresenham:
+                we add a jump in randomTilesWithBresenham:
                     retList << tileDest
                     break
              */
@@ -221,7 +220,7 @@ class PathfinderWorker extends Worker {
     }
 
 
-    private List<int[]> perTilesWithBresenham(int[] tileStart, int[] tileDest, Villager villager) {
+    private List<int[]> randomTilesWithBresenham(int[] tileStart, int[] tileDest, Villager villager) {
         def retList = [tileStart] as List<int[]>
         int[] tileStep = tileStart
         while (true) {
@@ -244,13 +243,15 @@ class PathfinderWorker extends Worker {
         return retList
     }
 
-    Double[] randomPlaceInTile(int[] tile) {
-        def pixelIdx = Model.tileToPixelIdx(tile)
-        pixelIdx[0] += 1
-        pixelIdx[1] += 1
-        pixelIdx[0] += (Main.TILE_WIDTH - 2) * Math.random()
-        pixelIdx[1] += (Main.TILE_WIDTH - 2) * Math.random()
-        return pixelIdx
+    List<Double[]> randomPlacesInTileList(List<int[]> tiles) {
+        tiles.collect { def tile ->
+            def pixelIdx = Model.tileToPixelIdx(tile)
+            pixelIdx[0] += 1
+            pixelIdx[1] += 1
+            pixelIdx[0] += (Main.TILE_WIDTH - 2) * Math.random()
+            pixelIdx[1] += (Main.TILE_WIDTH - 2) * Math.random()
+            return pixelIdx
+        }
     }
 
     def nextTilesWithBresenham(Villager villager, int[] tileStart, int[] tileDest) {

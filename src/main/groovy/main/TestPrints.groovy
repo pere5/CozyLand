@@ -51,7 +51,7 @@ class TestPrints {
         def idx = Path.bresenham(pixelStart as int[], pixelDest as int[])
         (0..idx).each {
             def xy = Path.bresenhamBuffer[it].clone()
-            Model.drawables << new Artifact(size: 2, parent: villager.id, x: xy[0], y: xy[1], color: villager.testColor)
+            Model.drawables << new Artifact(size: 1, parent: villager.id, x: xy[0], y: xy[1], color: villager.testColor)
         }
 
     }
