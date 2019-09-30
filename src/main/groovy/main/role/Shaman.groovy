@@ -1,6 +1,6 @@
-package main.rule.shaman
+package main.role
 
-import main.rule.Role
+
 import main.thread.RuleWorker
 
 class Shaman extends Role {

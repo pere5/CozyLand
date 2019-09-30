@@ -1,13 +1,13 @@
-package main.rule.alive
+package main.role
 
-import main.rule.Role
+
 import main.thread.RuleWorker
 
-class Alive extends Role {
+class Base extends Role {
 
     static final String ID = 'alive'
 
-    Alive() {
+    Base() {
         super.id = ID
         super.subjectRules.addAll(RuleWorker.aliveRules())
     }

@@ -3,9 +3,9 @@ package main.model
 import main.Model
 import main.Model.TravelType
 import main.action.Action
-import main.rule.Role
+import main.role.Base
+import main.role.Role
 import main.rule.Rule
-import main.rule.alive.Alive
 import main.things.Drawable
 
 import java.awt.*
@@ -30,7 +30,7 @@ class Villager extends Drawable {
 
     static Villager test() {
         def villager = new Villager()
-        villager.role = new Alive()
+        villager.role = new Base()
         villager.rules.addAll(villager.role.subjectRules)
         villager.size = 4
         villager.color = Color.BLUE

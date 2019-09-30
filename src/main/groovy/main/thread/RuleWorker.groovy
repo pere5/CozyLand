@@ -3,11 +3,11 @@ package main.thread
 import main.Model
 import main.model.Tile
 import main.model.Villager
+import main.role.Base
+import main.role.Shaman
+import main.rule.Affinity
 import main.rule.Rule
-import main.rule.alive.Affinity
-import main.rule.alive.Alive
 import main.rule.shaman.Migrate
-import main.rule.shaman.Shaman
 import main.rule.shaman.VillageSearch
 
 import java.awt.*
@@ -81,7 +81,7 @@ class RuleWorker extends Worker {
         for (int i = 0; i < Model.villagers.size(); i++) {
             def me = Model.villagers[i]
 
-            if (me.boss == null && me.role.id == Alive.ID) {
+            if (me.boss == null && me.role.id == Base.ID) {
                 def (int tX, int tY) = me.getTile()
 
                 List<Villager> dudes = []
@@ -95,7 +95,7 @@ class RuleWorker extends Worker {
                 }
 
                 if (dudes) {
-                    def boss = dudes.find { it.role.id != Alive.ID } ?: dudes.find { it.boss != null }?.boss
+                    def boss = dudes.find { it.role.id != Base.ID } ?: dudes.find { it.boss != null }?.boss
 
                     if (boss) {
                         me.boss = boss

@@ -1,4 +1,4 @@
-package main.rule.alive
+package main.rule
 
 import main.Model
 import main.action.PathfinderAction
@@ -21,13 +21,13 @@ class Affinity extends Rule {
         }
 
         if (withinRange == 0) {
-            BAD
+            Rule.BAD
         } else if (withinRange >= 2 && withinRange <= 5) {
-            GOOD
+            Rule.GOOD
         } else if (withinRange >= 6) {
-            GREAT
+            Rule.GREAT
         } else {
-            UNREACHABLE
+            Rule.UNREACHABLE
         }
     }
 

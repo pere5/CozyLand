@@ -1,6 +1,7 @@
-package main.rule
+package main.role
 
 import main.model.Villager
+import main.rule.Rule
 
 abstract class Role {
 
