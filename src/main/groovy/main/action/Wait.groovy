@@ -7,12 +7,14 @@ class Wait extends Action {
 
     Date time
 
-    Wait () {
-        time = LocalDateTime.now().plusSeconds(5).toDate()
-    }
+    Wait () {}
 
     @Override
     boolean doIt(Drawable me) {
+        if (!time) {
+            time = LocalDateTime.now().plusSeconds(5).toDate()
+        }
+
         def resolution = time > new Date() ? CONTINUE : DONE
         return resolution
     }
