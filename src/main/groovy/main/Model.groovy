@@ -1,6 +1,7 @@
 package main
 
 import javaSrc.circulararray.CircularArrayList
+import main.action.StraightPath
 import main.calculator.Background
 import main.calculator.Probabilities
 import main.input.MyKeyboardListener
@@ -206,6 +207,22 @@ class Model {
         } else {
             return cTile
         }
+    }
+
+    static boolean closeEnough(Double[] pointA, Double[] pointB) {
+        Double xBig = pointA[0] + StraightPath.STEP
+        Double xSmall = pointA[0] - StraightPath.STEP
+        Double yBig = pointA[1] + StraightPath.STEP
+        Double ySmall = pointA[1] - StraightPath.STEP
+        return pointB[0] <= xBig && pointB[0] >= xSmall && pointB[1] <= yBig && pointB[1] >= ySmall
+    }
+
+    static boolean closeEnoughTile(int[] tileA, int[] tileB) {
+        int xBig = tileA[0] + 1
+        int xSmall = tileA[0] - 1
+        int yBig = tileA[1] + 1
+        int ySmall = tileA[1] - 1
+        return tileB[0] <= xBig && tileB[0] >= xSmall && tileB[1] <= yBig && tileB[1] >= ySmall
     }
 
     static int tileRange(Drawable a, Drawable b) {
