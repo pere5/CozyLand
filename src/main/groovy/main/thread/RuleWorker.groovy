@@ -56,16 +56,7 @@ class RuleWorker extends Worker {
         if (first) {
             for (Villager villager : Model.villagers) {
                 def (int villagerX, int villagerY) = villager.getTileXY()
-                def tile = tileNetwork[villagerX][villagerY]
-                if (!tile.villagers.find {it.id == villager.id}) {
-                    tile.villagers << villager
-                }
-
-
-
-                ha en separat villagerTile datastruktur, typ en villager -> tile map
-                eller sätt tile på villagers direkt????
-
+                tileNetwork[villagerX][villagerY].villagers << villager
             }
         } else {
             for (int x = 0; x < tileNetwork.length; x++) {
