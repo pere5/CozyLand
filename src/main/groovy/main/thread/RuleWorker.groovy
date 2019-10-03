@@ -41,14 +41,14 @@ class RuleWorker extends Worker {
 
     def update() {
 
-        prepareVillagers()
+        placeVillagersInTileNetwork()
 
         Shaman.assignShamans()
 
         assignRules()
     }
 
-    private void prepareVillagers() {
+    private void placeVillagersInTileNetwork() {
         def tileNetwork = Model.tileNetwork as Tile[][]
 
         def first = globalWorkCounter == 0
@@ -56,7 +56,16 @@ class RuleWorker extends Worker {
         if (first) {
             for (Villager villager : Model.villagers) {
                 def (int villagerX, int villagerY) = villager.getTileXY()
-                tileNetwork[villagerX][villagerY].villagers << villager
+                def tile = tileNetwork[villagerX][villagerY]
+                if (!tile.villagers.find {it.id == villager.id}) {
+                    tile.villagers << villager
+                }
+
+
+
+                ha en separat villagerTile datastruktur, typ en villager -> tile map
+                eller sätt tile på villagers direkt????
+
             }
         } else {
             for (int x = 0; x < tileNetwork.length; x++) {
