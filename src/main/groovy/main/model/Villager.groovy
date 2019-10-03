@@ -14,10 +14,10 @@ import java.util.Queue
 
 class Villager extends Drawable {
 
-    static int COMFORT_ZONE_TILES = 3
-    static int VISIBLE_ZONE_TILES = 17
-    static int WALK_DISTANCE_TILES = 9
-    static int SHAMAN_DISTANCE_TILES = 13
+    static int COMFORT_ZONE_TILES = 4
+    static int VISIBLE_ZONE_TILES = 20
+    static int WALK_DISTANCE_TILES = 13
+    static int SHAMAN_DISTANCE_TILES = 15
 
     List<Rule> rules = []
     Queue<Action> actionQueue = new LinkedList<>()

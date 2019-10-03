@@ -4,7 +4,7 @@ import main.Model
 import main.model.Tile
 import main.model.Villager
 import main.role.Shaman
-import main.rule.RandomBigWalk
+import main.rule.Affinity
 import main.rule.Rule
 import main.rule.shaman.Migrate
 import main.rule.shaman.VillageSearch
