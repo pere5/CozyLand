@@ -37,9 +37,9 @@ class Model {
             (TravelType.PLAIN)    : 0.8d,
             (TravelType.ROAD)     : 0.4d,
 
-            (TravelType.UP_HILL)  : 1.3d,
+            (TravelType.UP_HILL)  : 2.5d,
             (TravelType.EVEN)     : 1.0d,
-            (TravelType.DOWN_HILL): 0.8d,
+            (TravelType.DOWN_HILL): 0.6d,
     ]
 
 
@@ -66,7 +66,7 @@ class Model {
         Model.mouse = mouse
         tileNetwork = Background.generateBackground()
         backgroundImage = createBGImage()
-        def villagers = (0..100).collect { Villager.test() }
+        def villagers = (0..20).collect { Villager.test() }
         def stones = []
         def trees = []
         def artifacts = []
