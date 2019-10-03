@@ -5,7 +5,7 @@ import main.exception.PerIsBorkenException
 
 abstract class Worker {
 
-    long counter = 0
+    long globalWorkCounter = 0
     long startTime = System.currentTimeMillis()
     int framesPerSecond = 0
     Double intendedFps = 4
@@ -20,7 +20,7 @@ abstract class Worker {
                 long timeBeforeFrame = System.currentTimeMillis()
 
                 update()
-                counter++
+                globalWorkCounter++
 
                 //  delay for each frame - time it took for one frame
                 long time = (1000 / intendedFps) - (System.currentTimeMillis() - timeBeforeFrame)

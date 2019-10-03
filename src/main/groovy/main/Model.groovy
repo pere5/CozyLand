@@ -276,7 +276,7 @@ class Model {
 
 
     //https://stackoverflow.com/questions/40779343/java-loop-through-all-pixels-in-a-2d-circle-with-center-x-y-and-radius?noredirect=1&lq=1
-    static void getPointsWithinRadii(int tY, int tX, int r, Closure function) {
+    static void getPointsWithinRadii(int tX, int tY, int r, Closure function) {
         int r2 = r * r
         // iterate through all y-coordinates
         for (int y = tY - r; y <= tY + r; y++) {

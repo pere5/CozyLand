@@ -17,7 +17,7 @@ class RuleWorker extends Worker {
         super.run()
     }
 
-    static List<Rule> aliveRules() {
+    static List<Rule> baseRules() {
         int rank = Integer.MAX_VALUE - 300
         [
                 new Affinity(rank: --rank)
@@ -51,10 +51,12 @@ class RuleWorker extends Worker {
     private void prepareVillagers() {
         def tileNetwork = Model.tileNetwork as Tile[][]
 
-        if (counter == 0) {
+        def first = globalWorkCounter == 0
+
+        if (first) {
             for (Villager villager : Model.villagers) {
-                int[] tileXY = villager.getTile()
-                tileNetwork[tileXY[0]][tileXY[1]].villagers << villager
+                def (int villagerX, int villagerY) = villager.getTileXY()
+                tileNetwork[villagerX][villagerY].villagers << villager
             }
         } else {
             for (int x = 0; x < tileNetwork.length; x++) {
@@ -62,10 +64,10 @@ class RuleWorker extends Worker {
                     def tile = tileNetwork[x][y]
                     for (int i = tile.villagers.size() - 1; i >= 0; i--) {
                         def villager = tile.villagers[i]
-                        int[] tileXY = villager.getTile()
-                        if (tileXY[0] != x || tileXY[1] != y) {
+                        def (int villagerX, int villagerY) = villager.getTileXY()
+                        if (villagerX != x || villagerY != y) {
                             tile.villagers.remove(villager)
-                            tileNetwork[tileXY[0]][tileXY[1]].villagers << villager
+                            tileNetwork[villagerX][villagerY].villagers << villager
                         }
                     }
                 }

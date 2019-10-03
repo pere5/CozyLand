@@ -47,7 +47,7 @@ class PathfinderWorker extends Worker {
                 for (Action action : villager.actionQueue) {
                     if (action instanceof PathfinderAction) {
                         def pathfinderAction = action as PathfinderAction
-                        def tileStart = villager.getTile()
+                        def tileStart = villager.getTileXY()
                         def tileDest = pathfinderAction.tileDest
                         if (tileStart == tileDest) continue
 

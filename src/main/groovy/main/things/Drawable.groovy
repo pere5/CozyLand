@@ -23,7 +23,7 @@ abstract class Drawable {
         this.id = Model.getNewId()
     }
 
-    int[] getTile() {
+    int[] getTileXY() {
         Model.pixelToTileIdx(x, y)
     }
 

@@ -5,10 +5,10 @@ import main.thread.RuleWorker
 
 class Base extends Role {
 
-    static final String ID = 'alive'
+    static final String ID = 'base'
 
     Base() {
         super.id = ID
-        super.subjectRules.addAll(RuleWorker.aliveRules())
+        super.subjectRules.addAll(RuleWorker.baseRules())
     }
 }

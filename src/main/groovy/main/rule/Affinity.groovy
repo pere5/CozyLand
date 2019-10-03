@@ -4,7 +4,6 @@ import main.Model
 import main.action.PathfinderAction
 import main.model.Tile
 import main.model.Villager
-import main.rule.Rule
 import main.things.Drawable
 
 class Affinity extends Rule {
@@ -13,10 +12,10 @@ class Affinity extends Rule {
     int status(Villager me) {
 
         def tileNetwork = Model.tileNetwork as Tile[][]
-        def (int tX, int tY) = me.getTile()
+        def (int villagerX, int villagerY) = me.getTileXY()
 
         int withinRange = 0
-        Model.getPointsWithinRadii(tY, tX, Villager.COMFORT_ZONE_TILES) { int x, int y ->
+        Model.getPointsWithinRadii(villagerX, villagerY, Villager.COMFORT_ZONE_TILES) { int x, int y ->
             withinRange += tileNetwork[x][y].villagers.size()
         }
 
