@@ -3,6 +3,7 @@ package main.model
 import main.Main
 import main.Model
 import main.model.Villager
+import main.model.resource.Resource
 import main.things.Drawable
 
 class Tile extends Drawable {
@@ -15,6 +16,7 @@ class Tile extends Drawable {
         new Tile(height: 10, size: Main.TILE_WIDTH, x: x, y: y, travelType: Model.TravelType.PLAIN)
     }
 
+    List<Resource> resources = []
     int height = 0
     Model.TravelType travelType
     List<Villager> villagers = []

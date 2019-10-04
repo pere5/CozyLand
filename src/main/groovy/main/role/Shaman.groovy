@@ -24,18 +24,18 @@ class Shaman extends Role {
             if (me.boss == null && me.role.id == Base.ID) {
                 def (int villagerX, int villagerY) = me.getTileXY()
 
-                List<Villager> dudes = []
+                List<Villager> followers = []
 
                 Model.getPointsWithinRadii(villagerX, villagerY, Villager.COMFORT_ZONE_TILES) { int x, int y ->
-                    Model.tileNetwork[x][y].villagers.each { Villager dude ->
-                        if (dude.id != me.id) {
-                            dudes << dude
+                    Model.tileNetwork[x][y].villagers.each { Villager follower ->
+                        if (follower.id != me.id) {
+                            followers << follower
                         }
                     }
                 }
 
-                if (dudes) {
-                    def boss = dudes.find { it.role.id != Base.ID } ?: dudes.find { it.boss != null }?.boss
+                if (followers) {
+                    def boss = followers.find { it.role.id != Base.ID } ?: followers.find { it.boss != null }?.boss
 
                     if (boss) {
                         me.boss = boss

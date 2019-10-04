@@ -17,6 +17,14 @@ class RuleWorker extends Worker {
         super.run()
     }
 
+    /*
+        - [ ] Migrera runt i skara
+        - [ ] Stanna och övervaka
+        - [ ] Spara mängden resurser
+        - [ ] Repetera 4 gånger
+        - [ ] Gå till den plats med mest resurser
+     */
+
     static List<Rule> baseRules() {
         int rank = Integer.MAX_VALUE - 300
         [
@@ -89,7 +97,7 @@ class RuleWorker extends Worker {
                     }
                 }
 
-                rule.startWork(villager, status)
+                rule.planWork(villager, status)
                 rule.toNewState(villager)
             }
         }

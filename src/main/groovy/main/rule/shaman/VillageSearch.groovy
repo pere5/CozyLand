@@ -2,6 +2,7 @@ package main.rule.shaman
 
 import main.Model
 import main.action.PathfinderAction
+import main.action.SurveyResources
 import main.action.Wait
 import main.model.Villager
 import main.rule.Rule
@@ -14,9 +15,11 @@ class VillageSearch extends Rule {
     }
 
     @Override
-    void startWork(Villager shaman, int status) {
+    void planWork(Villager shaman, int status) {
         shaman.actionQueue << new PathfinderAction(Model.closeRandomTile(shaman, Villager.SHAMAN_DISTANCE_TILES))
-        shaman.actionQueue << new Wait()
+        shaman.actionQueue << new Wait(10)
+
+        shaman.actionQueue << new SurveyResources()
     }
 
     @Override

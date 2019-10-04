@@ -12,7 +12,7 @@ class RandomBigWalk extends Rule {
     }
 
     @Override
-    void startWork(Villager villager, int status) {
+    void planWork(Villager villager, int status) {
         def pixelDest = Model.generateTileXY()
         villager.actionQueue << new PathfinderAction(pixelDest)
     }

@@ -31,7 +31,7 @@ class Affinity extends Rule {
     }
 
     @Override
-    void startWork(Villager me, int status) {
+    void planWork(Villager me, int status) {
         List<Drawable> closeVillagers = []
         for (Villager villager: Model.villagers) {
             if (me.id != villager.id) {
