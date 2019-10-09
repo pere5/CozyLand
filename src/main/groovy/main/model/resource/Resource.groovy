@@ -1,4 +1,16 @@
 package main.model.resource
 
-abstract class Resource {
+import main.Model
+import main.things.Drawable
+
+abstract class Resource extends Drawable {
+
+    int id
+
+    Resource () {
+        this.id = Model.getNewId()
+    }
+
+
+    blergh
 }
