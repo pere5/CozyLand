@@ -26,3 +26,11 @@
  - [x] Testa: scaling helt med alla maps
  - [x] Add some simple FPS stats for all threads and estimated load on cpu
  - [x] 6x6 -> 3x3 tiles med 2x zoom och panning m.h.a att helt enkelt flytta på jPanelen
+ - [ ] evolution:
+    - [x] Affinity
+    - [x] Encounter others, -> shaman
+    - [ ] VillageSearch/Migrate/SurveyResources 4xtimes
+    - [ ] Choose best spot for village
+    - [ ] Become chieftain
+        - [ ] Build village
+    
