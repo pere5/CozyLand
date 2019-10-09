@@ -12,7 +12,7 @@ class SurveyResources extends Action {
 
     int seconds
     Date time
-    Set<Resource> resources
+    Set<Resource> resources = []
 
     SurveyResources (int seconds) {
         this.seconds = seconds
@@ -28,17 +28,19 @@ class SurveyResources extends Action {
             time = LocalDateTime.now().plusSeconds(seconds).toDate()
         }
 
-        def tileNetwork = Model.tileNetwork as Tile[][]
-        List<Resource> resources = []
-        shaman.role.villagers.each { def follower ->
-            def (int followerX, int followerY) = follower.getTileXY()
-            Model.getPointsWithinRadii(followerX, followerY, Villager.VISIBLE_ZONE_TILES) { int x, int y ->
-                Tile tile = tileNetwork[x][y]
-                resources.addAll(tile.resources)
+        eachSecond (0.5) {
+
+            println("${shaman.id}")
+
+            def tileNetwork = Model.tileNetwork as Tile[][]
+            shaman.role.villagers.each { def follower ->
+                def (int followerX, int followerY) = follower.getTileXY()
+                Model.getPointsWithinRadii(followerX, followerY, Villager.VISIBLE_ZONE_TILES) { int x, int y ->
+                    Tile tile = tileNetwork[x][y]
+                    resources.addAll(tile.resources)
+                }
             }
         }
-
-
 
         def resolution = time > new Date() ? CONTINUE : DONE
         return resolution
