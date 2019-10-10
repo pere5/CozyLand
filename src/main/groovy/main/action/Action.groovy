@@ -1,24 +1,24 @@
 package main.action
 
-
+import groovy.time.TimeCategory
 import main.things.Drawable
 
 abstract class Action {
 
+    Date last = new Date()
+
     static boolean CONTINUE = true
     static boolean DONE = false
 
-    long iteration = 0
-
     abstract boolean doIt(Drawable me);
 
-
-    fix this somehow
-
     void eachSecond (Double times, Closure closure) {
-        if (iteration % interval == 0) {
+        int interval = 1000 / times
+        def millis = TimeCategory.minus(new Date(), last).toMilliseconds()
+
+        if (millis > interval) {
             closure()
+            last = new Date()
         }
-        iteration++
     }
 }

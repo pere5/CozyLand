@@ -3,9 +3,9 @@ package main.action
 import main.Model
 import main.model.Tile
 import main.model.Villager
-import main.model.resource.Resource
 import main.role.Shaman
 import main.things.Drawable
+import main.things.resource.Resource
 import org.joda.time.LocalDateTime
 
 class SurveyResources extends Action {
@@ -29,9 +29,6 @@ class SurveyResources extends Action {
         }
 
         eachSecond (0.5) {
-
-            println("${shaman.id}")
-
             def tileNetwork = Model.tileNetwork as Tile[][]
             shaman.role.villagers.each { def follower ->
                 def (int followerX, int followerY) = follower.getTileXY()
@@ -43,6 +40,11 @@ class SurveyResources extends Action {
         }
 
         def resolution = time > new Date() ? CONTINUE : DONE
+
+        if (resolution == DONE) {
+            println(resources)
+        }
+
         return resolution
     }
 }

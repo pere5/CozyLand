@@ -4,6 +4,7 @@ import main.Main
 import main.Model
 import main.exception.PerIsBorkenException
 import main.model.Tile
+import main.things.resource.Tree
 
 import javax.imageio.ImageIO
 import java.awt.*
@@ -175,12 +176,17 @@ class Background {
                         throw new PerIsBorkenException()
                     }
 
-                    tileNetwork[xTileIdx][yTileIdx] = new Tile(
+                    def tile = new Tile(
                             height: avgAreaHeight,
                             size: tileWidth,
                             x: xTileIdx * tileWidth,
                             y: yTileIdx * tileHeight
                     )
+                    tileNetwork[xTileIdx][yTileIdx] = tile
+
+                    if (((Math.random() * 70) as int) % 5 == 0) {
+                        tile.resources << new Tree()
+                    }
                 }
                 yTileIdx++
             }

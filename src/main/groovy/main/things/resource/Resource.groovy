@@ -1,4 +1,4 @@
-package main.model.resource
+package main.things.resource
 
 import main.things.Drawable
 
