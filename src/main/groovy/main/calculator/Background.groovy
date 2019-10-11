@@ -2,6 +2,7 @@ package main.calculator
 
 import main.Main
 import main.Model
+import main.Model.TravelType
 import main.exception.PerIsBorkenException
 import main.model.Tile
 import main.things.resource.Tree
@@ -10,6 +11,7 @@ import javax.imageio.ImageIO
 import java.awt.*
 import java.awt.image.BufferedImage
 import java.util.List
+import java.util.concurrent.ThreadLocalRandom
 
 class Background {
 
@@ -26,6 +28,7 @@ class Background {
         maximizeScale(heightMap)
         Tile[][] tileNetwork = buildTileNetwork(heightMap)
         setColors(tileNetwork)
+        setResources(tileNetwork)
 
         return tileNetwork
     }
@@ -176,17 +179,14 @@ class Background {
                         throw new PerIsBorkenException()
                     }
 
-                    def tile = new Tile(
+                    def tile = new Tile (
                             height: avgAreaHeight,
                             size: tileWidth,
                             x: xTileIdx * tileWidth,
                             y: yTileIdx * tileHeight
                     )
-                    tileNetwork[xTileIdx][yTileIdx] = tile
 
-                    if (((Math.random() * 70) as int) % 5 == 0) {
-                        tile.resources << new Tree()
-                    }
+                    tileNetwork[xTileIdx][yTileIdx] = tile
                 }
                 yTileIdx++
             }
@@ -315,4 +315,29 @@ class Background {
         }
     }
 
+    private static void setResources(Tile[][] tileNetwork) {
+        for (int x = 0; x < tileNetwork.length; x++) {
+            for (int y = 0; y < tileNetwork[x].length; y++) {
+                Tile tile = tileNetwork[x][y]
+                int random = ThreadLocalRandom.current().nextInt(0, Integer.MAX_VALUE)
+
+                /*
+                    water
+                    forest
+                    hill
+                    mountain
+                 */
+
+                if (tile.travelType == TravelType.FOREST && random % 5 == 0) {
+                    tile.resources << new Tree()
+                }
+                if (tile.travelType == TravelType.HILL && random % 5 == 0) {
+                    tile.resources << new Tree()
+                }
+                if (tile.travelType == TravelType.MOUNTAIN && random % 5 == 0) {
+                    tile.resources << new Rock()
+                }
+            }
+        }
+    }
 }
