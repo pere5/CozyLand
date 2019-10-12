@@ -12,8 +12,8 @@ abstract class Action {
 
     abstract boolean doIt(Drawable me);
 
-    void eachSecond (Double times, Closure closure) {
-        int interval = 1000 / times
+    void timesPerTenSeconds(Double times, Closure closure) {
+        int interval = 10000 / times
         def millis = TimeCategory.minus(new Date(), last).toMilliseconds()
 
         if (millis > interval) {
