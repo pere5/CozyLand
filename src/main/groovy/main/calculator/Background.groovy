@@ -5,6 +5,7 @@ import main.Model
 import main.Model.TravelType
 import main.exception.PerIsBorkenException
 import main.model.Tile
+import main.things.resource.Stone
 import main.things.resource.Tree
 
 import javax.imageio.ImageIO
@@ -335,7 +336,7 @@ class Background {
                     tile.resources << new Tree()
                 }
                 if (tile.travelType == TravelType.MOUNTAIN && random % 5 == 0) {
-                    tile.resources << new Rock()
+                    tile.resources << new Stone()
                 }
             }
         }

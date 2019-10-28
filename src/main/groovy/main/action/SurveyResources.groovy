@@ -6,12 +6,11 @@ import main.model.Villager
 import main.role.Shaman
 import main.things.Drawable
 import main.things.resource.Resource
-import org.joda.time.LocalDateTime
 
 class SurveyResources extends Action {
 
     int seconds
-    Date time
+    long time
     Set<Resource> resources = []
 
     SurveyResources (int seconds) {
@@ -25,7 +24,7 @@ class SurveyResources extends Action {
         assert shaman.role instanceof Shaman
 
         if (!time) {
-            time = LocalDateTime.now().plusSeconds(seconds).toDate()
+            time = System.currentTimeMillis() + (seconds * 1000)
         }
 
         timesPerTenSeconds (3) {
@@ -39,7 +38,7 @@ class SurveyResources extends Action {
             }
         }
 
-        def resolution = time > new Date() ? CONTINUE : DONE
+        def resolution = time > System.currentTimeMillis() ? CONTINUE : DONE
 
         if (resolution == DONE) {
             println(resources)

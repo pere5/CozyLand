@@ -1,12 +1,11 @@
 package main.action
 
 import main.things.Drawable
-import org.joda.time.LocalDateTime
 
 class Wait extends Action {
 
     int seconds
-    Date time
+    long time
 
     Wait (int seconds) {
         this.seconds = seconds
@@ -15,10 +14,10 @@ class Wait extends Action {
     @Override
     boolean doIt(Drawable me) {
         if (!time) {
-            time = LocalDateTime.now().plusSeconds(seconds).toDate()
+            time = System.currentTimeMillis() + (seconds * 1000)
         }
 
-        def resolution = time > new Date() ? CONTINUE : DONE
+        def resolution = time > System.currentTimeMillis() ? CONTINUE : DONE
         return resolution
     }
 }
