@@ -67,12 +67,9 @@ class Model {
         tileNetwork = Background.generateBackground()
         backgroundImage = createBGImage()
         def villagers = (0..120).collect { Villager.test() }
-        def stones = []
-        def trees = []
-        def artifacts = []
 
         def drawables = new ConcurrentLinkedQueue<Drawable>([
-                artifacts, stones, trees, villagers
+                villagers
         ].flatten() as List<Drawable>)
 
         Model.villagers = villagers
