@@ -74,6 +74,8 @@ class Model {
 
         Model.villagers = villagers
         Model.drawables = drawables
+
+        Background.setResources(tileNetwork)
     }
 
     static BufferedImage createBGImage() {

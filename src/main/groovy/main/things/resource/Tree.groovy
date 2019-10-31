@@ -7,7 +7,7 @@ import java.awt.*
 class Tree extends Resource {
 
     Tree (Tile tile) {
-        size = 10
+        size = 2
         color = Color.GREEN
         shape = SHAPES.RECT
         parent = tile.id

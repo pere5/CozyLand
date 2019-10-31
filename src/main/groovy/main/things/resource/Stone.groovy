@@ -7,8 +7,8 @@ import java.awt.*
 class Stone extends Resource {
 
     Stone (Tile tile) {
-        size = 10
-        color = Color.GRAY
+        size = 2
+        color = Color.BLACK
         shape = SHAPES.RECT
         parent = tile.id
         x = tile.x

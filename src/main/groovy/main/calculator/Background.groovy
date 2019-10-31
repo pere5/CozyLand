@@ -29,7 +29,6 @@ class Background {
         maximizeScale(heightMap)
         Tile[][] tileNetwork = buildTileNetwork(heightMap)
         setColors(tileNetwork)
-        setResources(tileNetwork)
 
         return tileNetwork
     }
@@ -316,7 +315,7 @@ class Background {
         }
     }
 
-    private static void setResources(Tile[][] tileNetwork) {
+    static void setResources(Tile[][] tileNetwork) {
         for (int x = 0; x < tileNetwork.length; x++) {
             for (int y = 0; y < tileNetwork[x].length; y++) {
                 Tile tile = tileNetwork[x][y]

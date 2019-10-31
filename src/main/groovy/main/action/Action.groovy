@@ -14,7 +14,7 @@ abstract class Action {
 
     void timesPerTenSeconds(Double times, Closure closure) {
         long interval = 10000 / times
-        long millis = last - System.currentTimeMillis()
+        long millis = System.currentTimeMillis() - last
 
         if (millis > interval) {
             closure()
