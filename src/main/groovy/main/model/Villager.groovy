@@ -15,8 +15,8 @@ import java.util.Queue
 class Villager extends Drawable {
 
     static int COMFORT_ZONE_TILES = 4
-    static int VISIBLE_ZONE_TILES = 20
-    static int WALK_DISTANCE_TILES = 13
+    static int VISIBLE_ZONE_TILES = 12
+    static int WALK_DISTANCE_TILES = 12
     static int SHAMAN_DISTANCE_TILES = 15
 
     List<Rule> rules = []
