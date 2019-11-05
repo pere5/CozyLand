@@ -45,6 +45,10 @@ class SurveyResources extends Action {
 
         def resolution = time > System.currentTimeMillis() ? CONTINUE : DONE
 
+        if (resolution == DONE) {
+            Model.drawables.removeAll { it.parent == me.id }
+        }
+
         return resolution
     }
 }
