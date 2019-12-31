@@ -38,16 +38,10 @@ class Background {
 
         for (int x = 0; x < image.getWidth(); x++) {
             for (int y = 0; y < image.getHeight(); y++) {
-                /*
-                    (getAlpha(inData) << 24)
-                    | (getRed(inData) << 16)
-                    | (getGreen(inData) << 8)
-                    | (getBlue(inData) << 0)
-                 */
-                int rgb = image.getRGB(x, y)
-                int blue = rgb & 0x0000FF
-                int green = rgb & 0x00FF00 >> 8
-                int red = rgb & 0xFF0000 >> 16
+                def color = new Color(image.getRGB(x, y))
+                int blue = color.getBlue()
+                int green = color.getGreen()
+                int red = color.getRed()
                 if (blue == green && blue == red) {
                     heightMap[x][y] = blue
                 } else {
@@ -328,7 +322,7 @@ class Background {
                     mountain
                  */
 
-                if (random % 10 == 0) {
+                if (random % Main.RESOURCE_PREVALENCE == 0) {
                     if (tile.travelType == TravelType.FOREST) {
                         tile.resources << new Tree(tile)
                     }

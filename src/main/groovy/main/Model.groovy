@@ -110,12 +110,13 @@ class Model {
         scaledImage
     }
 
-    static BufferedImage shadeImage(BufferedImage image, Color reference) {
+    static BufferedImage shadeImage(BufferedImage image, Color c) {
 
-        def referenceAvg = ((reference.getRed() + reference.getGreen() + reference.getBlue()) / 3) as int
-        def imageAvg = getDominantColor(image)
+        def c2 = getDominantColor(image)
+        def gray1 = ((c.getRed() + c.getGreen() + c.getBlue()) / 3) as int
+        def gray2 = ((c2.getRed() + c2.getGreen() + c2.getBlue()) / 3) as int
 
-        float scaleFactor = 1.3f
+        float scaleFactor = ((gray1 / gray2) * Main.SHADE_IMAGES) as float
         RescaleOp op = new RescaleOp(scaleFactor, 0, null)
         op.filter(image, null)
     }
@@ -124,25 +125,25 @@ class Model {
         int redBucket = 0
         int greenBucket = 0
         int blueBucket = 0
-        int alphaBucket = 0
 
-        int pixelCount = image.getWidth() * image.getHeight()
+        int pixelCount = 0
         for (int x = 0; x < image.getWidth(); x++) {
             for (int y = 0; y < image.getHeight(); y++) {
-                int rgba = image.getRGB(x, y)
-                redBucket += rgba & 0xFF
-                greenBucket += rgba & 0xFF00 >> 8
-                blueBucket += rgba & 0xFF0000 >> 16
-                alphaBucket += rgba & 0xFF000000 >> 24
+                def color = new Color(image.getRGB(x, y))
+                if (color.getAlpha() == 255) {
+                    redBucket += color.getRed()
+                    greenBucket += color.getGreen()
+                    blueBucket += color.getBlue()
+                    pixelCount++
+                }
             }
         }
 
-        new Color(
-                redBucket / pixelCount,
-                greenBucket / pixelCount,
-                blueBucket / pixelCount,
-                alphaBucket / pixelCount
-        )
+        int r = redBucket / pixelCount
+        int g = greenBucket / pixelCount
+        int b = blueBucket / pixelCount
+
+        new Color(r, g, b)
     }
 
     static Color brightness(Color c, double scale) {
