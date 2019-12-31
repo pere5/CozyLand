@@ -15,8 +15,6 @@ import main.model.Villager
 
 class PathfinderWorker extends Worker {
 
-    static boolean pathPrints = false
-
     /*
         - [ ] Bresenham binary search per star algorithm, "optimized random path":
             - [x] Kör en perStar mot målet

@@ -6,7 +6,6 @@ import main.model.StraightPath
 import main.model.Tile
 import main.model.Villager
 import main.things.Artifact
-import main.thread.PathfinderWorker
 
 import java.awt.*
 import java.util.List
@@ -46,7 +45,7 @@ class TestPrints {
 
     static void testPrints(Double[] pixelStart, Double[] pixelDest, Villager villager) {
 
-        if (!PathfinderWorker.pathPrints) return
+        if (!Main.DEBUG_PATH_PRINTS) return
 
         def idx = Path.bresenham(pixelStart as int[], pixelDest as int[])
         (0..idx).each {
@@ -58,7 +57,7 @@ class TestPrints {
 
     static void testPrints(int[] tileStart, int[] tileDest, Villager villager, Set<List<Integer>> visited) {
 
-        if (!PathfinderWorker.pathPrints) return
+        if (!Main.DEBUG_PATH_PRINTS) return
 
         def pixelStart = Model.tileToPixelIdx(tileStart)
         def pixelDest = Model.tileToPixelIdx(tileDest)
@@ -84,7 +83,7 @@ class TestPrints {
 
     static void printBresenhamMisses(Villager villager) {
 
-        if (!PathfinderWorker.pathPrints) return
+        if (!Main.DEBUG_PATH_PRINTS) return
 
         def count = 0
         for (int i = 0; i < villager.actionQueue.size() - 1; i++) {

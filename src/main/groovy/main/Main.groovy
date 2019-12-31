@@ -15,6 +15,8 @@ import java.awt.event.WindowEvent
 
 class Main extends JFrame {
 
+    static boolean DEBUG_PATH_PRINTS = true
+
     static int WINDOW_WIDTH = 1000
     static int WINDOW_HEIGHT = 750
 
@@ -26,8 +28,8 @@ class Main extends JFrame {
     static int TREE_OFFSET_Y = - (TILE_WIDTH * 4.2) as int
     static int STONE_OFFSET_X = - 0
     static int STONE_OFFSET_Y = - 0
-    static int PERSON_OFFSET_X = - 0
-    static int PERSON_OFFSET_Y = - 0
+    static int PERSON_OFFSET_X = - (TILE_WIDTH / 2) as int
+    static int PERSON_OFFSET_Y = - TILE_WIDTH
     static double TREE_SCALE = 0.8
     static double STONE_SCALE = 0.30
     static double VILLAGER_SCALE = 0.30
