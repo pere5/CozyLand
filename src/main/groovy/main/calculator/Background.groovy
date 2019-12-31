@@ -227,6 +227,8 @@ class Background {
 
         Color blueLow = new Color(51, 153, 255)
         Color blueHigh = new Color(153, 204, 255)
+        Color yellowLow = new Color(194, 178, 128)
+        Color yellowHigh = new Color(114, 100, 55)
         Color greenLow = new Color(102, 204, 0)
         Color greenHigh = new Color(0, 102, 51)
         Color mountainEdgeGreen = new Color(0, 100, 0)
@@ -234,8 +236,9 @@ class Background {
         Color mountainLow = new Color(90, 90, 90)
         Color mountainHigh = new Color(255, 255, 255)
         def colorRatios = [
-                [from: 0.0,  to: 0.2,  colorFrom: blueLow,           colorTo: blueHigh,         travelType: Model.TravelType.WATER],
-                [from: 0.2,  to: 0.85, colorFrom: greenLow,          colorTo: greenHigh,        travelType: Model.TravelType.FOREST],
+                [from: 0.0,  to: 0.18,  colorFrom: blueLow,           colorTo: blueHigh,         travelType: Model.TravelType.WATER],
+                [from: 0.18,  to: 0.35, colorFrom: yellowLow,         colorTo: yellowHigh,       travelType: Model.TravelType.BEACH],
+                [from: 0.35, to: 0.85, colorFrom: greenLow,          colorTo: greenHigh,        travelType: Model.TravelType.FOREST],
                 [from: 0.85, to: 0.93, colorFrom: mountainEdgeGreen, colorTo: mountainLower,    travelType: Model.TravelType.HILL],
                 [from: 0.93, to: 1.0,  colorFrom: mountainLow,       colorTo: mountainHigh,     travelType: Model.TravelType.MOUNTAIN]
         ]

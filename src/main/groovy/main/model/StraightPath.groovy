@@ -9,7 +9,7 @@ class StraightPath {
 
     Double[] a
 
-    static Double STEP = 0.7
+    static Double STEP = 0.4
 
     StraightPath(Double[] start, Double[] dest, Villager villager) {
 

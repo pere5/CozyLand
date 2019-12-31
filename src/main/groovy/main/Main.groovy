@@ -18,20 +18,20 @@ class Main extends JFrame {
     static int WINDOW_WIDTH = 1000
     static int WINDOW_HEIGHT = 750
 
-    static int TILE_WIDTH = 7
-    static int GAUSSIAN_FILTER = 2
+    static int TILE_WIDTH = 8
+    static int GAUSSIAN_FILTER = 3
     static int RESOURCE_PREVALENCE_TREE = 40
     static int RESOURCE_PREVALENCE_STONE = 30
-    static int TREE_OFFSET_X = - (TILE_WIDTH / 2 + 1) as int
-    static int TREE_OFFSET_Y = - (TILE_WIDTH + TILE_WIDTH / 2) as int
+    static int TREE_OFFSET_X = - (TILE_WIDTH * 2) as int
+    static int TREE_OFFSET_Y = - (TILE_WIDTH * 4.2) as int
     static int STONE_OFFSET_X = - 0
     static int STONE_OFFSET_Y = - 0
-    static double TREE_SCALE = 0.5
-    static double STONE_SCALE = 0.24
+    static double TREE_SCALE = 0.8
+    static double STONE_SCALE = 0.30
     static double SHADE_IMAGES = 0.60
 
-    static int MAP_WIDTH = WINDOW_WIDTH * 2
-    static int MAP_HEIGHT = WINDOW_HEIGHT * 2
+    static int MAP_WIDTH = WINDOW_WIDTH * 3
+    static int MAP_HEIGHT = WINDOW_HEIGHT * 3
 
     static int VIEWPORT_WIDTH
     static int VIEWPORT_HEIGHT

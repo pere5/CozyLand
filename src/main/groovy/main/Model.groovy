@@ -29,11 +29,12 @@ class Model {
     }
 
     enum TravelType {
-        WATER, FOREST, HILL, MOUNTAIN, PLAIN, ROAD, UP_HILL, DOWN_HILL, EVEN
+        WATER, BEACH, FOREST, HILL, MOUNTAIN, PLAIN, ROAD, UP_HILL, DOWN_HILL, EVEN
     }
 
     static def travelModifier = [
             (TravelType.WATER)    : 0.7d,
+            (TravelType.BEACH)    : 1.3d,
             (TravelType.FOREST)   : 1.0d,
             (TravelType.HILL)     : 1.2d,
             (TravelType.MOUNTAIN) : 1.3d,
