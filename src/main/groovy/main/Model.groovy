@@ -1,18 +1,20 @@
 package main
 
 import javaSrc.circulararray.CircularArrayList
-import main.action.StraightPath
 import main.calculator.Background
 import main.calculator.Probabilities
 import main.input.MyKeyboardListener
 import main.input.MyMouseListener
+import main.model.StraightPath
 import main.model.Tile
 import main.model.Villager
 import main.things.Drawable
 
+import javax.imageio.ImageIO
 import java.awt.*
 import java.awt.geom.Point2D
 import java.awt.image.BufferedImage
+import java.awt.image.RescaleOp
 import java.util.List
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.ThreadLocalRandom
@@ -60,12 +62,16 @@ class Model {
     static List<Map> frameSlots = []
     static def tileProbabilitiesForDegrees = Probabilities.calculateProbabilitiesModel()
     static BufferedImage backgroundImage
+    static BufferedImage treeImage
+    static BufferedImage stoneImage
 
     static def init(def keyboard, def mouse) {
         Model.keyboard = keyboard
         Model.mouse = mouse
         tileNetwork = Background.generateBackground()
         backgroundImage = createBGImage()
+        treeImage = createImage(Drawable.SHAPES.TREE)
+        stoneImage = createImage(Drawable.SHAPES.STONE)
         def villagers = (0..120).collect { Villager.test() }
 
         def drawables = new ConcurrentLinkedQueue<Drawable>([
@@ -76,6 +82,74 @@ class Model {
         Model.drawables = drawables
 
         Background.setResources(tileNetwork)
+    }
+
+    static BufferedImage createImage(Drawable.SHAPES shape) {
+        def imgFile = shape == Drawable.SHAPES.TREE ?
+                'icons8-large-tree-48.png' :
+                Drawable.SHAPES.STONE ?
+                'icons8-silver-ore-48.png' : null
+        def scale = shape == Drawable.SHAPES.TREE ?
+                Main.TREE_SCALE :
+                Drawable.SHAPES.STONE ?
+                Main.STONE_SCALE : null
+
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader()
+        def img = ImageIO.read(classloader.getResourceAsStream(imgFile))
+        def scaledImage = new BufferedImage (
+                (scale * img.getWidth(null)) as int,
+                (scale * img.getHeight(null)) as int,
+                BufferedImage.TYPE_INT_ARGB
+        )
+
+        Graphics2D g2d = (Graphics2D) scaledImage.getGraphics()
+        g2d.scale(scale, scale)
+        g2d.drawImage(img, 0, 0, null)
+        g2d.dispose()
+
+        scaledImage
+    }
+
+    static BufferedImage shadeImage(BufferedImage image, Color reference) {
+
+        def referenceAvg = ((reference.getRed() + reference.getGreen() + reference.getBlue()) / 3) as int
+        def imageAvg = getDominantColor(image)
+
+        float scaleFactor = 1.3f
+        RescaleOp op = new RescaleOp(scaleFactor, 0, null)
+        op.filter(image, null)
+    }
+
+    static Color getDominantColor(BufferedImage image) {
+        int redBucket = 0
+        int greenBucket = 0
+        int blueBucket = 0
+        int alphaBucket = 0
+
+        int pixelCount = image.getWidth() * image.getHeight()
+        for (int x = 0; x < image.getWidth(); x++) {
+            for (int y = 0; y < image.getHeight(); y++) {
+                int rgba = image.getRGB(x, y)
+                redBucket += rgba & 0xFF
+                greenBucket += rgba & 0xFF00 >> 8
+                blueBucket += rgba & 0xFF0000 >> 16
+                alphaBucket += rgba & 0xFF000000 >> 24
+            }
+        }
+
+        new Color(
+                redBucket / pixelCount,
+                greenBucket / pixelCount,
+                blueBucket / pixelCount,
+                alphaBucket / pixelCount
+        )
+    }
+
+    static Color brightness(Color c, double scale) {
+        int r = Math.min(255, (int) (c.getRed() * scale))
+        int g = Math.min(255, (int) (c.getGreen() * scale))
+        int b = Math.min(255, (int) (c.getBlue() * scale))
+        new Color(r,g,b)
     }
 
     static BufferedImage createBGImage() {

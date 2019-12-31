@@ -45,21 +45,28 @@ class Surface extends JPanel implements ActionListener {
         super.paintComponent(g)
         Graphics2D g2d = (Graphics2D) g
 
-        Image backgroundImage = Model.backgroundImage
-
         int left = - xOffset
         int right = Main.VIEWPORT_WIDTH - xOffset
         int bottom = - yOffset
         int top = Main.VIEWPORT_HEIGHT - yOffset
 
-        g2d.drawImage(backgroundImage, xOffset, yOffset, null)
+        g2d.drawImage(Model.backgroundImage, xOffset, yOffset, null)
 
         ConcurrentLinkedQueue<Drawable> drawables = Model.drawables
         for (Drawable drawable : drawables) {
             if (inView(drawable, left, right, top, bottom)) {
                 g2d.setPaint(drawable.color)
+                def x = (drawable.x + xOffset) as int
+                def y = (drawable.y + yOffset) as int
+                def size = drawable.size
                 if (drawable.shape == Drawable.SHAPES.RECT) {
-                    g2d.fillRect((drawable.x + xOffset) as int, (drawable.y + yOffset) as int, drawable.size, drawable.size)
+                    g2d.fillRect(x, y, size, size)
+                } else if (drawable.shape == Drawable.SHAPES.CIRCLE) {
+                    g2d.fillOval(x, y, size, size)
+                } else if (drawable.shape == Drawable.SHAPES.TREE) {
+                    g2d.drawImage(drawable.image, x + Main.TREE_OFFSET_X, y + Main.TREE_OFFSET_Y, null)
+                } else if (drawable.shape == Drawable.SHAPES.STONE) {
+                    g2d.drawImage(drawable.image, x + Main.STONE_OFFSET_X, y + Main.STONE_OFFSET_Y, null)
                 }
             }
         }

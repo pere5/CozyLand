@@ -328,14 +328,16 @@ class Background {
                     mountain
                  */
 
-                if (tile.travelType == TravelType.FOREST && random % 5 == 0) {
-                    tile.resources << new Tree(tile)
-                }
-                if (tile.travelType == TravelType.HILL && random % 5 == 0) {
-                    tile.resources << new Tree(tile)
-                }
-                if (tile.travelType == TravelType.MOUNTAIN && random % 5 == 0) {
-                    tile.resources << new Stone(tile)
+                if (random % 10 == 0) {
+                    if (tile.travelType == TravelType.FOREST) {
+                        tile.resources << new Tree(tile)
+                    }
+                    if (tile.travelType == TravelType.HILL) {
+                        tile.resources << new Tree(tile)
+                    }
+                    if (tile.travelType == TravelType.MOUNTAIN) {
+                        tile.resources << new Stone(tile)
+                    }
                 }
 
                 Model.drawables.addAll(tile.resources)

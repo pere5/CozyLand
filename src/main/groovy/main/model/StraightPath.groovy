@@ -1,4 +1,4 @@
-package main.action
+package main.model
 
 import main.Model
 import main.TestPrints

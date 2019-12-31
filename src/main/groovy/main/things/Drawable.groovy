@@ -3,11 +3,12 @@ package main.things
 import main.Model
 
 import java.awt.*
+import java.awt.image.BufferedImage
 
 abstract class Drawable {
 
     enum SHAPES {
-        RECT, CIRCLE
+        RECT, CIRCLE, TREE, STONE
     }
 
     int id
@@ -15,6 +16,7 @@ abstract class Drawable {
     Color color
     Color testColor
     SHAPES shape = SHAPES.RECT
+    BufferedImage image
     int size = 10
     Double x = 0
     Double y = 0

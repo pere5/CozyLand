@@ -8,8 +8,8 @@ import main.Model.TravelType
 import main.TestPrints
 import main.action.Action
 import main.action.PathfinderAction
-import main.action.StraightPath
 import main.calculator.Path
+import main.model.StraightPath
 import main.model.Tile
 import main.model.Villager
 

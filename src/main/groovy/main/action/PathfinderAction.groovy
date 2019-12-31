@@ -1,5 +1,6 @@
 package main.action
 
+import main.model.StraightPath
 import main.things.Drawable
 
 class PathfinderAction extends Action {

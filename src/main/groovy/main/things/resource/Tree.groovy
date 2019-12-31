@@ -1,18 +1,15 @@
 package main.things.resource
 
+import main.Model
 import main.model.Tile
-
-import java.awt.*
 
 class Tree extends Resource {
 
     Tree (Tile tile) {
-        size = 2
-        color = Color.GREEN
-        shape = SHAPES.RECT
-        parent = tile.id
-        x = tile.x
-        y = tile.y
+        super(tile)
+        shape = SHAPES.TREE
+        //image = Model.shadeImage(Model.treeImage, tile.color)
+        image = Model.treeImage
     }
 
     @Override

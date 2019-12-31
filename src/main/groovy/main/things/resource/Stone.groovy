@@ -1,18 +1,15 @@
 package main.things.resource
 
+import main.Model
 import main.model.Tile
-
-import java.awt.*
 
 class Stone extends Resource {
 
     Stone (Tile tile) {
-        size = 2
-        color = Color.BLACK
-        shape = SHAPES.RECT
-        parent = tile.id
-        x = tile.x
-        y = tile.y
+        super(tile)
+        shape = SHAPES.STONE
+        //image = Model.shadeImage(Model.stoneImage, tile.color)
+        image = Model.stoneImage
     }
 
     @Override
