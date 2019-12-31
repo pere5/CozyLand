@@ -30,7 +30,7 @@ class SurveyResources extends Action {
             time = System.currentTimeMillis() + (seconds * 1000)
         }
 
-        timesPerTenSeconds (3) {
+        perTenSeconds (3) {
             def tileNetwork = Model.tileNetwork as Tile[][]
             shaman.role.villagers.each { def follower ->
                 def (int followerX, int followerY) = follower.getTileXY()

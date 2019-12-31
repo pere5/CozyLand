@@ -12,7 +12,7 @@ abstract class Action {
 
     abstract boolean doIt(Drawable me);
 
-    void timesPerTenSeconds(Double times, Closure closure) {
+    void perTenSeconds(Double times, Closure closure) {
         long interval = 10000 / times
         long millis = System.currentTimeMillis() - last
 
