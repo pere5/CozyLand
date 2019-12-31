@@ -93,26 +93,26 @@ class Model {
     }
 
     static BufferedImage createImage(Drawable.SHAPES shape) {
-        def imgFile = shape == Drawable.SHAPES.TREE ?
-                'icons8-large-tree-48.png' :
-                Drawable.SHAPES.STONE ?
-                'icons8-silver-ore-48.png' :
-                Drawable.SHAPES.BASE ?
-                'icons8-iron-age-warrior-48.png' :
-                Drawable.SHAPES.SHAMAN ?
-                'icons8-spartan-helmet-48.png' :
-                Drawable.SHAPES.FOLLOWER ?
-                'icons8-sword-48.png' : null
-        def scale = shape == Drawable.SHAPES.TREE ?
-                Main.TREE_SCALE :
-                Drawable.SHAPES.STONE ?
-                Main.STONE_SCALE :
-                Drawable.SHAPES.BASE ?
-                Main.VILLAGER_SCALE :
-                Drawable.SHAPES.SHAMAN ?
-                Main.VILLAGER_SCALE :
-                Drawable.SHAPES.FOLLOWER ?
-                Main.VILLAGER_SCALE : null
+
+        def imgFile = null
+        def scale = null
+
+        if (shape == Drawable.SHAPES.TREE) {
+            imgFile = 'icons8-large-tree-48.png'
+            scale = Main.TREE_SCALE
+        } else if (shape == Drawable.SHAPES.STONE) {
+            imgFile = 'icons8-silver-ore-48.png'
+            scale = Main.STONE_SCALE
+        } else if (shape == Drawable.SHAPES.BASE) {
+            imgFile = 'icons8-iron-age-warrior-48.png'
+            scale = Main.VILLAGER_SCALE
+        } else if (shape == Drawable.SHAPES.SHAMAN) {
+            imgFile = 'icons8-spartan-helmet-48.png'
+            scale = Main.VILLAGER_SCALE
+        } else if (shape == Drawable.SHAPES.FOLLOWER) {
+            imgFile = 'icons8-sword-48.png'
+            scale = Main.VILLAGER_SCALE
+        }
 
         ClassLoader classloader = Thread.currentThread().getContextClassLoader()
         def img = ImageIO.read(classloader.getResourceAsStream(imgFile))
