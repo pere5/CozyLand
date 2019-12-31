@@ -1,6 +1,7 @@
 package main
 
 import javaSrc.circulararray.CircularArrayList
+import javaSrc.color.GaussianFilter
 import main.calculator.Background
 import main.calculator.Probabilities
 import main.input.MyKeyboardListener
@@ -172,7 +173,12 @@ class Model {
             }
         }
 
-        return image
+        BufferedImage dest = new BufferedImage(
+                tileNetwork.length * Main.TILE_WIDTH,
+                tileNetwork[0].length * Main.TILE_WIDTH,
+                BufferedImage.TYPE_INT_RGB
+        )
+        new GaussianFilter(Main.GAUSSIAN_FILTER).filter(image, dest)
     }
 
     static List<Color> gradient(Color color1, Color color2, int steps) {

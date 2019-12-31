@@ -18,8 +18,10 @@ class Main extends JFrame {
     static int WINDOW_WIDTH = 1000
     static int WINDOW_HEIGHT = 750
 
-    static int TILE_WIDTH = 10
-    static int RESOURCE_PREVALENCE = 15
+    static int TILE_WIDTH = 7
+    static int GAUSSIAN_FILTER = 2
+    static int RESOURCE_PREVALENCE_TREE = 40
+    static int RESOURCE_PREVALENCE_STONE = 30
     static int TREE_OFFSET_X = - (TILE_WIDTH / 2 + 1) as int
     static int TREE_OFFSET_Y = - (TILE_WIDTH + TILE_WIDTH / 2) as int
     static int STONE_OFFSET_X = - 0

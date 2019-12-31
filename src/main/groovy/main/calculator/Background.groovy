@@ -322,14 +322,13 @@ class Background {
                     mountain
                  */
 
-                if (random % Main.RESOURCE_PREVALENCE == 0) {
-                    if (tile.travelType == TravelType.FOREST) {
+                if (tile.travelType == TravelType.FOREST || tile.travelType == TravelType.HILL) {
+                    if (random % Main.RESOURCE_PREVALENCE_TREE == 0) {
                         tile.resources << new Tree(tile)
                     }
-                    if (tile.travelType == TravelType.HILL) {
-                        tile.resources << new Tree(tile)
-                    }
-                    if (tile.travelType == TravelType.MOUNTAIN) {
+                }
+                if (tile.travelType == TravelType.MOUNTAIN) {
+                    if (random % Main.RESOURCE_PREVALENCE_STONE == 0) {
                         tile.resources << new Stone(tile)
                     }
                 }
