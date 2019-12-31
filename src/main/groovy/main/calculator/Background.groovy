@@ -313,8 +313,8 @@ class Background {
     }
 
     static void setResources(Tile[][] tileNetwork) {
-        for (int x = 0; x < tileNetwork.length; x++) {
-            for (int y = 0; y < tileNetwork[x].length; y++) {
+        for (int y = 0; y < tileNetwork[0].length; y++) {
+            for (int x = 0; x < tileNetwork.length; x++) {
                 Tile tile = tileNetwork[x][y]
                 int random = ThreadLocalRandom.current().nextInt(0, Integer.MAX_VALUE)
 
