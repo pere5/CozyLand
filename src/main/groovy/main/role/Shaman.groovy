@@ -2,10 +2,8 @@ package main.role
 
 import main.Model
 import main.model.Villager
+import main.things.Drawable
 import main.thread.RuleWorker
-
-import java.awt.*
-import java.util.List
 
 class Shaman extends Role {
 
@@ -38,14 +36,22 @@ class Shaman extends Role {
                     def boss = followers.find { it.role.id != Base.ID } ?: followers.find { it.boss != null }?.boss
 
                     if (boss) {
+
+
+
+                        //ToDo: Change follower to its own role
+
+
                         me.boss = boss
-                        me.color = Color.LIGHT_GRAY
+                        me.shape = Drawable.SHAPES.FOLLOWER
+                        me.image = Model.followerImage
                         me.rules.addAll(boss.role.subjectRules)
                         boss.role.villagers << me
                     } else {
                         me.role = new Shaman()
                         me.rules.addAll(me.role.rules)
-                        me.color = Color.GREEN
+                        me.shape = Drawable.SHAPES.SHAMAN
+                        me.image = Model.shamanImage
                     }
                 }
             }

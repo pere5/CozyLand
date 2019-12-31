@@ -26,8 +26,11 @@ class Main extends JFrame {
     static int TREE_OFFSET_Y = - (TILE_WIDTH * 4.2) as int
     static int STONE_OFFSET_X = - 0
     static int STONE_OFFSET_Y = - 0
+    static int PERSON_OFFSET_X = - 0
+    static int PERSON_OFFSET_Y = - 0
     static double TREE_SCALE = 0.8
     static double STONE_SCALE = 0.30
+    static double VILLAGER_SCALE = 0.30
     static double SHADE_IMAGES = 0.60
 
     static int MAP_WIDTH = WINDOW_WIDTH * 3

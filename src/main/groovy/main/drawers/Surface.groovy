@@ -67,6 +67,8 @@ class Surface extends JPanel implements ActionListener {
                     g2d.drawImage(drawable.image, x + Main.TREE_OFFSET_X, y + Main.TREE_OFFSET_Y, null)
                 } else if (drawable.shape == Drawable.SHAPES.STONE) {
                     g2d.drawImage(drawable.image, x + Main.STONE_OFFSET_X, y + Main.STONE_OFFSET_Y, null)
+                } else if (drawable.shape in [Drawable.SHAPES.BASE, Drawable.SHAPES.SHAMAN, Drawable.SHAPES.FOLLOWER]) {
+                    g2d.drawImage(drawable.image, x + Main.PERSON_OFFSET_X, y + Main.PERSON_OFFSET_Y, null)
                 }
             }
         }

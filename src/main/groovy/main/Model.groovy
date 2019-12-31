@@ -66,6 +66,9 @@ class Model {
     static BufferedImage backgroundImage
     static BufferedImage treeImage
     static BufferedImage stoneImage
+    static BufferedImage baseImage
+    static BufferedImage shamanImage
+    static BufferedImage followerImage
 
     static def init(def keyboard, def mouse) {
         Model.keyboard = keyboard
@@ -74,6 +77,9 @@ class Model {
         backgroundImage = createBGImage()
         treeImage = createImage(Drawable.SHAPES.TREE)
         stoneImage = createImage(Drawable.SHAPES.STONE)
+        baseImage = createImage(Drawable.SHAPES.BASE)
+        shamanImage = createImage(Drawable.SHAPES.SHAMAN)
+        followerImage = createImage(Drawable.SHAPES.FOLLOWER)
         def villagers = (0..120).collect { Villager.test() }
 
         def drawables = new ConcurrentLinkedQueue<Drawable>([
@@ -90,11 +96,23 @@ class Model {
         def imgFile = shape == Drawable.SHAPES.TREE ?
                 'icons8-large-tree-48.png' :
                 Drawable.SHAPES.STONE ?
-                'icons8-silver-ore-48.png' : null
+                'icons8-silver-ore-48.png' :
+                Drawable.SHAPES.BASE ?
+                'icons8-iron-age-warrior-48.png' :
+                Drawable.SHAPES.SHAMAN ?
+                'icons8-spartan-helmet-48.png' :
+                Drawable.SHAPES.FOLLOWER ?
+                'icons8-sword-48.png' : null
         def scale = shape == Drawable.SHAPES.TREE ?
                 Main.TREE_SCALE :
                 Drawable.SHAPES.STONE ?
-                Main.STONE_SCALE : null
+                Main.STONE_SCALE :
+                Drawable.SHAPES.BASE ?
+                Main.VILLAGER_SCALE :
+                Drawable.SHAPES.SHAMAN ?
+                Main.VILLAGER_SCALE :
+                Drawable.SHAPES.FOLLOWER ?
+                Main.VILLAGER_SCALE : null
 
         ClassLoader classloader = Thread.currentThread().getContextClassLoader()
         def img = ImageIO.read(classloader.getResourceAsStream(imgFile))

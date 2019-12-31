@@ -8,10 +8,6 @@ import main.role.Role
 import main.rule.Rule
 import main.things.Drawable
 
-import java.awt.*
-import java.util.List
-import java.util.Queue
-
 class Villager extends Drawable {
 
     static int COMFORT_ZONE_TILES = 4
@@ -31,9 +27,9 @@ class Villager extends Drawable {
     static Villager test() {
         def villager = new Villager()
         villager.role = new Base()
+        villager.shape = SHAPES.BASE
+        villager.image = Model.baseImage
         villager.rules.addAll(villager.role.subjectRules)
-        villager.size = 4
-        villager.color = Color.BLUE
         def (Double x, Double y) = Model.generateXY()
         villager.x = x
         villager.y = y
