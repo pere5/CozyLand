@@ -272,11 +272,12 @@ class Model {
     }
 
     static int[] closeRandomTile(Drawable drawable, Integer maxTileDist) {
+        Double degree = ThreadLocalRandom.current().nextDouble(0, 259)
         def maxPixelDist = tileToPixelIdx(maxTileDist)
-        Double r1 = 1 - ThreadLocalRandom.current().nextDouble(0, 2)
-        Double r2 = 1 - ThreadLocalRandom.current().nextDouble(0, 2)
+        def x = maxPixelDist * Math.cos(degree)
+        def y = maxPixelDist * Math.sin(degree)
 
-        def tileXY = pixelToTileIdx(drawable.x + maxPixelDist * r1, drawable.y + maxPixelDist * r2)
+        def tileXY = pixelToTileIdx(drawable.x + x, drawable.y + y)
         def tile = Model.tileNetwork[tileXY[0]][tileXY[1]] as Tile
 
         if (tile.travelType == TravelType.WATER) {
