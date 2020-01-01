@@ -80,7 +80,7 @@ class Model {
         baseImage = createImage(Drawable.SHAPES.BASE)
         shamanImage = createImage(Drawable.SHAPES.SHAMAN)
         followerImage = createImage(Drawable.SHAPES.FOLLOWER)
-        def villagers = (0..120).collect { Villager.test() }
+        def villagers = (0..200).collect { Villager.test() }
 
         def drawables = new ConcurrentLinkedQueue<Drawable>([
                 villagers

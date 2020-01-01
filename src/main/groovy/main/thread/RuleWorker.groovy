@@ -40,7 +40,7 @@ class RuleWorker extends Worker {
         ]
     }
 
-    static List<Rule> shamanSubjectRules() {
+    static List<Rule> followerRules() {
         int rank = Integer.MAX_VALUE - 200
         [
                 new Migrate(rank: --rank)

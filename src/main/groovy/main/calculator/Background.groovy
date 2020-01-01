@@ -318,19 +318,12 @@ class Background {
                 Tile tile = tileNetwork[x][y]
                 int random = ThreadLocalRandom.current().nextInt(0, Integer.MAX_VALUE)
 
-                /*
-                    water
-                    forest
-                    hill
-                    mountain
-                 */
-
-                if (tile.travelType == TravelType.FOREST || tile.travelType == TravelType.HILL) {
+                if (tile.travelType in [TravelType.FOREST, TravelType.HILL]) {
                     if (random % Main.RESOURCE_PREVALENCE_TREE == 0) {
                         tile.resources << new Tree(tile)
                     }
                 }
-                if (tile.travelType == TravelType.MOUNTAIN) {
+                if (tile.travelType in [TravelType.MOUNTAIN]) {
                     if (random % Main.RESOURCE_PREVALENCE_STONE == 0) {
                         tile.resources << new Stone(tile)
                     }

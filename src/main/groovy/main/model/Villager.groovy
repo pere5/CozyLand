@@ -20,8 +20,6 @@ class Villager extends Drawable {
     boolean ruleWorker
     boolean pathfinderWorker
     boolean workWorker
-
-    Villager boss
     Role role
 
     static Villager test() {
@@ -29,7 +27,7 @@ class Villager extends Drawable {
         villager.role = new Base()
         villager.shape = SHAPES.BASE
         villager.image = Model.baseImage
-        villager.rules.addAll(villager.role.subjectRules)
+        villager.rules.addAll(villager.role.rules)
         def (Double x, Double y) = Model.generateXY()
         villager.x = x
         villager.y = y

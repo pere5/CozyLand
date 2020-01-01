@@ -11,7 +11,6 @@ class Shaman extends Role {
 
     Shaman () {
         super.id = ID
-        super.subjectRules.addAll(RuleWorker.shamanSubjectRules())
         super.rules.addAll(RuleWorker.shamanRules())
     }
 
@@ -19,33 +18,27 @@ class Shaman extends Role {
         for (int i = 0; i < Model.villagers.size(); i++) {
             def me = Model.villagers[i]
 
-            if (me.boss == null && me.role.id == Base.ID) {
+            if (me.role.id == Base.ID) {
                 def (int villagerX, int villagerY) = me.getTileXY()
 
-                List<Villager> followers = []
+                List<Villager> villagers = []
 
                 Model.getPointsWithinRadii(villagerX, villagerY, Villager.COMFORT_ZONE_TILES) { int x, int y ->
-                    Model.tileNetwork[x][y].villagers.each { Villager follower ->
-                        if (follower.id != me.id) {
-                            followers << follower
+                    Model.tileNetwork[x][y].villagers.each { Villager villager ->
+                        if (villager.id != me.id) {
+                            villagers << villager
                         }
                     }
                 }
 
-                if (followers) {
-                    def boss = followers.find { it.role.id != Base.ID } ?: followers.find { it.boss != null }?.boss
+                if (villagers) {
+                    def boss = villagers.find { it.role.id != Base.ID } ?: villagers.find { it.role.boss != null }?.role?.boss
 
                     if (boss) {
-
-
-
-                        //ToDo: Change follower to its own role
-
-
-                        me.boss = boss
+                        me.role = new Follower(boss)
+                        me.rules.addAll(me.role.rules)
                         me.shape = Drawable.SHAPES.FOLLOWER
                         me.image = Model.followerImage
-                        me.rules.addAll(boss.role.subjectRules)
                         boss.role.villagers << me
                     } else {
                         me.role = new Shaman()

@@ -9,6 +9,6 @@ class Base extends Role {
 
     Base() {
         super.id = ID
-        super.subjectRules.addAll(RuleWorker.baseRules())
+        super.rules.addAll(RuleWorker.baseRules())
     }
 }

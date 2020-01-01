@@ -14,7 +14,7 @@ class Migrate extends Rule {
 
     @Override
     void planWork(Villager me, int status) {
-        me.actionQueue << new PathfinderAction(Model.closeRandomTile(me.boss, Villager.COMFORT_ZONE_TILES))
+        me.actionQueue << new PathfinderAction(Model.closeRandomTile(me.role.boss, Villager.COMFORT_ZONE_TILES))
     }
 
     @Override
