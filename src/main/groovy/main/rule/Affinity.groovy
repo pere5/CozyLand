@@ -1,5 +1,6 @@
 package main.rule
 
+import main.Main
 import main.Model
 import main.action.PathfinderAction
 import main.model.Tile
@@ -15,7 +16,7 @@ class Affinity extends Rule {
         def (int villagerX, int villagerY) = me.getTileXY()
 
         int withinRange = 0
-        Model.getPointsWithinRadii(villagerX, villagerY, Villager.COMFORT_ZONE_TILES) { int x, int y ->
+        Model.getPointsWithinRadii(villagerX, villagerY, Main.COMFORT_ZONE_TILES) { int x, int y ->
             withinRange += tileNetwork[x][y].villagers.size()
         }
 
@@ -36,7 +37,7 @@ class Affinity extends Rule {
         for (Villager villager: Model.villagers) {
             if (me.id != villager.id) {
                 Double range = Model.tileRange(villager, me)
-                if (range < Villager.VISIBLE_ZONE_TILES) {
+                if (range < Main.VISIBLE_ZONE_TILES) {
                     closeVillagers << villager
                 }
             }
@@ -44,9 +45,9 @@ class Affinity extends Rule {
 
         int[] dest
         if (closeVillagers.size() == 0) {
-            dest = Model.closeRandomTile(me, Villager.WALK_DISTANCE_TILES)
+            dest = Model.closeRandomTile(me, Main.WALK_DISTANCE_TILES)
         } else {
-            dest = Model.centroidTile(closeVillagers, me, Villager.WALK_DISTANCE_TILES)
+            dest = Model.centroidTile(closeVillagers, me, Main.WALK_DISTANCE_TILES)
         }
 
         me.actionQueue << new PathfinderAction(dest)

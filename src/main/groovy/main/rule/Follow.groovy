@@ -1,5 +1,6 @@
-package main.rule.shaman
+package main.rule
 
+import main.Main
 import main.Model
 import main.action.PathfinderAction
 import main.model.Villager
@@ -14,7 +15,7 @@ class Follow extends Rule {
 
     @Override
     void planWork(Villager me, int status) {
-        me.actionQueue << new PathfinderAction(Model.closeRandomTile(me.role.boss, Villager.COMFORT_ZONE_TILES))
+        me.actionQueue << new PathfinderAction(Model.closeRandomTile(me.role.boss, Main.COMFORT_ZONE_TILES))
     }
 
     @Override

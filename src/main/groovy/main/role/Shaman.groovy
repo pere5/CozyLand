@@ -1,9 +1,9 @@
 package main.role
 
+import main.Main
 import main.Model
 import main.model.Villager
 import main.rule.Rule
-import main.rule.shaman.VillageSearch
 import main.things.Drawable
 
 class Shaman extends Role {
@@ -13,7 +13,7 @@ class Shaman extends Role {
     static List<Rule> shamanRules() {
         int rank = Integer.MAX_VALUE
         [
-                new VillageSearch(rank: --rank)
+                new main.rule.Shaman(rank: --rank)
         ]
     }
 
@@ -31,7 +31,7 @@ class Shaman extends Role {
 
                 List<Villager> villagers = []
 
-                Model.getPointsWithinRadii(villagerX, villagerY, Villager.COMFORT_ZONE_TILES) { int x, int y ->
+                Model.getPointsWithinRadii(villagerX, villagerY, Main.COMFORT_ZONE_TILES) { int x, int y ->
                     Model.tileNetwork[x][y].villagers.each { Villager villager ->
                         if (villager.id != me.id) {
                             villagers << villager

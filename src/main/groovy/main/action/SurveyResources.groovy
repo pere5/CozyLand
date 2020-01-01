@@ -1,5 +1,6 @@
 package main.action
 
+import main.Main
 import main.Model
 import main.model.Tile
 import main.model.Villager
@@ -34,7 +35,7 @@ class SurveyResources extends Action {
             def tileNetwork = Model.tileNetwork as Tile[][]
             shaman.role.villagers.each { def follower ->
                 def (int followerX, int followerY) = follower.getTileXY()
-                Model.getPointsWithinRadii(followerX, followerY, Villager.VISIBLE_ZONE_TILES) { int x, int y ->
+                Model.getPointsWithinRadii(followerX, followerY, Main.VISIBLE_ZONE_TILES) { int x, int y ->
                     Model.drawables << new Artifact(size: 2, parent: me.id, x: Model.tileToPixelIdx(x), y: Model.tileToPixelIdx(y), color: Color.BLUE)
 
                     Tile tile = tileNetwork[x][y]

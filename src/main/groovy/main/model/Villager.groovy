@@ -9,11 +9,6 @@ import main.things.Drawable
 
 class Villager extends Drawable {
 
-    static int COMFORT_ZONE_TILES = 4
-    static int VISIBLE_ZONE_TILES = 12
-    static int WALK_DISTANCE_TILES = 12
-    static int SHAMAN_DISTANCE_TILES = 15
-
     Queue<Action> actionQueue = new LinkedList<>()
     boolean ruleWorker
     boolean pathfinderWorker

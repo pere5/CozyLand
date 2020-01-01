@@ -20,6 +20,11 @@ class Main extends JFrame {
     static int WINDOW_WIDTH = 1000
     static int WINDOW_HEIGHT = 750
 
+    static int COMFORT_ZONE_TILES = 4
+    static int VISIBLE_ZONE_TILES = 12
+    static int WALK_DISTANCE_TILES = 12
+    static int SHAMAN_DISTANCE_TILES = 15
+
     static int TILE_WIDTH = 8
     static int GAUSSIAN_FILTER = 3
     static int RESOURCE_PREVALENCE_TREE = 40

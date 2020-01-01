@@ -1,8 +1,8 @@
 package main.role
 
 import main.model.Villager
+import main.rule.Follow
 import main.rule.Rule
-import main.rule.shaman.Follow
 
 class Follower extends Role {
 
