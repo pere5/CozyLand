@@ -20,13 +20,13 @@ class Affinity extends Rule {
         }
 
         if (withinRange == 0) {
-            Rule.BAD
+            BAD
         } else if (withinRange >= 2 && withinRange <= 5) {
-            Rule.GOOD
+            GOOD
         } else if (withinRange >= 6) {
-            Rule.GREAT
+            GREAT
         } else {
-            Rule.UNREACHABLE
+            UNREACHABLE
         }
     }
 

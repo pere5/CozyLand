@@ -4,10 +4,7 @@ import main.Model
 import main.model.Tile
 import main.model.Villager
 import main.role.Shaman
-import main.rule.Affinity
 import main.rule.Rule
-import main.rule.shaman.Migrate
-import main.rule.shaman.VillageSearch
 
 class RuleWorker extends Worker {
 
@@ -15,36 +12,6 @@ class RuleWorker extends Worker {
     def run() {
         super.intendedFps = 3
         super.run()
-    }
-
-    /*
-        - [ ] Migrera runt i skara
-        - [ ] Stanna och övervaka
-        - [ ] Spara mängden resurser
-        - [ ] Repetera 4 gånger
-        - [ ] Gå till den plats med mest resurser
-     */
-
-    static List<Rule> baseRules() {
-        int rank = Integer.MAX_VALUE - 300
-        [
-                new Affinity(rank: --rank)
-                //new RandomBigWalk(rank: --rank)
-        ]
-    }
-
-    static List<Rule> shamanRules() {
-        int rank = Integer.MAX_VALUE - 100
-        [
-                new VillageSearch(rank: --rank)
-        ]
-    }
-
-    static List<Rule> followerRules() {
-        int rank = Integer.MAX_VALUE - 200
-        [
-                new Migrate(rank: --rank)
-        ]
     }
 
     def update() {
@@ -89,7 +56,7 @@ class RuleWorker extends Worker {
                 def rule = null
                 int status = Rule.UNREACHABLE
 
-                for (Rule newRule : villager.rules) {
+                for (Rule newRule : villager.role.rules) {
                     int newStatus = newRule.status(villager)
                     if ((newStatus < status) || (rule ? (newStatus == status && newRule.rank > rule.rank) : true)) {
                         status = newStatus

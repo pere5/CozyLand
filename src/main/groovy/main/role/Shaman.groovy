@@ -2,16 +2,24 @@ package main.role
 
 import main.Model
 import main.model.Villager
+import main.rule.Rule
+import main.rule.shaman.VillageSearch
 import main.things.Drawable
-import main.thread.RuleWorker
 
 class Shaman extends Role {
 
     static final String ID = 'shaman'
 
+    static List<Rule> shamanRules() {
+        int rank = Integer.MAX_VALUE
+        [
+                new VillageSearch(rank: --rank)
+        ]
+    }
+
     Shaman () {
         super.id = ID
-        super.rules.addAll(RuleWorker.shamanRules())
+        super.rules = shamanRules()
     }
 
     static void assignShamans() {
@@ -36,13 +44,11 @@ class Shaman extends Role {
 
                     if (boss) {
                         me.role = new Follower(boss)
-                        me.rules.addAll(me.role.rules)
                         me.shape = Drawable.SHAPES.FOLLOWER
                         me.image = Model.followerImage
                         boss.role.villagers << me
                     } else {
                         me.role = new Shaman()
-                        me.rules.addAll(me.role.rules)
                         me.shape = Drawable.SHAPES.SHAMAN
                         me.image = Model.shamanImage
                     }

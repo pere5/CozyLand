@@ -5,7 +5,7 @@ import main.action.PathfinderAction
 import main.model.Villager
 import main.rule.Rule
 
-class Migrate extends Rule {
+class Follow extends Rule {
 
     @Override
     int status(Villager me) {

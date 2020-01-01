@@ -5,7 +5,6 @@ import main.Model.TravelType
 import main.action.Action
 import main.role.Base
 import main.role.Role
-import main.rule.Rule
 import main.things.Drawable
 
 class Villager extends Drawable {
@@ -15,7 +14,6 @@ class Villager extends Drawable {
     static int WALK_DISTANCE_TILES = 12
     static int SHAMAN_DISTANCE_TILES = 15
 
-    List<Rule> rules = []
     Queue<Action> actionQueue = new LinkedList<>()
     boolean ruleWorker
     boolean pathfinderWorker
@@ -27,7 +25,6 @@ class Villager extends Drawable {
         villager.role = new Base()
         villager.shape = SHAPES.BASE
         villager.image = Model.baseImage
-        villager.rules.addAll(villager.role.rules)
         def (Double x, Double y) = Model.generateXY()
         villager.x = x
         villager.y = y
