@@ -80,7 +80,7 @@ class Model {
         baseImage = createImage(Drawable.SHAPES.BASE)
         shamanImage = createImage(Drawable.SHAPES.SHAMAN)
         followerImage = createImage(Drawable.SHAPES.FOLLOWER)
-        def villagers = (0..200).collect { Villager.test() }
+        def villagers = (0..250).collect { Villager.test() }
 
         def drawables = new ConcurrentLinkedQueue<Drawable>([
                 villagers
@@ -239,8 +239,8 @@ class Model {
 
     static Double[] generateXY() {
         Double[] xy = [
-                Main.MAP_WIDTH / 2 + generate((Main.MAP_WIDTH / 3) as int),
-                Main.MAP_HEIGHT / 2 + generate((Main.MAP_HEIGHT / 3) as int)
+                Main.MAP_WIDTH / 2 + generate((Main.MAP_WIDTH / 2.15) as int),
+                Main.MAP_HEIGHT / 2 + generate((Main.MAP_HEIGHT / 2.15) as int)
         ]
 
         def tileXY = pixelToTileIdx(xy)
@@ -272,12 +272,24 @@ class Model {
     }
 
     static int[] closeRandomTile(Drawable drawable, Integer maxTileDist) {
-        Double degree = ThreadLocalRandom.current().nextDouble(0, 259)
         def maxPixelDist = tileToPixelIdx(maxTileDist)
-        def x = maxPixelDist * Math.cos(degree)
-        def y = maxPixelDist * Math.sin(degree)
+        Double r1 = 1 - ThreadLocalRandom.current().nextDouble(0, 2)
+        Double r2 = 1 - ThreadLocalRandom.current().nextDouble(0, 2)
 
-        def tileXY = pixelToTileIdx(drawable.x + x, drawable.y + y)
+        def (newX, newY) = pixelToTileIdx(drawable.x + maxPixelDist * r1, drawable.y + maxPixelDist * r2)
+
+        def maxX = Model.tileNetwork.length - 1
+        def maxY = Model.tileNetwork[0].length - 1
+        def margin = Main.VISIBLE_ZONE_TILES + 2
+
+        newX = newX + margin >= maxX ? maxX - margin : newX
+        newY = newY + margin >= maxY ? maxY - margin : newY
+
+        newX = newX - margin <= 0 ? 0 + margin : newX
+        newY = newY - margin <= 0 ? 0 + margin : newY
+
+        def tileXY = [newX as int, newY as int] as int[]
+
         def tile = Model.tileNetwork[tileXY[0]][tileXY[1]] as Tile
 
         if (tile.travelType == TravelType.WATER) {

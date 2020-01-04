@@ -23,6 +23,8 @@ class Shaman extends Role {
     }
 
     static void assignShamans() {
+        def tileNetwork = Model.tileNetwork
+
         for (int i = 0; i < Model.villagers.size(); i++) {
             def me = Model.villagers[i]
 
@@ -32,9 +34,11 @@ class Shaman extends Role {
                 List<Villager> villagers = []
 
                 Model.getPointsWithinRadii(villagerX, villagerY, Main.COMFORT_ZONE_TILES) { int x, int y ->
-                    Model.tileNetwork[x][y].villagers.each { Villager villager ->
-                        if (villager.id != me.id) {
-                            villagers << villager
+                    if (x >= 0 && x <= tileNetwork.length - 1 && y >= 0 && y <= tileNetwork[0].length - 1) {
+                        tileNetwork[x][y].villagers.each { Villager villager ->
+                            if (villager.id != me.id) {
+                                villagers << villager
+                            }
                         }
                     }
                 }

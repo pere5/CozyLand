@@ -5,11 +5,8 @@ import main.Model
 import main.model.Tile
 import main.model.Villager
 import main.role.Shaman
-import main.things.Artifact
 import main.things.Drawable
 import main.things.resource.Resource
-
-import java.awt.*
 
 class SurveyResources extends Action {
 
@@ -34,12 +31,14 @@ class SurveyResources extends Action {
         perTenSeconds (3) {
             def tileNetwork = Model.tileNetwork as Tile[][]
             shaman.role.villagers.each { def follower ->
-                def (int followerX, int followerY) = follower.getTileXY()
-                Model.getPointsWithinRadii(followerX, followerY, Main.VISIBLE_ZONE_TILES) { int x, int y ->
-                    Model.drawables << new Artifact(size: 2, parent: me.id, x: Model.tileToPixelIdx(x), y: Model.tileToPixelIdx(y), color: Color.BLUE)
+                def (int tileX, int tileY) = follower.getTileXY()
+                Model.getPointsWithinRadii(tileX, tileY, Main.VISIBLE_ZONE_TILES) { int x, int y ->
+                    //Model.drawables << new Artifact(size: 2, parent: me.id, x: Model.tileToPixelIdx(x), y: Model.tileToPixelIdx(y), color: Color.BLUE)
+                    if (x >= 0 && x <= tileNetwork.length - 1 && y >= 0 && y <= tileNetwork[0].length - 1) {
+                        Tile tile = tileNetwork[x][y]
+                        resources.addAll(tile.resources)
+                    }
 
-                    Tile tile = tileNetwork[x][y]
-                    resources.addAll(tile.resources)
                 }
             }
         }
