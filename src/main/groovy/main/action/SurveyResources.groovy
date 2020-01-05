@@ -32,7 +32,7 @@ class SurveyResources extends Action {
             def tileNetwork = Model.tileNetwork as Tile[][]
             shaman.role.villagers.each { def follower ->
                 def (int tileX, int tileY) = follower.getTileXY()
-                Model.getPointsWithinRadii(tileX, tileY, Main.VISIBLE_ZONE_TILES) { int x, int y ->
+                Model.getTilesWithinRadii(tileX, tileY, Main.VISIBLE_ZONE_TILES) { int x, int y ->
                     //TestPrints.printSurveyResourcesCircle(me, x, y)
                     Tile tile = tileNetwork[x][y]
                     resources.addAll(tile.resources)

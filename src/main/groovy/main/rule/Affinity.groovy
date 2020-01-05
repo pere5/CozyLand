@@ -13,10 +13,10 @@ class Affinity extends Rule {
     int status(Villager me) {
 
         def tileNetwork = Model.tileNetwork as Tile[][]
-        def (int villagerX, int villagerY) = me.getTileXY()
+        def (int tileX, int tileY) = me.getTileXY()
 
         int withinRange = 0
-        Model.getPointsWithinRadii(villagerX, villagerY, Main.COMFORT_ZONE_TILES) { int x, int y ->
+        Model.getTilesWithinRadii(tileX, tileY, Main.COMFORT_ZONE_TILES) { int x, int y ->
             withinRange += tileNetwork[x][y].villagers.size()
         }
 
