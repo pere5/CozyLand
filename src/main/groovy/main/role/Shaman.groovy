@@ -44,10 +44,7 @@ class Shaman extends Role {
                 }
 
                 if (villagers) {
-                    def boss = villagers.find { it.role.id != Base.ID } ?: villagers.find { it.role.boss != null }?.role?.boss
-
-
-                    possible for followers to follow other followers
+                    def boss = villagers.find { it.role.id == ID } ?: villagers.find { it.role.boss?.role?.id == ID }?.role?.boss
 
                     if (boss) {
                         me.role = new Follower(boss)
