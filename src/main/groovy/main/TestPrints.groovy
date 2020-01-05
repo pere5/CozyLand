@@ -6,6 +6,7 @@ import main.model.StraightPath
 import main.model.Tile
 import main.model.Villager
 import main.things.Artifact
+import main.things.Drawable
 
 import java.awt.*
 import java.util.List
@@ -103,5 +104,9 @@ class TestPrints {
                 size: 3, parent: me.id, x: Model.tileToPixelIdx(x), y: Model.tileToPixelIdx(y),
                 color: me.testColor
         )
+    }
+
+    static void printSurveyResourcesCircle(Drawable me, int x, int y) {
+        Model.drawables << new Artifact(size: 2, parent: me.id, x: Model.tileToPixelIdx(x), y: Model.tileToPixelIdx(y), color: Color.BLUE)
     }
 }

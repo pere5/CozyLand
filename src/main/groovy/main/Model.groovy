@@ -80,7 +80,7 @@ class Model {
         baseImage = createImage(Drawable.SHAPES.BASE)
         shamanImage = createImage(Drawable.SHAPES.SHAMAN)
         followerImage = createImage(Drawable.SHAPES.FOLLOWER)
-        def villagers = (1..250).collect { Villager.test() }
+        def villagers = (1..2500).collect { Villager.test() }
 
         def drawables = new ConcurrentLinkedQueue<Drawable>([
                 villagers
@@ -271,7 +271,7 @@ class Model {
         }
     }
 
-    static int[] closeRandomTile(Drawable drawable, Integer maxTileDist) {
+    static int[] closeRandomTile(Drawable drawable, Integer maxTileDist, int depth = 0) {
         def maxPixelDist = tileToPixelIdx(maxTileDist)
         Double r1 = 1 - ThreadLocalRandom.current().nextDouble(0, 2)
         Double r2 = 1 - ThreadLocalRandom.current().nextDouble(0, 2)
@@ -293,7 +293,9 @@ class Model {
         def tile = Model.tileNetwork[tileXY[0]][tileXY[1]] as Tile
 
         if (tile.travelType == TravelType.WATER) {
-            return closeRandomTile(drawable, maxTileDist)
+            return closeRandomTile(drawable, maxTileDist, ++depth)
+        } else if (depth > 20) {
+            return pixelToTileIdx(drawable.x, drawable.y)
         } else {
             return tileXY
         }
@@ -397,10 +399,16 @@ class Model {
             for (int x = tX - r; x <= tX + r; x++) {
                 // test if in-circle
                 if ((x - tX) * (x - tX) + di2 <= r2) {
-                    //TestPrints.printRadii(x, y, me)
-                    function(x, y)
+                    if (withinTileNetwork(x, y)) {
+                        //TestPrints.printRadii(x, y, me)
+                        function(x, y)
+                    }
                 }
             }
         }
+    }
+
+    static boolean withinTileNetwork(int x, int y) {
+        x >= 0 && x <= Model.tileNetwork.length - 1 && y >= 0 && y <= Model.tileNetwork[0].length - 1
     }
 }

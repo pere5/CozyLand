@@ -17,9 +17,7 @@ class Affinity extends Rule {
 
         int withinRange = 0
         Model.getPointsWithinRadii(villagerX, villagerY, Main.COMFORT_ZONE_TILES) { int x, int y ->
-            if (x >= 0 && x <= tileNetwork.length - 1 && y >= 0 && y <= tileNetwork[0].length - 1) {
-                withinRange += tileNetwork[x][y].villagers.size()
-            }
+            withinRange += tileNetwork[x][y].villagers.size()
         }
 
         if (withinRange == 0) {

@@ -34,11 +34,9 @@ class Shaman extends Role {
                 List<Villager> villagers = []
 
                 Model.getPointsWithinRadii(villagerX, villagerY, Main.COMFORT_ZONE_TILES) { int x, int y ->
-                    if (x >= 0 && x <= tileNetwork.length - 1 && y >= 0 && y <= tileNetwork[0].length - 1) {
-                        tileNetwork[x][y].villagers.each { Villager villager ->
-                            if (villager.id != me.id) {
-                                villagers << villager
-                            }
+                    tileNetwork[x][y].villagers.each { Villager villager ->
+                        if (villager.id != me.id) {
+                            villagers << villager
                         }
                     }
                 }
