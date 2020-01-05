@@ -7,7 +7,7 @@ class Base extends Role {
 
     static final String ID = 'base'
 
-    static List<Rule> baseRules() {
+    static List<Rule> getRules() {
         int rank = Integer.MAX_VALUE
         [
                 new Affinity(rank: --rank)
@@ -17,6 +17,6 @@ class Base extends Role {
 
     Base() {
         super.id = ID
-        super.rules = baseRules()
+        super.rules = getRules()
     }
 }

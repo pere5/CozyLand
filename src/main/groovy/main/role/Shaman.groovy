@@ -4,22 +4,23 @@ import main.Main
 import main.Model
 import main.model.Villager
 import main.rule.Rule
+import main.rule.ShamanWalk
 import main.things.Drawable
 
 class Shaman extends Role {
 
     static final String ID = 'shaman'
 
-    static List<Rule> shamanRules() {
+    static List<Rule> getRules() {
         int rank = Integer.MAX_VALUE
         [
-                new main.rule.Shaman(rank: --rank)
+                new ShamanWalk(rank: --rank)
         ]
     }
 
     Shaman () {
         super.id = ID
-        super.rules = shamanRules()
+        super.rules = getRules()
     }
 
     static void assignShamans() {

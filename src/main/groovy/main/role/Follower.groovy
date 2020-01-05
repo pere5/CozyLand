@@ -8,7 +8,7 @@ class Follower extends Role {
 
     static final String ID = 'follower'
 
-    static List<Rule> followerRules() {
+    static List<Rule> getRules() {
         int rank = Integer.MAX_VALUE
         [
                 new Follow(rank: --rank)
@@ -17,7 +17,7 @@ class Follower extends Role {
 
     Follower(Villager boss) {
         super.id = ID
-        super.rules = followerRules()
+        super.rules = getRules()
         super.boss = boss
     }
 
