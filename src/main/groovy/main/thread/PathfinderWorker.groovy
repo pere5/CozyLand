@@ -41,6 +41,7 @@ class PathfinderWorker extends Worker {
         for (Villager villager : Model.villagers) {
 
             if (villager.pathfinderWorker) {
+                def first = [villager.x, villager.y] as Double[]
 
                 for (Action action : villager.actionQueue) {
                     if (action instanceof PathfinderAction) {
@@ -62,10 +63,14 @@ class PathfinderWorker extends Worker {
                                 def randomTiles = randomTilesWithBresenham(aT, bT, villager)
                                 def randPxlB = randomPlacesInTileList(randomTiles)
                                 for (int j = 0; j < randomTiles.size() - 1; j++) {
-                                    pathfinderAction.pathQueue << new StraightPath(randPxlB[j], randPxlB[j + 1], villager)
+                                    def step1 = i == 0 && j == 0 ? first : randPxlB[j]
+                                    def step2 = randPxlB[j + 1]
+                                    pathfinderAction.pathQueue << new StraightPath(step1, step2, villager)
                                 }
                             } else {
-                                pathfinderAction.pathQueue << new StraightPath(randPxlA[i], randPxlA[i + 1], villager)
+                                def step1 = i == 0 ? first : randPxlA[i]
+                                def step2 = randPxlA[i + 1]
+                                pathfinderAction.pathQueue << new StraightPath(step1, step2, villager)
                             }
                         }
                     }

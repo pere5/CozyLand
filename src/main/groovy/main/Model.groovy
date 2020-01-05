@@ -292,10 +292,10 @@ class Model {
 
         def tile = Model.tileNetwork[tileXY[0]][tileXY[1]] as Tile
 
-        if (tile.travelType == TravelType.WATER) {
-            return closeRandomTile(drawable, maxTileDist, ++depth)
-        } else if (depth > 20) {
+        if (depth > 20) {
             return pixelToTileIdx(drawable.x, drawable.y)
+        } else if (tile.travelType == TravelType.WATER) {
+            return closeRandomTile(drawable, maxTileDist, ++depth)
         } else {
             return tileXY
         }
