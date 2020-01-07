@@ -39,10 +39,10 @@ class RuleWorker extends Worker {
                     def tile = tileNetwork[x][y]
                     for (int i = tile.villagers.size() - 1; i >= 0; i--) {
                         def villager = tile.villagers[i]
-                        def (int villagerX, int villagerY) = villager.getTileXY()
-                        if (villagerX != x || villagerY != y) {
+                        def (int tileX, int tileY) = villager.getTileXY()
+                        if (tileX != x || tileY != y) {
                             tile.villagers.remove(villager)
-                            tileNetwork[villagerX][villagerY].villagers << villager
+                            tileNetwork[tileX][tileY].villagers << villager
                         }
                     }
                 }
