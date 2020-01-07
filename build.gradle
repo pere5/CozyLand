@@ -6,7 +6,7 @@ plugins {
 group 'boll.koll'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.11
+sourceCompatibility = 1.10
 
 repositories {
     mavenCentral()
