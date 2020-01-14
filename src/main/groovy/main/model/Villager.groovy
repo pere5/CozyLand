@@ -27,25 +27,6 @@ class Villager extends Drawable {
         return villager
     }
 
-    boolean work() {
-        def action = actionQueue.peek()
-        if (action) {
-            def canContinue = action.doIt(this)
-            if (canContinue) {
-                return Action.CONTINUE
-            } else {
-                actionQueue.poll()
-                if (actionQueue.peek()) {
-                    return Action.CONTINUE
-                } else {
-                    return Action.DONE
-                }
-            }
-        } else {
-            return Action.DONE
-        }
-    }
-
     void toWorkWorker() {
         //println("${id}-w")
         pathfinderWorker = false

@@ -79,6 +79,7 @@ class TestPrints {
     }
 
     static void clearPrints(Villager villager) {
+        if (!Main.DEBUG_PATH_PRINTS) return
         Model.drawables.removeAll { it.parent == villager.id }
     }
 

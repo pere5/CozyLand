@@ -16,7 +16,26 @@ class WorkWorker extends Worker {
     def update() {
         for (Villager villager: Model.villagers) {
             if (villager.workWorker) {
-                def resolution = villager.work()
+
+                boolean resolution
+
+                def action = villager.actionQueue.peek()
+                if (action) {
+                    def canContinue = action.doIt(villager)
+                    if (canContinue) {
+                        resolution = Action.CONTINUE
+                    } else {
+                        villager.actionQueue.poll()
+                        if (villager.actionQueue.peek()) {
+                            resolution = Action.CONTINUE
+                        } else {
+                            resolution = Action.DONE
+                        }
+                    }
+                } else {
+                    resolution = Action.DONE
+                }
+
                 if (resolution == Action.DONE) {
                     villager.toRuleWorker()
                     TestPrints.clearPrints(villager)
