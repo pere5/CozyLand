@@ -3,7 +3,7 @@ package main.thread
 import main.Model
 import main.model.Tile
 import main.model.Villager
-import main.role.Shaman
+import main.role.ShamanRole
 import main.rule.Rule
 
 class RuleWorker extends Worker {
@@ -18,7 +18,7 @@ class RuleWorker extends Worker {
 
         placeVillagersInTileNetwork()
 
-        Shaman.assignShamans()
+        ShamanRole.assignShamans()
 
         assignRules()
     }

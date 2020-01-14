@@ -3,7 +3,7 @@ package main.model
 import main.Model
 import main.Model.TravelType
 import main.action.Action
-import main.role.Base
+import main.role.BaseRole
 import main.role.Role
 import main.things.Drawable
 
@@ -17,7 +17,7 @@ class Villager extends Drawable {
 
     static Villager test() {
         def villager = new Villager()
-        villager.role = new Base()
+        villager.role = new BaseRole()
         villager.shape = SHAPES.BASE
         villager.image = Model.baseImage
         def (Double x, Double y) = Model.generateXY()

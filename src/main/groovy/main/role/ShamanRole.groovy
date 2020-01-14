@@ -4,21 +4,21 @@ import main.Main
 import main.Model
 import main.model.Villager
 import main.rule.Rule
-import main.rule.ShamanWalk
+import main.rule.ShamanWalkRule
 import main.things.Drawable
 
-class Shaman extends Role {
+class ShamanRole extends Role {
 
     static final String ID = 'shaman'
 
     static List<Rule> getRules() {
         int rank = Integer.MAX_VALUE
         [
-                new ShamanWalk(rank: --rank)
+                new ShamanWalkRule(rank: --rank)
         ]
     }
 
-    Shaman () {
+    ShamanRole() {
         super.id = ID
         super.rules = getRules()
     }
@@ -29,7 +29,7 @@ class Shaman extends Role {
         for (int i = 0; i < Model.villagers.size(); i++) {
             def me = Model.villagers[i]
 
-            if (me.role.id == Base.ID) {
+            if (me.role.id == BaseRole.ID) {
                 def (int tileX, int tileY) = me.getTileXY()
 
                 List<Villager> villagers = []
@@ -46,12 +46,12 @@ class Shaman extends Role {
                     def boss = villagers.find { it.role.id == ID } ?: villagers.find { it.role.boss?.role?.id == ID }?.role?.boss
 
                     if (boss) {
-                        me.role = new Follower(boss)
+                        me.role = new FollowerRole(boss)
                         me.shape = Drawable.SHAPES.FOLLOWER
                         me.image = Model.followerImage
                         boss.role.villagers << me
                     } else {
-                        me.role = new Shaman()
+                        me.role = new ShamanRole()
                         me.shape = Drawable.SHAPES.SHAMAN
                         me.image = Model.shamanImage
                     }

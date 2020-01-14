@@ -7,7 +7,7 @@ import main.model.Tile
 import main.model.Villager
 import main.things.Drawable
 
-class Affinity extends Rule {
+class AffinityRule extends Rule {
 
     @Override
     int status(Villager me) {

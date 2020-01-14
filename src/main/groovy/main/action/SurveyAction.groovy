@@ -4,7 +4,7 @@ import main.Main
 import main.Model
 import main.model.Tile
 import main.model.Villager
-import main.role.Shaman
+import main.role.ShamanRole
 import main.things.Drawable
 import main.things.resource.Resource
 
@@ -22,7 +22,7 @@ class SurveyAction extends Action {
     boolean doIt(Drawable me) {
         assert me instanceof Villager
         def shaman = me as Villager
-        assert shaman.role instanceof Shaman
+        assert shaman.role instanceof ShamanRole
 
         if (!time) {
             time = System.currentTimeMillis() + (seconds * 1000)

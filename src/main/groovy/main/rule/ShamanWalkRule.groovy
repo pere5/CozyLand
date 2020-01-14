@@ -6,7 +6,7 @@ import main.action.SurveyAction
 import main.action.WalkAction
 import main.model.Villager
 
-class ShamanWalk extends Rule {
+class ShamanWalkRule extends Rule {
 
     @Override
     int status(Villager villager) {

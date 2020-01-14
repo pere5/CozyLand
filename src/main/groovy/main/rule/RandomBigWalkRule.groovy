@@ -4,7 +4,7 @@ import main.Model
 import main.action.WalkAction
 import main.model.Villager
 
-class RandomBigWalk extends Rule {
+class RandomBigWalkRule extends Rule {
 
     @Override
     int status(Villager me) {

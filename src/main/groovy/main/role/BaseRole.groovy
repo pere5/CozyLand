@@ -1,21 +1,21 @@
 package main.role
 
-import main.rule.Affinity
+import main.rule.AffinityRule
 import main.rule.Rule
 
-class Base extends Role {
+class BaseRole extends Role {
 
     static final String ID = 'base'
 
     static List<Rule> getRules() {
         int rank = Integer.MAX_VALUE
         [
-                new Affinity(rank: --rank)
+                new AffinityRule(rank: --rank)
                 //new RandomBigWalk(rank: --rank)
         ]
     }
 
-    Base() {
+    BaseRole() {
         super.id = ID
         super.rules = getRules()
     }

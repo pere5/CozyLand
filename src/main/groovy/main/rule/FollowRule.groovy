@@ -5,7 +5,7 @@ import main.Model
 import main.action.WalkAction
 import main.model.Villager
 
-class Follow extends Rule {
+class FollowRule extends Rule {
 
     @Override
     int status(Villager me) {
