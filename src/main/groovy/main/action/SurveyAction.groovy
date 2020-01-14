@@ -8,13 +8,13 @@ import main.role.Shaman
 import main.things.Drawable
 import main.things.resource.Resource
 
-class SurveyResources extends Action {
+class SurveyAction extends Action {
 
     int seconds
     long time
     Set<Resource> resources = []
 
-    SurveyResources (int seconds) {
+    SurveyAction(int seconds) {
         this.seconds = seconds
     }
 

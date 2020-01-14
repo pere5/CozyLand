@@ -7,7 +7,7 @@ import main.Model
 import main.Model.TravelType
 import main.TestPrints
 import main.action.Action
-import main.action.PathfinderAction
+import main.action.WalkAction
 import main.calculator.Path
 import main.model.StraightPath
 import main.model.Tile
@@ -44,8 +44,8 @@ class PathfinderWorker extends Worker {
                 def first = [villager.x, villager.y] as Double[]
 
                 for (Action action : villager.actionQueue) {
-                    if (action instanceof PathfinderAction) {
-                        def pathfinderAction = action as PathfinderAction
+                    if (action instanceof WalkAction) {
+                        def pathfinderAction = action as WalkAction
                         def tileStart = villager.getTileXY()
                         def tileDest = pathfinderAction.tileDest
                         if (tileStart == tileDest) continue

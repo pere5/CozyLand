@@ -2,12 +2,12 @@ package main.action
 
 import main.things.Drawable
 
-class Wait extends Action {
+class WaitAction extends Action {
 
     int seconds
     long time
 
-    Wait (int seconds) {
+    WaitAction(int seconds) {
         this.seconds = seconds
     }
 

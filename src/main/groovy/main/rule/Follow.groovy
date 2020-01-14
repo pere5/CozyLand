@@ -2,9 +2,8 @@ package main.rule
 
 import main.Main
 import main.Model
-import main.action.PathfinderAction
+import main.action.WalkAction
 import main.model.Villager
-import main.rule.Rule
 
 class Follow extends Rule {
 
@@ -15,7 +14,7 @@ class Follow extends Rule {
 
     @Override
     void planWork(Villager me, int status) {
-        me.actionQueue << new PathfinderAction(Model.closeRandomTile(me.role.boss, Main.COMFORT_ZONE_TILES))
+        me.actionQueue << new WalkAction(Model.closeRandomTile(me.role.boss, Main.COMFORT_ZONE_TILES))
     }
 
     @Override

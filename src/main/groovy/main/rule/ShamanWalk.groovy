@@ -2,10 +2,9 @@ package main.rule
 
 import main.Main
 import main.Model
-import main.action.PathfinderAction
-import main.action.SurveyResources
+import main.action.SurveyAction
+import main.action.WalkAction
 import main.model.Villager
-import main.rule.Rule
 
 class ShamanWalk extends Rule {
 
@@ -16,8 +15,8 @@ class ShamanWalk extends Rule {
 
     @Override
     void planWork(Villager me, int status) {
-        me.actionQueue << new PathfinderAction(Model.closeRandomTile(me, Main.SHAMAN_DISTANCE_TILES))
-        me.actionQueue << new SurveyResources(10)
+        me.actionQueue << new WalkAction(Model.closeRandomTile(me, Main.SHAMAN_DISTANCE_TILES))
+        me.actionQueue << new SurveyAction(10)
     }
 
     @Override

@@ -3,14 +3,14 @@ package main.action
 import main.model.StraightPath
 import main.things.Drawable
 
-class PathfinderAction extends Action {
+class WalkAction extends Action {
 
     int[] tileDest
 
     //this is populated by pathfinderWorker
     Queue<StraightPath> pathQueue = new LinkedList<>()
 
-    PathfinderAction (int[] tile) {
+    WalkAction(int[] tile) {
         tileDest = tile
     }
 
