@@ -5,7 +5,6 @@ import main.Model
 import main.model.Tile
 import main.model.Villager
 import main.role.ShamanRole
-import main.things.Drawable
 import main.things.resource.Resource
 
 class SurveyAction extends Action {
@@ -19,9 +18,7 @@ class SurveyAction extends Action {
     }
 
     @Override
-    boolean doIt(Drawable me) {
-        assert me instanceof Villager
-        def shaman = me as Villager
+    boolean doIt(Villager shaman) {
         assert shaman.role instanceof ShamanRole
 
         if (!time) {
@@ -43,7 +40,7 @@ class SurveyAction extends Action {
         def resolution = time > System.currentTimeMillis() ? CONTINUE : DONE
 
         if (resolution == DONE) {
-            Model.drawables.removeAll { it.parent == me.id }
+            Model.drawables.removeAll { it.parent == shaman.id }
         }
 
         return resolution

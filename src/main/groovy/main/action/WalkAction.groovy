@@ -1,7 +1,7 @@
 package main.action
 
 import main.model.StraightPath
-import main.things.Drawable
+import main.model.Villager
 
 class WalkAction extends Action {
 
@@ -15,18 +15,18 @@ class WalkAction extends Action {
     }
 
     @Override
-    boolean doIt(Drawable drawable) {
+    boolean doIt(Villager me) {
         def straightPath = pathQueue.peek()
         if (straightPath) {
             def step = straightPath.path.poll()
             if (step) {
                 def (Double x, Double y) = step
-                drawable.x = x
-                drawable.y = y
+                me.x = x
+                me.y = y
                 return CONTINUE
             } else {
                 pathQueue.poll()
-                return doIt(drawable)
+                return doIt(me)
             }
         } else {
             return DONE

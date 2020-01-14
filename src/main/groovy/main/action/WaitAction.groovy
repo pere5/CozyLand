@@ -1,6 +1,6 @@
 package main.action
 
-import main.things.Drawable
+import main.model.Villager
 
 class WaitAction extends Action {
 
@@ -12,7 +12,7 @@ class WaitAction extends Action {
     }
 
     @Override
-    boolean doIt(Drawable me) {
+    boolean doIt(Villager me) {
         if (!time) {
             time = System.currentTimeMillis() + (seconds * 1000)
         }

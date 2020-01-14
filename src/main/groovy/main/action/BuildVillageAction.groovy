@@ -1,9 +1,7 @@
 package main.action
 
-
 import main.model.Villager
 import main.role.ShamanRole
-import main.things.Drawable
 import main.things.resource.Resource
 
 class BuildVillageAction extends Action {
@@ -15,7 +13,7 @@ class BuildVillageAction extends Action {
     }
 
     @Override
-    boolean doIt(Drawable me) {
+    boolean doIt(Villager me) {
         assert me instanceof Villager
         def shaman = me as Villager
         assert shaman.role instanceof ShamanRole

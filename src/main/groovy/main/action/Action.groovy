@@ -1,7 +1,6 @@
 package main.action
 
-
-import main.things.Drawable
+import main.model.Villager
 
 abstract class Action {
 
@@ -10,7 +9,7 @@ abstract class Action {
     static boolean CONTINUE = true
     static boolean DONE = false
 
-    abstract boolean doIt(Drawable me);
+    abstract boolean doIt(Villager me);
 
     void perTenSeconds(Double times, Closure closure) {
         long interval = 10000 / times
