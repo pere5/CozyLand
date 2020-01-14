@@ -45,9 +45,9 @@ class PathfinderWorker extends Worker {
 
                 for (Action action : villager.actionQueue) {
                     if (action instanceof WalkAction) {
-                        def pathfinderAction = action as WalkAction
+                        def walkAction = action as WalkAction
                         def tileStart = villager.getTileXY()
-                        def tileDest = pathfinderAction.tileDest
+                        def tileDest = walkAction.tileDest
                         if (tileStart == tileDest) continue
 
                         def perStarTiles = perStar(tileStart, tileDest, villager)
@@ -65,12 +65,12 @@ class PathfinderWorker extends Worker {
                                 for (int j = 0; j < randomTiles.size() - 1; j++) {
                                     def step1 = i == 0 && j == 0 ? first : randPxlB[j]
                                     def step2 = randPxlB[j + 1]
-                                    pathfinderAction.pathQueue << new StraightPath(step1, step2, villager)
+                                    walkAction.pathQueue << new StraightPath(step1, step2, villager)
                                 }
                             } else {
                                 def step1 = i == 0 ? first : randPxlA[i]
                                 def step2 = randPxlA[i + 1]
-                                pathfinderAction.pathQueue << new StraightPath(step1, step2, villager)
+                                walkAction.pathQueue << new StraightPath(step1, step2, villager)
                             }
                         }
                     }
