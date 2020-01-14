@@ -21,6 +21,9 @@ class WorkWorker extends Worker {
 
                 def action = villager.actionQueue.peek()
                 if (action) {
+
+                    hmm här måste vi kunna planera walk actions n stuff med villagerna nyare state
+
                     def canContinue = action.doIt(villager)
                     if (canContinue) {
                         resolution = Action.CONTINUE

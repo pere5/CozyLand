@@ -17,6 +17,10 @@ class ShamanWalkRule extends Rule {
     void planWork(Villager me, int status) {
         me.actionQueue << new WalkAction(Model.closeRandomTile(me, Main.SHAMAN_DISTANCE_TILES))
         me.actionQueue << new SurveyAction(10)
+        /*me.actionQueue << new WalkAction(Model.closeRandomTile(me, Main.SHAMAN_DISTANCE_TILES))
+        me.actionQueue << new SurveyAction(10)
+        me.actionQueue << new WalkAction(Model.closeRandomTile(me, Main.SHAMAN_DISTANCE_TILES))
+        me.actionQueue << new SurveyAction(10)*/
     }
 
     @Override
