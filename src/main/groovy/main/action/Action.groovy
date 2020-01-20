@@ -4,12 +4,14 @@ import main.model.Villager
 
 abstract class Action {
 
-    long last = System.currentTimeMillis()
-
     static boolean CONTINUE = true
     static boolean DONE = false
 
-    abstract boolean doIt(Villager me);
+    long last = System.currentTimeMillis()
+    boolean initialized
+
+    abstract void switchWorker(Villager me)
+    abstract boolean doIt(Villager me)
 
     void perTenSeconds(Double times, Closure closure) {
         long interval = 10000 / times

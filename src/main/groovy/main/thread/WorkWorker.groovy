@@ -9,7 +9,7 @@ class WorkWorker extends Worker {
 
     @Override
     def run() {
-        super.intendedFps = 16
+        super.intendedFps = 8
         super.run()
     }
 
@@ -22,7 +22,10 @@ class WorkWorker extends Worker {
                 def action = villager.actionQueue.peek()
                 if (action) {
 
-                    hmm här måste vi kunna planera walk actions n stuff med villagerna nyare state
+                    if (action.initialized) {
+                        villager.toPathfinderWorker()
+                        continue
+                    }
 
                     def canContinue = action.doIt(villager)
                     if (canContinue) {
