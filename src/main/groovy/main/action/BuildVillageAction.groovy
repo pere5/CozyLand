@@ -1,5 +1,6 @@
 package main.action
 
+import jdk.jshell.spi.ExecutionControl
 import main.model.Villager
 import main.role.ShamanRole
 import main.things.resource.Resource
@@ -10,6 +11,11 @@ class BuildVillageAction extends Action {
 
     BuildVillageAction(List<SurveyAction> surveys) {
         
+    }
+
+    @Override
+    void switchWorker(Villager me) {
+        //throw new
     }
 
     @Override

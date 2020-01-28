@@ -20,13 +20,8 @@ class WorkWorker extends Worker {
                 boolean resolution
 
                 def action = villager.actionQueue.peek()
-                if (action) {
 
-                    if (action.initialized) {
-                        villager.toPathfinderWorker()
-                        continue
-                    }
-
+                if (action && action.initialized) {
                     def canContinue = action.doIt(villager)
                     if (canContinue) {
                         resolution = Action.CONTINUE
@@ -38,6 +33,9 @@ class WorkWorker extends Worker {
                             resolution = Action.DONE
                         }
                     }
+                } else if (action && !action.initialized) {
+                    action.switchWorker(villager)
+                    continue
                 } else {
                     resolution = Action.DONE
                 }

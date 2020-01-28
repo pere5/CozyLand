@@ -18,6 +18,11 @@ class SurveyAction extends Action {
     }
 
     @Override
+    void switchWorker(Villager me) {
+
+    }
+
+    @Override
     boolean doIt(Villager shaman) {
         assert shaman.role instanceof ShamanRole
 

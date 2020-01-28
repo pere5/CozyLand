@@ -12,6 +12,11 @@ class WaitAction extends Action {
     }
 
     @Override
+    void switchWorker(Villager me) {
+
+    }
+
+    @Override
     boolean doIt(Villager me) {
         if (!time) {
             time = System.currentTimeMillis() + (seconds * 1000)

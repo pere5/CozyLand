@@ -15,6 +15,11 @@ class WalkAction extends Action {
     }
 
     @Override
+    void switchWorker(Villager me) {
+        me.toPathfinderWorker()
+    }
+
+    @Override
     boolean doIt(Villager me) {
         def straightPath = pathQueue.peek()
         if (straightPath) {
