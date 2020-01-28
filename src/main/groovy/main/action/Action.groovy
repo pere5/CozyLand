@@ -8,7 +8,7 @@ abstract class Action {
     static boolean DONE = false
 
     long last = System.currentTimeMillis()
-    boolean initialized
+    boolean initialized = true
 
     abstract void switchWorker(Villager me)
     abstract boolean doIt(Villager me)

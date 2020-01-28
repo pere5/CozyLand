@@ -13,7 +13,7 @@ class WaitAction extends Action {
 
     @Override
     void switchWorker(Villager me) {
-
+        throw new UnsupportedOperationException()
     }
 
     @Override

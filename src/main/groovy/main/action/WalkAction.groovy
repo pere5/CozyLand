@@ -11,6 +11,7 @@ class WalkAction extends Action {
     Queue<StraightPath> pathQueue = new LinkedList<>()
 
     WalkAction(int[] tile) {
+        this.initialized = false
         tileDest = tile
     }
 

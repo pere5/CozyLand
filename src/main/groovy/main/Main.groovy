@@ -15,7 +15,7 @@ import java.awt.event.WindowEvent
 
 class Main extends JFrame {
 
-    static boolean DEBUG_PATH_PRINTS = false
+    static boolean DEBUG_PATH_PRINTS = true
 
     static int WINDOW_WIDTH = 1000
     static int WINDOW_HEIGHT = 750
