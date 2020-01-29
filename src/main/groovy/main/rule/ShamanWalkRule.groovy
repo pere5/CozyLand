@@ -3,6 +3,7 @@ package main.rule
 import main.Main
 import main.Model
 import main.action.SurveyAction
+import main.action.WaitAction
 import main.action.WalkAction
 import main.model.Villager
 
@@ -15,12 +16,12 @@ class ShamanWalkRule extends Rule {
 
     @Override
     void planWork(Villager me, int status) {
-        me.actionQueue << new WalkAction(Model.closeRandomTile(me, Main.SHAMAN_DISTANCE_TILES))
-        me.actionQueue << new SurveyAction(10)
-        /*me.actionQueue << new WalkAction(Model.closeRandomTile(me, Main.SHAMAN_DISTANCE_TILES))
-        me.actionQueue << new SurveyAction(10)
-        me.actionQueue << new WalkAction(Model.closeRandomTile(me, Main.SHAMAN_DISTANCE_TILES))
-        me.actionQueue << new SurveyAction(10)*/
+        me.actionQueue << new WalkAction(Model.closeRandomTile(me, 5))
+        me.actionQueue << new SurveyAction(2)
+        me.actionQueue << new WalkAction(Model.closeRandomTile(me, 5))
+        me.actionQueue << new SurveyAction(2)
+        me.actionQueue << new WalkAction(Model.closeRandomTile(me, 5))
+        me.actionQueue << new WaitAction(10)
     }
 
     @Override

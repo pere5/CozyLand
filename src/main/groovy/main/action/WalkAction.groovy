@@ -16,23 +16,23 @@ class WalkAction extends Action {
     }
 
     @Override
-    void switchWorker(Villager me) {
-        me.toPathfinderWorker()
+    void switchWorker(Villager villager) {
+        villager.toPathfinderWorker()
     }
 
     @Override
-    boolean doIt(Villager me) {
+    boolean doIt(Villager villager) {
         def straightPath = pathQueue.peek()
         if (straightPath) {
             def step = straightPath.path.poll()
             if (step) {
                 def (Double x, Double y) = step
-                me.x = x
-                me.y = y
+                villager.x = x
+                villager.y = y
                 return CONTINUE
             } else {
                 pathQueue.poll()
-                return doIt(me)
+                return doIt(villager)
             }
         } else {
             return DONE

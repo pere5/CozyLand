@@ -40,21 +40,22 @@ class PathfinderWorker extends Worker {
         for (Villager villager : Model.villagers) {
 
             if (villager.pathfinderWorker) {
-                def first = [villager.x, villager.y] as Double[]
-
+                villager.toWorkWorker()
+                //TestPrints.printBresenhamMisses(villager)
                 def walkAction = villager.actionQueue.find {it instanceof WalkAction} as WalkAction
-
                 if (walkAction) {
                     walkAction.initialized = true
                     def tileStart = villager.getTileXY()
                     def tileDest = walkAction.tileDest
-                    if (tileStart == tileDest) continue
-
+                    if (tileStart == tileDest) {
+                        continue
+                    }
                     def perStarTiles = perStar(tileStart, tileDest, villager)
 
                     //def tiles = longestPossibleBresenhams(idx)
 
                     def randPxlA = randomPlacesInTileList(perStarTiles)
+                    def first = [villager.x, villager.y] as Double[]
 
                     for (int i = 0; i < perStarTiles.size() - 1; i++) {
                         def aT = perStarTiles[i]
@@ -75,8 +76,6 @@ class PathfinderWorker extends Worker {
                     }
                 }
             }
-            //TestPrints.printBresenhamMisses(villager)
-            villager.toWorkWorker()
         }
     }
 
