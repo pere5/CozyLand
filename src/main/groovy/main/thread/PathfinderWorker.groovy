@@ -50,33 +50,37 @@ class PathfinderWorker extends Worker {
                     if (tileStart == tileDest) {
                         continue
                     }
-                    def perStarTiles = perStar(tileStart, tileDest, villager)
-
-                    //def tiles = longestPossibleBresenhams(idx)
-
-                    def randPxlA = randomPlacesInTileList(perStarTiles)
-                    def first = [villager.x, villager.y] as Double[]
-
-                    for (int i = 0; i < perStarTiles.size() - 1; i++) {
-                        def aT = perStarTiles[i]
-                        def bT = perStarTiles[i + 1]
-                        if (Model.distance(aT, bT) > 2) {
-                            def randomTiles = randomTilesWithBresenham(aT, bT, villager)
-                            def randPxlB = randomPlacesInTileList(randomTiles)
-                            for (int j = 0; j < randomTiles.size() - 1; j++) {
-                                def step1 = i == 0 && j == 0 ? first : randPxlB[j]
-                                def step2 = randPxlB[j + 1]
-                                walkAction.pathQueue << new StraightPath(step1, step2, villager)
-                            }
-                        } else {
-                            def step1 = i == 0 ? first : randPxlA[i]
-                            def step2 = randPxlA[i + 1]
-                            walkAction.pathQueue << new StraightPath(step1, step2, villager)
-                        }
-                    }
+                    planPath(tileStart, tileDest, villager, walkAction)
                 }
 
                 //TestPrints.printBresenhamMisses(villager)
+            }
+        }
+    }
+
+    private void planPath(int[] tileStart, int[] tileDest, Villager villager, WalkAction walkAction) {
+        def perStarTiles = perStar(tileStart, tileDest, villager)
+
+        //def tiles = longestPossibleBresenhams(idx)
+
+        def randPxlA = randomPlacesInTileList(perStarTiles)
+        def first = [villager.x, villager.y] as Double[]
+
+        for (int i = 0; i < perStarTiles.size() - 1; i++) {
+            def aT = perStarTiles[i]
+            def bT = perStarTiles[i + 1]
+            if (Model.distance(aT, bT) > 2) {
+                def randomTiles = randomTilesWithBresenham(aT, bT, villager)
+                def randPxlB = randomPlacesInTileList(randomTiles)
+                for (int j = 0; j < randomTiles.size() - 1; j++) {
+                    def step1 = i == 0 && j == 0 ? first : randPxlB[j]
+                    def step2 = randPxlB[j + 1]
+                    walkAction.pathQueue << new StraightPath(step1, step2, villager)
+                }
+            } else {
+                def step1 = i == 0 ? first : randPxlA[i]
+                def step2 = randPxlA[i + 1]
+                walkAction.pathQueue << new StraightPath(step1, step2, villager)
             }
         }
     }
