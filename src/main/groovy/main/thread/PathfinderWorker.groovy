@@ -41,7 +41,7 @@ class PathfinderWorker extends Worker {
 
             if (villager.pathfinderWorker) {
                 villager.toWorkWorker()
-                //TestPrints.printBresenhamMisses(villager)
+
                 def walkAction = villager.actionQueue.find {it instanceof WalkAction} as WalkAction
                 if (walkAction) {
                     walkAction.initialized = true
@@ -75,6 +75,8 @@ class PathfinderWorker extends Worker {
                         }
                     }
                 }
+
+                //TestPrints.printBresenhamMisses(villager)
             }
         }
     }
