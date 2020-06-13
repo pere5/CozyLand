@@ -7,6 +7,8 @@ import main.rule.Rule
 import main.rule.ShamanWalkRule
 import main.things.Drawable
 
+import java.awt.image.BufferedImage
+
 class ShamanRole extends Role {
 
     static final String ID = 'shaman'
@@ -47,13 +49,13 @@ class ShamanRole extends Role {
 
                     if (boss) {
                         me.role = new FollowerRole(boss)
-                        me.shape = Drawable.SHAPES.FOLLOWER
-                        me.image = Model.followerImage
+                        me.shape = Drawable.SHAPE.FOLLOWER
+                        me.image = Model.shapeProperties[me.shape].image as BufferedImage
                         boss.role.villagers << me
                     } else {
                         me.role = new ShamanRole()
-                        me.shape = Drawable.SHAPES.SHAMAN
-                        me.image = Model.shamanImage
+                        me.shape = Drawable.SHAPE.SHAMAN
+                        me.image = Model.shapeProperties[me.shape].image as BufferedImage
                     }
                 }
             }

@@ -8,6 +8,6 @@ class Artifact extends Drawable {
     Artifact () {
         size = 1
         color = Color.RED
-        shape = SHAPES.RECT
+        shape = SHAPE.RECT
     }
 }

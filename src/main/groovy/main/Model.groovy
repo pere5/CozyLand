@@ -4,12 +4,13 @@ import javaSrc.circulararray.CircularArrayList
 import javaSrc.color.GaussianFilter
 import main.calculator.Background
 import main.calculator.Probabilities
+import main.exception.PerIsBorkenException
 import main.input.MyKeyboardListener
 import main.input.MyMouseListener
-import main.model.StraightPath
 import main.model.Tile
 import main.model.Villager
 import main.things.Drawable
+import main.things.Drawable.SHAPE
 
 import javax.imageio.ImageIO
 import java.awt.*
@@ -64,25 +65,64 @@ class Model {
     static List<Map> frameSlots = []
     static def tileProbabilitiesForDegrees = Probabilities.calculateProbabilitiesModel()
     static BufferedImage backgroundImage
-    static BufferedImage treeImage
-    static BufferedImage stoneImage
-    static BufferedImage baseImage
-    static BufferedImage shamanImage
-    static BufferedImage shamanCampImage
-    static BufferedImage followerImage
+
+    static Map<SHAPE, Map<String, Object>> shapeProperties = [
+            (SHAPE.TREE): [
+                    fileName: 'icons8-large-tree-48.png',
+                    scale   : Main.TREE_SCALE,
+                    image   : null,
+                    offsetX : Main.TREE_OFFSET_X,
+                    offsetY : Main.TREE_OFFSET_Y
+            ],
+            (SHAPE.STONE): [
+                    fileName: 'icons8-silver-ore-48.png',
+                    scale   : Main.STONE_SCALE,
+                    image   : null,
+                    offsetX : Main.STONE_OFFSET_X,
+                    offsetY : Main.STONE_OFFSET_Y
+            ],
+            (SHAPE.WARRIOR): [
+                    fileName: 'icons8-iron-age-warrior-48.png',
+                    scale   : Main.VILLAGER_SCALE,
+                    image   : null,
+                    offsetX : Main.PERSON_OFFSET_X,
+                    offsetY : Main.PERSON_OFFSET_Y
+            ],
+            (SHAPE.SHAMAN): [
+                    fileName: 'icons8-spartan-helmet-48.png',
+                    scale   : Main.VILLAGER_SCALE,
+                    image   : null,
+                    offsetX : Main.PERSON_OFFSET_X,
+                    offsetY : Main.PERSON_OFFSET_Y
+            ],
+            (SHAPE.SHAMAN_CAMP): [
+                    fileName: 'icons8-campfire-48.png',
+                    scale   : Main.VILLAGER_SCALE,
+                    image   : null,
+                    offsetX : Main.PERSON_OFFSET_X,
+                    offsetY : Main.PERSON_OFFSET_Y
+            ],
+            (SHAPE.FOLLOWER): [
+                    fileName: 'icons8-sword-48.png',
+                    scale   : Main.VILLAGER_SCALE,
+                    image   : null,
+                    offsetX : Main.PERSON_OFFSET_X,
+                    offsetY : Main.PERSON_OFFSET_Y
+            ]
+    ]
 
     static def init(def keyboard, def mouse) {
         Model.keyboard = keyboard
         Model.mouse = mouse
         tileNetwork = Background.generateBackground()
         backgroundImage = createBGImage()
-        treeImage = createImage(Drawable.SHAPES.TREE)
-        stoneImage = createImage(Drawable.SHAPES.STONE)
-        baseImage = createImage(Drawable.SHAPES.BASE)
-        shamanImage = createImage(Drawable.SHAPES.SHAMAN)
-        shamanCampImage = createImage(Drawable.SHAPES.SHAMAN_CAMP)
-        followerImage = createImage(Drawable.SHAPES.FOLLOWER)
-        def villagers = (1..2500).collect { Villager.test() }
+        shapeProperties[SHAPE.TREE].image = createImage(SHAPE.TREE)
+        shapeProperties[SHAPE.STONE].image = createImage(SHAPE.STONE)
+        shapeProperties[SHAPE.WARRIOR].image = createImage(SHAPE.WARRIOR)
+        shapeProperties[SHAPE.SHAMAN].image = createImage(SHAPE.SHAMAN)
+        shapeProperties[SHAPE.SHAMAN_CAMP].image = createImage(SHAPE.SHAMAN_CAMP)
+        shapeProperties[SHAPE.FOLLOWER].image = createImage(SHAPE.FOLLOWER)
+        def villagers = (1..2000).collect { Villager.test() }
 
         def drawables = new ConcurrentLinkedQueue<Drawable>([
                 villagers
@@ -94,33 +134,13 @@ class Model {
         Background.setResources(tileNetwork)
     }
 
-    static BufferedImage createImage(Drawable.SHAPES shape) {
+    static BufferedImage createImage(SHAPE shape) {
 
-        def imgFile = null
-        def scale = null
-
-        if (shape == Drawable.SHAPES.TREE) {
-            imgFile = 'icons8-large-tree-48.png'
-            scale = Main.TREE_SCALE
-        } else if (shape == Drawable.SHAPES.STONE) {
-            imgFile = 'icons8-silver-ore-48.png'
-            scale = Main.STONE_SCALE
-        } else if (shape == Drawable.SHAPES.BASE) {
-            imgFile = 'icons8-iron-age-warrior-48.png'
-            scale = Main.VILLAGER_SCALE
-        } else if (shape == Drawable.SHAPES.SHAMAN) {
-            imgFile = 'icons8-spartan-helmet-48.png'
-            scale = Main.VILLAGER_SCALE
-        } else if (shape == Drawable.SHAPES.SHAMAN_CAMP) {
-            imgFile = 'icons8-campfire-48.png'
-            scale = Main.VILLAGER_SCALE
-        } else if (shape == Drawable.SHAPES.FOLLOWER) {
-            imgFile = 'icons8-sword-48.png'
-            scale = Main.VILLAGER_SCALE
-        }
+        def fileName = shapeProperties[shape].fileName as String
+        def scale = shapeProperties[shape].scale as Double
 
         ClassLoader classloader = Thread.currentThread().getContextClassLoader()
-        def img = ImageIO.read(classloader.getResourceAsStream(imgFile))
+        def img = ImageIO.read(classloader.getResourceAsStream(fileName))
         def scaledImage = new BufferedImage (
                 (scale * img.getWidth(null)) as int,
                 (scale * img.getHeight(null)) as int,
@@ -191,7 +211,7 @@ class Model {
             for (int y = 0; y < tileNetwork[x].length; y++) {
                 Drawable drawable = tileNetwork[x][y]
                 g2d.setPaint(drawable.color)
-                if (drawable.shape == Drawable.SHAPES.RECT) {
+                if (drawable.shape == SHAPE.RECT) {
                     g2d.fillRect(drawable.x as int, drawable.y as int, drawable.size, drawable.size)
                 }
             }

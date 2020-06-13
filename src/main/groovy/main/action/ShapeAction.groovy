@@ -1,20 +1,18 @@
 package main.action
 
 import main.Model
-import main.model.StraightPath
 import main.model.Villager
 import main.things.Drawable
+import main.things.Drawable.SHAPE
 
 import java.awt.image.BufferedImage
 
 class ShapeAction extends Action {
 
-    Drawable.SHAPES shape
-    BufferedImage image
+    SHAPE shape
 
-    ShapeAction(Drawable.SHAPES shape, BufferedImage image) {
+    ShapeAction(SHAPE shape) {
         this.shape = shape
-        this.image = image
     }
 
     @Override
@@ -25,7 +23,7 @@ class ShapeAction extends Action {
     @Override
     boolean doIt(Villager villager) {
         villager.shape = shape
-        villager.image = image
+        villager.image = Model.shapeProperties[shape].image as BufferedImage
         return DONE
     }
 }

@@ -7,6 +7,8 @@ import main.role.BaseRole
 import main.role.Role
 import main.things.Drawable
 
+import java.awt.image.BufferedImage
+
 class Villager extends Drawable {
 
     Queue<Action> actionQueue = new LinkedList<>()
@@ -18,8 +20,8 @@ class Villager extends Drawable {
     static Villager test() {
         def villager = new Villager()
         villager.role = new BaseRole()
-        villager.shape = SHAPES.BASE
-        villager.image = Model.baseImage
+        villager.shape = SHAPE.WARRIOR
+        villager.image = Model.shapeProperties[villager.shape].image as BufferedImage
         def (Double x, Double y) = Model.generateXY()
         villager.x = x
         villager.y = y

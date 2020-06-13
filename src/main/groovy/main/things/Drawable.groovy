@@ -7,15 +7,15 @@ import java.awt.image.BufferedImage
 
 abstract class Drawable {
 
-    enum SHAPES {
-        RECT, CIRCLE, TREE, STONE, SHAMAN, SHAMAN_CAMP, BASE, FOLLOWER
+    enum SHAPE {
+        RECT, CIRCLE, TREE, STONE, SHAMAN, SHAMAN_CAMP, WARRIOR, FOLLOWER
     }
 
     int id
     int parent
     Color color
     Color testColor
-    SHAPES shape = SHAPES.RECT
+    SHAPE shape = SHAPE.RECT
     BufferedImage image
     int size = 10
     Double x = 0
@@ -23,6 +23,11 @@ abstract class Drawable {
 
     Drawable() {
         this.id = Model.getNewId()
+    }
+
+    void setShape(SHAPE shape) {
+        this.shape = shape
+        this.image = Model.shapeProperties[shape].image as BufferedImage
     }
 
     int[] getTileXY() {

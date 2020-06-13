@@ -7,8 +7,8 @@ class Tree extends Resource {
 
     Tree (Tile tile) {
         super(tile)
-        shape = SHAPES.TREE
-        image = Model.shadeImage(Model.treeImage, tile.color)
+        shape = SHAPE.TREE
+        image = Model.shadeImage(Model.shapeProperties[SHAPE.TREE].image, tile.color)
     }
 
     @Override
