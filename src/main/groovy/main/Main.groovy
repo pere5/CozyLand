@@ -15,33 +15,34 @@ import java.awt.event.WindowEvent
 
 class Main extends JFrame {
 
-    static boolean DEBUG_PATH_PRINTS = false
+    static final boolean DEBUG_PATH_PRINTS = false
 
-    static int WINDOW_WIDTH = 1000
-    static int WINDOW_HEIGHT = 750
+    static final int WINDOW_WIDTH = 1000
+    static final int WINDOW_HEIGHT = 750
 
-    static int COMFORT_ZONE_TILES = 4
-    static int VISIBLE_ZONE_TILES = 12
-    static int WALK_DISTANCE_TILES = 12
-    static int SHAMAN_DISTANCE_TILES = 15
+    static final int COMFORT_ZONE_TILES = 2
+    static final int VISIBLE_ZONE_TILES = 8
+    static final int WALK_DISTANCE_TILES = 4
+    static final int SHAMAN_DISTANCE_TILES = 15
 
-    static int TILE_WIDTH = 8
-    static int GAUSSIAN_FILTER = 3
-    static int RESOURCE_PREVALENCE_TREE = 40
-    static int RESOURCE_PREVALENCE_STONE = 30
-    static int TREE_OFFSET_X = - (TILE_WIDTH * 2) as int
-    static int TREE_OFFSET_Y = - (TILE_WIDTH * 4.2) as int
-    static int STONE_OFFSET_X = - 0
-    static int STONE_OFFSET_Y = - 0
-    static int PERSON_OFFSET_X = - (TILE_WIDTH / 2) as int
-    static int PERSON_OFFSET_Y = - TILE_WIDTH
-    static double TREE_SCALE = 0.8
-    static double STONE_SCALE = 0.30
-    static double VILLAGER_SCALE = 0.30
-    static double SHADE_IMAGES = 0.60
+    static final Double STEP = 0.5
+    static final int TILE_WIDTH = 8
+    static final int GAUSSIAN_FILTER = 3
+    static final int RESOURCE_PREVALENCE_TREE = 40
+    static final int RESOURCE_PREVALENCE_STONE = 30
+    static final int TREE_OFFSET_X = - (TILE_WIDTH * 2) as int
+    static final int TREE_OFFSET_Y = - (TILE_WIDTH * 4.2) as int
+    static final int STONE_OFFSET_X = - 0
+    static final int STONE_OFFSET_Y = - 0
+    static final int PERSON_OFFSET_X = - (TILE_WIDTH / 2) as int
+    static final int PERSON_OFFSET_Y = - TILE_WIDTH
+    static final Double TREE_SCALE = 0.8
+    static final Double STONE_SCALE = 0.30
+    static final Double VILLAGER_SCALE = 0.20
+    static final Double SHADE_IMAGES = 0.60
 
-    static int MAP_WIDTH = WINDOW_WIDTH * 3
-    static int MAP_HEIGHT = WINDOW_HEIGHT * 3
+    static final int MAP_WIDTH = WINDOW_WIDTH * 3
+    static final int MAP_HEIGHT = WINDOW_HEIGHT * 3
 
     static int VIEWPORT_WIDTH
     static int VIEWPORT_HEIGHT

@@ -68,6 +68,7 @@ class Model {
     static BufferedImage stoneImage
     static BufferedImage baseImage
     static BufferedImage shamanImage
+    static BufferedImage shamanCampImage
     static BufferedImage followerImage
 
     static def init(def keyboard, def mouse) {
@@ -79,6 +80,7 @@ class Model {
         stoneImage = createImage(Drawable.SHAPES.STONE)
         baseImage = createImage(Drawable.SHAPES.BASE)
         shamanImage = createImage(Drawable.SHAPES.SHAMAN)
+        shamanCampImage = createImage(Drawable.SHAPES.SHAMAN_CAMP)
         followerImage = createImage(Drawable.SHAPES.FOLLOWER)
         def villagers = (1..2500).collect { Villager.test() }
 
@@ -108,6 +110,9 @@ class Model {
             scale = Main.VILLAGER_SCALE
         } else if (shape == Drawable.SHAPES.SHAMAN) {
             imgFile = 'icons8-spartan-helmet-48.png'
+            scale = Main.VILLAGER_SCALE
+        } else if (shape == Drawable.SHAPES.SHAMAN_CAMP) {
+            imgFile = 'icons8-campfire-48.png'
             scale = Main.VILLAGER_SCALE
         } else if (shape == Drawable.SHAPES.FOLLOWER) {
             imgFile = 'icons8-sword-48.png'
@@ -324,10 +329,10 @@ class Model {
     }
 
     static boolean closeEnough(Double[] pointA, Double[] pointB) {
-        Double xBig = pointA[0] + StraightPath.STEP
-        Double xSmall = pointA[0] - StraightPath.STEP
-        Double yBig = pointA[1] + StraightPath.STEP
-        Double ySmall = pointA[1] - StraightPath.STEP
+        Double xBig = pointA[0] + Main.STEP
+        Double xSmall = pointA[0] - Main.STEP
+        Double yBig = pointA[1] + Main.STEP
+        Double ySmall = pointA[1] - Main.STEP
         return pointB[0] <= xBig && pointB[0] >= xSmall && pointB[1] <= yBig && pointB[1] >= ySmall
     }
 

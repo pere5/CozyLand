@@ -1,5 +1,6 @@
 package main.model
 
+import main.Main
 import main.Model
 import main.TestPrints
 import main.model.Villager
@@ -8,8 +9,6 @@ class StraightPath {
     Queue<Double[]> path = new LinkedList<>()
 
     Double[] a
-
-    static Double STEP = 0.8
 
     StraightPath(Double[] start, Double[] dest, Villager villager) {
 
@@ -28,8 +27,8 @@ class StraightPath {
 
             vx /= mag
             vy /= mag
-            Double px = (nextStep[0] + vx * STEP)
-            Double py = (nextStep[1] + vy * STEP)
+            Double px = (nextStep[0] + vx * Main.STEP)
+            Double py = (nextStep[1] + vy * Main.STEP)
             nextStep = [px, py]
             path.add(nextStep)
         }
