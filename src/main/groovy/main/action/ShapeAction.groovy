@@ -23,7 +23,6 @@ class ShapeAction extends Action {
     @Override
     boolean doIt(Villager villager) {
         villager.shape = shape
-        villager.image = Model.shapeProperties[shape].image as BufferedImage
         return DONE
     }
 }

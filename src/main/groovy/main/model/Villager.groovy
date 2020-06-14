@@ -21,7 +21,6 @@ class Villager extends Drawable {
         def villager = new Villager()
         villager.role = new BaseRole()
         villager.shape = SHAPE.WARRIOR
-        villager.image = Model.shapeProperties[villager.shape].image as BufferedImage
         def (Double x, Double y) = Model.generateXY()
         villager.x = x
         villager.y = y

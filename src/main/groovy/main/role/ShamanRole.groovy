@@ -50,12 +50,10 @@ class ShamanRole extends Role {
                     if (boss) {
                         me.role = new FollowerRole(boss)
                         me.shape = Drawable.SHAPE.FOLLOWER
-                        me.image = Model.shapeProperties[me.shape].image as BufferedImage
                         boss.role.villagers << me
                     } else {
                         me.role = new ShamanRole()
                         me.shape = Drawable.SHAPE.SHAMAN
-                        me.image = Model.shapeProperties[me.shape].image as BufferedImage
                     }
                 }
             }
