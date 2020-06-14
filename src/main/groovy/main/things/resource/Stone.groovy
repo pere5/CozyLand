@@ -8,6 +8,7 @@ class Stone extends Resource {
     Stone (Tile tile) {
         super(tile)
         shape = SHAPE.STONE
+        image = Model.shadeImage(Model.shapeProperties[shape].image, tile.color)
     }
 
     @Override

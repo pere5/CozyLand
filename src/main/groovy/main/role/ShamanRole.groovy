@@ -7,7 +7,7 @@ import main.rule.Rule
 import main.rule.ShamanWalkRule
 import main.things.Drawable
 
-import java.awt.image.BufferedImage
+import java.awt.Color
 
 class ShamanRole extends Role {
 
@@ -45,15 +45,28 @@ class ShamanRole extends Role {
                 }
 
                 if (villagers) {
-                    def boss = villagers.find { it.role.id == ID } ?: villagers.find { it.role.boss?.role?.id == ID }?.role?.boss
+                    def otherChief = villagers.find { it.role.id == ID } ?: villagers.find { it.role.chief?.role?.id == ID }?.role?.chief
 
-                    if (boss) {
-                        me.role = new FollowerRole(boss)
-                        me.shape = Drawable.SHAPE.FOLLOWER
-                        boss.role.villagers << me
+                    def becomeFollower = { Villager villager, Villager chief ->
+                        villager.role = new FollowerRole(chief)
+                        villager.shape = Drawable.SHAPE.FOLLOWER
+                        //villager.image = Model.shadeImage(villager.image, chief.role.tribeColor)
+                        chief.role.followers << villager
+                    }
+
+                    if (otherChief) {
+                        becomeFollower(me, otherChief)
                     } else {
+                        Random rand = new Random()
+                        def tribeColor = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
+
                         me.role = new ShamanRole()
                         me.shape = Drawable.SHAPE.SHAMAN
+                        me.role.tribeColor = tribeColor
+                        //me.image = Model.shadeImage(me.image, tribeColor)
+                        villagers.each { def villager ->
+                            becomeFollower(villager, me)
+                        }
                     }
                 }
             }

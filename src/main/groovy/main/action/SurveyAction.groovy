@@ -32,7 +32,7 @@ class SurveyAction extends Action {
 
         perTenSeconds (3) {
             def tileNetwork = Model.tileNetwork as Tile[][]
-            shaman.role.villagers.each { def follower ->
+            shaman.role.followers.each { def follower ->
                 def (int tileX, int tileY) = follower.getTileXY()
                 Model.getTilesWithinRadii(tileX, tileY, Main.VISIBLE_ZONE_TILES) { int x, int y ->
                     //TestPrints.printSurveyResourcesCircle(me, x, y)

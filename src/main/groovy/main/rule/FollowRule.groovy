@@ -14,7 +14,7 @@ class FollowRule extends Rule {
 
     @Override
     void planWork(Villager me, int status) {
-        me.actionQueue << new WalkAction(Model.closeRandomTile(me.role.boss, Main.COMFORT_ZONE_TILES))
+        me.actionQueue << new WalkAction(Model.closeRandomTile(me.role.chief, Main.COMFORT_ZONE_TILES))
     }
 
     @Override

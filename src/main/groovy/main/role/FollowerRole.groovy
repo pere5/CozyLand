@@ -18,7 +18,7 @@ class FollowerRole extends Role {
     FollowerRole(Villager boss) {
         super.id = ID
         super.rules = getRules()
-        super.boss = boss
+        super.chief = boss
     }
 
 }
