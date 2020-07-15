@@ -155,6 +155,38 @@ class Model {
         scaledImage
     }
 
+    static BufferedImage applyColorFilter(BufferedImage origImage, Color color) {
+        def image = copyImage(origImage)
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                int pixel = image.getRGB(x,y)
+
+                int alpha = (pixel>>24)&0xff
+                int red = (pixel>>16)&0xff
+                int green = (pixel>>8)&0xff
+                int blue = pixel&0xff
+
+                int newRed = (((color.red - red) / Main.SHADE_TRIBE) + red) as int
+                int newGreen = (((color.green - green) / Main.SHADE_TRIBE) + green) as int
+                int newBlue = (((color.blue - blue) / Main.SHADE_TRIBE) + blue) as int
+
+                pixel = (alpha<<24) | (newRed<<16) | (newGreen<<8) | newBlue
+
+                image.setRGB(x, y, pixel)
+            }
+        }
+
+        return image
+    }
+
+    static BufferedImage copyImage(BufferedImage source) {
+        BufferedImage b = new BufferedImage(source.getWidth(), source.getHeight(), source.getType())
+        Graphics2D g = b.createGraphics()
+        g.drawImage(source, 0, 0, null)
+        g.dispose()
+        return b
+    }
+
     static BufferedImage shadeImage(BufferedImage image, Color c) {
 
         def c2 = getDominantColor(image)

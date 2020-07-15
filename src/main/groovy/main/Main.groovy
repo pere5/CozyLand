@@ -40,6 +40,7 @@ class Main extends JFrame {
     static final Double STONE_SCALE = 0.30
     static final Double VILLAGER_SCALE = 0.20
     static final Double SHADE_IMAGES = 0.60
+    static final Double SHADE_TRIBE = 1.7
 
     static final int MAP_WIDTH = WINDOW_WIDTH * 3
     static final int MAP_HEIGHT = WINDOW_HEIGHT * 3

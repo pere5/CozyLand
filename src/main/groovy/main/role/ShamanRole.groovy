@@ -50,7 +50,7 @@ class ShamanRole extends Role {
                     def becomeFollower = { Villager villager, Villager chief ->
                         villager.role = new FollowerRole(chief)
                         villager.shape = Drawable.SHAPE.FOLLOWER
-                        //villager.image = Model.shadeImage(villager.image, chief.role.tribeColor)
+                        villager.image = Model.applyColorFilter(villager.image, chief.role.tribeColor)
                         chief.role.followers << villager
                     }
 
@@ -58,12 +58,14 @@ class ShamanRole extends Role {
                         becomeFollower(me, otherChief)
                     } else {
                         Random rand = new Random()
-                        def tribeColor = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
-
                         me.role = new ShamanRole()
                         me.shape = Drawable.SHAPE.SHAMAN
-                        me.role.tribeColor = tribeColor
-                        //me.image = Model.shadeImage(me.image, tribeColor)
+                        me.role.tribeColor = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
+
+                        //todo: tribe keep color when switching image, e.g fireplace
+                        //todo: denna funktion körs nog på tok för ofta tror jag. KOLLA!
+
+                        me.image = Model.applyColorFilter(me.image, me.role.tribeColor)
                         villagers.each { def villager ->
                             becomeFollower(villager, me)
                         }
