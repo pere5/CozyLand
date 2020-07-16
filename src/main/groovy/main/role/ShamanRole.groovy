@@ -47,13 +47,6 @@ class ShamanRole extends Role {
                 if (villagers) {
                     def otherChief = villagers.find { it.role.id == ID } ?: villagers.find { it.role.chief?.role?.id == ID }?.role?.chief
 
-                    def becomeFollower = { Villager villager, Villager chief ->
-                        villager.role = new FollowerRole(chief)
-                        villager.shape = Drawable.SHAPE.FOLLOWER
-                        villager.image = Model.applyColorFilter(villager.image, chief.role.tribeColor)
-                        chief.role.followers << villager
-                    }
-
                     if (otherChief) {
                         becomeFollower(me, otherChief)
                     } else {
@@ -73,5 +66,12 @@ class ShamanRole extends Role {
                 }
             }
         }
+    }
+
+    static void becomeFollower (Villager villager, Villager chief) {
+        villager.role = new FollowerRole(chief)
+        villager.shape = Drawable.SHAPE.FOLLOWER
+        villager.image = Model.applyColorFilter(villager.image, chief.role.tribeColor)
+        chief.role.followers << villager
     }
 }
