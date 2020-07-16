@@ -3,11 +3,9 @@ package main.model
 import main.Model
 import main.Model.TravelType
 import main.action.Action
-import main.role.BaseRole
+import main.role.alone.AloneRole
 import main.role.Role
 import main.things.Drawable
-
-import java.awt.image.BufferedImage
 
 class Villager extends Drawable {
 
@@ -19,8 +17,8 @@ class Villager extends Drawable {
 
     static Villager test() {
         def villager = new Villager()
-        villager.role = new BaseRole()
-        villager.shape = SHAPE.WARRIOR
+        villager.role = new AloneRole()
+        villager.setShape(SHAPE.WARRIOR, null)
         def (Double x, Double y) = Model.generateXY()
         villager.x = x
         villager.y = y

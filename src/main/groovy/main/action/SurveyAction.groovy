@@ -4,7 +4,8 @@ import main.Main
 import main.Model
 import main.model.Tile
 import main.model.Villager
-import main.role.ShamanRole
+import main.role.tribe.NomadTribe
+import main.role.tribe.ShamanRole
 import main.things.resource.Resource
 
 class SurveyAction extends Action {
@@ -32,7 +33,7 @@ class SurveyAction extends Action {
 
         perTenSeconds (3) {
             def tileNetwork = Model.tileNetwork as Tile[][]
-            shaman.role.followers.each { def follower ->
+            (shaman.role.tribe as NomadTribe).followers.each { def follower ->
                 def (int tileX, int tileY) = follower.getTileXY()
                 Model.getTilesWithinRadii(tileX, tileY, Main.VISIBLE_ZONE_TILES) { int x, int y ->
                     //TestPrints.printSurveyResourcesCircle(me, x, y)

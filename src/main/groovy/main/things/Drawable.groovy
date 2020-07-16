@@ -1,6 +1,7 @@
 package main.things
 
 import main.Model
+import main.role.Tribe
 
 import java.awt.*
 import java.awt.image.BufferedImage
@@ -25,9 +26,10 @@ abstract class Drawable {
         this.id = Model.getNewId()
     }
 
-    void setShape(SHAPE shape) {
+    void setShape(SHAPE shape, Tribe tribe) {
         this.shape = shape
-        this.image = Model.shapeProperties[shape].image as BufferedImage
+        def image = Model.shapeProperties[shape].image as BufferedImage
+        this.image = tribe?.color ? Model.applyColorFilter(image, tribe.color) : image
     }
 
     int[] getTileXY() {

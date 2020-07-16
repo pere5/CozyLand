@@ -33,11 +33,13 @@ class AffinityRule extends Rule {
 
     @Override
     void planWork(Villager me, int status) {
+        def tileNetwork = Model.tileNetwork as Tile[][]
+        def (int tileX, int tileY) = me.getTileXY()
+
         List<Drawable> closeVillagers = []
-        for (Villager villager: Model.villagers) {
-            if (me.id != villager.id) {
-                Double range = Model.tileRange(villager, me)
-                if (range < Main.VISIBLE_ZONE_TILES) {
+        Model.getTilesWithinRadii(tileX, tileY, Main.VISIBLE_ZONE_TILES) { int x, int y ->
+            tileNetwork[x][y].villagers.each { Villager villager ->
+                if (villager.id != me.id) {
                     closeVillagers << villager
                 }
             }

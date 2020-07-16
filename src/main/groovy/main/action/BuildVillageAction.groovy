@@ -1,7 +1,7 @@
 package main.action
 
 import main.model.Villager
-import main.role.ShamanRole
+import main.role.tribe.ShamanRole
 import main.things.resource.Resource
 
 class BuildVillageAction extends Action {

@@ -1,6 +1,7 @@
-package main.role
+package main.role.tribe
 
-import main.model.Villager
+
+import main.role.Role
 import main.rule.FollowRule
 import main.rule.Rule
 
@@ -15,10 +16,9 @@ class FollowerRole extends Role {
         ]
     }
 
-    FollowerRole(Villager boss) {
+    FollowerRole(NomadTribe tribe) {
         super.id = ID
-        super.rules = getRules()
-        super.chief = boss
+        this.rules = getRules()
+        this.tribe = tribe
     }
-
 }

@@ -4,6 +4,7 @@ import main.Main
 import main.Model
 import main.action.WalkAction
 import main.model.Villager
+import main.role.tribe.NomadTribe
 
 class FollowRule extends Rule {
 
@@ -14,7 +15,7 @@ class FollowRule extends Rule {
 
     @Override
     void planWork(Villager me, int status) {
-        me.actionQueue << new WalkAction(Model.closeRandomTile(me.role.chief, Main.COMFORT_ZONE_TILES))
+        me.actionQueue << new WalkAction(Model.closeRandomTile((me.role.tribe as NomadTribe).shaman, Main.COMFORT_ZONE_TILES))
     }
 
     @Override

@@ -1,11 +1,12 @@
-package main.role
+package main.role.alone
 
+import main.role.Role
 import main.rule.AffinityRule
 import main.rule.Rule
 
-class BaseRole extends Role {
+class AloneRole extends Role {
 
-    static final String ID = 'base'
+    static final String ID = 'alone'
 
     static List<Rule> getRules() {
         int rank = Integer.MAX_VALUE
@@ -15,7 +16,7 @@ class BaseRole extends Role {
         ]
     }
 
-    BaseRole() {
+    AloneRole() {
         super.id = ID
         super.rules = getRules()
     }
