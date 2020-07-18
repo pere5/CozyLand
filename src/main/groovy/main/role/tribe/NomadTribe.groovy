@@ -19,42 +19,38 @@ class NomadTribe extends Tribe {
         shapeMap[SHAPE.FOLLOWER] = [image:null]
     }
 
-    static void work() {
-        def tileNetwork = Model.tileNetwork
+    static void work(Villager villager) {
+        if (villager.role.id == AloneRole.ID) {
+            def aloneMe = villager
+            def tileNetwork = Model.tileNetwork
+            def (int tileX, int tileY) = aloneMe.getTileXY()
 
-        for (int i = 0; i < Model.villagers.size(); i++) {
-            def aloneMe = Model.villagers[i]
+            List<Villager> neighbors = []
 
-            if (aloneMe.role.id == AloneRole.ID) {
-                def (int tileX, int tileY) = aloneMe.getTileXY()
-
-                List<Villager> villagers = []
-
-                Model.getTilesWithinRadii(tileX, tileY, Main.COMFORT_ZONE_TILES) { int x, int y ->
-                    tileNetwork[x][y].villagers.each { Villager villager ->
-                        if (villager.id != aloneMe.id) {
-                            villagers << villager
-                        }
+            Model.getTilesWithinRadii(tileX, tileY, Main.COMFORT_ZONE_TILES) { int x, int y ->
+                tileNetwork[x][y].villagers.each { Villager neighbor ->
+                    if (neighbor.id != aloneMe.id) {
+                        neighbors << neighbor
                     }
                 }
+            }
 
-                if (villagers) {
-                    def nomadTribe = villagers.role.tribe.find { it instanceof NomadTribe } as NomadTribe
+            if (neighbors) {
+                def nomadTribe = neighbors.role.tribe.find { it instanceof NomadTribe } as NomadTribe
 
-                    if (nomadTribe) {
-                        becomeFollower(aloneMe, nomadTribe)
-                    } else {
-                        Random rand = new Random()
+                if (nomadTribe) {
+                    becomeFollower(aloneMe, nomadTribe)
+                } else {
+                    Random rand = new Random()
 
-                        NomadTribe myNomadTribe = new NomadTribe()
-                        myNomadTribe.shaman = aloneMe
-                        myNomadTribe.color = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
+                    NomadTribe myNomadTribe = new NomadTribe()
+                    myNomadTribe.shaman = aloneMe
+                    myNomadTribe.color = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
 
-                        aloneMe.role = new ShamanRole(myNomadTribe)
-                        aloneMe.setShape(SHAPE.SHAMAN, myNomadTribe)
-                        villagers.findAll { it.role.id == AloneRole.ID }.each { def aloneVillager ->
-                            becomeFollower(aloneVillager, myNomadTribe)
-                        }
+                    aloneMe.role = new ShamanRole(myNomadTribe)
+                    aloneMe.setShape(SHAPE.SHAMAN, myNomadTribe)
+                    neighbors.findAll { it.role.id == AloneRole.ID }.each { def aloneVillager ->
+                        becomeFollower(aloneVillager, myNomadTribe)
                     }
                 }
             }
