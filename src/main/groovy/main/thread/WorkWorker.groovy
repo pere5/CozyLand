@@ -35,7 +35,7 @@ class WorkWorker extends Worker {
                     }
                 } else if (action && !action.initialized) {
                     action.switchWorker(villager)
-                    continue
+                    resolution = Action.CONTINUE
                 } else {
                     resolution = Action.DONE
                 }
