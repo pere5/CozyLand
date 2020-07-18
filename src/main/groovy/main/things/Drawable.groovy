@@ -33,7 +33,6 @@ abstract class Drawable {
     }
 
     void setShape(SHAPE shape, Tribe tribe) {
-        this.shape = shape
         BufferedImage image
 
         if (tribe instanceof NomadTribe) {
@@ -63,6 +62,7 @@ abstract class Drawable {
             image = Model.shapeProperties[shape].image as BufferedImage
         }
 
+        this.shape = shape
         this.image = image
     }
 
