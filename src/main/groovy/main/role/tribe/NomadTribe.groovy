@@ -5,13 +5,15 @@ import main.Model
 import main.model.Villager
 import main.role.Tribe
 import main.role.alone.AloneRole
+import main.things.Drawable
 import main.things.Drawable.SHAPE
 
 import java.awt.Color
+import java.util.concurrent.ConcurrentLinkedQueue
 
 class NomadTribe extends Tribe {
     Villager shaman
-    List<Villager> followers = []
+    ConcurrentLinkedQueue<Drawable> followers = []
 
     NomadTribe() {
         shapeMap[SHAPE.SHAMAN] = [image:null]

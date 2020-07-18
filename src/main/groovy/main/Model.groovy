@@ -67,7 +67,20 @@ class Model {
     static BufferedImage backgroundImage
 
     static Map<SHAPE, Map<String, Object>> shapeProperties = [
-            (SHAPE.TREE): [
+            (SHAPE.RECT): [
+                    fileName: null,
+                    scale   : null,
+                    image   : null,
+                    offsetX : null,
+                    offsetY : null
+            ],
+            (SHAPE.CIRCLE): [
+                    fileName: null,
+                    scale   : null,
+                    image   : null,
+                    offsetX : null,
+                    offsetY : null
+            ],(SHAPE.TREE): [
                     fileName: 'icons8-large-tree-48.png',
                     scale   : Main.TREE_SCALE,
                     image   : null,

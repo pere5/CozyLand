@@ -20,9 +20,9 @@ class Main extends JFrame {
     static final int WINDOW_WIDTH = 1000
     static final int WINDOW_HEIGHT = 750
 
-    static final int COMFORT_ZONE_TILES = 2
+    static final int COMFORT_ZONE_TILES = 3
     static final int VISIBLE_ZONE_TILES = 8
-    static final int WALK_DISTANCE_TILES = 4
+    static final int WALK_DISTANCE_TILES = 6
     static final int SHAMAN_DISTANCE_TILES = 15
 
     static final Double STEP = 0.5
