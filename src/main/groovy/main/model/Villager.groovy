@@ -50,4 +50,8 @@ class Villager extends Drawable {
     boolean canTravel(TravelType travelType) {
         travelType != TravelType.WATER
     }
+
+    void interrupt() {
+        actionQueue.clear()
+    }
 }
