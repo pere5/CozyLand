@@ -50,7 +50,7 @@ class RuleWorker extends Worker {
         }
     }
 
-    private void assignRules() {
+    private static void assignRules() {
         for (Villager villager : Model.villagers) {
             if (villager.ruleWorker) {
                 def rule = null

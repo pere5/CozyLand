@@ -1,7 +1,9 @@
 package main.things
 
 import main.Model
+import main.exception.PerIsBorkenException
 import main.role.Tribe
+import main.role.tribe.NomadTribe
 
 import java.awt.*
 import java.awt.image.BufferedImage
@@ -26,10 +28,42 @@ abstract class Drawable {
         this.id = Model.getNewId()
     }
 
+    void setShape(SHAPE shape) {
+        setShape(shape, null)
+    }
+
     void setShape(SHAPE shape, Tribe tribe) {
         this.shape = shape
-        def image = Model.shapeProperties[shape].image as BufferedImage
-        this.image = tribe?.color ? Model.applyColorFilter(image, tribe.color) : image
+        BufferedImage image
+
+        if (tribe instanceof NomadTribe) {
+            if (shape == SHAPE.SHAMAN && tribe.shamanImage) {
+                image = tribe.shamanImage
+            } else if (shape == SHAPE.SHAMAN_CAMP && tribe.shamanCampImage) {
+                image = tribe.shamanCampImage
+            } else if (shape == SHAPE.FOLLOWER && tribe.followerImage) {
+                image = tribe.followerImage
+            }
+            if (image == null) {
+                image = Model.applyColorFilter(
+                        Model.shapeProperties[shape].image as BufferedImage,
+                        tribe.color
+                )
+                if (shape == SHAPE.SHAMAN) {
+                    tribe.shamanImage = image
+                } else if (shape == SHAPE.SHAMAN_CAMP) {
+                    tribe.shamanCampImage = image
+                } else if (shape == SHAPE.FOLLOWER) {
+                    tribe.followerImage = image
+                }
+            }
+        }
+
+        if (image == null) {
+            image = Model.shapeProperties[shape].image as BufferedImage
+        }
+
+        this.image = image
     }
 
     int[] getTileXY() {

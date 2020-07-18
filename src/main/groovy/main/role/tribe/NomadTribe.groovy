@@ -15,6 +15,7 @@ class NomadTribe extends Tribe {
     List<Villager> followers = []
     BufferedImage followerImage
     BufferedImage shamanImage
+    BufferedImage shamanCampImage
 
     static void work() {
         def tileNetwork = Model.tileNetwork
@@ -52,8 +53,6 @@ class NomadTribe extends Tribe {
                         villagers.findAll { it.role.id == AloneRole.ID }.each { def aloneVillager ->
                             becomeFollower(aloneVillager, myNomadTribe)
                         }
-                        //todo: tribe keep color when switching image, e.g fireplace
-                        //todo: denna funktion körs nog på tok för ofta tror jag. KOLLA!
                     }
                 }
             }
