@@ -268,6 +268,14 @@ class Model {
                 BufferedImage.TYPE_INT_RGB
         )
         new GaussianFilter(Main.GAUSSIAN_FILTER).filter(image, dest)
+        /*
+        float[] blurMatrix = [
+                1/14f, 2/14f, 1/14f,
+                2/14f, 2/14f, 2/14f,
+                1/14f, 2/14f, 1/14f
+        ].toArray()
+        new ConvolveFilter(blurMatrix).filter(image, dest)
+        */
     }
 
     static List<Color> gradient(Color color1, Color color2, int steps) {
