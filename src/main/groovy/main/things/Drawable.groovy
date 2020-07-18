@@ -1,7 +1,6 @@
 package main.things
 
 import main.Model
-import main.exception.PerIsBorkenException
 import main.role.Tribe
 import main.role.tribe.NomadTribe
 
@@ -35,26 +34,16 @@ abstract class Drawable {
     void setShape(SHAPE shape, Tribe tribe) {
         BufferedImage image
 
-        if (tribe instanceof NomadTribe) {
-            if (shape == SHAPE.SHAMAN && tribe.shamanImage) {
-                image = tribe.shamanImage
-            } else if (shape == SHAPE.SHAMAN_CAMP && tribe.shamanCampImage) {
-                image = tribe.shamanCampImage
-            } else if (shape == SHAPE.FOLLOWER && tribe.followerImage) {
-                image = tribe.followerImage
-            }
-            if (image == null) {
+        def shapeMap = tribe?.shapeMap?.get(shape)
+        if (shapeMap) {
+            if (shapeMap.image) {
+                image = shapeMap.image
+            } else {
                 image = Model.applyColorFilter(
                         Model.shapeProperties[shape].image as BufferedImage,
                         tribe.color
                 )
-                if (shape == SHAPE.SHAMAN) {
-                    tribe.shamanImage = image
-                } else if (shape == SHAPE.SHAMAN_CAMP) {
-                    tribe.shamanCampImage = image
-                } else if (shape == SHAPE.FOLLOWER) {
-                    tribe.followerImage = image
-                }
+                shapeMap.image = image
             }
         }
 

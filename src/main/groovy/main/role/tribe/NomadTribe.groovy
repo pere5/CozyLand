@@ -5,17 +5,19 @@ import main.Model
 import main.model.Villager
 import main.role.Tribe
 import main.role.alone.AloneRole
-import main.things.Drawable
+import main.things.Drawable.SHAPE
 
 import java.awt.Color
-import java.awt.image.BufferedImage
 
 class NomadTribe extends Tribe {
     Villager shaman
     List<Villager> followers = []
-    BufferedImage followerImage
-    BufferedImage shamanImage
-    BufferedImage shamanCampImage
+
+    NomadTribe() {
+        shapeMap[SHAPE.SHAMAN] = [image:null]
+        shapeMap[SHAPE.SHAMAN_CAMP] = [image:null]
+        shapeMap[SHAPE.FOLLOWER] = [image:null]
+    }
 
     static void work() {
         def tileNetwork = Model.tileNetwork
@@ -49,7 +51,7 @@ class NomadTribe extends Tribe {
                         myNomadTribe.color = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
 
                         aloneMe.role = new ShamanRole(myNomadTribe)
-                        aloneMe.setShape(Drawable.SHAPE.SHAMAN, myNomadTribe)
+                        aloneMe.setShape(SHAPE.SHAMAN, myNomadTribe)
                         villagers.findAll { it.role.id == AloneRole.ID }.each { def aloneVillager ->
                             becomeFollower(aloneVillager, myNomadTribe)
                         }
@@ -61,7 +63,7 @@ class NomadTribe extends Tribe {
 
     static void becomeFollower (Villager villager, NomadTribe tribe) {
         villager.role = new FollowerRole(tribe)
-        villager.setShape(Drawable.SHAPE.FOLLOWER, tribe)
+        villager.setShape(SHAPE.FOLLOWER, tribe)
         tribe.followers << villager
     }
 }
