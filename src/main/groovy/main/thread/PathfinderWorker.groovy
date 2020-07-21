@@ -63,7 +63,7 @@ class PathfinderWorker extends Worker {
 
         //def tiles = longestPossibleBresenhams(idx)
 
-        def randPxlA = randomPlacesInTileList(perStarTiles)
+        def randPxlA = Model.randomPlacesInTileList(perStarTiles)
         def first = [villager.x, villager.y] as Double[]
 
         for (int i = 0; i < perStarTiles.size() - 1; i++) {
@@ -71,7 +71,7 @@ class PathfinderWorker extends Worker {
             def bT = perStarTiles[i + 1]
             if (Model.distance(aT, bT) > 2) {
                 def randomTiles = randomTilesWithBresenham(aT, bT, villager)
-                def randPxlB = randomPlacesInTileList(randomTiles)
+                def randPxlB = Model.randomPlacesInTileList(randomTiles)
                 for (int j = 0; j < randomTiles.size() - 1; j++) {
                     def step1 = i == 0 && j == 0 ? first : randPxlB[j]
                     def step2 = randPxlB[j + 1]
@@ -246,17 +246,6 @@ class PathfinderWorker extends Worker {
         }
 
         return retList
-    }
-
-    List<Double[]> randomPlacesInTileList(List<int[]> tiles) {
-        tiles.collect { def tile ->
-            def pixelIdx = Model.tileToPixelIdx(tile)
-            pixelIdx[0] += 1
-            pixelIdx[1] += 1
-            pixelIdx[0] += (Main.TILE_WIDTH - 2) * Math.random()
-            pixelIdx[1] += (Main.TILE_WIDTH - 2) * Math.random()
-            return pixelIdx
-        }
     }
 
     def nextTilesWithBresenham(Villager villager, int[] tileStart, int[] tileDest) {

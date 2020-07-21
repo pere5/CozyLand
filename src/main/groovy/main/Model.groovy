@@ -361,37 +361,30 @@ class Model {
         }
     }
 
-    static int[] closeRandomTile(Drawable drawable, Integer maxTileDist, int depth = 0) {
-        def maxPixelDist = tileToPixelIdx(maxTileDist)
-        Double r1 = 1 - ThreadLocalRandom.current().nextDouble(0, 2)
-        Double r2 = 1 - ThreadLocalRandom.current().nextDouble(0, 2)
-
-        def (newX, newY) = pixelToTileIdx(drawable.x + maxPixelDist * r1, drawable.y + maxPixelDist * r2)
-
-        def maxX = Model.tileNetwork.length - 1
-        def maxY = Model.tileNetwork[0].length - 1
-        def margin = Main.VISIBLE_ZONE_TILES + 2
-
-        newX = newX + margin >= maxX ? maxX - margin : newX
-        newY = newY + margin >= maxY ? maxY - margin : newY
-
-        newX = newX - margin <= 0 ? 0 + margin : newX
-        newY = newY - margin <= 0 ? 0 + margin : newY
-
-        def tileXY = [newX as int, newY as int] as int[]
-
-        def tile = Model.tileNetwork[tileXY[0]][tileXY[1]] as Tile
+    static int[] closeRandomTile(Villager villager, Integer minTileDist, Integer maxTileDist, int depth = 0) {
 
         if (depth > 20) {
-            return pixelToTileIdx(drawable.x, drawable.y)
-        } else if (tile.travelType == TravelType.WATER) {
-            return closeRandomTile(drawable, maxTileDist, ++depth)
-        } else {
-            return tileXY
+            return pixelToTileIdx(villager.x, villager.y)
         }
+
+        def tileNetwork = Model.tileNetwork as Tile[][]
+        def (int tileX, int tileY) = villager.getTileXY()
+
+        List<int[]> tiles = []
+
+        getTilesWithinRadii(tileX, tileY, maxTileDist) { int x, int y ->
+            def tile = tileNetwork[x][y]
+            def furtherThanMin = minTileDist ? !withinCircle(tileX, tileY, x, y, minTileDist) : true
+
+            if (furtherThanMin && villager.canTravel(tile.travelType)) {
+                tiles << tile.tileXY
+            }
+        }
+
+        return tiles[getRandomIntegerBetween(0, tiles.size() - 1)]
     }
 
-    static int[] centroidTile(List<Drawable> drawables, Drawable me, Integer dist) {
+    static int[] centroidTile(List<Drawable> drawables, Villager me, Integer maxDist) {
         def cPixel = [0, 0] as Double[]
 
         for (Drawable drawable: drawables) {
@@ -407,7 +400,7 @@ class Model {
         def tile = Model.tileNetwork[cTile[0]][cTile[1]] as Tile
 
         if (tile.travelType == TravelType.WATER) {
-            return closeRandomTile(me, dist)
+            return closeRandomTile(me, null, maxDist)
         } else {
             return cTile
         }
@@ -427,6 +420,21 @@ class Model {
         int yBig = tileA[1] + 1
         int ySmall = tileA[1] - 1
         return tileB[0] <= xBig && tileB[0] >= xSmall && tileB[1] <= yBig && tileB[1] >= ySmall
+    }
+
+    static List<Double[]> randomPlacesInTileList(List<int[]> tiles) {
+        tiles.collect { def tile ->
+            randomPLaceInTile(tile)
+        }
+    }
+
+    static Double[] randomPLaceInTile(int[] tile) {
+        def pixelIdx = tileToPixelIdx(tile)
+        pixelIdx[0] += 1
+        pixelIdx[1] += 1
+        pixelIdx[0] += (Main.TILE_WIDTH - 2) * Math.random()
+        pixelIdx[1] += (Main.TILE_WIDTH - 2) * Math.random()
+        return pixelIdx
     }
 
     static int tileRange(Drawable a, Drawable b) {
@@ -481,14 +489,11 @@ class Model {
 
     //https://stackoverflow.com/questions/40779343/java-loop-through-all-pixels-in-a-2d-circle-with-center-x-y-and-radius?noredirect=1&lq=1
     static void getTilesWithinRadii(int tX, int tY, int r, Closure function) {
-        int r2 = r * r
         // iterate through all y-coordinates
         for (int y = tY - r; y <= tY + r; y++) {
-            int di2 = (y - tY) * (y - tY)
             // iterate through all x-coordinates
             for (int x = tX - r; x <= tX + r; x++) {
-                // test if in-circle
-                if ((x - tX) * (x - tX) + di2 <= r2) {
+                if (withinCircle(x, y, tX, tY, r)) {
                     if (withinTileNetwork(x, y)) {
                         //TestPrints.printRadii(x, y, me)
                         function(x, y)
@@ -498,7 +503,16 @@ class Model {
         }
     }
 
+    static boolean withinCircle(int x, int y, int tX, int tY, int r) {
+        //(x - center_x)^2 + (y - center_y)^2 < radius^2
+        Math.pow(x - tX, 2) + Math.pow(y - tY, 2) <= Math.pow(r, 2)
+    }
+
     static boolean withinTileNetwork(int x, int y) {
         x >= 0 && x <= Model.tileNetwork.length - 1 && y >= 0 && y <= Model.tileNetwork[0].length - 1
+    }
+
+    static Integer getRandomIntegerBetween(Integer min, Integer max) {
+        return (min + (Math.random() * ((max + 1) - min))).toInteger()
     }
 }

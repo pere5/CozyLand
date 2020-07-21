@@ -15,7 +15,8 @@ class FollowRule extends Rule {
 
     @Override
     void planWork(Villager me, int status) {
-        me.actionQueue << new WalkAction(Model.closeRandomTile((me.role.tribe as NomadTribe).shaman, Main.COMFORT_ZONE_TILES))
+        def shaman = (me.role.tribe as NomadTribe).shaman
+        me.actionQueue << new WalkAction(Model.closeRandomTile(shaman, null, Main.COMFORT_ZONE_TILES))
     }
 
     @Override

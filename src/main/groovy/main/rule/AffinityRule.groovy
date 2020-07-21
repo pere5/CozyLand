@@ -47,9 +47,9 @@ class AffinityRule extends Rule {
 
         int[] dest
         if (closeVillagers.size() == 0) {
-            dest = Model.closeRandomTile(me, Main.WALK_DISTANCE_TILES)
+            dest = Model.closeRandomTile(me, Main.WALK_DISTANCE_TILES_MIN, Main.WALK_DISTANCE_TILES_MAX)
         } else {
-            dest = Model.centroidTile(closeVillagers, me, Main.WALK_DISTANCE_TILES)
+            dest = Model.centroidTile(closeVillagers, me, Main.WALK_DISTANCE_TILES_MAX)
         }
 
         me.actionQueue << new WalkAction(dest)
