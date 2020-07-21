@@ -17,9 +17,9 @@ class ShamanBuildVillageRule extends Rule {
             [it.key, it.value.unique { it.shape }.size()]
         }.max { it.value }
 
-        trix - i - lix here
+        //trix - i - lix here
 
-        if (bestSpot is good) {
+        if (bestSpot/* is good*/) {
             BAD
         } else {
             GREAT

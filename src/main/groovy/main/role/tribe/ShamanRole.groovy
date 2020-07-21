@@ -14,7 +14,7 @@ class ShamanRole extends Role {
         int rank = Integer.MAX_VALUE
         [
                 new ShamanWalkRule(rank: --rank),
-                new ShamanBuildVillageRule(rank: --rank)
+                //new ShamanBuildVillageRule(rank: --rank)
         ]
     }
 
