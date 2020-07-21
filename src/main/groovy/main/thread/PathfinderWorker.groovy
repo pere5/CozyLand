@@ -8,6 +8,7 @@ import main.Model.TravelType
 import main.TestPrints
 import main.action.WalkAction
 import main.calculator.Path
+import main.exception.PerIsBorkenException
 import main.model.StraightPath
 import main.model.Tile
 import main.model.Villager
@@ -63,25 +64,22 @@ class PathfinderWorker extends Worker {
 
         //def tiles = longestPossibleBresenhams(idx)
 
-        def randPxlA = Model.randomPlacesInTileList(perStarTiles)
         def first = [villager.x, villager.y] as Double[]
+
+        def result = []
 
         for (int i = 0; i < perStarTiles.size() - 1; i++) {
             def aT = perStarTiles[i]
             def bT = perStarTiles[i + 1]
             if (Model.distance(aT, bT) > 2) {
-                def randomTiles = randomTilesWithBresenham(aT, bT, villager)
-                def randPxlB = Model.randomPlacesInTileList(randomTiles)
-                for (int j = 0; j < randomTiles.size() - 1; j++) {
-                    def step1 = i == 0 && j == 0 ? first : randPxlB[j]
-                    def step2 = randPxlB[j + 1]
-                    walkAction.pathQueue << new StraightPath(step1, step2, villager)
-                }
+                result.addAll(randomTilesWithBresenham(aT, bT, villager))
             } else {
-                def step1 = i == 0 ? first : randPxlA[i]
-                def step2 = randPxlA[i + 1]
-                walkAction.pathQueue << new StraightPath(step1, step2, villager)
+                result.addAll([aT, bT])
             }
+        }
+        def pxls = Model.randomPlacesInTileList(result)
+        for (int i = 0; i < pxls.size() - 1; i++) {
+            walkAction.pathQueue << new StraightPath(i == 0 ? first : pxls[i], pxls[i + 1], villager)
         }
     }
 
@@ -203,21 +201,25 @@ class PathfinderWorker extends Worker {
         }
     }
 
-    private def okStep(int[] nextStep, int[] currentStep, int[] previousStep, int[] neighbor, Villager villager, Set<List<Integer>> visited) {
+    private static def okStep(int[] nextStep, int[] currentStep, int[] previousStep, int[] neighbor, Villager villager, Set<List<Integer>> visited) {
 
         boolean ok = true
-
+        def tileNetwork = Model.tileNetwork as Tile[][]
         def n = [currentStep[0] + neighbor[0], currentStep[1] + neighbor[1]] as int[]
-        def tile = (Model.tileNetwork as Tile[][])[n[0]][n[1]]
+        if (n[0] >= 0 && n[1] >= 0 && n[0] < tileNetwork.length && n[1] < tileNetwork[0].length) {
+            def tile = (Model.tileNetwork as Tile[][])[n[0]][n[1]]
 
-        if (n == previousStep) {
-            return [ok, null]
-        }
-        if (n != nextStep && n != currentStep && villager.canTravel(tile.travelType) && !visited.contains([n[0], n[1]])) {
-            return [ok, n]
-        }
+            if (n == previousStep) {
+                return [ok, null]
+            }
+            if (n != nextStep && n != currentStep && villager.canTravel(tile.travelType) && !visited.contains([n[0], n[1]])) {
+                return [ok, n]
+            }
 
-        return [!ok, null]
+            return [!ok, null]
+        } else {
+            return [!ok, null]
+        }
     }
 
     int[][] longestPossibleBresenhams(int i) {
