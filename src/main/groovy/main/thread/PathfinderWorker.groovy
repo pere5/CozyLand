@@ -122,8 +122,10 @@ class PathfinderWorker extends Worker {
             } else {
                 def (int[] left, int[] right) = leftRight(nextStep, currentStep, previousStep, visited, villager)
 
-                stepPos = lbt.addLeft(stepPos, currentStep)
-                visited << [currentStep[0], currentStep[1]]
+                if (!visited.contains([currentStep[0], currentStep[1]])) {
+                    stepPos = lbt.addLeft(stepPos, currentStep)
+                    visited << [currentStep[0], currentStep[1]]
+                }
 
                 if (left) {
                     queue << lbt.addLeft(stepPos, left)
@@ -160,10 +162,13 @@ class PathfinderWorker extends Worker {
 
         TestPrints.testPrints(tileStart, tileDest, villager, visited)
 
-        /*def s = allPoints.size()
-        if (allPoints.unique().size() != s) {
-            throw new PerIsBorkenException()
-        }*/
+        /*
+        for (int i = 0; i < retList.size() - 1; i++) {
+            if (retList[i] == retList[i + 1]) {
+                throw new PerIsBorkenException()
+            }
+        }
+        */
 
         return retList.reverse()
         //return allPoints
