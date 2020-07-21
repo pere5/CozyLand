@@ -434,8 +434,16 @@ class Model {
             throw new PerIsBorkenException()
         }
         def pixelIdx = tileToPixelIdx(tile)
-        pixelIdx[0] += (Main.TILE_WIDTH - 1) * Math.random()
-        pixelIdx[1] += (Main.TILE_WIDTH - 1) * Math.random()
+        //pixelIdx[0] += (Main.TILE_WIDTH - 1) * Math.random()
+        //pixelIdx[1] += (Main.TILE_WIDTH - 1) * Math.random()
+
+        kör här
+
+        def sameTile = pixelToTileIdx(pixelIdx)
+        if (sameTile[0] != tile[0] || sameTile[1] != tile[1]) {
+            throw new PerIsBorkenException()
+        }
+
         return pixelIdx
     }
 
