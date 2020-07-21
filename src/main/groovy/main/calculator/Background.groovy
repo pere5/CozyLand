@@ -5,6 +5,7 @@ import main.Model
 import main.Model.TravelType
 import main.exception.PerIsBorkenException
 import main.model.Tile
+import main.things.resource.Resource
 import main.things.resource.Stone
 import main.things.resource.Tree
 
@@ -318,14 +319,11 @@ class Background {
                 Tile tile = tileNetwork[x][y]
                 int random = ThreadLocalRandom.current().nextInt(0, Integer.MAX_VALUE)
 
-                if (tile.travelType in [TravelType.FOREST, TravelType.HILL]) {
-                    if (random % Main.RESOURCE_PREVALENCE_TREE == 0) {
-                        tile.resources << new Tree(tile)
-                    }
-                }
-                if (tile.travelType in [TravelType.MOUNTAIN]) {
-                    if (random % Main.RESOURCE_PREVALENCE_STONE == 0) {
-                        tile.resources << new Stone(tile)
+                def resources = Model.travelTypeResources[tile.travelType]
+
+                resources.each { Class<? extends Resource> resourceClass, Integer prevalence ->
+                    if (random % prevalence == 0) {
+                        tile.resources << resourceClass.getDeclaredConstructor(Tile.class).newInstance(tile)
                     }
                 }
 

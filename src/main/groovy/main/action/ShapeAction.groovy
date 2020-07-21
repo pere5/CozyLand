@@ -1,17 +1,14 @@
 package main.action
 
-import main.Model
-import main.model.Villager
-import main.things.Drawable
-import main.things.Drawable.SHAPE
 
-import java.awt.image.BufferedImage
+import main.model.Villager
+import main.things.Drawable.Shape
 
 class ShapeAction extends Action {
 
-    SHAPE shape
+    Shape shape
 
-    ShapeAction(SHAPE shape) {
+    ShapeAction(Shape shape) {
         this.shape = shape
     }
 

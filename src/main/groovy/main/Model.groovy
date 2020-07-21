@@ -4,13 +4,15 @@ import javaSrc.circulararray.CircularArrayList
 import javaSrc.color.GaussianFilter
 import main.calculator.Background
 import main.calculator.Probabilities
-import main.exception.PerIsBorkenException
 import main.input.MyKeyboardListener
 import main.input.MyMouseListener
 import main.model.Tile
 import main.model.Villager
 import main.things.Drawable
-import main.things.Drawable.SHAPE
+import main.things.Drawable.Shape
+import main.things.resource.Resource
+import main.things.resource.Stone
+import main.things.resource.Tree
 
 import javax.imageio.ImageIO
 import java.awt.*
@@ -32,6 +34,16 @@ class Model {
     enum TravelType {
         WATER, BEACH, FOREST, HILL, MOUNTAIN, PLAIN, ROAD, UP_HILL, DOWN_HILL, EVEN
     }
+
+    static Map<TravelType, Map<Class<? extends Resource>, Integer>> travelTypeResources = [
+            (TravelType.WATER)   : [:],
+            (TravelType.BEACH)   : [:],
+            (TravelType.FOREST)  : [(Tree.class): 40],
+            (TravelType.HILL)    : [(Tree.class): 40],
+            (TravelType.MOUNTAIN): [(Stone.class): 30],
+            (TravelType.PLAIN)   : [:],
+            (TravelType.ROAD)    : [:],
+    ]
 
     static def travelModifier = [
             (TravelType.WATER)    : 0.7d,
@@ -66,56 +78,56 @@ class Model {
     static def tileProbabilitiesForDegrees = Probabilities.calculateProbabilitiesModel()
     static BufferedImage backgroundImage
 
-    static Map<SHAPE, Map<String, Object>> shapeProperties = [
-            (SHAPE.RECT): [
+    static Map<Shape, Map<String, Object>> shapeProperties = [
+            (Shape.RECT)       : [
                     fileName: null,
                     scale   : null,
                     image   : null,
                     offsetX : null,
                     offsetY : null
             ],
-            (SHAPE.CIRCLE): [
+            (Shape.CIRCLE)     : [
                     fileName: null,
                     scale   : null,
                     image   : null,
                     offsetX : null,
                     offsetY : null
-            ],(SHAPE.TREE): [
+            ],(Shape.TREE)     : [
                     fileName: 'icons8-large-tree-48.png',
                     scale   : Main.TREE_SCALE,
                     image   : null,
                     offsetX : Main.TREE_OFFSET_X,
                     offsetY : Main.TREE_OFFSET_Y
             ],
-            (SHAPE.STONE): [
+            (Shape.STONE)      : [
                     fileName: 'icons8-silver-ore-48.png',
                     scale   : Main.STONE_SCALE,
                     image   : null,
                     offsetX : Main.STONE_OFFSET_X,
                     offsetY : Main.STONE_OFFSET_Y
             ],
-            (SHAPE.WARRIOR): [
+            (Shape.WARRIOR)    : [
                     fileName: 'icons8-iron-age-warrior-48.png',
                     scale   : Main.VILLAGER_SCALE,
                     image   : null,
                     offsetX : Main.PERSON_OFFSET_X,
                     offsetY : Main.PERSON_OFFSET_Y
             ],
-            (SHAPE.SHAMAN): [
+            (Shape.SHAMAN)     : [
                     fileName: 'icons8-spartan-helmet-48.png',
                     scale   : Main.VILLAGER_SCALE,
                     image   : null,
                     offsetX : Main.PERSON_OFFSET_X,
                     offsetY : Main.PERSON_OFFSET_Y
             ],
-            (SHAPE.SHAMAN_CAMP): [
+            (Shape.SHAMAN_CAMP): [
                     fileName: 'icons8-campfire-48.png',
                     scale   : Main.VILLAGER_SCALE,
                     image   : null,
                     offsetX : Main.PERSON_OFFSET_X,
                     offsetY : Main.PERSON_OFFSET_Y
             ],
-            (SHAPE.FOLLOWER): [
+            (Shape.FOLLOWER)   : [
                     fileName: 'icons8-sword-48.png',
                     scale   : Main.VILLAGER_SCALE,
                     image   : null,
@@ -129,12 +141,12 @@ class Model {
         Model.mouse = mouse
         tileNetwork = Background.generateBackground()
         backgroundImage = createBGImage()
-        shapeProperties[SHAPE.TREE].image = createImage(SHAPE.TREE)
-        shapeProperties[SHAPE.STONE].image = createImage(SHAPE.STONE)
-        shapeProperties[SHAPE.WARRIOR].image = createImage(SHAPE.WARRIOR)
-        shapeProperties[SHAPE.SHAMAN].image = createImage(SHAPE.SHAMAN)
-        shapeProperties[SHAPE.SHAMAN_CAMP].image = createImage(SHAPE.SHAMAN_CAMP)
-        shapeProperties[SHAPE.FOLLOWER].image = createImage(SHAPE.FOLLOWER)
+        shapeProperties[Shape.TREE].image = createImage(Shape.TREE)
+        shapeProperties[Shape.STONE].image = createImage(Shape.STONE)
+        shapeProperties[Shape.WARRIOR].image = createImage(Shape.WARRIOR)
+        shapeProperties[Shape.SHAMAN].image = createImage(Shape.SHAMAN)
+        shapeProperties[Shape.SHAMAN_CAMP].image = createImage(Shape.SHAMAN_CAMP)
+        shapeProperties[Shape.FOLLOWER].image = createImage(Shape.FOLLOWER)
         def villagers = (1..2000).collect { Villager.test() }
 
         def drawables = new ConcurrentLinkedQueue<Drawable>([
@@ -147,7 +159,7 @@ class Model {
         Background.setResources(tileNetwork)
     }
 
-    static BufferedImage createImage(SHAPE shape) {
+    static BufferedImage createImage(Shape shape) {
 
         def fileName = shapeProperties[shape].fileName as String
         def scale = shapeProperties[shape].scale as Double
@@ -256,7 +268,7 @@ class Model {
             for (int y = 0; y < tileNetwork[x].length; y++) {
                 Drawable drawable = tileNetwork[x][y]
                 g2d.setPaint(drawable.color)
-                if (drawable.shape == SHAPE.RECT) {
+                if (drawable.shape == Shape.RECT) {
                     g2d.fillRect(drawable.x as int, drawable.y as int, drawable.size, drawable.size)
                 }
             }

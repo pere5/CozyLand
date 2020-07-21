@@ -7,7 +7,7 @@ class Tree extends Resource {
 
     Tree (Tile tile) {
         super(tile)
-        shape = SHAPE.TREE
+        shape = Shape.TREE
         image = Model.shadeImage(Model.shapeProperties[shape].image, tile.color)
     }
 

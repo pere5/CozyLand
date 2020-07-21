@@ -28,8 +28,6 @@ class Main extends JFrame {
     static final Double STEP = 0.5
     static final int TILE_WIDTH = 8
     static final int GAUSSIAN_FILTER = 3
-    static final int RESOURCE_PREVALENCE_TREE = 40
-    static final int RESOURCE_PREVALENCE_STONE = 30
     static final int TREE_OFFSET_X = - (TILE_WIDTH * 2) as int
     static final int TREE_OFFSET_Y = - (TILE_WIDTH * 4.2) as int
     static final int STONE_OFFSET_X = - 0

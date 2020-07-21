@@ -18,7 +18,7 @@ class Villager extends Drawable {
     static Villager test() {
         def villager = new Villager()
         villager.role = new AloneRole()
-        villager.setShape(SHAPE.WARRIOR)
+        villager.setShape(Shape.WARRIOR)
         def (Double x, Double y) = Model.generateXY()
         villager.x = x
         villager.y = y

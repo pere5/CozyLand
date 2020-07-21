@@ -1,31 +1,30 @@
 package main.rule
 
-
+import main.Main
 import main.Model
 import main.action.ShapeAction
 import main.action.SurveyAction
-import main.action.WaitAction
 import main.action.WalkAction
 import main.model.Villager
-import main.things.Drawable.SHAPE
+import main.things.Drawable.Shape
 
 class ShamanWalkRule extends Rule {
 
     @Override
-    int status(Villager villager) {
-        BAD
+    int status(Villager me) {
+        GOOD
     }
 
     @Override
     void planWork(Villager me, int status) {
-        me.actionQueue << new WalkAction(Model.closeRandomTile(me, 5))
-        me.actionQueue << new SurveyAction(2)
-        me.actionQueue << new WalkAction(Model.closeRandomTile(me, 5))
-        me.actionQueue << new SurveyAction(2)
-        me.actionQueue << new WalkAction(Model.closeRandomTile(me, 5))
-        me.actionQueue << new ShapeAction(SHAPE.SHAMAN_CAMP)
-        me.actionQueue << new WaitAction(10)
-        me.actionQueue << new ShapeAction(SHAPE.SHAMAN)
+        me.actionQueue << new WalkAction(Model.closeRandomTile(me, Main.SHAMAN_DISTANCE_TILES))
+        me.actionQueue << new SurveyAction(4, me.role.tribe)
+        me.actionQueue << new WalkAction(Model.closeRandomTile(me, Main.SHAMAN_DISTANCE_TILES))
+        me.actionQueue << new SurveyAction(4, me.role.tribe)
+        me.actionQueue << new WalkAction(Model.closeRandomTile(me, Main.SHAMAN_DISTANCE_TILES))
+        me.actionQueue << new ShapeAction(Shape.SHAMAN_CAMP)
+        me.actionQueue << new SurveyAction(10, me.role.tribe)
+        me.actionQueue << new ShapeAction(Shape.SHAMAN)
     }
 
     @Override

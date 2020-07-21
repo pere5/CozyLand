@@ -110,4 +110,8 @@ class TestPrints {
     static void printSurveyResourcesCircle(Drawable me, int x, int y) {
         Model.drawables << new Artifact(size: 2, parent: me.id, x: Model.tileToPixelIdx(x), y: Model.tileToPixelIdx(y), color: Color.BLUE)
     }
+
+    static void removeSurveyResourcesCircle(int id) {
+        Model.drawables.removeAll { it.parent == id }
+    }
 }

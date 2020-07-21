@@ -5,20 +5,19 @@ import main.Model
 import main.model.Villager
 import main.role.Tribe
 import main.role.alone.AloneRole
-import main.things.Drawable
-import main.things.Drawable.SHAPE
+import main.things.Drawable.Shape
 
 import java.awt.Color
 import java.util.concurrent.ConcurrentLinkedQueue
 
 class NomadTribe extends Tribe {
     Villager shaman
-    ConcurrentLinkedQueue<Drawable> followers = []
+    ConcurrentLinkedQueue<Villager> followers = []
 
     NomadTribe() {
-        shapeMap[SHAPE.SHAMAN] = [image:null]
-        shapeMap[SHAPE.SHAMAN_CAMP] = [image:null]
-        shapeMap[SHAPE.FOLLOWER] = [image:null]
+        shapeMap[Shape.SHAMAN] = [image:null]
+        shapeMap[Shape.SHAMAN_CAMP] = [image:null]
+        shapeMap[Shape.FOLLOWER] = [image:null]
     }
 
     static void work(Villager villager) {
@@ -50,7 +49,7 @@ class NomadTribe extends Tribe {
                     myNomadTribe.color = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
 
                     aloneMe.role = new ShamanRole(myNomadTribe)
-                    aloneMe.setShape(SHAPE.SHAMAN, myNomadTribe)
+                    aloneMe.setShape(Shape.SHAMAN, myNomadTribe)
                     neighbors.findAll { it.role.id == AloneRole.ID }.each { def aloneVillager ->
                         becomeFollower(aloneVillager, myNomadTribe)
                     }
@@ -61,7 +60,7 @@ class NomadTribe extends Tribe {
 
     static void becomeFollower (Villager villager, NomadTribe tribe) {
         villager.role = new FollowerRole(tribe)
-        villager.setShape(SHAPE.FOLLOWER, tribe)
+        villager.setShape(Shape.FOLLOWER, tribe)
         tribe.followers << villager
     }
 }

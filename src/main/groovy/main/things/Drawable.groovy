@@ -2,14 +2,13 @@ package main.things
 
 import main.Model
 import main.role.Tribe
-import main.role.tribe.NomadTribe
 
 import java.awt.*
 import java.awt.image.BufferedImage
 
 abstract class Drawable {
 
-    enum SHAPE {
+    enum Shape {
         RECT, CIRCLE, TREE, STONE, SHAMAN, SHAMAN_CAMP, WARRIOR, FOLLOWER
     }
 
@@ -17,7 +16,7 @@ abstract class Drawable {
     int parent
     Color color
     Color testColor
-    SHAPE shape = SHAPE.RECT
+    Shape shape = Shape.RECT
     BufferedImage image
     int size = 10
     Double x = 0
@@ -27,11 +26,11 @@ abstract class Drawable {
         this.id = Model.getNewId()
     }
 
-    void setShape(SHAPE shape) {
+    void setShape(Shape shape) {
         setShape(shape, null)
     }
 
-    void setShape(SHAPE shape, Tribe tribe) {
+    void setShape(Shape shape, Tribe tribe) {
         BufferedImage image
 
         def shapeMap = tribe?.shapeMap?.get(shape)
