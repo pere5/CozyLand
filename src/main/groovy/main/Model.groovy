@@ -4,6 +4,7 @@ import javaSrc.circulararray.CircularArrayList
 import javaSrc.color.GaussianFilter
 import main.calculator.Background
 import main.calculator.Probabilities
+import main.exception.PerIsBorkenException
 import main.input.MyKeyboardListener
 import main.input.MyMouseListener
 import main.model.Tile
@@ -424,16 +425,17 @@ class Model {
 
     static List<Double[]> randomPlacesInTileList(List<int[]> tiles) {
         tiles.collect { def tile ->
-            randomPLaceInTile(tile)
+            randomPlaceInTile(tile)
         }
     }
 
-    static Double[] randomPLaceInTile(int[] tile) {
+    static Double[] randomPlaceInTile(int[] tile) {
+        if (Model.tileNetwork[tile[0]][tile[1]].travelType == TravelType.WATER) {
+            throw new PerIsBorkenException()
+        }
         def pixelIdx = tileToPixelIdx(tile)
-        pixelIdx[0] += 1
-        pixelIdx[1] += 1
-        pixelIdx[0] += (Main.TILE_WIDTH - 2) * Math.random()
-        pixelIdx[1] += (Main.TILE_WIDTH - 2) * Math.random()
+        pixelIdx[0] += (Main.TILE_WIDTH - 1) * Math.random()
+        pixelIdx[1] += (Main.TILE_WIDTH - 1) * Math.random()
         return pixelIdx
     }
 
