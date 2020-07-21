@@ -3,6 +3,7 @@ package main.model
 import main.Model
 import main.Model.TravelType
 import main.action.Action
+import main.action.WalkAction
 import main.role.alone.AloneRole
 import main.role.Role
 import main.things.Drawable
@@ -52,6 +53,13 @@ class Villager extends Drawable {
     }
 
     void interrupt() {
-        actionQueue.clear()
+        def action = actionQueue.peek()
+        if (action instanceof WalkAction) {
+            def first = action.pathQueue.find()
+            if (first) {
+                action.pathQueue.clear()
+                action.pathQueue << first
+            }
+        }
     }
 }
