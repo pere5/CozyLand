@@ -3,6 +3,7 @@ package main.rule
 import main.Main
 import main.Model
 import main.action.WalkAction
+import main.exception.PerIsBorkenException
 import main.model.Tile
 import main.model.Villager
 import main.things.Drawable
@@ -36,7 +37,7 @@ class AffinityRule extends Rule {
         def tileNetwork = Model.tileNetwork as Tile[][]
         def (int tileX, int tileY) = me.getTileXY()
 
-        List<Drawable> closeVillagers = []
+        List<Villager> closeVillagers = []
         Model.getTilesWithinRadii(tileX, tileY, Main.VISIBLE_ZONE_TILES) { int x, int y ->
             tileNetwork[x][y].villagers.each { Villager villager ->
                 if (villager.id != me.id) {
@@ -45,14 +46,13 @@ class AffinityRule extends Rule {
             }
         }
 
-        int[] dest
+        int[] tileDest
         if (closeVillagers.size() == 0) {
-            dest = Model.closeRandomTile(me, Main.WALK_DISTANCE_TILES_MIN, Main.WALK_DISTANCE_TILES_MAX)
+            tileDest = Model.closeRandomTile(me, Main.WALK_DISTANCE_TILES_MIN, Main.WALK_DISTANCE_TILES_MAX)
         } else {
-            dest = Model.centroidTile(closeVillagers, me, Main.WALK_DISTANCE_TILES_MAX)
+            tileDest = Model.centroidTile(closeVillagers, me, Main.WALK_DISTANCE_TILES_MAX)
         }
-
-        me.actionQueue << new WalkAction(dest)
+        me.actionQueue << new WalkAction(tileDest)
     }
 
     @Override

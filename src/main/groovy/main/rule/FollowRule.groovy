@@ -3,6 +3,7 @@ package main.rule
 import main.Main
 import main.Model
 import main.action.WalkAction
+import main.exception.PerIsBorkenException
 import main.model.Villager
 import main.role.tribe.NomadTribe
 
@@ -16,7 +17,8 @@ class FollowRule extends Rule {
     @Override
     void planWork(Villager me, int status) {
         def shaman = (me.role.tribe as NomadTribe).shaman
-        me.actionQueue << new WalkAction(Model.closeRandomTile(shaman, null, Main.COMFORT_ZONE_TILES))
+        def tileDest = Model.closeRandomTile(shaman, null, Main.COMFORT_ZONE_TILES)
+        me.actionQueue << new WalkAction(tileDest)
     }
 
     @Override

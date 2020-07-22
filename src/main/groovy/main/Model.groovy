@@ -382,28 +382,32 @@ class Model {
             }
         }
 
-        return tiles[getRandomIntegerBetween(0, tiles.size() - 1)]
+        if (tiles) {
+            return tiles[getRandomIntegerBetween(0, tiles.size() - 1)]
+        } else {
+            return pixelToTileIdx(villager.x, villager.y)
+        }
     }
 
-    static int[] centroidTile(List<Drawable> drawables, Villager me, Integer maxDist) {
+    static int[] centroidTile(List<Villager> villagers, Villager me, Integer maxDist) {
         def cPixel = [0, 0] as Double[]
 
-        for (Drawable drawable: drawables) {
-            cPixel[0] += drawable.x
-            cPixel[1] += drawable.y
+        for (Villager villager: villagers) {
+            cPixel[0] += villager.x
+            cPixel[1] += villager.y
         }
 
-        cPixel[0] = cPixel[0] / drawables.size()
-        cPixel[1] = cPixel[1] / drawables.size()
+        cPixel[0] = cPixel[0] / villagers.size()
+        cPixel[1] = cPixel[1] / villagers.size()
 
         def cTile = pixelToTileIdx(cPixel)
 
         def tile = Model.tileNetwork[cTile[0]][cTile[1]] as Tile
 
-        if (tile.travelType == TravelType.WATER) {
-            return closeRandomTile(me, null, maxDist)
-        } else {
+        if (me.canTravel(tile.travelType)) {
             return cTile
+        } else {
+            return closeRandomTile(me, null, maxDist)
         }
     }
 

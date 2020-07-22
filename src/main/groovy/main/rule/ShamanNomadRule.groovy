@@ -5,6 +5,7 @@ import main.Model
 import main.action.ShapeAction
 import main.action.SurveyAction
 import main.action.WalkAction
+import main.exception.PerIsBorkenException
 import main.model.Villager
 import main.things.Drawable.Shape
 import main.things.resource.Resource
@@ -58,7 +59,8 @@ class ShamanNomadRule extends Rule {
 
     @Override
     void planWork(Villager me, int status) {
-        me.actionQueue << new WalkAction(Model.closeRandomTile(me, Main.SHAMAN_DISTANCE_TILES_MIN, Main.SHAMAN_DISTANCE_TILES_MAX))
+        def tileDest = Model.closeRandomTile(me, Main.SHAMAN_DISTANCE_TILES_MIN, Main.SHAMAN_DISTANCE_TILES_MAX)
+        me.actionQueue << new WalkAction(tileDest)
         me.actionQueue << new ShapeAction(Shape.SHAMAN_CAMP)
         me.actionQueue << new SurveyAction(6, me.role.tribe)
         me.actionQueue << new ShapeAction(Shape.SHAMAN)
