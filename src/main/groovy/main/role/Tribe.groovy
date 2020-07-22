@@ -7,5 +7,6 @@ import java.awt.Color
 abstract class Tribe {
     Color color
     Map shapeMap = [:]
-    Map<int[], Set<Resource>> surveyResources = [:]
+    Map<List<Integer>, Set<Resource>> surveyResources = [:]
+    Map<String, Object> goodLocation
 }

@@ -34,7 +34,7 @@ class SurveyAction extends Action {
             time = System.currentTimeMillis() + (seconds * 1000)
         }
 
-        int[] shamanXY = shaman.getTileXY()
+        List<Integer> shamanXY = shaman.getTileXY().collect { it as Integer }
 
         perTenSeconds (6) {
             def tileNetwork = Model.tileNetwork as Tile[][]

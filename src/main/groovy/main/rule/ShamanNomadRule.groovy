@@ -11,28 +11,47 @@ import main.things.resource.Resource
 
 class ShamanNomadRule extends Rule {
 
-    private static final int NUMBER_SURVEYS = 5
+    private static final int NUMBER_SURVEYS = 2
     private static final int MIN_UNIQUE = 2
-
-    private Map.Entry<int[], Set<Resource>> goodLocation
 
     @Override
     int status(Villager me) {
-        def resources = me.role.tribe.surveyResources
-        if (resources.size() > NUMBER_SURVEYS) {
-            def maxUnique = resources.collect {
+        def surveyResources = me.role.tribe.surveyResources
+        def goodLocations = []
+        if (surveyResources.size() > NUMBER_SURVEYS) {
+            def maxUnique = surveyResources.collect {
                 it.value.unique(false) { it.shape }.size()
             }.max()
             if (maxUnique >= MIN_UNIQUE) {
-                goodLocation = resources.findAll {
-                    it.value.unique(false) { it.shape }.size() >= maxUnique
-                }.max {
-                    it.value.size()
+
+                surveyResources.each { def spot, Set<Resource> resources ->
+                    def multiplier = 1
+                    def counted = resources.countBy {
+                        it.shape
+                    }
+                    def list = counted.collect {
+                        [shape: it.key, amount: it.value]
+                    }
+                    def sorted = list.sort {
+                        -it.amount
+                    }
+                    def multiplied = sorted.collect {
+                        it.amount *= multiplier
+                        multiplier *= 3
+                        return it
+                    }
+                    def score = multiplied.sum {
+                        it.amount
+                    } as Integer
+                    goodLocations << [spot: spot, resources: resources, score: score]
                 }
             }
         }
 
-        if (goodLocation) {
+
+
+        if (goodLocations) {
+            me.role.tribe.goodLocation = goodLocations.max { it.score }
             GOOD
         } else {
             BAD
