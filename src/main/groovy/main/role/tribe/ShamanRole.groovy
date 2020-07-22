@@ -3,8 +3,7 @@ package main.role.tribe
 
 import main.role.Role
 import main.rule.Rule
-import main.rule.ShamanBuildVillageRule
-import main.rule.ShamanWalkRule
+import main.rule.ShamanNomadRule
 
 class ShamanRole extends Role {
 
@@ -13,7 +12,7 @@ class ShamanRole extends Role {
     static List<Rule> getRules() {
         int rank = Integer.MAX_VALUE
         [
-                new ShamanWalkRule(rank: --rank),
+                new ShamanNomadRule(rank: --rank),
                 //new ShamanBuildVillageRule(rank: --rank)
         ]
     }
