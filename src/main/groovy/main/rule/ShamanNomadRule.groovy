@@ -48,8 +48,6 @@ class ShamanNomadRule extends Rule {
             }
         }
 
-
-
         if (goodLocations) {
             me.role.tribe.goodLocation = goodLocations.max { it.score }
             GOOD
