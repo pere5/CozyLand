@@ -6,7 +6,7 @@ import main.action.ShapeAction
 import main.action.WalkAction
 import main.model.Villager
 import main.role.tribe.NomadTribe
-import main.things.Drawable
+import main.things.Drawable.Shape
 import main.things.resource.Stone
 import main.things.resource.Wood
 
@@ -29,13 +29,22 @@ class BuilderRule extends Rule {
 
         if (Model.withinCircle(me.tileXY, tribe.shaman.tileXY, Main.NEXT_TO_TILES)) {
 
-            me.actionQueue << new ShapeAction(Drawable.Shape.FOLLOWER_BUILDER)
+            me.actionQueue << new ShapeAction(Shape.FOLLOWER_BUILDER)
 
-            def wood = resources.count { it instanceof Wood }
-            def stone = resources.count { it instanceof Stone }
+            def wood = resources.findAll { it instanceof Wood }
+            def stone = resources.findAll { it instanceof Stone }
 
-            if (wood >= 2 && stone >= 1) {
+            def neededWood = Model.buildingMaterials[Shape.HUT][Shape.WOOD]
+            def neededStone = Model.buildingMaterials[Shape.HUT][Shape.STONE]
 
+            def enoughWood = wood.size() >= neededWood
+            def enoughStone = stone.size() >= neededStone
+
+            //hur ska vi bygga detta enkelt?
+
+            if (enoughWood && enoughStone) {
+                neededWood.times { def i -> resources.remove(wood[i]) }
+                neededStone.times { def i -> resources.remove(stone[i]) }
             } else {
 
             }
