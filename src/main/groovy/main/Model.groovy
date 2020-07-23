@@ -109,35 +109,35 @@ class Model {
             ],
             (Shape.WARRIOR)    : [
                     fileName: 'icons8-iron-age-warrior-48.png',
-                    scale   : Main.VILLAGER_SCALE,
+                    scale   : Main.SCALE_48,
                     image   : null,
                     offsetX : Main.PERSON_OFFSET_X,
                     offsetY : Main.PERSON_OFFSET_Y
             ],
             (Shape.SHAMAN)     : [
                     fileName: 'icons8-spartan-helmet-48.png',
-                    scale   : Main.VILLAGER_SCALE,
+                    scale   : Main.SCALE_48,
                     image   : null,
                     offsetX : Main.PERSON_OFFSET_X,
                     offsetY : Main.PERSON_OFFSET_Y
             ],
             (Shape.SHAMAN_CAMP): [
                     fileName: 'icons8-campfire-48.png',
-                    scale   : Main.VILLAGER_SCALE,
+                    scale   : Main.SCALE_48,
                     image   : null,
                     offsetX : Main.PERSON_OFFSET_X,
                     offsetY : Main.PERSON_OFFSET_Y
             ],
             (Shape.SHAMAN_BUILD): [
                     fileName: 'flaticon-hammer-32.png',
-                    scale   : Main.VILLAGER_SCALE,
+                    scale   : Main.SCALE_32,
                     image   : null,
                     offsetX : Main.PERSON_OFFSET_X,
                     offsetY : Main.PERSON_OFFSET_Y
             ],
             (Shape.FOLLOWER)   : [
                     fileName: 'icons8-sword-48.png',
-                    scale   : Main.VILLAGER_SCALE,
+                    scale   : Main.SCALE_48,
                     image   : null,
                     offsetX : Main.PERSON_OFFSET_X,
                     offsetY : Main.PERSON_OFFSET_Y
