@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage
 abstract class Drawable {
 
     enum Shape {
-        RECT, CIRCLE, TREE, STONE, SHAMAN, SHAMAN_CAMP, WARRIOR, FOLLOWER
+        RECT, CIRCLE, TREE, STONE, SHAMAN, SHAMAN_CAMP, SHAMAN_BUILD, WARRIOR, FOLLOWER
     }
 
     int id

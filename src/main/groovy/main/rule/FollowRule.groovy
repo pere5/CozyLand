@@ -3,7 +3,6 @@ package main.rule
 import main.Main
 import main.Model
 import main.action.WalkAction
-import main.exception.PerIsBorkenException
 import main.model.Villager
 import main.role.tribe.NomadTribe
 
@@ -11,7 +10,11 @@ class FollowRule extends Rule {
 
     @Override
     int status(Villager me) {
-        BAD
+        if (me.role.tribe.goodLocation) {
+            GREAT
+        } else {
+            BAD
+        }
     }
 
     @Override

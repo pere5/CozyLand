@@ -2,6 +2,7 @@ package main.role.tribe
 
 
 import main.role.Role
+import main.rule.BuilderRule
 import main.rule.FollowRule
 import main.rule.Rule
 
@@ -12,7 +13,8 @@ class FollowerRole extends Role {
     static List<Rule> getRules() {
         int rank = Integer.MAX_VALUE
         [
-                new FollowRule(rank: --rank)
+                new FollowRule(rank: --rank),
+                new BuilderRule(rank: --rank)
         ]
     }
 

@@ -128,6 +128,13 @@ class Model {
                     offsetX : Main.PERSON_OFFSET_X,
                     offsetY : Main.PERSON_OFFSET_Y
             ],
+            (Shape.SHAMAN_BUILD): [
+                    fileName: 'flaticon-hammer-32.png',
+                    scale   : Main.VILLAGER_SCALE,
+                    image   : null,
+                    offsetX : Main.PERSON_OFFSET_X,
+                    offsetY : Main.PERSON_OFFSET_Y
+            ],
             (Shape.FOLLOWER)   : [
                     fileName: 'icons8-sword-48.png',
                     scale   : Main.VILLAGER_SCALE,
@@ -147,6 +154,7 @@ class Model {
         shapeProperties[Shape.WARRIOR].image = createImage(Shape.WARRIOR)
         shapeProperties[Shape.SHAMAN].image = createImage(Shape.SHAMAN)
         shapeProperties[Shape.SHAMAN_CAMP].image = createImage(Shape.SHAMAN_CAMP)
+        shapeProperties[Shape.SHAMAN_BUILD].image = createImage(Shape.SHAMAN_BUILD)
         shapeProperties[Shape.FOLLOWER].image = createImage(Shape.FOLLOWER)
         def villagers = (1..2000).collect { Villager.test() }
 

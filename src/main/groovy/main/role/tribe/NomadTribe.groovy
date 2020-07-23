@@ -7,7 +7,8 @@ import main.role.Tribe
 import main.role.alone.AloneRole
 import main.things.Drawable.Shape
 
-import java.awt.Color
+import java.awt.*
+import java.util.List
 import java.util.concurrent.ConcurrentLinkedQueue
 
 class NomadTribe extends Tribe {
@@ -17,6 +18,7 @@ class NomadTribe extends Tribe {
     NomadTribe() {
         shapeMap[Shape.SHAMAN] = [image:null]
         shapeMap[Shape.SHAMAN_CAMP] = [image:null]
+        shapeMap[Shape.SHAMAN_BUILD] = [image:null]
         shapeMap[Shape.FOLLOWER] = [image:null]
     }
 
