@@ -1,14 +1,12 @@
-package main.things.resource
+package main.things.naturalResource
 
-import main.Model
+
 import main.model.Tile
 
 class Tree extends NaturalResource {
 
     Tree (Tile tile) {
-        super(tile)
-        shape = Shape.TREE
-        image = Model.shadeImage(Model.shapeProperties[shape].image, tile.color)
+        super(tile, Shape.TREE)
     }
 
     @Override

@@ -1,6 +1,7 @@
 package main.role
 
-import main.things.resource.NaturalResource
+import main.things.naturalResource.NaturalResource
+import main.things.resource.Resource
 
 import java.awt.*
 import java.util.List

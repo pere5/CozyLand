@@ -11,9 +11,9 @@ import main.model.Tile
 import main.model.Villager
 import main.things.Drawable
 import main.things.Drawable.Shape
-import main.things.resource.NaturalResource
-import main.things.resource.Rock
-import main.things.resource.Tree
+import main.things.naturalResource.NaturalResource
+import main.things.naturalResource.Rock
+import main.things.naturalResource.Tree
 
 import javax.imageio.ImageIO
 import java.awt.*
@@ -79,49 +79,64 @@ class Model {
     static def tileProbabilitiesForDegrees = Probabilities.calculateProbabilitiesModel()
     static BufferedImage backgroundImage
 
-    static Map<Shape, Map<String, Object>> shapeProperties = [
-            (Shape.RECT)       : [
+    static Map<Shape, Object> shapeProperties = [
+            (Shape.RECT)        : [
                     fileName: null,
                     scale   : null,
                     image   : null,
                     offsetX : null,
                     offsetY : null
             ],
-            (Shape.CIRCLE)     : [
+            (Shape.CIRCLE)      : [
                     fileName: null,
                     scale   : null,
                     image   : null,
                     offsetX : null,
                     offsetY : null
-            ],(Shape.TREE)     : [
+            ],
+            (Shape.TREE)        : [
                     fileName: 'icons8-large-tree-48.png',
                     scale   : Main.TREE_SCALE,
                     image   : null,
                     offsetX : Main.TREE_OFFSET_X,
                     offsetY : Main.TREE_OFFSET_Y
             ],
-            (Shape.STONE)      : [
+            (Shape.ROCK)        : [
                     fileName: 'icons8-silver-ore-48.png',
-                    scale   : Main.STONE_SCALE,
+                    scale   : Main.ROCK_SCALE,
                     image   : null,
                     offsetX : Main.STONE_OFFSET_X,
                     offsetY : Main.STONE_OFFSET_Y
             ],
-            (Shape.WARRIOR)    : [
+            (Shape.WOOD)        : [
+                    fileName: 'flaticon-firewood-64.png',
+                    scale   : Main.SCALE_64,
+                    image   : null,
+                    offsetX : Main.PERSON_OFFSET_X,
+                    offsetY : Main.PERSON_OFFSET_Y
+            ],
+            (Shape.STONE)       : [
+                    fileName: 'flaticon-rocks-64.png',
+                    scale   : Main.SCALE_64,
+                    image   : null,
+                    offsetX : Main.PERSON_OFFSET_X,
+                    offsetY : Main.PERSON_OFFSET_Y
+            ],
+            (Shape.WARRIOR)     : [
                     fileName: 'icons8-iron-age-warrior-48.png',
                     scale   : Main.SCALE_48,
                     image   : null,
                     offsetX : Main.PERSON_OFFSET_X,
                     offsetY : Main.PERSON_OFFSET_Y
             ],
-            (Shape.SHAMAN)     : [
+            (Shape.SHAMAN)      : [
                     fileName: 'icons8-spartan-helmet-48.png',
                     scale   : Main.SCALE_48,
                     image   : null,
                     offsetX : Main.PERSON_OFFSET_X,
                     offsetY : Main.PERSON_OFFSET_Y
             ],
-            (Shape.SHAMAN_CAMP): [
+            (Shape.SHAMAN_CAMP) : [
                     fileName: 'icons8-campfire-48.png',
                     scale   : Main.SCALE_48,
                     image   : null,
@@ -129,13 +144,13 @@ class Model {
                     offsetY : Main.PERSON_OFFSET_Y
             ],
             (Shape.SHAMAN_BUILD): [
-                    fileName: 'flaticon-hammer-32.png',
-                    scale   : Main.SCALE_32,
+                    fileName: 'flaticon-hammer-64.png',
+                    scale   : Main.SCALE_64,
                     image   : null,
                     offsetX : Main.PERSON_OFFSET_X,
                     offsetY : Main.PERSON_OFFSET_Y
             ],
-            (Shape.FOLLOWER)   : [
+            (Shape.FOLLOWER)    : [
                     fileName: 'icons8-sword-48.png',
                     scale   : Main.SCALE_48,
                     image   : null,
@@ -150,7 +165,9 @@ class Model {
         tileNetwork = Background.generateBackground()
         backgroundImage = createBGImage()
         shapeProperties[Shape.TREE].image = createImage(Shape.TREE)
+        shapeProperties[Shape.ROCK].image = createImage(Shape.ROCK)
         shapeProperties[Shape.STONE].image = createImage(Shape.STONE)
+        shapeProperties[Shape.WOOD].image = createImage(Shape.WOOD)
         shapeProperties[Shape.WARRIOR].image = createImage(Shape.WARRIOR)
         shapeProperties[Shape.SHAMAN].image = createImage(Shape.SHAMAN)
         shapeProperties[Shape.SHAMAN_CAMP].image = createImage(Shape.SHAMAN_CAMP)

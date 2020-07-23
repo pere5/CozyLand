@@ -3,7 +3,7 @@ package main.rule
 
 import main.action.WalkAction
 import main.model.Villager
-import main.things.resource.Tree
+import main.things.naturalResource.Tree
 
 class BuilderRule extends Rule {
 
@@ -19,8 +19,8 @@ class BuilderRule extends Rule {
     @Override
     void planWork(Villager me, int status) {
 
-        //todo: resource -> natural resource
-        //todo: skapa resource som är refined
+        //todo: naturalResource -> natural naturalResource
+        //todo: skapa naturalResource som är refined
         //todo: Rock -> Stone
         //todo: Tree -> Wood
 

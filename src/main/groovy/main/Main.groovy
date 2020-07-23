@@ -37,9 +37,9 @@ class Main extends JFrame {
     static final int PERSON_OFFSET_X = - (TILE_WIDTH / 2) as int
     static final int PERSON_OFFSET_Y = - TILE_WIDTH
     static final Double TREE_SCALE = 0.8
-    static final Double STONE_SCALE = 0.30
+    static final Double ROCK_SCALE = 0.30
+    static final Double SCALE_64 = 0.15
     static final Double SCALE_48 = 0.20
-    static final Double SCALE_32 = 0.30
     static final Double SHADE_IMAGES = 0.60
     static final Double SHADE_TRIBE = 1.7
 

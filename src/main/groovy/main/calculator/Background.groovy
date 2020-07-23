@@ -4,7 +4,7 @@ import main.Main
 import main.Model
 import main.exception.PerIsBorkenException
 import main.model.Tile
-import main.things.resource.NaturalResource
+import main.things.naturalResource.NaturalResource
 
 import javax.imageio.ImageIO
 import java.awt.*

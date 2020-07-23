@@ -7,7 +7,7 @@ import main.action.SurveyAction
 import main.action.WalkAction
 import main.model.Villager
 import main.things.Drawable.Shape
-import main.things.resource.NaturalResource
+import main.things.naturalResource.NaturalResource
 
 class ShamanNomadRule extends Rule {
 

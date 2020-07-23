@@ -3,7 +3,7 @@ package main.model
 import main.Main
 import main.Model
 import main.things.Drawable
-import main.things.resource.NaturalResource
+import main.things.naturalResource.NaturalResource
 
 class Tile extends Drawable {
 
