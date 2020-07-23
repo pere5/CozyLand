@@ -1,9 +1,14 @@
 package main.rule
 
-
+import main.Main
+import main.Model
+import main.action.ShapeAction
 import main.action.WalkAction
 import main.model.Villager
-import main.things.naturalResource.Tree
+import main.role.tribe.NomadTribe
+import main.things.Drawable
+import main.things.resource.Stone
+import main.things.resource.Wood
 
 class BuilderRule extends Rule {
 
@@ -19,13 +24,24 @@ class BuilderRule extends Rule {
     @Override
     void planWork(Villager me, int status) {
 
-        //todo: naturalResource -> natural naturalResource
-        //todo: skapa naturalResource som är refined
-        //todo: Rock -> Stone
-        //todo: Tree -> Wood
+        def tribe = me.role.tribe as NomadTribe
+        def resources = tribe.resources
 
-        def wood = me.role.tribe.resources.count { it instanceof Tree }
-        if (me.role.tribe.resources)
-        me.actionQueue << new WalkAction(me.role.tribe.goodLocation.spot as int[])
+        if (Model.withinCircle(me.tileXY, tribe.shaman.tileXY, Main.NEXT_TO_TILES)) {
+
+            me.actionQueue << new ShapeAction(Drawable.Shape.FOLLOWER_BUILDER)
+
+            def wood = resources.count { it instanceof Wood }
+            def stone = resources.count { it instanceof Stone }
+
+            if (wood >= 2 && stone >= 1) {
+
+            } else {
+
+            }
+        } else {
+            def tileDest = Model.closeRandomTile(tribe.shaman, null, Main.NEXT_TO_TILES)
+            me.actionQueue << new WalkAction(tileDest)
+        }
     }
 }

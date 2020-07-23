@@ -36,6 +36,13 @@ class Model {
         WATER, BEACH, FOREST, HILL, MOUNTAIN, PLAIN, ROAD, UP_HILL, DOWN_HILL, EVEN
     }
 
+    static Map<Shape, Map> buildingMaterials = [
+            (Shape.HUT): [
+                    (Shape.WOOD): 2,
+                    (Shape.STONE): 1
+            ]
+    ]
+
     static Map<TravelType, Map<Class<? extends NaturalResource>, Integer>> travelTypeNaturalResources = [
             (TravelType.WATER)   : [:],
             (TravelType.BEACH)   : [:],
@@ -156,6 +163,20 @@ class Model {
                     image   : null,
                     offsetX : Main.PERSON_OFFSET_X,
                     offsetY : Main.PERSON_OFFSET_Y
+            ],
+            (Shape.FOLLOWER_BUILDER)    : [
+                    fileName: 'flaticon-builder-hammer-64.png',
+                    scale   : Main.SCALE_64,
+                    image   : null,
+                    offsetX : Main.PERSON_OFFSET_X,
+                    offsetY : Main.PERSON_OFFSET_Y
+            ],
+            (Shape.HUT)    : [
+                    fileName: 'flaticon-hut-128.png',
+                    scale   : Main.SCALE_x2_128,
+                    image   : null,
+                    offsetX : Main.TREE_OFFSET_X,
+                    offsetY : Main.TREE_OFFSET_Y
             ]
     ]
 
@@ -173,6 +194,8 @@ class Model {
         shapeProperties[Shape.SHAMAN_CAMP].image = createImage(Shape.SHAMAN_CAMP)
         shapeProperties[Shape.SHAMAN_BUILD].image = createImage(Shape.SHAMAN_BUILD)
         shapeProperties[Shape.FOLLOWER].image = createImage(Shape.FOLLOWER)
+        shapeProperties[Shape.FOLLOWER_BUILDER].image = createImage(Shape.FOLLOWER_BUILDER)
+        shapeProperties[Shape.HUT].image = createImage(Shape.HUT)
         def villagers = (1..2000).collect { Villager.test() }
 
         def drawables = new ConcurrentLinkedQueue<Drawable>([
@@ -532,6 +555,11 @@ class Model {
                 }
             }
         }
+    }
+
+    static boolean withinCircle(int[] xy, int[] dxy, int r) {
+        //(x - center_x)^2 + (y - center_y)^2 < radius^2
+        withinCircle(xy[0], xy[1], dxy[0], dxy[1], r)
     }
 
     static boolean withinCircle(int x, int y, int tX, int tY, int r) {

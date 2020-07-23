@@ -20,6 +20,7 @@ class Main extends JFrame {
     static final int WINDOW_WIDTH = 1000
     static final int WINDOW_HEIGHT = 750
 
+    static final int NEXT_TO_TILES = 1
     static final int COMFORT_ZONE_TILES = 3
     static final int VISIBLE_ZONE_TILES = 8
     static final int WALK_DISTANCE_TILES_MAX = 6
@@ -40,6 +41,7 @@ class Main extends JFrame {
     static final Double ROCK_SCALE = 0.30
     static final Double SCALE_64 = 0.15
     static final Double SCALE_48 = 0.20
+    static final Double SCALE_x2_128 = 0.15
     static final Double SHADE_IMAGES = 0.60
     static final Double SHADE_TRIBE = 1.7
 

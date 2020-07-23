@@ -20,6 +20,7 @@ class NomadTribe extends Tribe {
         shapeMap[Shape.SHAMAN_CAMP] = [image:null]
         shapeMap[Shape.SHAMAN_BUILD] = [image:null]
         shapeMap[Shape.FOLLOWER] = [image:null]
+        shapeMap[Shape.FOLLOWER_BUILDER] = [image:null]
     }
 
     static void work(Villager villager) {

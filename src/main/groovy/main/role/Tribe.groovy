@@ -11,8 +11,5 @@ abstract class Tribe {
     Map shapeMap = [:]
     Map<List<Integer>, Set<NaturalResource>> surveyNaturalResources = [:]
     Map<String, Object> goodLocation
-
-
-    //todo: nu ska det finnas resources
     Set<Resource> resources = []
 }
