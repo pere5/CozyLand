@@ -2,12 +2,9 @@ package main.calculator
 
 import main.Main
 import main.Model
-import main.Model.TravelType
 import main.exception.PerIsBorkenException
 import main.model.Tile
 import main.things.resource.Resource
-import main.things.resource.Stone
-import main.things.resource.Tree
 
 import javax.imageio.ImageIO
 import java.awt.*

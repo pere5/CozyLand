@@ -12,7 +12,7 @@ import main.model.Villager
 import main.things.Drawable
 import main.things.Drawable.Shape
 import main.things.resource.Resource
-import main.things.resource.Stone
+import main.things.resource.Rock
 import main.things.resource.Tree
 
 import javax.imageio.ImageIO
@@ -41,7 +41,7 @@ class Model {
             (TravelType.BEACH)   : [:],
             (TravelType.FOREST)  : [(Tree.class): 40],
             (TravelType.HILL)    : [(Tree.class): 40],
-            (TravelType.MOUNTAIN): [(Stone.class): 30],
+            (TravelType.MOUNTAIN): [(Rock.class): 30],
             (TravelType.PLAIN)   : [:],
             (TravelType.ROAD)    : [:],
     ]
