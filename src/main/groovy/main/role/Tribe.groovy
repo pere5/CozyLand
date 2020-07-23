@@ -10,5 +10,5 @@ abstract class Tribe {
     Map shapeMap = [:]
     Map<List<Integer>, Set<Resource>> surveyResources = [:]
     Map<String, Object> goodLocation
-    Set<Resource> resources = [:]
+    Set<Resource> resources = []
 }
