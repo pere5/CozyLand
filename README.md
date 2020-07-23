@@ -1,7 +1,7 @@
 
  - [x] Rule thread
  - [x] Worker thread
- - [ ] Interruption thread
+ - [x] Interruption thread
  - [x] Draw thread
  - [ ] Decision model
    - [ ] Rule
@@ -15,7 +15,7 @@
      - [ ] Wait
      - [ ] Walk  
      - [ ] etc...
- - [ ] Pathfinding aStar
+ - [x] Pathfinding aStar
    - [x] Algoritemen ska inte ta ett steg åt gången mellan tiles utan hitta raka strecka mellan tiles så att gubben kan vandra fritt.
  - [x] Tile network
    - [x] Heightmap 
@@ -29,8 +29,8 @@
  - [ ] evolution:
     - [x] Affinity
     - [x] Encounter others, -> shaman
-    - [ ] VillageSearch/Migrate/SurveyResources 4xtimes
-    - [ ] Choose best spot for village
-    - [ ] Become chieftain
-        - [ ] Build village
+    - [x] VillageSearch/Migrate/SurveyResources 4xtimes
+    - [x] Choose best spot for village
+    - [x] Become chieftain
+        - [x] Build village
     

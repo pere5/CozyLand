@@ -3,7 +3,7 @@ package main.things.resource
 import main.Model
 import main.model.Tile
 
-class Rock extends Resource {
+class Rock extends NaturalResource {
 
     Rock(Tile tile) {
         super(tile)

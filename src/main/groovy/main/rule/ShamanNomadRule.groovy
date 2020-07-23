@@ -5,10 +5,9 @@ import main.Model
 import main.action.ShapeAction
 import main.action.SurveyAction
 import main.action.WalkAction
-import main.exception.PerIsBorkenException
 import main.model.Villager
 import main.things.Drawable.Shape
-import main.things.resource.Resource
+import main.things.resource.NaturalResource
 
 class ShamanNomadRule extends Rule {
 
@@ -17,7 +16,7 @@ class ShamanNomadRule extends Rule {
 
     @Override
     int status(Villager me) {
-        def surveyResources = me.role.tribe.surveyResources
+        def surveyResources = me.role.tribe.surveyNaturalResources
         def goodLocations = []
         if (surveyResources.size() > NUMBER_SURVEYS) {
             def maxUnique = surveyResources.collect {
@@ -25,7 +24,7 @@ class ShamanNomadRule extends Rule {
             }.max()
             if (maxUnique >= MIN_UNIQUE) {
 
-                surveyResources.each { def spot, Set<Resource> resources ->
+                surveyResources.each { def spot, Set<NaturalResource> resources ->
                     def multiplier = 1
                     def counted = resources.countBy {
                         it.shape

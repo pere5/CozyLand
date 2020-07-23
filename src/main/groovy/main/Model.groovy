@@ -11,7 +11,7 @@ import main.model.Tile
 import main.model.Villager
 import main.things.Drawable
 import main.things.Drawable.Shape
-import main.things.resource.Resource
+import main.things.resource.NaturalResource
 import main.things.resource.Rock
 import main.things.resource.Tree
 
@@ -36,7 +36,7 @@ class Model {
         WATER, BEACH, FOREST, HILL, MOUNTAIN, PLAIN, ROAD, UP_HILL, DOWN_HILL, EVEN
     }
 
-    static Map<TravelType, Map<Class<? extends Resource>, Integer>> travelTypeResources = [
+    static Map<TravelType, Map<Class<? extends NaturalResource>, Integer>> travelTypeNaturalResources = [
             (TravelType.WATER)   : [:],
             (TravelType.BEACH)   : [:],
             (TravelType.FOREST)  : [(Tree.class): 40],
@@ -165,7 +165,7 @@ class Model {
         Model.villagers = villagers
         Model.drawables = drawables
 
-        Background.setResources(tileNetwork)
+        Background.setNaturalResources(tileNetwork)
     }
 
     static BufferedImage createImage(Shape shape) {

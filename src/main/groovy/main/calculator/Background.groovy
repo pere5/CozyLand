@@ -4,7 +4,7 @@ import main.Main
 import main.Model
 import main.exception.PerIsBorkenException
 import main.model.Tile
-import main.things.resource.Resource
+import main.things.resource.NaturalResource
 
 import javax.imageio.ImageIO
 import java.awt.*
@@ -310,21 +310,21 @@ class Background {
         }
     }
 
-    static void setResources(Tile[][] tileNetwork) {
+    static void setNaturalResources(Tile[][] tileNetwork) {
         for (int y = 0; y < tileNetwork[0].length; y++) {
             for (int x = 0; x < tileNetwork.length; x++) {
                 Tile tile = tileNetwork[x][y]
                 int random = ThreadLocalRandom.current().nextInt(0, Integer.MAX_VALUE)
 
-                def resources = Model.travelTypeResources[tile.travelType]
+                def naturalResources = Model.travelTypeNaturalResources[tile.travelType]
 
-                resources.each { Class<? extends Resource> resourceClass, Integer prevalence ->
+                naturalResources.each { Class<? extends NaturalResource> clazz, Integer prevalence ->
                     if (random % prevalence == 0) {
-                        tile.resources << resourceClass.getDeclaredConstructor(Tile.class).newInstance(tile)
+                        tile.naturalResources << clazz.getDeclaredConstructor(Tile.class).newInstance(tile)
                     }
                 }
 
-                Model.drawables.addAll(tile.resources)
+                Model.drawables.addAll(tile.naturalResources)
             }
         }
     }

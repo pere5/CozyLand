@@ -24,8 +24,8 @@ class BuilderRule extends Rule {
         //todo: Rock -> Stone
         //todo: Tree -> Wood
 
-        def wood = me.role.tribe.resources.count { it instanceof Tree }
-        if (me.role.tribe.resources)
+        def wood = me.role.tribe.naturalResources.count { it instanceof Tree }
+        if (me.role.tribe.naturalResources)
         me.actionQueue << new WalkAction(me.role.tribe.goodLocation.spot as int[])
     }
 }
