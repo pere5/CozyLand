@@ -54,9 +54,4 @@ class AffinityRule extends Rule {
         }
         me.actionQueue << new WalkAction(tileDest)
     }
-
-    @Override
-    void toNewState(Villager villager) {
-        villager.toPathfinderWorker()
-    }
 }

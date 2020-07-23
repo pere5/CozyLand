@@ -65,9 +65,4 @@ class ShamanNomadRule extends Rule {
         me.actionQueue << new SurveyAction(6, me.role.tribe)
         me.actionQueue << new ShapeAction(Shape.SHAMAN)
     }
-
-    @Override
-    void toNewState(Villager villager) {
-        villager.toPathfinderWorker()
-    }
 }

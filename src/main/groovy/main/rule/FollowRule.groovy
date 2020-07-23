@@ -20,10 +20,5 @@ class FollowRule extends Rule {
         def tileDest = Model.closeRandomTile(shaman, null, Main.COMFORT_ZONE_TILES)
         me.actionQueue << new WalkAction(tileDest)
     }
-
-    @Override
-    void toNewState(Villager villager) {
-        villager.toPathfinderWorker()
-    }
 }
 

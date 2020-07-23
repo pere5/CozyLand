@@ -17,10 +17,5 @@ class RandomBigWalkRule extends Rule {
         def tileDest = Model.generateTileXY()
         villager.actionQueue << new WalkAction(tileDest)
     }
-
-    @Override
-    void toNewState(Villager villager) {
-        villager.toPathfinderWorker()
-    }
 }
 

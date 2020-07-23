@@ -65,7 +65,7 @@ class RuleWorker extends Worker {
             }
 
             rule.planWork(villager, status)
-            rule.toNewState(villager)
+            villager.toWorkWorker()
         }
     }
 }
