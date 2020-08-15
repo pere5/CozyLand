@@ -63,7 +63,6 @@ class NomadTribe extends Tribe {
 
     static void becomeFollower (Villager villager, NomadTribe tribe) {
         villager.role = new FollowerRole(tribe)
-        villager.setShape(Shape.FOLLOWER, tribe)
         tribe.followers << villager
     }
 }
