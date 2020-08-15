@@ -29,7 +29,7 @@ class BuilderRule extends Rule {
         def tribe = me.role.tribe as NomadTribe
         def resources = tribe.resources
 
-        if (Model.withinCircle(me.tileXY, tribe.shaman.tileXY, Main.NEXT_TO_TILES)) {
+        if (Model.withinCircle(me.tileXY, tribe.shaman.tileXY, Main.COMFORT_ZONE_TILES)) {
 
             me.actionQueue << new ShapeAction(Shape.FOLLOWER_BUILDER)
 
@@ -61,7 +61,7 @@ class BuilderRule extends Rule {
 
             }
         } else {
-            def tileDest = Model.closeRandomTile(tribe.shaman, null, Main.NEXT_TO_TILES)
+            def tileDest = Model.closeRandomTile(me, tribe.shaman.tileXY, Main.COMFORT_ZONE_TILES)
             me.actionQueue << new WalkAction(tileDest)
             me.actionQueue << new WaitAction(2)
         }

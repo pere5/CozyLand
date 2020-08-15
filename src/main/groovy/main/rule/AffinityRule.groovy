@@ -3,10 +3,8 @@ package main.rule
 import main.Main
 import main.Model
 import main.action.WalkAction
-import main.exception.PerIsBorkenException
 import main.model.Tile
 import main.model.Villager
-import main.things.Drawable
 
 class AffinityRule extends Rule {
 
@@ -48,7 +46,7 @@ class AffinityRule extends Rule {
 
         int[] tileDest
         if (closeVillagers.size() == 0) {
-            tileDest = Model.closeRandomTile(me, Main.WALK_DISTANCE_TILES_MIN, Main.WALK_DISTANCE_TILES_MAX)
+            tileDest = Model.closeRandomTile(me, me.tileXY, Main.WALK_DISTANCE_TILES_MAX, Main.WALK_DISTANCE_TILES_MIN)
         } else {
             tileDest = Model.centroidTile(closeVillagers, me, Main.WALK_DISTANCE_TILES_MAX)
         }

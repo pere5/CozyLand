@@ -410,14 +410,14 @@ class Model {
         }
     }
 
-    static int[] closeRandomTile(Villager villager, Integer minTileDist, Integer maxTileDist, int depth = 0) {
+    static int[] closeRandomTile(Villager me, int[] targetXY, Integer maxTileDist, Integer minTileDist = null, int depth = 0) {
 
         if (depth > 20) {
-            return pixelToTileIdx(villager.x, villager.y)
+            return pixelToTileIdx(me.x, me.y)
         }
 
         def tileNetwork = Model.tileNetwork as Tile[][]
-        def (int tileX, int tileY) = villager.getTileXY()
+        def (int tileX, int tileY) = targetXY
 
         List<int[]> tiles = []
 
@@ -425,7 +425,7 @@ class Model {
             def tile = tileNetwork[x][y]
             def furtherThanMin = minTileDist ? !withinCircle(tileX, tileY, x, y, minTileDist) : true
 
-            if (furtherThanMin && villager.canTravel(tile.travelType)) {
+            if (furtherThanMin && me.canTravel(tile.travelType)) {
                 tiles << tile.tileXY
             }
         }
@@ -433,11 +433,11 @@ class Model {
         if (tiles) {
             return tiles[getRandomIntegerBetween(0, tiles.size() - 1)]
         } else {
-            return pixelToTileIdx(villager.x, villager.y)
+            return pixelToTileIdx(me.x, me.y)
         }
     }
 
-    static int[] centroidTile(List<Villager> villagers, Villager me, Integer maxDist) {
+    static int[] centroidTile(List<Villager> villagers, Villager me, Integer maxTileDist) {
         def cPixel = [0, 0] as Double[]
 
         for (Villager villager: villagers) {
@@ -455,7 +455,7 @@ class Model {
         if (me.canTravel(tile.travelType)) {
             return cTile
         } else {
-            return closeRandomTile(me, null, maxDist)
+            return closeRandomTile(me, me.tileXY, maxTileDist)
         }
     }
 
