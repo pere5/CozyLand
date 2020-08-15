@@ -3,6 +3,7 @@ package main.rule
 import main.Main
 import main.Model
 import main.action.ShapeAction
+import main.action.WaitAction
 import main.action.WalkAction
 import main.model.Villager
 import main.role.tribe.NomadTribe
@@ -14,7 +15,8 @@ class BuilderRule extends Rule {
 
     @Override
     int status(Villager me) {
-        if (!me.home && me.role.tribe.goodLocation) {
+        def enoughResourcesToBuild = false
+        if (!me.home && me.role.tribe.goodLocation && enoughResourcesToBuild) {
             BAD
         } else {
             GREAT
@@ -31,6 +33,17 @@ class BuilderRule extends Rule {
 
             me.actionQueue << new ShapeAction(Shape.FOLLOWER_BUILDER)
 
+            /*
+                - Hitta en färdig Hut som ingen bor i
+                    - Ta den som ditt Home
+                - !^ Hitta en oklar Hut har plats för fler byggare
+                    - Bygg på den
+                - !^ Anlägg en ny Hut
+                    - Bygg på den
+             */
+
+
+
             def wood = resources.findAll { it instanceof Wood }
             def stone = resources.findAll { it instanceof Stone }
 
@@ -43,14 +56,14 @@ class BuilderRule extends Rule {
             //hur ska vi bygga detta enkelt?
 
             if (enoughWood && enoughStone) {
-                neededWood.times { def i -> resources.remove(wood[i]) }
-                neededStone.times { def i -> resources.remove(stone[i]) }
+
             } else {
 
             }
         } else {
             def tileDest = Model.closeRandomTile(tribe.shaman, null, Main.NEXT_TO_TILES)
             me.actionQueue << new WalkAction(tileDest)
+            me.actionQueue << new WaitAction(2)
         }
     }
 }
