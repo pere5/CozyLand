@@ -5,6 +5,7 @@ import main.Model
 import main.action.ShapeAction
 import main.action.SurveyAction
 import main.action.WalkAction
+import main.model.Location
 import main.model.Villager
 import main.things.Drawable.Shape
 import main.things.naturalResource.NaturalResource
@@ -17,7 +18,7 @@ class ShamanNomadRule extends Rule {
     @Override
     int status(Villager me) {
         def surveyResources = me.role.tribe.surveyNaturalResources
-        def goodLocations = []
+        List<Location> goodLocations = []
         if (surveyResources.size() > NUMBER_SURVEYS) {
             def maxUnique = surveyResources.collect {
                 it.value.unique(false) { it.shape }.size()
@@ -43,7 +44,7 @@ class ShamanNomadRule extends Rule {
                     def score = multiplied.sum {
                         it.amount
                     } as Integer
-                    goodLocations << [spot: spot, resources: resources, score: score]
+                    goodLocations << new Location(spot: spot, naturalResources: resources, score: score)
                 }
             }
         }

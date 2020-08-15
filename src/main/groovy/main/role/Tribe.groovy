@@ -1,5 +1,6 @@
 package main.role
 
+import main.model.Location
 import main.things.naturalResource.NaturalResource
 import main.things.resource.Resource
 
@@ -10,6 +11,6 @@ abstract class Tribe {
     Color color
     Map shapeMap = [:]
     Map<List<Integer>, Set<NaturalResource>> surveyNaturalResources = [:]
-    Map<String, Object> goodLocation
+    Location goodLocation
     Set<Resource> resources = []
 }
