@@ -10,6 +10,16 @@ class FollowerRole extends Role {
     static final String ID = 'follower'
 
     static List<Rule> getRules() {
+
+        /*
+            - Hitta en färdig Hut som ingen bor i
+                - Ta den som ditt Home
+            - !^ Hitta en oklar Hut har plats för fler byggare
+                - Bygg på den
+            - !^ Anlägg en ny Hut
+                - Bygg på den
+         */
+
         int rank = Integer.MAX_VALUE
         [
                 new FollowRule(rank: --rank),

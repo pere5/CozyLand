@@ -1,10 +1,8 @@
 package main.rule
 
-import main.Main
+
 import main.Model
 import main.action.ShapeAction
-import main.action.WaitAction
-import main.action.WalkAction
 import main.model.Villager
 import main.role.tribe.NomadTribe
 import main.things.Drawable.Shape
@@ -34,41 +32,23 @@ class BuilderRule extends Rule {
         def tribe = me.role.tribe as NomadTribe
         def resources = tribe.resources
 
-        if (Model.withinCircle(me.tileXY, tribe.shaman.tileXY, Main.COMFORT_ZONE_TILES)) {
+        me.actionQueue << new ShapeAction(Shape.FOLLOWER_BUILDER)
 
-            me.actionQueue << new ShapeAction(Shape.FOLLOWER_BUILDER)
+        def wood = resources.findAll { it instanceof Wood }
+        def stone = resources.findAll { it instanceof Stone }
 
-            /*
-                - Hitta en färdig Hut som ingen bor i
-                    - Ta den som ditt Home
-                - !^ Hitta en oklar Hut har plats för fler byggare
-                    - Bygg på den
-                - !^ Anlägg en ny Hut
-                    - Bygg på den
-             */
+        def neededWood = Model.buildingMaterials[Shape.HUT][Shape.WOOD]
+        def neededStone = Model.buildingMaterials[Shape.HUT][Shape.STONE]
 
+        def enoughWood = wood.size() >= neededWood
+        def enoughStone = stone.size() >= neededStone
 
+        //hur ska vi bygga detta enkelt?
 
-            def wood = resources.findAll { it instanceof Wood }
-            def stone = resources.findAll { it instanceof Stone }
+        if (enoughWood && enoughStone) {
 
-            def neededWood = Model.buildingMaterials[Shape.HUT][Shape.WOOD]
-            def neededStone = Model.buildingMaterials[Shape.HUT][Shape.STONE]
-
-            def enoughWood = wood.size() >= neededWood
-            def enoughStone = stone.size() >= neededStone
-
-            //hur ska vi bygga detta enkelt?
-
-            if (enoughWood && enoughStone) {
-
-            } else {
-
-            }
         } else {
-            def tileDest = Model.closeRandomTile(me, tribe.shaman.tileXY, Main.COMFORT_ZONE_TILES)
-            me.actionQueue << new WalkAction(tileDest)
-            me.actionQueue << new WaitAction(2)
+
         }
     }
 }
