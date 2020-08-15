@@ -4,9 +4,11 @@ import main.Model
 import main.Model.TravelType
 import main.action.Action
 import main.action.WalkAction
-import main.role.alone.AloneRole
 import main.role.Role
+import main.role.alone.AloneRole
 import main.things.Drawable
+import main.things.building.Home
+import main.things.tool.Tool
 
 class Villager extends Drawable {
 
@@ -14,7 +16,10 @@ class Villager extends Drawable {
     boolean ruleWorker
     boolean pathfinderWorker
     boolean workWorker
+
     Role role
+    Home home
+    Tool tool
 
     static Villager test() {
         def villager = new Villager()

@@ -1,7 +1,7 @@
 package main
 
 import javaSrc.color.ColorUtils
-import main.calculator.Path
+import main.model.Path
 import main.model.StraightPath
 import main.model.Tile
 import main.model.Villager

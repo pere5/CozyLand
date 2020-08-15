@@ -2,13 +2,11 @@ package main.thread
 
 import javaSrc.linkedbinarytree.LinkedBinaryTree
 import javaSrc.linkedbinarytree.Position
-import main.Main
 import main.Model
 import main.Model.TravelType
 import main.TestPrints
 import main.action.WalkAction
-import main.calculator.Path
-import main.exception.PerIsBorkenException
+import main.model.Path
 import main.model.StraightPath
 import main.model.Tile
 import main.model.Villager

@@ -1,7 +1,7 @@
 package main
 
 import javaSrc.circulararray.CircularArrayList
-import main.calculator.Path
+import main.model.Path
 import main.model.Tile
 import main.model.Villager
 import main.thread.PathfinderWorker
