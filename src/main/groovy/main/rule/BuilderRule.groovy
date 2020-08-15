@@ -14,7 +14,7 @@ class BuilderRule extends Rule {
 
     @Override
     int status(Villager me) {
-        if (me.role.tribe.goodLocation) {
+        if (!me.home && me.role.tribe.goodLocation) {
             BAD
         } else {
             GREAT

@@ -1,4 +1,6 @@
 package main.things.building
 
-abstract class Building {
+import main.things.Drawable
+
+abstract class Building extends Drawable {
 }

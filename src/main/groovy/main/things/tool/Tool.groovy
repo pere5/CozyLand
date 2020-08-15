@@ -1,4 +1,6 @@
 package main.things.tool
 
-abstract class Tool {
+import main.things.Drawable
+
+abstract class Tool extends Drawable {
 }

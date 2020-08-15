@@ -12,7 +12,7 @@ abstract class Drawable {
         RECT, CIRCLE,
         TREE, STONE, WOOD, ROCK,
         SHAMAN, SHAMAN_CAMP, SHAMAN_BUILD, WARRIOR, FOLLOWER, FOLLOWER_BUILDER,
-        HUT, SHAMAN_HUT, GRANARY
+        HUT, SHAMAN_LODGE, GRANARY
     }
 
     int id
