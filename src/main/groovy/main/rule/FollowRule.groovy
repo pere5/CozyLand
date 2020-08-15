@@ -10,7 +10,9 @@ class FollowRule extends Rule {
 
     @Override
     int status(Villager me) {
-        if (me.role.tribe.goodLocation) {
+
+        int[] homeXY = getHomeXY(me)
+        if (Model.withinCircle(me.tileXY, homeXY, Main.COMFORT_ZONE_TILES)) {
             GREAT
         } else {
             BAD
@@ -19,9 +21,14 @@ class FollowRule extends Rule {
 
     @Override
     void planWork(Villager me, int status) {
-        def shaman = (me.role.tribe as NomadTribe).shaman
-        def tileDest = Model.closeRandomTile(shaman, null, Main.COMFORT_ZONE_TILES)
+        int[] homeXY = getHomeXY(me)
+        def tileDest = Model.closeRandomTile(me, homeXY, Main.COMFORT_ZONE_TILES)
         me.actionQueue << new WalkAction(tileDest)
+    }
+
+    private static int[] getHomeXY(Villager me) {
+        def tribe = me.role.tribe as NomadTribe
+        me.home?.tileXY ?: tribe.shaman.tileXY
     }
 }
 

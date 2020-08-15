@@ -2,7 +2,7 @@ package main.rule
 
 import main.model.Villager
 
-class Gatherer extends Rule {
+class GathererRule extends Rule {
     @Override
     int status(Villager villager) {
         def enoughResourcesToBuild = false

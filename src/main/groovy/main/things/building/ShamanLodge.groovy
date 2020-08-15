@@ -1,4 +1,4 @@
 package main.things.building
 
-class ShamanLodge extends Building implements Home {
+class ShamanLodge extends Building {
 }

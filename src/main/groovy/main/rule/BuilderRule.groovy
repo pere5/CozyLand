@@ -15,8 +15,9 @@ class BuilderRule extends Rule {
 
     @Override
     int status(Villager me) {
-        def enoughResourcesToBuild = false
-        if (!me.home && me.role.tribe.goodLocation && enoughResourcesToBuild) {
+        def unfinishedBuildings = [true]
+        //if (unfinishedBuildings) {
+        if (me.role.tribe.goodLocation) {
             BAD
         } else {
             GREAT
@@ -25,6 +26,10 @@ class BuilderRule extends Rule {
 
     @Override
     void planWork(Villager me, int status) {
+        def unfinishedBuildings = []
+        def unfinishedBuilding = unfinishedBuildings[
+                Model.getRandomIntegerBetween(0, unfinishedBuildings.size() - 1)
+        ]
 
         def tribe = me.role.tribe as NomadTribe
         def resources = tribe.resources
