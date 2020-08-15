@@ -410,11 +410,7 @@ class Model {
         }
     }
 
-    static int[] closeRandomTile(Villager me, int[] targetXY, Integer maxTileDist, Integer minTileDist = null, int depth = 0) {
-
-        if (depth > 20) {
-            return pixelToTileIdx(me.x, me.y)
-        }
+    static int[] closeRandomTile(Villager me, int[] targetXY, Integer maxTileDist, Integer minTileDist = null) {
 
         def tileNetwork = Model.tileNetwork as Tile[][]
         def (int tileX, int tileY) = targetXY
@@ -573,5 +569,9 @@ class Model {
 
     static Integer getRandomIntegerBetween(Integer min, Integer max) {
         return (min + (Math.random() * ((max + 1) - min))).toInteger()
+    }
+
+    static boolean tilesEqual(int[] a, int[] b) {
+        a[0] == b[0] && a[1] == b[1]
     }
 }
