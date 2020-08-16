@@ -20,6 +20,11 @@ class FollowerRole extends Role {
                 - Bygg på den
          */
 
+
+        //sätt så att ingen drawable behöver manuellt läggas in i drawables.
+        //det skall göras i drawable konstruktorn
+
+
         int rank = Integer.MAX_VALUE
         [
                 new FollowRule(rank: --rank),
