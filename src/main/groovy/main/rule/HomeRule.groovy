@@ -3,6 +3,7 @@ package main.rule
 import main.Main
 import main.Model
 import main.model.Villager
+import main.role.tribe.NomadTribe
 import main.things.building.Hut
 
 class HomeRule extends Rule {
@@ -19,22 +20,8 @@ class HomeRule extends Rule {
     @Override
     void planWork(Villager me, int status) {
 
-        //loop so that it isn't close to their huts...
-        def mySpot = me.tileXY
-        def tileXY
-        for (int i = 0; i < 20; i++) {
-            def candidate = Model.closeRandomTile(me, mySpot, Main.COMFORT_ZONE_TILES + 1, 1)
-            if (!Model.tilesEqual(candidate, mySpot)) {
-                tileXY = candidate
-                break
-            }
-        }
-
-        if (tileXY) {
-            me.home = new Hut(me, tileXY)
-        } else {
-            //hej ho
-        }
-
+        def tribe = me.role.tribe as NomadTribe
+        int[] tileXY = Model.closeRandomTile(me, tribe.shaman.tileXY, Main.COMFORT_ZONE_TILES + 1, 1)
+        me.home = new Hut(me, tileXY)
     }
 }

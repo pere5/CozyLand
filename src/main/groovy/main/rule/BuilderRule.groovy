@@ -37,8 +37,8 @@ class BuilderRule extends Rule {
         def wood = resources.findAll { it instanceof Wood }
         def stone = resources.findAll { it instanceof Stone }
 
-        def neededWood = Model.buildingMaterials[Shape.HUT][Shape.WOOD]
-        def neededStone = Model.buildingMaterials[Shape.HUT][Shape.STONE]
+        def neededWood = Model.buildingResources[Shape.HUT][Shape.WOOD]
+        def neededStone = Model.buildingResources[Shape.HUT][Shape.STONE]
 
         def enoughWood = wood.size() >= neededWood
         def enoughStone = stone.size() >= neededStone

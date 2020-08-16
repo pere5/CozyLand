@@ -36,7 +36,7 @@ class Model {
         WATER, BEACH, FOREST, HILL, MOUNTAIN, PLAIN, ROAD, UP_HILL, DOWN_HILL, EVEN
     }
 
-    static Map<Shape, Map> buildingMaterials = [
+    static Map<Shape, Map> buildingResources = [
             (Shape.HUT): [
                     (Shape.WOOD): 2,
                     (Shape.STONE): 1
