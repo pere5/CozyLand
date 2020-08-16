@@ -30,6 +30,13 @@ abstract class Drawable {
         Model.drawables << this
     }
 
+    Drawable(Boolean addToDrawables) {
+        this.id = Model.getNewId()
+        if (addToDrawables) {
+            Model.drawables << this
+        }
+    }
+
     void setShape(Shape shape) {
         setShape(shape, null)
     }
