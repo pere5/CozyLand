@@ -27,6 +27,7 @@ abstract class Drawable {
 
     Drawable() {
         this.id = Model.getNewId()
+        Model.drawables << this
     }
 
     void setShape(Shape shape) {

@@ -323,8 +323,6 @@ class Background {
                         tile.naturalResources << clazz.getDeclaredConstructor(Tile.class).newInstance(tile)
                     }
                 }
-
-                Model.drawables.addAll(tile.naturalResources)
             }
         }
     }

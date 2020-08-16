@@ -198,12 +198,7 @@ class Model {
         shapeProperties[Shape.HUT].image = createImage(Shape.HUT)
         def villagers = (1..2000).collect { Villager.test() }
 
-        def drawables = new ConcurrentLinkedQueue<Drawable>([
-                villagers
-        ].flatten() as List<Drawable>)
-
         Model.villagers = villagers
-        Model.drawables = drawables
 
         Background.setNaturalResources(tileNetwork)
     }

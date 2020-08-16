@@ -36,7 +36,7 @@ class TestPrints {
                 def tileProbability = (tile[0][1] - tile[0][0]) as Double
                 def neighbor = tileNetwork[nX][nY] as Tile
 
-                Model.drawables << new Artifact(
+                new Artifact(
                         size: neighbor.size, parent: villager.id, x: neighbor.x, y: neighbor.y,
                         color: colorGradient[tileProbability as int]
                 )
@@ -51,7 +51,7 @@ class TestPrints {
         def idx = Path.bresenham(pixelStart as int[], pixelDest as int[])
         (0..idx).each {
             def xy = Path.bresenhamBuffer[it].clone()
-            Model.drawables << new Artifact(size: 1, parent: villager.id, x: xy[0], y: xy[1], color: villager.testColor)
+            new Artifact(size: 1, parent: villager.id, x: xy[0], y: xy[1], color: villager.testColor)
         }
 
     }
@@ -67,12 +67,12 @@ class TestPrints {
         villager.testColor = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
 
         visited.collect { Model.tileToPixelIdx(it) }.each {
-            Model.drawables << new Artifact(
+            new Artifact(
                     size: 3, parent: villager.id, x: it[0], y: it[1],
                     color: villager.testColor
             )
         }
-        Model.drawables << new Artifact(
+        new Artifact(
                 size: 5, parent: villager.id, x: pixelDest[0], y: pixelDest[1],
                 color: villager.testColor
         )
@@ -101,14 +101,14 @@ class TestPrints {
     }
 
     static def printRadii(int x, int y, Villager me) {
-        Model.drawables << new Artifact(
+        new Artifact(
                 size: 3, parent: me.id, x: Model.tileToPixelIdx(x), y: Model.tileToPixelIdx(y),
                 color: me.testColor
         )
     }
 
     static void printSurveyResourcesCircle(Drawable me, int x, int y) {
-        Model.drawables << new Artifact(size: 2, parent: me.id, x: Model.tileToPixelIdx(x), y: Model.tileToPixelIdx(y), color: Color.BLUE)
+        new Artifact(size: 2, parent: me.id, x: Model.tileToPixelIdx(x), y: Model.tileToPixelIdx(y), color: Color.BLUE)
     }
 
     static void removeSurveyResourcesCircle(int id) {
