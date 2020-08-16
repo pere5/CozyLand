@@ -12,6 +12,8 @@ import main.things.tool.Tool
 
 class Villager extends Drawable {
 
+    def metaObjects = [:]
+
     Queue<Action> actionQueue = new LinkedList<>()
     boolean ruleWorker
     boolean pathfinderWorker
