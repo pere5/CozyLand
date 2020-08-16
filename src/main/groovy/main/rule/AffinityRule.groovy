@@ -2,9 +2,11 @@ package main.rule
 
 import main.Main
 import main.Model
+import main.action.ShapeAction
 import main.action.WalkAction
 import main.model.Tile
 import main.model.Villager
+import main.things.Drawable.Shape
 
 class AffinityRule extends Rule {
 
@@ -50,6 +52,7 @@ class AffinityRule extends Rule {
         } else {
             tileDest = Model.centroidTile(closeVillagers, me, Main.WALK_DISTANCE_TILES_MAX)
         }
+        me.actionQueue << new ShapeAction(Shape.WARRIOR)
         me.actionQueue << new WalkAction(tileDest)
     }
 }
