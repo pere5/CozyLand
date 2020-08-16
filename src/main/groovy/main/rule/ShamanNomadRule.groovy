@@ -2,6 +2,7 @@ package main.rule
 
 import main.Main
 import main.Model
+import main.action.ClosureAction
 import main.action.ShapeAction
 import main.action.SurveyAction
 import main.action.WalkAction
@@ -17,8 +18,10 @@ class ShamanNomadRule extends Rule {
 
     @Override
     int status(Villager me) {
-        if (me.role.tribe.goodLocation || me.metaObjects[ShamanNomadRule.toString()]) {
-            GOOD
+        if (me.role.tribe.goodLocation) {
+            return GOOD
+        } else if (me.metaObjects[ShamanNomadRule.toString()]) {
+            return BAD
         } else {
             def surveyResources = me.role.tribe.surveyNaturalResources
             List<Location> goodLocations = []
@@ -47,26 +50,35 @@ class ShamanNomadRule extends Rule {
                         def score = multiplied.sum {
                             it.amount
                         } as Integer
-                        goodLocations << new Location(spot: spot, naturalResources: resources, score: score)
+                        goodLocations << new Location(spot: spot as int[], naturalResources: resources, score: score)
                     }
                 }
             }
 
             if (goodLocations) {
                 me.metaObjects[ShamanNomadRule.toString()] = goodLocations.max { it.score }
-                GOOD
-            } else {
-                BAD
             }
+
+            return BAD
         }
     }
 
     @Override
     void planWork(Villager me, int status) {
-        def tileDest = Model.closeRandomTile(me, me.tileXY, Main.SHAMAN_DISTANCE_TILES_MAX, Main.SHAMAN_DISTANCE_TILES_MIN)
-        me.actionQueue << new ShapeAction(Shape.SHAMAN)
-        me.actionQueue << new WalkAction(tileDest)
-        me.actionQueue << new ShapeAction(Shape.SHAMAN_CAMP)
-        me.actionQueue << new SurveyAction(6, me.role.tribe)
+        if (me.metaObjects[ShamanNomadRule.toString()]) {
+            def location = me.metaObjects[ShamanNomadRule.toString()] as Location
+            me.actionQueue << new ShapeAction(Shape.SHAMAN)
+            me.actionQueue << new WalkAction(location.spot)
+            me.actionQueue << new ClosureAction({
+                me.role.tribe.goodLocation = location
+                me.metaObjects[ShamanNomadRule.toString()] = null
+            })
+        } else {
+            def tileDest = Model.closeRandomTile(me, me.tileXY, Main.SHAMAN_DISTANCE_TILES_MAX, Main.SHAMAN_DISTANCE_TILES_MIN)
+            me.actionQueue << new ShapeAction(Shape.SHAMAN)
+            me.actionQueue << new WalkAction(tileDest)
+            me.actionQueue << new ShapeAction(Shape.SHAMAN_CAMP)
+            me.actionQueue << new SurveyAction(6, me.role.tribe)
+        }
     }
 }

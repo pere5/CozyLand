@@ -566,7 +566,7 @@ class Model {
         return (min + (Math.random() * ((max + 1) - min))).toInteger()
     }
 
-    static boolean tilesEqual(int[] a, int[] b) {
+    static boolean compareTiles(int[] a, int[] b) {
         a[0] == b[0] && a[1] == b[1]
     }
 }

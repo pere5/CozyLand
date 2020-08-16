@@ -3,7 +3,7 @@ package main.model
 import main.things.naturalResource.NaturalResource
 
 class Location {
-    List<Integer> spot
+    int[] spot
     Set<NaturalResource> naturalResources
     Integer score
 }
