@@ -25,10 +25,12 @@ class ShamanBuildRule extends Rule {
             me.actionQueue << new ShapeAction(Shape.SHAMAN_BUILD)
             me.actionQueue << new WaitAction(10)
         } else if (me.metaObjects[ShamanNomadRule.toString()]) {
+            def location = me.metaObjects[ShamanNomadRule.toString()] as Location
             me.actionQueue << new ShapeAction(Shape.SHAMAN)
-            me.actionQueue << new WalkAction(me.role.tribe.goodLocation.spot as int[])
-            def boll = { me.role.tribe.goodLocation = me.metaObjects[ShamanNomadRule.toString()] as Location }
-            me.actionQueue << new ClosureAction(boll)
+            me.actionQueue << new WalkAction(location.spot as int[])
+            me.actionQueue << new ClosureAction({
+                me.role.tribe.goodLocation = location
+            })
         }
     }
 }

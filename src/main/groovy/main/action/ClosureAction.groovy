@@ -17,6 +17,7 @@ class ClosureAction extends Action {
 
     @Override
     boolean doIt(Villager me) {
-        return false
+        closure()
+        return DONE
     }
 }
