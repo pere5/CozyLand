@@ -60,6 +60,7 @@ class ShamanNomadRule extends Rule {
     @Override
     void planWork(Villager me, int status) {
         def tileDest = Model.closeRandomTile(me, me.tileXY, Main.SHAMAN_DISTANCE_TILES_MAX, Main.SHAMAN_DISTANCE_TILES_MIN)
+        me.actionQueue << new ShapeAction(Shape.SHAMAN)
         me.actionQueue << new WalkAction(tileDest)
         me.actionQueue << new ShapeAction(Shape.SHAMAN_CAMP)
         me.actionQueue << new SurveyAction(6, me.role.tribe)

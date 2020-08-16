@@ -52,7 +52,6 @@ class NomadTribe extends Tribe {
                     myNomadTribe.color = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
 
                     aloneMe.role = new ShamanRole(myNomadTribe)
-                    aloneMe.setShape(Shape.SHAMAN, myNomadTribe)
                     neighbors.findAll { it.role.id == AloneRole.ID }.each { def aloneVillager ->
                         becomeFollower(aloneVillager, myNomadTribe)
                     }
