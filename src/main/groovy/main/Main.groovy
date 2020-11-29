@@ -10,6 +10,8 @@ import main.thread.WorkWorker
 
 import javax.swing.*
 import java.awt.*
+import java.awt.event.ComponentEvent
+import java.awt.event.ComponentListener
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
 
@@ -17,8 +19,14 @@ class Main extends JFrame {
 
     static final boolean DEBUG_PATH_PRINTS = false
 
-    static final int WINDOW_WIDTH = 1000
-    static final int WINDOW_HEIGHT = 750
+    static int WINDOW_WIDTH = 1000
+    static int WINDOW_HEIGHT = 750
+
+    static final int TILE_WIDTH = 5
+    static final int MAP_WIDTH = (1000 * 2.5) as Integer
+    static final int MAP_HEIGHT = (750 * 2.5) as Integer
+    static int VIEWPORT_WIDTH
+    static int VIEWPORT_HEIGHT
 
     static final int COMFORT_ZONE_TILES = 2
     static final int VISIBLE_ZONE_TILES = 8
@@ -27,8 +35,8 @@ class Main extends JFrame {
     static final int SHAMAN_DISTANCE_TILES_MAX = 15
     static final int SHAMAN_DISTANCE_TILES_MIN = 10
 
-    static final Double STEP = 0.5
-    static final int TILE_WIDTH = 8
+    static final Double STEP = 0.4
+
     static final int GAUSSIAN_FILTER = 3
     static final int TREE_OFFSET_X = - (TILE_WIDTH * 2) as int
     static final int TREE_OFFSET_Y = - (TILE_WIDTH * 4.2) as int
@@ -36,29 +44,23 @@ class Main extends JFrame {
     static final int STONE_OFFSET_Y = - 0
     static final int PERSON_OFFSET_X = - (TILE_WIDTH / 2) as int
     static final int PERSON_OFFSET_Y = - TILE_WIDTH
-    static final Double TREE_SCALE = 0.8
-    static final Double ROCK_SCALE = 0.30
-    static final Double SCALE_64 = 0.15
-    static final Double SCALE_48 = 0.20
-    static final Double SCALE_x2_128 = 0.15
-    static final Double SHADE_IMAGES = 0.60
-    static final Double SHADE_TRIBE = 1.7
 
-    static final int MAP_WIDTH = WINDOW_WIDTH * 3
-    static final int MAP_HEIGHT = WINDOW_HEIGHT * 3
+    static final Double TREE_SCALE = 0.90
+    static final Double ROCK_SCALE = 0.40
 
-    static int VIEWPORT_WIDTH
-    static int VIEWPORT_HEIGHT
+    static final Double SCALE = 1.5
+    static final Double SCALE_64 = 0.15 * SCALE
+    static final Double SCALE_48 = 0.20 * SCALE
+    static final Double SCALE_x2_128 = 0.15 * SCALE
+
+    static final Double SHADE_IMAGES = 0.50
+    static final Double SHADE_TRIBE = 2.0
 
     MyKeyboardListener myKeyboardListener
     MyMouseListener myMouseListener
 
     Main() {
         super('CozyLand')
-
-        pack()
-        VIEWPORT_WIDTH = WINDOW_WIDTH - (getWidth() - getContentPane().getWidth())
-        VIEWPORT_HEIGHT = WINDOW_HEIGHT - (getHeight() - getContentPane().getHeight())
 
         myKeyboardListener = new MyKeyboardListener()
         myMouseListener = new MyMouseListener()
@@ -99,14 +101,34 @@ class Main extends JFrame {
             }
         })
 
-        setSize(WINDOW_WIDTH, WINDOW_HEIGHT)
+        addComponentListener(new MyComponentListener())
         setLocationRelativeTo(null)
         setDefaultCloseOperation(EXIT_ON_CLOSE)
+        setExtendedState(MAXIMIZED_BOTH)
+        pack()
         setVisible(true)
+        toFront()
+        requestFocus()
+    }
+
+    class MyComponentListener implements ComponentListener {
+        void componentHidden(ComponentEvent e) { }
+
+        void componentMoved(ComponentEvent e) { }
+
+        void componentResized(ComponentEvent e) {
+            println(e.getComponent().getClass().getName() + " --- Resized ");
+            Dimension size = e.getComponent().getBounds().getSize()
+            WINDOW_HEIGHT = (size.height as Integer)
+            WINDOW_WIDTH = (size.width as Integer)
+            VIEWPORT_WIDTH = WINDOW_WIDTH - (getWidth() - getContentPane().getWidth())
+            VIEWPORT_HEIGHT = WINDOW_HEIGHT - (getHeight() - getContentPane().getHeight())
+        }
+
+        void componentShown(ComponentEvent e) { }
     }
 
     static void main(String[] args) {
-
         EventQueue.invokeLater(new Runnable() {
             @Override
             void run() {
@@ -114,6 +136,4 @@ class Main extends JFrame {
             }
         })
     }
-
-
 }
