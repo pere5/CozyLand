@@ -38,12 +38,6 @@ class Main extends JFrame {
     static final Double STEP = 0.4
 
     static final int GAUSSIAN_FILTER = 3
-    static final int TREE_OFFSET_X = - (TILE_WIDTH * 2) as int
-    static final int TREE_OFFSET_Y = - (TILE_WIDTH * 4.2) as int
-    static final int STONE_OFFSET_X = - 0
-    static final int STONE_OFFSET_Y = - 0
-    static final int PERSON_OFFSET_X = - (TILE_WIDTH / 2) as int
-    static final int PERSON_OFFSET_Y = - TILE_WIDTH
 
     static final Double TREE_SCALE = 0.90
     static final Double ROCK_SCALE = 0.40

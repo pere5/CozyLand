@@ -1,5 +1,6 @@
 package main.things
 
+import main.Main
 import main.Model
 import main.role.Tribe
 
@@ -24,6 +25,8 @@ abstract class Drawable {
     int size = 10
     Double x = 0
     Double y = 0
+    Integer offsetX
+    Integer offsetY
 
     Drawable() {
         this.id = Model.getNewId()
@@ -63,6 +66,9 @@ abstract class Drawable {
 
         this.shape = shape
         this.image = image
+
+        this.offsetX = (Math.ceil(Main.TILE_WIDTH / 2) - Math.floor(image.width / 2)) as Integer
+        this.offsetY = (Math.ceil(Main.TILE_WIDTH / 2) - (image.height)) as Integer
     }
 
     int[] getTileXY() {

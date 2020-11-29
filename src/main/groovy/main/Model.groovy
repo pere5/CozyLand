@@ -104,79 +104,57 @@ class Model {
             (Shape.TREE)        : [
                     fileName: 'icons8-large-tree-48.png',
                     scale   : Main.TREE_SCALE,
-                    image   : null,
-                    offsetX : Main.TREE_OFFSET_X,
-                    offsetY : Main.TREE_OFFSET_Y
+                    image   : null
             ],
             (Shape.ROCK)        : [
                     fileName: 'icons8-silver-ore-48.png',
                     scale   : Main.ROCK_SCALE,
-                    image   : null,
-                    offsetX : Main.STONE_OFFSET_X,
-                    offsetY : Main.STONE_OFFSET_Y
+                    image   : null
             ],
             (Shape.WOOD)        : [
                     fileName: 'flaticon-firewood-64.png',
                     scale   : Main.SCALE_64,
-                    image   : null,
-                    offsetX : Main.PERSON_OFFSET_X,
-                    offsetY : Main.PERSON_OFFSET_Y
+                    image   : null
             ],
             (Shape.STONE)       : [
                     fileName: 'flaticon-rocks-64.png',
                     scale   : Main.SCALE_64,
-                    image   : null,
-                    offsetX : Main.PERSON_OFFSET_X,
-                    offsetY : Main.PERSON_OFFSET_Y
+                    image   : null
             ],
             (Shape.WARRIOR)     : [
                     fileName: 'icons8-iron-age-warrior-48.png',
                     scale   : Main.SCALE_48,
-                    image   : null,
-                    offsetX : Main.PERSON_OFFSET_X,
-                    offsetY : Main.PERSON_OFFSET_Y
+                    image   : null
             ],
             (Shape.SHAMAN)      : [
                     fileName: 'icons8-spartan-helmet-48.png',
                     scale   : Main.SCALE_48,
-                    image   : null,
-                    offsetX : Main.PERSON_OFFSET_X,
-                    offsetY : Main.PERSON_OFFSET_Y
+                    image   : null
             ],
             (Shape.SHAMAN_CAMP) : [
                     fileName: 'icons8-campfire-48.png',
                     scale   : Main.SCALE_48,
-                    image   : null,
-                    offsetX : Main.PERSON_OFFSET_X,
-                    offsetY : Main.PERSON_OFFSET_Y
+                    image   : null
             ],
             (Shape.SHAMAN_BUILD): [
                     fileName: 'flaticon-hammer-64.png',
                     scale   : Main.SCALE_64,
-                    image   : null,
-                    offsetX : Main.PERSON_OFFSET_X,
-                    offsetY : Main.PERSON_OFFSET_Y
+                    image   : null
             ],
             (Shape.FOLLOWER)    : [
                     fileName: 'icons8-sword-48.png',
                     scale   : Main.SCALE_48,
-                    image   : null,
-                    offsetX : Main.PERSON_OFFSET_X,
-                    offsetY : Main.PERSON_OFFSET_Y
+                    image   : null
             ],
             (Shape.FOLLOWER_BUILDER)    : [
                     fileName: 'flaticon-builder-hammer-64.png',
                     scale   : Main.SCALE_64,
-                    image   : null,
-                    offsetX : Main.PERSON_OFFSET_X,
-                    offsetY : Main.PERSON_OFFSET_Y
+                    image   : null
             ],
             (Shape.HUT)    : [
                     fileName: 'flaticon-hut-128.png',
                     scale   : Main.SCALE_x2_128,
-                    image   : null,
-                    offsetX : Main.TREE_OFFSET_X,
-                    offsetY : Main.TREE_OFFSET_Y
+                    image   : null
             ]
     ]
 
