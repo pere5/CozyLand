@@ -41,7 +41,7 @@
  - [ ] Build village
  - [ ] Fixa Pathfinder buggen
  - [ ] Blockeringar mellan tiles i pathfindern (för branta stigningar)
- - [ ] All logik i villager reglerna (flytta tribe logiken)
- - [ ] **Villagers placerar sigsjälva i tiles**
+ - [ ] 2 **All logik i villager reglerna (flytta tribe logiken)**
+ - [ ] 1 **Villagers placerar sigsjälva i tiles**
  - [ ] Flytta in alla roller tillsammans i tribe sub klassen
     

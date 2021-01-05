@@ -15,39 +15,9 @@ class RuleWorker extends Worker {
     }
 
     def update() {
-
-        placeVillagersInTileNetwork()
-
         for (Villager villager : Model.villagers) {
             NomadTribe.work(villager)
             assignRules(villager)
-        }
-    }
-
-    private void placeVillagersInTileNetwork() {
-        def tileNetwork = Model.tileNetwork as Tile[][]
-
-        def first = globalWorkCounter == 0
-
-        if (first) {
-            for (Villager villager : Model.villagers) {
-                def (int villagerX, int villagerY) = villager.getTileXY()
-                tileNetwork[villagerX][villagerY].villagers << villager
-            }
-        } else {
-            for (int x = 0; x < tileNetwork.length; x++) {
-                for (int y = 0; y < tileNetwork[x].length; y++) {
-                    def tile = tileNetwork[x][y]
-                    for (int i = tile.villagers.size() - 1; i >= 0; i--) {
-                        def villager = tile.villagers[i]
-                        def (int tileX, int tileY) = villager.getTileXY()
-                        if (tileX != x || tileY != y) {
-                            tile.villagers.remove(villager)
-                            tileNetwork[tileX][tileY].villagers << villager
-                        }
-                    }
-                }
-            }
         }
     }
 

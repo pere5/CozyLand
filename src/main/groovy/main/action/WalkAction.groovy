@@ -1,6 +1,8 @@
 package main.action
 
+import main.Model
 import main.model.StraightPath
+import main.model.Tile
 import main.model.Villager
 
 class WalkAction extends Action {
@@ -29,6 +31,7 @@ class WalkAction extends Action {
                 def (Double x, Double y) = step
                 villager.x = x
                 villager.y = y
+                placeVillagersInTileNetwork(villager)
                 return CONTINUE
             } else {
                 pathQueue.poll()
@@ -36,6 +39,20 @@ class WalkAction extends Action {
             }
         } else {
             return DONE
+        }
+    }
+
+
+    private void placeVillagersInTileNetwork(Villager villager) {
+
+
+        //geh here
+
+        def (int tileX, int tileY) = villager.getTileXY()
+        def tile = Model.tileNetwork[tileX][tileY] as Tile
+        if (tileX != x || tileY != y) {
+            tile.villagers.remove(villager)
+            tileNetwork[tileX][tileY].villagers << villager
         }
     }
 }
