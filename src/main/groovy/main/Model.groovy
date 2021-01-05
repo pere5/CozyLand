@@ -162,7 +162,7 @@ class Model {
         Model.keyboard = keyboard
         Model.mouse = mouse
         tileNetwork = Background.generateBackground()
-        backgroundImage = createBGImage()
+        backgroundImage = createBGImage(tileNetwork)
         shapeProperties[Shape.TREE].image = createImage(Shape.TREE)
         shapeProperties[Shape.ROCK].image = createImage(Shape.ROCK)
         shapeProperties[Shape.STONE].image = createImage(Shape.STONE)
@@ -277,8 +277,7 @@ class Model {
         new Color(r,g,b)
     }
 
-    static BufferedImage createBGImage() {
-        Tile[][] tileNetwork = tileNetwork
+    static BufferedImage createBGImage(Tile[][] tileNetwork) {
         BufferedImage image = new BufferedImage(
                 tileNetwork.length * Main.TILE_WIDTH,
                 tileNetwork[0].length * Main.TILE_WIDTH,

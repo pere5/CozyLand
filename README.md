@@ -36,6 +36,12 @@
  - [ ] Game menu
     - [ ] different maps
     - [ ] different zoom settings
+    - [ ] different tile resolutions
+    - [ ] different gaussian filters
  - [ ] Build village
- - [ ] LWOpenGL test
+ - [ ] Fixa Pathfinder buggen
+ - [ ] Blockeringar mellan tiles i pathfindern (för branta stigningar)
+ - [ ] All logik i villager reglerna (flytta tribe logiken)
+ - [ ] **Villagers placerar sigsjälva i tiles**
+ - [ ] Flytta in alla roller tillsammans i tribe sub klassen
     

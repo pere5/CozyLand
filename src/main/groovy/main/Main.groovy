@@ -99,10 +99,12 @@ class Main extends JFrame {
         setLocationRelativeTo(null)
         setDefaultCloseOperation(EXIT_ON_CLOSE)
         setExtendedState(MAXIMIZED_BOTH)
-        pack()
         setVisible(true)
-        toFront()
-        requestFocus()
+        if (!MiscellaneousService.isWindows()) {
+            pack()
+            toFront()
+            requestFocus()
+        }
     }
 
     class MyComponentListener implements ComponentListener {
