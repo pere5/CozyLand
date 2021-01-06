@@ -31,7 +31,7 @@ class NomadTribe extends Tribe {
 
             List<Villager> neighbors = []
 
-            Model.getTilesWithinRadii(tileX, tileY, Main.COMFORT_ZONE_TILES) { int x, int y ->
+            Model.getTilesWithinRadii(villager, tileX, tileY, Main.COMFORT_ZONE_TILES) { int x, int y ->
                 tileNetwork[x][y].villagers.each { Villager neighbor ->
                     if (neighbor.id != aloneMe.id) {
                         neighbors << neighbor

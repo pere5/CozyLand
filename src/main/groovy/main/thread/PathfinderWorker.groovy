@@ -52,7 +52,7 @@ class PathfinderWorker extends Worker {
                     planPath(tileStart, tileDest, villager, walkAction)
                 }
 
-                //TestPrints.printBresenhamMisses(villager)
+                TestPrints.printBresenhamMisses(villager)
             }
         }
     }

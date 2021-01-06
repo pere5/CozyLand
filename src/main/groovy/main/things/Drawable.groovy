@@ -65,10 +65,13 @@ abstract class Drawable {
         }
 
         this.shape = shape
-        this.image = image
 
-        this.offsetX = (Math.ceil(Main.TILE_WIDTH / 2) - Math.floor(image.width / 2)) as Integer
-        this.offsetY = (Math.ceil(Main.TILE_WIDTH / 2) - (image.height)) as Integer
+        if (image) {
+            this.image = image
+
+            this.offsetX = (Math.ceil(Main.TILE_WIDTH / 2) - Math.floor(image.width / 2)) as Integer
+            this.offsetY = (Math.ceil(Main.TILE_WIDTH / 2) - (image.height)) as Integer
+        }
     }
 
     int[] getTileXY() {

@@ -2,6 +2,7 @@ package main.action
 
 import main.Main
 import main.Model
+import main.TestPrints
 import main.model.Tile
 import main.model.Villager
 import main.role.Tribe
@@ -38,8 +39,8 @@ class SurveyAction extends Action {
             def tileNetwork = Model.tileNetwork as Tile[][]
             (shaman.role.tribe as NomadTribe).followers.each { Villager follower ->
                 def (int tileX, int tileY) = follower.getTileXY()
-                Model.getTilesWithinRadii(tileX, tileY, Main.VISIBLE_ZONE_TILES) { int x, int y ->
-                    //TestPrints.printSurveyResourcesCircle(follower, x, y)
+                Model.getTilesWithinRadii(shaman, tileX, tileY, Main.VISIBLE_ZONE_TILES) { int x, int y ->
+                    TestPrints.printSurveyResourcesCircle(follower, x, y)
                     Tile tile = tileNetwork[x][y]
                     if (tile.naturalResources) {
                         if (tribe.surveyNaturalResources[shamanXY]) {
@@ -55,8 +56,7 @@ class SurveyAction extends Action {
         def resolution = time > System.currentTimeMillis() ? CONTINUE : DONE
 
         if (resolution == DONE) {
-            //TestPrints.removeSurveyResourcesCircle(shaman.id)
-            int i = 0
+            TestPrints.removeSurveyResourcesCircle(shaman.id)
         }
 
         return resolution

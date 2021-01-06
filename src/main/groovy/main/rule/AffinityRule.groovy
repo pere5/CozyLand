@@ -17,7 +17,7 @@ class AffinityRule extends Rule {
         def (int tileX, int tileY) = me.getTileXY()
 
         int withinRange = 0
-        Model.getTilesWithinRadii(tileX, tileY, Main.COMFORT_ZONE_TILES) { int x, int y ->
+        Model.getTilesWithinRadii(me, tileX, tileY, Main.COMFORT_ZONE_TILES) { int x, int y ->
             withinRange += tileNetwork[x][y].villagers.size()
         }
 
@@ -38,7 +38,7 @@ class AffinityRule extends Rule {
         def (int tileX, int tileY) = me.getTileXY()
 
         List<Villager> closeVillagers = []
-        Model.getTilesWithinRadii(tileX, tileY, Main.VISIBLE_ZONE_TILES) { int x, int y ->
+        Model.getTilesWithinRadii(me, tileX, tileY, Main.VISIBLE_ZONE_TILES) { int x, int y ->
             tileNetwork[x][y].villagers.each { Villager villager ->
                 if (villager.id != me.id) {
                     closeVillagers << villager

@@ -174,7 +174,7 @@ class Model {
         shapeProperties[Shape.FOLLOWER].image = createImage(Shape.FOLLOWER)
         shapeProperties[Shape.FOLLOWER_BUILDER].image = createImage(Shape.FOLLOWER_BUILDER)
         shapeProperties[Shape.HUT].image = createImage(Shape.HUT)
-        def villagers = (1..2500).collect { Villager.test() }
+        def villagers = (1..250).collect { Villager.test() }
 
         Model.villagers = villagers
 
@@ -389,7 +389,7 @@ class Model {
 
         List<int[]> tiles = []
 
-        getTilesWithinRadii(tileX, tileY, maxTileDist) { int x, int y ->
+        getTilesWithinRadii(me, tileX, tileY, maxTileDist) { int x, int y ->
             def tile = tileNetwork[x][y]
             def furtherThanMin = minTileDist ? !withinCircle(tileX, tileY, x, y, minTileDist) : true
 
@@ -510,14 +510,14 @@ class Model {
 
 
     //https://stackoverflow.com/questions/40779343/java-loop-through-all-pixels-in-a-2d-circle-with-center-x-y-and-radius?noredirect=1&lq=1
-    static void getTilesWithinRadii(int tX, int tY, int r, Closure function) {
+    static void getTilesWithinRadii(Villager me, int tX, int tY, int r, Closure function) {
         // iterate through all y-coordinates
         for (int y = tY - r; y <= tY + r; y++) {
             // iterate through all x-coordinates
             for (int x = tX - r; x <= tX + r; x++) {
                 if (withinCircle(x, y, tX, tY, r)) {
                     if (withinTileNetwork(x, y)) {
-                        //TestPrints.printRadii(x, y, me)
+                        TestPrints.printRadii(x, y, me)
                         function(x, y)
                     }
                 }

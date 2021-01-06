@@ -1,6 +1,8 @@
 package main
 
 import javaSrc.color.ColorUtils
+import main.action.WaitAction
+import main.action.WalkAction
 import main.model.Path
 import main.model.StraightPath
 import main.model.Tile
@@ -12,6 +14,8 @@ import java.awt.*
 import java.util.List
 
 class TestPrints {
+
+    static final boolean DEBUG_PATH_PRINTS = true
 
     static void testPrintsNextTiles(Double[] pixelStart, Double[] pixelDest, def nextTiles, Villager villager) {
         def (int x, int y) = Model.pixelToTileIdx(pixelStart)
@@ -45,8 +49,7 @@ class TestPrints {
     }
 
     static void testPrints(Double[] pixelStart, Double[] pixelDest, Villager villager) {
-
-        if (!Main.DEBUG_PATH_PRINTS) return
+        if (!DEBUG_PATH_PRINTS) return
 
         def idx = Path.bresenham(pixelStart as int[], pixelDest as int[])
         (0..idx).each {
@@ -57,8 +60,7 @@ class TestPrints {
     }
 
     static void testPrints(int[] tileStart, int[] tileDest, Villager villager, Set<List<Integer>> visited) {
-
-        if (!Main.DEBUG_PATH_PRINTS) return
+        if (!DEBUG_PATH_PRINTS) return
 
         def pixelStart = Model.tileToPixelIdx(tileStart)
         def pixelDest = Model.tileToPixelIdx(tileDest)
@@ -79,20 +81,22 @@ class TestPrints {
     }
 
     static void clearPrints(Villager villager) {
-        if (!Main.DEBUG_PATH_PRINTS) return
+        if (!DEBUG_PATH_PRINTS) return
+
         Model.drawables.removeAll { it.parent == villager.id }
     }
 
     static void printBresenhamMisses(Villager villager) {
-
-        if (!Main.DEBUG_PATH_PRINTS) return
+        if (!DEBUG_PATH_PRINTS) return
 
         def count = 0
-        for (int i = 0; i < villager.actionQueue.size() - 1; i++) {
-            int[] a = Model.pixelToTileIdx((villager.actionQueue[i] as StraightPath).a)
-            int[] b = Model.pixelToTileIdx((villager.actionQueue[i + 1] as StraightPath).a)
-            if (Path.bresenhamBuffer[Path.bresenham(a, b, villager)].clone() != b) {
-                count++
+        villager.actionQueue.findAll { it instanceof WalkAction }.collect { it as WalkAction }.each { WalkAction walkAction ->
+            for (int i = 0; i < walkAction.pathQueue.size() - 1; i++) {
+                int[] a = Model.pixelToTileIdx(walkAction.pathQueue[i].a)
+                int[] b = Model.pixelToTileIdx(walkAction.pathQueue[i + 1].a)
+                if (Path.bresenhamBuffer[Path.bresenham(a, b, villager)].clone() != b) {
+                    count++
+                }
             }
         }
         if (count > 0) {
@@ -101,6 +105,8 @@ class TestPrints {
     }
 
     static def printRadii(int x, int y, Villager me) {
+        if (!DEBUG_PATH_PRINTS) return
+
         new Artifact(
                 size: 3, parent: me.id, x: Model.tileToPixelIdx(x), y: Model.tileToPixelIdx(y),
                 color: me.testColor
@@ -108,10 +114,14 @@ class TestPrints {
     }
 
     static void printSurveyResourcesCircle(Drawable me, int x, int y) {
+        if (!DEBUG_PATH_PRINTS) return
+
         new Artifact(size: 2, parent: me.id, x: Model.tileToPixelIdx(x), y: Model.tileToPixelIdx(y), color: Color.BLUE)
     }
 
     static void removeSurveyResourcesCircle(int id) {
+        if (!DEBUG_PATH_PRINTS) return
+
         Model.drawables.removeAll { it.parent == id }
     }
 }
