@@ -8,7 +8,9 @@ import main.model.StraightPath
 import main.model.Tile
 import main.model.Villager
 import main.things.Artifact
+import main.things.ArtifactLine
 import main.things.Drawable
+import main.things.Drawable.Shape
 
 import java.awt.*
 import java.util.List
@@ -48,25 +50,17 @@ class TestPrints {
         }
     }
 
-    static void testPrints(Double[] pixelStart, Double[] pixelDest, Villager villager) {
+    static void straightPathTestPrints(Double[] pixelStart, Double[] pixelDest, Villager villager) {
         if (!DEBUG_PATH_PRINTS) return
 
-        def idx = Path.bresenham(pixelStart as int[], pixelDest as int[])
-        (0..idx).each {
-            def xy = Path.bresenhamBuffer[it].clone()
-            new Artifact(size: 1, parent: villager.id, x: xy[0], y: xy[1], color: villager.testColor)
-        }
-
+        new ArtifactLine(size: 1, parent: villager.id, orig: pixelStart, dest: pixelDest, color: villager.testColor, shape: Shape.LINE)
     }
 
-    static void testPrints(int[] tileStart, int[] tileDest, Villager villager, Set<List<Integer>> visited) {
+    static void perStarTestPrints(int[] tileStart, int[] tileDest, Villager villager, Set<List<Integer>> visited) {
         if (!DEBUG_PATH_PRINTS) return
 
         def pixelStart = Model.tileToPixelIdx(tileStart)
         def pixelDest = Model.tileToPixelIdx(tileDest)
-
-        Random rand = new Random()
-        villager.testColor = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
 
         visited.collect { Model.tileToPixelIdx(it) }.each {
             new Artifact(

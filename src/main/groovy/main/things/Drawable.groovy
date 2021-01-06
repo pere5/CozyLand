@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage
 abstract class Drawable {
 
     enum Shape {
-        RECT, CIRCLE,
+        RECT, CIRCLE, LINE,
         TREE, STONE, WOOD, ROCK,
         SHAMAN, SHAMAN_CAMP, SHAMAN_BUILD, WARRIOR, FOLLOWER, FOLLOWER_BUILDER,
         HUT, SHAMAN_LODGE, GRANARY

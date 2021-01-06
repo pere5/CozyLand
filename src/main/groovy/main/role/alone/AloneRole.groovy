@@ -2,6 +2,7 @@ package main.role.alone
 
 import main.role.Role
 import main.rule.AffinityRule
+import main.rule.RandomBigWalkRule
 import main.rule.Rule
 
 class AloneRole extends Role {
@@ -11,8 +12,8 @@ class AloneRole extends Role {
     static List<Rule> getRules() {
         int rank = Integer.MAX_VALUE
         [
-                new AffinityRule(rank: --rank)
-                //new RandomBigWalk(rank: --rank)
+                //new AffinityRule(rank: --rank)
+                new RandomBigWalkRule(rank: --rank)
         ]
     }
 

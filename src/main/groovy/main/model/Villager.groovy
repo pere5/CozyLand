@@ -10,6 +10,8 @@ import main.things.Drawable
 import main.things.building.Building
 import main.things.tool.Tool
 
+import java.awt.Color
+
 class Villager extends Drawable {
 
     def metaObjects = [:]
@@ -22,10 +24,11 @@ class Villager extends Drawable {
     Tile tile
     Role role
     Building home
-    Tool tool
 
     static Villager test() {
         def villager = new Villager()
+        Random rand = new Random()
+        villager.testColor = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
         villager.role = new AloneRole()
         villager.setShape(Shape.WARRIOR)
         def (Double x, Double y) = Model.generateXY()

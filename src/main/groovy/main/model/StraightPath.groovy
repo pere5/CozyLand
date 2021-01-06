@@ -16,7 +16,7 @@ class StraightPath {
 
         a = start
 
-        TestPrints.testPrints(start, dest, villager)
+        TestPrints.straightPathTestPrints(start, dest, villager)
 
         Double[] nextStep = start
         while (!Model.closeEnough(nextStep, dest)) {

@@ -62,6 +62,12 @@ class Surface extends JPanel implements ActionListener {
                     g2d.fillRect(x, y, drawable.size, drawable.size)
                 } else if (drawable.shape == Drawable.Shape.CIRCLE) {
                     g2d.fillOval(x, y, drawable.size, drawable.size)
+                } else if (drawable.shape == Drawable.Shape.LINE) {
+
+
+                    g2d.fillPolygon(x, y, drawable.size, drawable.size)
+
+
                 } else {
                     g2d.drawImage(drawable.image, x + drawable.offsetX, y + drawable.offsetY, null)
                     //g2d.fillRect(x + Math.ceil(Main.TILE_WIDTH / 2) as Integer, y + Math.ceil(Main.TILE_WIDTH / 2) as Integer, 6, 2)

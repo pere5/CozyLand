@@ -158,7 +158,7 @@ class PathfinderWorker extends Worker {
             }
         }
 
-        TestPrints.testPrints(tileStart, tileDest, villager, visited)
+        TestPrints.perStarTestPrints(tileStart, tileDest, villager, visited)
 
         /*
         for (int i = 0; i < retList.size() - 1; i++) {

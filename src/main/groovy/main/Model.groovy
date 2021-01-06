@@ -101,6 +101,13 @@ class Model {
                     offsetX : null,
                     offsetY : null
             ],
+            (Shape.LINE)      : [
+                    fileName: null,
+                    scale   : null,
+                    image   : null,
+                    offsetX : null,
+                    offsetY : null
+            ],
             (Shape.TREE)        : [
                     fileName: 'icons8-large-tree-48.png',
                     scale   : Main.TREE_SCALE,
@@ -174,7 +181,7 @@ class Model {
         shapeProperties[Shape.FOLLOWER].image = createImage(Shape.FOLLOWER)
         shapeProperties[Shape.FOLLOWER_BUILDER].image = createImage(Shape.FOLLOWER_BUILDER)
         shapeProperties[Shape.HUT].image = createImage(Shape.HUT)
-        def villagers = (1..250).collect { Villager.test() }
+        def villagers = (1..20).collect { Villager.test() }
 
         Model.villagers = villagers
 
