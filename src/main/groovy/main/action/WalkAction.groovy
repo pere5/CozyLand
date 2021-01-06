@@ -1,9 +1,11 @@
 package main.action
 
 import main.Model
+import main.exception.PerIsBorkenException
 import main.model.StraightPath
 import main.model.Tile
 import main.model.Villager
+import main.things.Drawable
 
 class WalkAction extends Action {
 
@@ -24,6 +26,7 @@ class WalkAction extends Action {
 
     @Override
     boolean doIt(Villager villager) {
+        Boolean result
         def straightPath = pathQueue.peek()
         if (straightPath) {
             def step = straightPath.path.poll()
@@ -31,28 +34,62 @@ class WalkAction extends Action {
                 def (Double x, Double y) = step
                 villager.x = x
                 villager.y = y
-                placeVillagersInTileNetwork(villager)
-                return CONTINUE
+                result = CONTINUE
             } else {
                 pathQueue.poll()
-                return doIt(villager)
+                result = doIt(villager)
             }
         } else {
-            return DONE
+            result = DONE
         }
+
+        if (result == DONE) {
+            placeVillagersInTileNetwork(villager)
+        } else {
+            perTenSeconds (10) {
+                placeVillagersInTileNetwork(villager)
+            }
+        }
+
+        return result
     }
 
 
     private void placeVillagersInTileNetwork(Villager villager) {
 
-
-        //geh here
-
         def (int tileX, int tileY) = villager.getTileXY()
-        def tile = Model.tileNetwork[tileX][tileY] as Tile
-        if (tileX != x || tileY != y) {
-            tile.villagers.remove(villager)
-            tileNetwork[tileX][tileY].villagers << villager
+        def correctTile = Model.tileNetwork[tileX][tileY] as Tile
+
+        if (!villager.tile) {
+            villager.tile = correctTile
+            villager.tile.villagers << villager
+        } else if (correctTile.id != villager.tile.id) {
+            villager.tile.villagers.remove(villager)
+            villager.tile = correctTile
+            villager.tile.villagers << villager
+        }
+
+        def test = false
+        if (test) {
+            def tileNetwork = Model.tileNetwork
+            def matches = []
+            for (int x = 0; x < tileNetwork.length; x++) {
+                for (int y = 0; y < tileNetwork[x].length; y++) {
+                    Tile tile = tileNetwork[x][y]
+                    if (villager.id in tile.villagers.id) {
+                        matches << [tile: tile, villager: villager]
+                    }
+                }
+            }
+
+            def one = correctTile.id == villager.tile.id
+            def two = villager.id == villager.tile.villagers.find { it.id == villager.id }?.id
+            def three = matches.size() == 1
+            def four = villager.id in (matches.find().tile as Tile).villagers.id
+
+            if (!(one && two && three && four)) {
+                throw new PerIsBorkenException()
+            }
         }
     }
 }

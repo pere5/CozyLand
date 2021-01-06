@@ -19,6 +19,7 @@ class Villager extends Drawable {
     boolean pathfinderWorker
     boolean workWorker
 
+    Tile tile
     Role role
     Building home
     Tool tool

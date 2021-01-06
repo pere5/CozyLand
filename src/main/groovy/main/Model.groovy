@@ -174,7 +174,7 @@ class Model {
         shapeProperties[Shape.FOLLOWER].image = createImage(Shape.FOLLOWER)
         shapeProperties[Shape.FOLLOWER_BUILDER].image = createImage(Shape.FOLLOWER_BUILDER)
         shapeProperties[Shape.HUT].image = createImage(Shape.HUT)
-        def villagers = (1..700).collect { Villager.test() }
+        def villagers = (1..2500).collect { Villager.test() }
 
         Model.villagers = villagers
 
