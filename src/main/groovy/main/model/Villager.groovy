@@ -34,6 +34,8 @@ class Villager extends Drawable {
         def (Double x, Double y) = Model.generateXY()
         villager.x = x
         villager.y = y
+        def (int tileX, int tileY) = Model.pixelToTileIdx(x, y)
+        villager.tile = Model.tileNetwork[tileX][tileY] as Tile
         villager.toRuleWorker()
         return villager
     }

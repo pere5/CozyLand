@@ -15,10 +15,9 @@ class MyMouseListener implements MouseListener {
         //bilder och ytor ritas från övre vänstra hörnet
 
         Model.drawables.findAll { Drawable drawable ->
-            e.point.x >= drawable.x - 30 && e.point.x <= drawable.x + 30 && e.point.y >= drawable.y - 30 && e.point.y <= drawable.y + 30
+            Model.shapeProperties[drawable.shape].image && e.point.x >= drawable.x - 30 && e.point.x <= drawable.x + 30 && e.point.y >= drawable.y - 30 && e.point.y <= drawable.y + 30
         }.each { Drawable drawable ->
             drawable.image = Model.shadeImage(Model.shapeProperties[drawable.shape].image, Color.lightGray)
-
         }
     }
 
