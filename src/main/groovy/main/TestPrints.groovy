@@ -89,6 +89,7 @@ class TestPrints {
                 int[] a = Model.pixelToTileIdx(walkAction.pathQueue[i].a)
                 int[] b = Model.pixelToTileIdx(walkAction.pathQueue[i + 1].a)
                 if (Path.bresenhamBuffer[Path.bresenham(a, b, villager)].clone() != b) {
+                    println("${a} - ${b}")
                     count++
                 }
             }

@@ -103,15 +103,6 @@ class PathfinderWorker extends Worker {
             def currentStep = Path.bresenhamBuffer[idx - 1].clone()
             def previousStep = idx >= 2 ? Path.bresenhamBuffer[idx - 2].clone() : null
 
-            /*
-                Bug: nextStep is reachable by bresenham but current step might not be.
-                This causes trouble for randomTilesWithBresenham.
-                Instead of fixing this side of the problem,
-                we add a jump in randomTilesWithBresenham:
-                    retList << tileDest
-                    break
-             */
-
             if (nextStep == tileDest) {
                 stepPos = lbt.addLeft(stepPos, nextStep)
                 visited << [nextStep[0], nextStep[1]]
@@ -245,6 +236,11 @@ class PathfinderWorker extends Worker {
                     break
                 }
             } else {
+
+
+                //do something here man, just do something
+
+                println("${tileStep} + ${tileDest}")
                 retList << tileDest
                 break
             }
