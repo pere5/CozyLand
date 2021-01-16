@@ -3,6 +3,7 @@ package main.drawers
 import main.Main
 import main.Model
 import main.input.MyKeyboardListener
+import main.things.ArtifactLine
 import main.things.Drawable
 
 import javax.swing.*
@@ -63,14 +64,14 @@ class Surface extends JPanel implements ActionListener {
                 } else if (drawable.shape == Drawable.Shape.CIRCLE) {
                     g2d.fillOval(x, y, drawable.size, drawable.size)
                 } else if (drawable.shape == Drawable.Shape.LINE) {
-
-
-                    g2d.fillPolygon(x, y, drawable.size, drawable.size)
-
-
+                    def artifactLine = drawable as ArtifactLine
+                    def x1 = artifactLine.orig[0] + xOffset
+                    def y1 = artifactLine.orig[1] + yOffset
+                    def x2 = artifactLine.dest[0] + xOffset
+                    def y2 = artifactLine.dest[1] + yOffset
+                    g2d.drawLine(x1, y1, x2, y2)
                 } else {
                     g2d.drawImage(drawable.image, x + drawable.offsetX, y + drawable.offsetY, null)
-                    //g2d.fillRect(x + Math.ceil(Main.TILE_WIDTH / 2) as Integer, y + Math.ceil(Main.TILE_WIDTH / 2) as Integer, 6, 2)
                 }
             }
         }
@@ -102,8 +103,12 @@ class Surface extends JPanel implements ActionListener {
     }
 
     boolean inView(Drawable drawable, int left, int right, int top, int bottom) {
-        Double x = drawable.x
-        Double y = drawable.y
-        x >= left && x <= right && y <= top && y >= bottom
+        if (drawable.shape == Drawable.Shape.LINE) {
+            return true
+        } else {
+            Double x = drawable.x
+            Double y = drawable.y
+            x >= left && x <= right && y <= top && y >= bottom
+        }
     }
 }

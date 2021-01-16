@@ -1,5 +1,8 @@
 package main.things
 
-class ArtifactLine {
+class ArtifactLine extends Drawable {
+
+    int[] orig
+    int[] dest
 
 }
