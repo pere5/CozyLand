@@ -39,9 +39,8 @@ class PathfinderWorker extends Worker {
         for (Villager villager : Model.villagers) {
 
             if (villager.pathfinderWorker) {
-                villager.toWorkWorker()
 
-                def walkAction = villager.actionQueue.find {it instanceof WalkAction} as WalkAction
+                def walkAction = villager.actionQueue.find {it instanceof WalkAction && !it.initialized} as WalkAction
                 if (walkAction) {
                     walkAction.initialized = true
                     def tileStart = villager.getTileXY()
@@ -53,6 +52,7 @@ class PathfinderWorker extends Worker {
                 }
 
                 TestPrints.printBresenhamMisses(villager)
+                villager.toWorkWorker()
             }
         }
     }

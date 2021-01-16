@@ -3,13 +3,14 @@ package main.thread
 import main.Model
 import main.TestPrints
 import main.action.Action
+import main.action.WalkAction
 import main.model.Villager
 
 class WorkWorker extends Worker {
 
     @Override
     def run() {
-        super.intendedFps = 50 //16
+        super.intendedFps = 16 //16
         super.run()
     }
 

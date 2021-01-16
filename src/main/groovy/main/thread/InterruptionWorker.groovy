@@ -13,6 +13,7 @@ class InterruptionWorker extends Worker {
         super.run()
     }
 
+    //interrupt if new role, abort all actions
     def update() {
         for (Villager villager: Model.villagers) {
             def model = villagerModel[villager.id]
