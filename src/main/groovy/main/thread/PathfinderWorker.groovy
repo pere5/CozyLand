@@ -236,13 +236,16 @@ class PathfinderWorker extends Worker {
                     break
                 }
             } else {
-
-
-                //do something here man, just do something
-
-                println("${tileStep} + ${tileDest}")
-                retList << tileDest
-                break
+                def idx = Path.bresenham(tileStep, tileDest, villager)
+                def middleIndex = ((idx / 2) as int)
+                if (middleIndex > 0) {
+                    def middleTileDest = Path.bresenhamBuffer[middleIndex].clone()
+                    retList.addAll(randomTilesWithBresenham(tileStep, middleTileDest, villager))
+                    tileStep = middleTileDest
+                } else {
+                    retList << tileDest
+                    break
+                }
             }
         }
 

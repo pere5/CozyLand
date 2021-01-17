@@ -18,6 +18,7 @@ import java.util.List
 class TestPrints {
 
     static final boolean DEBUG_PATH_PRINTS = true
+    static final boolean DEBUG_DOTTED_PRINTS = false
 
     static void testPrintsNextTiles(Double[] pixelStart, Double[] pixelDest, def nextTiles, Villager villager) {
         def (int x, int y) = Model.pixelToTileIdx(pixelStart)
@@ -57,7 +58,7 @@ class TestPrints {
     }
 
     static void perStarTestPrints(int[] tileStart, int[] tileDest, Villager villager, Set<List<Integer>> visited) {
-        if (!DEBUG_PATH_PRINTS) return
+        if (!DEBUG_DOTTED_PRINTS) return
 
         def pixelStart = Model.tileToPixelIdx(tileStart)
         def pixelDest = Model.tileToPixelIdx(tileDest)
@@ -100,7 +101,7 @@ class TestPrints {
     }
 
     static def printRadii(int x, int y, Villager me) {
-        if (!DEBUG_PATH_PRINTS) return
+        if (!DEBUG_DOTTED_PRINTS) return
 
         new Artifact(
                 size: 3, parent: me.id, x: Model.tileToPixelIdx(x), y: Model.tileToPixelIdx(y),
@@ -109,13 +110,13 @@ class TestPrints {
     }
 
     static void printSurveyResourcesCircle(Drawable me, int x, int y) {
-        if (!DEBUG_PATH_PRINTS) return
+        if (!DEBUG_DOTTED_PRINTS) return
 
         new Artifact(size: 2, parent: me.id, x: Model.tileToPixelIdx(x), y: Model.tileToPixelIdx(y), color: Color.BLUE)
     }
 
     static void removeSurveyResourcesCircle(int id) {
-        if (!DEBUG_PATH_PRINTS) return
+        if (!DEBUG_DOTTED_PRINTS) return
 
         Model.drawables.removeAll { it.parent == id }
     }
