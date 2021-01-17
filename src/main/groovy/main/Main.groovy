@@ -20,9 +20,9 @@ class Main extends JFrame {
     static int WINDOW_WIDTH = 1000
     static int WINDOW_HEIGHT = 750
 
-    static final int TILE_WIDTH = 5
-    static final int MAP_WIDTH = (1000 * 2.5) as Integer
-    static final int MAP_HEIGHT = (750 * 2.5) as Integer
+    static final int TILE_WIDTH = 9
+    static final int MAP_WIDTH = (1000 * 5) as Integer
+    static final int MAP_HEIGHT = (750 * 5) as Integer
     static int VIEWPORT_WIDTH
     static int VIEWPORT_HEIGHT
 

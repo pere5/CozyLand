@@ -39,10 +39,10 @@
     - [ ] different tile resolutions
     - [ ] different gaussian filters
  - [ ] Build village
- - [ ] Fixa Pathfinder buggen
+ - [x] Fixa Pathfinder buggen
  - [ ] Blockeringar mellan tiles i pathfindern (för branta stigningar)
  - [ ] 3 **All logik i villager reglerna (flytta tribe logiken)**
- - [x] 1 **Villagers placerar sigsjälva i tiles**
- - [ ] 2 **optimera debug rendreringen**
+ - [x] Villagers placerar sigsjälva i tiles
+ - [x] optimera debug rendreringen
  - [ ] Flytta in alla roller tillsammans i tribe sub klassen
     
