@@ -231,6 +231,11 @@ class PathfinderWorker extends Worker {
                 def nextTileDirection = nextTileDirections.find { random >= (it[0][0] as Double) && random <= (it[0][1] as Double) }
                 tileStep = [tileStep[0] + nextTileDirection[1][0], tileStep[1] + nextTileDirection[1][1]] as int[]
                 retList << tileStep
+
+
+                tile step kan vara samma två fram och tillbaka,
+                inte fel på nextTilesWithBresenham, men vi behöver hantera det här (typ)
+
                 if (Model.closeEnoughTile(tileStep, tileDest)) {
                     retList << tileDest
                     break
