@@ -226,7 +226,10 @@ class PathfinderWorker extends Worker {
         int[] tileStep = tileStart
         while (true) {
             def nextTileDirections = nextTilesWithBresenham(villager, tileStep, tileDest)
-            if (nextTileDirections) {
+
+            def stuckInLoop = nextTileDirections.size() == 1 && retList.size() >= 5 && retList[-1] == retList[-3] && retList[-3] == retList[-5]
+
+            if (nextTileDirections && !stuckInLoop) {
                 def random = Math.random() * 100
                 def nextTileDirection = nextTileDirections.find { random >= (it[0][0] as Double) && random <= (it[0][1] as Double) }
                 tileStep = [tileStep[0] + nextTileDirection[1][0], tileStep[1] + nextTileDirection[1][1]] as int[]
