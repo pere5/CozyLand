@@ -10,17 +10,15 @@ class ShamanRole extends Role {
 
     static final String ID = 'shaman'
 
-    static List<Rule> getRules() {
+    ShamanRole(NomadTribe tribe) {
+        super(tribe, ID)
+    }
+
+    List<Rule> constructRuleList() {
         int rank = Integer.MAX_VALUE
         [
                 new ShamanNomadRule(rank: --rank),
                 new ShamanBuildRule(rank: --rank)
         ]
-    }
-
-    ShamanRole(NomadTribe tribe) {
-        super.id = ID
-        this.rules = getRules()
-        this.tribe = tribe
     }
 }

@@ -9,7 +9,11 @@ class FollowerRole extends Role {
 
     static final String ID = 'follower'
 
-    static List<Rule> getRules() {
+    FollowerRole(NomadTribe tribe) {
+        super(tribe, ID)
+    }
+
+    List<Rule> constructRuleList() {
 
         /*
             - Hitta en färdig Hut som ingen bor i
@@ -27,11 +31,5 @@ class FollowerRole extends Role {
                 //new GathererRule(rank: --rank),
                 new BuilderRule(rank: --rank)
         ]
-    }
-
-    FollowerRole(NomadTribe tribe) {
-        super.id = ID
-        this.rules = getRules()
-        this.tribe = tribe
     }
 }
