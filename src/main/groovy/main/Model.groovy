@@ -46,9 +46,9 @@ class Model {
     static Map<TravelType, Map<Class<? extends NaturalResource>, Integer>> travelTypeNaturalResources = [
             (TravelType.WATER)   : [:],
             (TravelType.BEACH)   : [:],
-            (TravelType.FOREST)  : [(Tree.class): 250],
-            (TravelType.HILL)    : [(Tree.class): 250],
-            (TravelType.MOUNTAIN): [(Rock.class): 200],
+            (TravelType.FOREST)  : [(Tree.class): 75],
+            (TravelType.HILL)    : [(Tree.class): 75],
+            (TravelType.MOUNTAIN): [(Rock.class): 75],
             (TravelType.PLAIN)   : [:],
             (TravelType.ROAD)    : [:],
     ]
@@ -181,7 +181,7 @@ class Model {
         shapeProperties[Shape.FOLLOWER].image = createImage(Shape.FOLLOWER)
         shapeProperties[Shape.FOLLOWER_BUILDER].image = createImage(Shape.FOLLOWER_BUILDER)
         shapeProperties[Shape.HUT].image = createImage(Shape.HUT)
-        250.times { villagers << Villager.test() }
+        750.times { villagers << Villager.test() }
 
         Model.villagers = villagers
 

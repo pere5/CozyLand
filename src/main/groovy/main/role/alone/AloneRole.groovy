@@ -17,8 +17,8 @@ class AloneRole extends Role {
     List<Rule> constructRuleList() {
         int rank = Integer.MAX_VALUE
         [
-                //new AffinityRule(rank: --rank)
-                new RandomBigWalkRule(rank: --rank)
+                new AffinityRule(rank: --rank)
+                //new RandomBigWalkRule(rank: --rank)
         ]
     }
 }
