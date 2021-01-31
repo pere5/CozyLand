@@ -53,6 +53,13 @@ class AffinityRule extends Rule {
             tileDest = Model.centroidTile(closeVillagers, me, Main.WALK_DISTANCE_TILES_MAX)
         }
         me.actionQueue << new ShapeAction(Shape.WARRIOR)
-        me.actionQueue << new WalkAction(tileDest)
+
+
+
+        vi *vet* här, att vi ska söka efter folk att joina
+        skicka in en closure till actionen som fixar det
+        yep
+
+        me.actionQueue << new WalkAction(tileDest, {def lol -> 1})
     }
 }

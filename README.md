@@ -41,6 +41,8 @@
  - [ ] Build village
  - [x] Fixa Pathfinder buggen
  - [ ] Blockeringar mellan tiles i pathfindern (för branta stigningar)
+ 
+ 
  - [ ] 3 **All logik i villager reglerna (flytta tribe logiken)**
  - [x] Villagers placerar sigsjälva i tiles
  - [x] optimera debug rendreringen

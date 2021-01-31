@@ -10,6 +10,12 @@ abstract class Action {
     long last = System.currentTimeMillis()
     boolean initialized = true
 
+    Action () { }
+
+    Action(Boolean initialized) {
+        this.initialized = initialized
+    }
+
     abstract void switchWorker(Villager me)
     abstract boolean doIt(Villager me)
 
