@@ -11,7 +11,7 @@ class ShamanRole extends Role {
     static final String ID = 'shaman'
 
     ShamanRole(NomadTribe tribe) {
-        super(tribe, ID)
+        super(ID, tribe)
     }
 
     List<Rule> constructRuleList() {

@@ -9,12 +9,7 @@ abstract class Role {
     List<Rule> rules = []
     Tribe tribe
 
-    Role(String id) {
-        this.id = id
-        this.rules = constructRuleList()
-    }
-
-    Role(NomadTribe tribe, String id) {
+    Role(String id, Tribe tribe) {
         this.id = id
         this.rules = constructRuleList()
         this.tribe = tribe

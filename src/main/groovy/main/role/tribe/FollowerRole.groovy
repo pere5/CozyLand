@@ -10,7 +10,7 @@ class FollowerRole extends Role {
     static final String ID = 'follower'
 
     FollowerRole(NomadTribe tribe) {
-        super(tribe, ID)
+        super(ID, tribe)
     }
 
     List<Rule> constructRuleList() {

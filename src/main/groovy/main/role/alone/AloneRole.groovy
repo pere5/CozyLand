@@ -11,7 +11,7 @@ class AloneRole extends Role {
     static final String ID = 'alone'
 
     AloneRole() {
-        super(ID)
+        super(ID, new AloneTribe())
     }
 
     List<Rule> constructRuleList() {
