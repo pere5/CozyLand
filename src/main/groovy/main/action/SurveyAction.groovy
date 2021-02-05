@@ -35,7 +35,7 @@ class SurveyAction extends Action {
 
         List<Integer> shamanXY = shaman.getTileXY().collect { it as Integer }
 
-        perTenSeconds (6) {
+        perInterval (2000) {
             def tileNetwork = Model.tileNetwork as Tile[][]
             (shaman.role.tribe as NomadTribe).followers.each { Villager follower ->
                 def (int tileX, int tileY) = follower.getTileXY()

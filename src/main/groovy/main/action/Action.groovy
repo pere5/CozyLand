@@ -7,7 +7,9 @@ abstract class Action {
     static boolean CONTINUE = true
     static boolean DONE = false
 
-    long last = System.currentTimeMillis()
+    private final Integer DEFAULT_ID = 1
+    private final Map<Integer, Long> lastMap = [:].withDefault { System.currentTimeMillis() }
+
     boolean initialized = true
     Closure closure
 
@@ -25,13 +27,17 @@ abstract class Action {
     abstract void switchWorker(Villager me)
     abstract boolean doIt(Villager me)
 
-    void perTenSeconds(Double times, Closure closure) {
-        long interval = 10000 / times
-        long millis = System.currentTimeMillis() - last
+    void perInterval(Long interval, Closure closure) {
+        perInterval(interval, DEFAULT_ID, closure)
+    }
 
+    void perInterval(Long interval, Integer id, Closure closure) {
+        Long last = lastMap[id]
+        long rightNow = System.currentTimeMillis()
+        long millis = rightNow - last
         if (millis > interval) {
             closure()
-            last = System.currentTimeMillis()
+            lastMap[id] = rightNow
         }
     }
 }

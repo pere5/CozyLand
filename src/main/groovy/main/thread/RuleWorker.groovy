@@ -16,7 +16,6 @@ class RuleWorker extends Worker {
 
     def update() {
         for (Villager villager : Model.villagers) {
-            NomadTribe.work(villager)
             assignRules(villager)
         }
     }

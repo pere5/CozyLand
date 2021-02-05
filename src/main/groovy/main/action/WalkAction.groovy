@@ -5,7 +5,6 @@ import main.exception.PerIsBorkenException
 import main.model.StraightPath
 import main.model.Tile
 import main.model.Villager
-import main.things.Drawable
 
 class WalkAction extends Action {
 
@@ -49,18 +48,23 @@ class WalkAction extends Action {
         }
 
         if (result == DONE) {
-            placeVillagersInTileNetwork(villager)
+            placeInTileNetwork(villager)
         } else {
-            perTenSeconds (10) {
-                placeVillagersInTileNetwork(villager)
+            perInterval (1000, 1) {
+                placeInTileNetwork(villager)
+            }
+        }
+
+        if (closure) {
+            perInterval(1000, 2) {
+                closure(villager)
             }
         }
 
         return result
     }
 
-
-    private void placeVillagersInTileNetwork(Villager villager) {
+    private void placeInTileNetwork(Villager villager) {
 
         def (int tileX, int tileY) = villager.getTileXY()
         def correctTile = Model.tileNetwork[tileX][tileY] as Tile

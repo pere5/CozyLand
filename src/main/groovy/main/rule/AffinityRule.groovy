@@ -1,12 +1,20 @@
 package main.rule
 
+import groovy.transform.stc.ClosureParams
+import groovy.transform.stc.FirstParam
 import main.Main
 import main.Model
 import main.action.ShapeAction
 import main.action.WalkAction
 import main.model.Tile
 import main.model.Villager
+import main.role.alone.AloneRole
+import main.role.tribe.FollowerRole
+import main.role.tribe.NomadTribe
+import main.role.tribe.ShamanRole
 import main.things.Drawable.Shape
+
+import java.awt.Color
 
 class AffinityRule extends Rule {
 
@@ -60,6 +68,48 @@ class AffinityRule extends Rule {
             skicka in en closure till actionen som fixar det
             yep
          */
-        me.actionQueue << new WalkAction(tileDest, {def lol -> 1})
+        me.actionQueue << new WalkAction(tileDest, this.&work)
+    }
+
+    void work(Villager villager) {
+        if (villager.role.id == AloneRole.ID) {
+            def aloneMe = villager
+            def tileNetwork = Model.tileNetwork
+            def (int tileX, int tileY) = aloneMe.getTileXY()
+
+            List<Villager> neighbors = []
+
+            Model.getTilesWithinRadii(villager, tileX, tileY, Main.COMFORT_ZONE_TILES) { int x, int y ->
+                tileNetwork[x][y].villagers.each { Villager neighbor ->
+                    if (neighbor.id != aloneMe.id) {
+                        neighbors << neighbor
+                    }
+                }
+            }
+
+            if (neighbors) {
+                def nomadTribe = neighbors.role.tribe.find { it instanceof NomadTribe } as NomadTribe
+
+                if (nomadTribe) {
+                    becomeFollower(aloneMe, nomadTribe)
+                } else {
+                    Random rand = new Random()
+
+                    NomadTribe myNomadTribe = new NomadTribe()
+                    myNomadTribe.shaman = aloneMe
+                    myNomadTribe.color = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
+
+                    aloneMe.role = new ShamanRole(myNomadTribe)
+                    neighbors.findAll { it.role.id == AloneRole.ID }.each { def aloneVillager ->
+                        becomeFollower(aloneVillager, myNomadTribe)
+                    }
+                }
+            }
+        }
+    }
+
+    void becomeFollower (Villager villager, NomadTribe tribe) {
+        villager.role = new FollowerRole(tribe)
+        tribe.followers << villager
     }
 }

@@ -15,7 +15,7 @@ class RandomBigWalkRule extends Rule {
     @Override
     void planWork(Villager villager, int status) {
         def tileDest = Model.generateTileXY()
-        villager.actionQueue << new WalkAction(tileDest)
+        villager.actionQueue << new WalkAction(tileDest, new AffinityRule().&work)
     }
 }
 
