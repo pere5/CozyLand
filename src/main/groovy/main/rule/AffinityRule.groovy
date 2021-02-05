@@ -1,7 +1,6 @@
 package main.rule
 
-import groovy.transform.stc.ClosureParams
-import groovy.transform.stc.FirstParam
+
 import main.Main
 import main.Model
 import main.action.ShapeAction
@@ -61,17 +60,10 @@ class AffinityRule extends Rule {
             tileDest = Model.centroidTile(closeVillagers, me, Main.WALK_DISTANCE_TILES_MAX)
         }
         me.actionQueue << new ShapeAction(Shape.WARRIOR)
-
-
-        /*
-            vi *vet* här, att vi ska söka efter folk att joina
-            skicka in en closure till actionen som fixar det
-            yep
-         */
-        me.actionQueue << new WalkAction(tileDest, this.&work)
+        me.actionQueue << new WalkAction(tileDest, this.&joinATribe)
     }
 
-    void work(Villager villager) {
+    void joinATribe(Villager villager) {
         if (villager.role.id == AloneRole.ID) {
             def aloneMe = villager
             def tileNetwork = Model.tileNetwork

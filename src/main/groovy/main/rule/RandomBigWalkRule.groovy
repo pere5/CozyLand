@@ -2,7 +2,6 @@ package main.rule
 
 import main.Model
 import main.action.WalkAction
-import main.exception.PerIsBorkenException
 import main.model.Villager
 
 class RandomBigWalkRule extends Rule {
@@ -15,7 +14,7 @@ class RandomBigWalkRule extends Rule {
     @Override
     void planWork(Villager villager, int status) {
         def tileDest = Model.generateTileXY()
-        villager.actionQueue << new WalkAction(tileDest, new AffinityRule().&work)
+        villager.actionQueue << new WalkAction(tileDest, new AffinityRule().&joinATribe)
     }
 }
 
