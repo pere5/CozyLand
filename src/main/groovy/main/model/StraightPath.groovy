@@ -11,13 +11,8 @@ class StraightPath {
     Double[] a
 
     StraightPath(Double[] start, Double[] dest, Villager villager) {
-
-        //random place in tile here somewhere
-
         a = start
-
         TestPrints.straightPathTestPrints(start, dest, villager)
-
         Double[] nextStep = start
         while (!Model.closeEnough(nextStep, dest)) {
             Double vx = dest[0] - nextStep[0]
