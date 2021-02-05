@@ -33,7 +33,7 @@ class Main extends JFrame {
     static final int SHAMAN_DISTANCE_TILES_MAX = 15
     static final int SHAMAN_DISTANCE_TILES_MIN = 10
 
-    static final Double STEP = 0.4
+    static final Double STEP = 1
 
     static final int GAUSSIAN_FILTER = 3
 

@@ -63,38 +63,36 @@ class AffinityRule extends Rule {
         me.actionQueue << new WalkAction(tileDest, this.&joinATribe)
     }
 
-    void joinATribe(Villager villager) {
-        if (villager.role.id == AloneRole.ID) {
-            def aloneMe = villager
-            def tileNetwork = Model.tileNetwork
-            def (int tileX, int tileY) = aloneMe.getTileXY()
+    void joinATribe(Villager me) {
+        def tileNetwork = Model.tileNetwork
+        def (int tileX, int tileY) = me.getTileXY()
 
-            List<Villager> neighbors = []
+        List<Villager> neighbors = []
 
-            Model.getTilesWithinRadii(villager, tileX, tileY, Main.COMFORT_ZONE_TILES) { int x, int y ->
-                tileNetwork[x][y].villagers.each { Villager neighbor ->
-                    if (neighbor.id != aloneMe.id) {
-                        neighbors << neighbor
-                    }
+        Model.getTilesWithinRadii(me, tileX, tileY, Main.COMFORT_ZONE_TILES) { int x, int y ->
+            tileNetwork[x][y].villagers.each { Villager neighbor ->
+                if (neighbor.id != me.id) {
+                    neighbors << neighbor
                 }
             }
+        }
 
-            if (neighbors) {
-                def nomadTribe = neighbors.role.tribe.find { it instanceof NomadTribe } as NomadTribe
+        if (neighbors) {
+            def nomadTribe = neighbors.role.tribe.find { it instanceof NomadTribe } as NomadTribe
 
-                if (nomadTribe) {
-                    becomeFollower(aloneMe, nomadTribe)
-                } else {
-                    Random rand = new Random()
+            if (nomadTribe) {
+                becomeFollower(me, nomadTribe)
+            } else {
+                Random rand = new Random()
 
-                    NomadTribe myNomadTribe = new NomadTribe()
-                    myNomadTribe.shaman = aloneMe
-                    myNomadTribe.color = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
+                NomadTribe myNomadTribe = new NomadTribe()
+                myNomadTribe.shaman = me
+                myNomadTribe.color = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
 
-                    aloneMe.role = new ShamanRole(myNomadTribe)
-                    neighbors.findAll { it.role.id == AloneRole.ID }.each { def aloneVillager ->
-                        becomeFollower(aloneVillager, myNomadTribe)
-                    }
+                me.role = new ShamanRole(myNomadTribe)
+                me.interrupt()
+                neighbors.findAll { it.role.id == AloneRole.ID }.each { def aloneVillager ->
+                    becomeFollower(aloneVillager, myNomadTribe)
                 }
             }
         }
@@ -103,5 +101,6 @@ class AffinityRule extends Rule {
     void becomeFollower (Villager villager, NomadTribe tribe) {
         villager.role = new FollowerRole(tribe)
         tribe.followers << villager
+        villager.interrupt()
     }
 }

@@ -15,18 +15,6 @@ class InterruptionWorker extends Worker {
 
     //interrupt if new role, abort all actions
     def update() {
-        for (Villager villager: Model.villagers) {
-            def model = villagerModel[villager.id]
-            if (model) {
-                if (villager.role?.id != model.roleId) {
-                    model.roleId = villager.role?.id
-                    villager.interrupt()
-                }
-            } else {
-                villagerModel[villager.id] = [
-                        roleId: villager.role?.id
-                ]
-            }
-        }
+
     }
 }

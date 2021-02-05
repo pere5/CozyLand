@@ -67,12 +67,14 @@ class Villager extends Drawable {
 
     void interrupt() {
         def action = actionQueue.peek()
+        actionQueue.clear()
         if (action instanceof WalkAction) {
             def first = action.pathQueue.find()
             if (first) {
                 action.pathQueue.clear()
                 action.pathQueue << first
             }
+            actionQueue << action
         }
     }
 }
