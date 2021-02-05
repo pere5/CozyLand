@@ -55,11 +55,11 @@ class AffinityRule extends Rule {
         me.actionQueue << new ShapeAction(Shape.WARRIOR)
 
 
-
-        vi *vet* här, att vi ska söka efter folk att joina
-        skicka in en closure till actionen som fixar det
-        yep
-
+        /*
+            vi *vet* här, att vi ska söka efter folk att joina
+            skicka in en closure till actionen som fixar det
+            yep
+         */
         me.actionQueue << new WalkAction(tileDest, {def lol -> 1})
     }
 }

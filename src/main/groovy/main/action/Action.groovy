@@ -9,11 +9,17 @@ abstract class Action {
 
     long last = System.currentTimeMillis()
     boolean initialized = true
+    Closure closure
 
     Action () { }
 
     Action(Boolean initialized) {
         this.initialized = initialized
+    }
+
+    Action(Boolean initialized, Closure closure) {
+        this.initialized = initialized
+        this.closure = closure
     }
 
     abstract void switchWorker(Villager me)

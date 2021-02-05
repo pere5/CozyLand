@@ -10,7 +10,6 @@ import main.things.Drawable
 class WalkAction extends Action {
 
     int[] tileDest
-    Closure closure
 
     //this is populated by pathfinderWorker
     Queue<StraightPath> pathQueue = new LinkedList<>()
@@ -21,9 +20,8 @@ class WalkAction extends Action {
     }
 
     WalkAction(int[] tile, Closure closure) {
-        super(false)
+        super(false, closure)
         tileDest = tile
-        this.closure = closure
     }
 
     @Override
