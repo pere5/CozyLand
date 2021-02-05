@@ -3,6 +3,7 @@ package main.rule
 
 import main.Model
 import main.action.ShapeAction
+import main.action.WaitAction
 import main.model.Villager
 import main.role.tribe.NomadTribe
 import main.things.Drawable.Shape
@@ -33,7 +34,7 @@ class BuilderRule extends Rule {
         def resources = tribe.resources
 
         me.actionQueue << new ShapeAction(Shape.FOLLOWER_BUILDER)
-
+        me.actionQueue << new WaitAction(10)
         def wood = resources.findAll { it instanceof Wood }
         def stone = resources.findAll { it instanceof Stone }
 
