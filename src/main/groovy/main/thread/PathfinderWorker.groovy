@@ -77,7 +77,10 @@ class PathfinderWorker extends Worker {
         }
         def pxls = Model.randomPlacesInTileList(result)
         for (int i = 0; i < pxls.size() - 1; i++) {
-            walkAction.pathQueue << new StraightPath(i == 0 ? first : pxls[i], pxls[i + 1], villager)
+            def start = i == 0 ? first : pxls[i]
+            def dest = pxls[i + 1]
+            walkAction.pathQueue << new StraightPath(start, dest)
+            TestPrints.straightPathTestPrints(start, dest, villager)
         }
     }
 

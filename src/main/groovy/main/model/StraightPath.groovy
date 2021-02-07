@@ -2,17 +2,15 @@ package main.model
 
 import main.Main
 import main.Model
-import main.TestPrints
-import main.model.Villager
 
 class StraightPath {
+
+    //start is excluded in the path, since we are already there
+    Double[] start
     Queue<Double[]> path = new LinkedList<>()
 
-    Double[] a
-
-    StraightPath(Double[] start, Double[] dest, Villager villager) {
-        a = start
-        TestPrints.straightPathTestPrints(start, dest, villager)
+    StraightPath(Double[] start, Double[] dest) {
+        this.start = start
         Double[] nextStep = start
         while (!Model.closeEnough(nextStep, dest)) {
             Double vx = dest[0] - nextStep[0]

@@ -1,10 +1,8 @@
 package main
 
 import javaSrc.color.ColorUtils
-import main.action.WaitAction
 import main.action.WalkAction
 import main.model.Path
-import main.model.StraightPath
 import main.model.Tile
 import main.model.Villager
 import main.things.Artifact
@@ -87,8 +85,8 @@ class TestPrints {
         def count = 0
         villager.actionQueue.findAll { it instanceof WalkAction }.collect { it as WalkAction }.each { WalkAction walkAction ->
             for (int i = 0; i < walkAction.pathQueue.size() - 1; i++) {
-                int[] a = Model.pixelToTileIdx(walkAction.pathQueue[i].a)
-                int[] b = Model.pixelToTileIdx(walkAction.pathQueue[i + 1].a)
+                int[] a = Model.pixelToTileIdx(walkAction.pathQueue[i].start)
+                int[] b = Model.pixelToTileIdx(walkAction.pathQueue[i + 1].start)
                 if (Path.bresenhamBuffer[Path.bresenham(a, b, villager)].clone() != b) {
                     println("${a} - ${b}")
                     count++
