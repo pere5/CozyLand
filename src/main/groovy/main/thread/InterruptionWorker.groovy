@@ -2,19 +2,58 @@ package main.thread
 
 import main.Model
 import main.model.Villager
+import main.role.tribe.NomadTribe
+import main.role.tribe.ShamanRole
+import main.things.Drawable
 
 class InterruptionWorker extends Worker {
 
-    Map<Integer, Map> villagerModel = [:]
-
     @Override
     def run() {
-        super.intendedFps = 1
+        super.intendedFps = 0.25
         super.run()
     }
 
-    //interrupt if new role, abort all actions
     def update() {
+        def test = false
+        if (test) {
+            def weird = Model.villagers.findAll {
+                def tribe = it.role?.tribe
+                if (tribe instanceof NomadTribe) {
+                    def nomadTribe = tribe as NomadTribe
+                    return !nomadTribe.shaman
+                }
+                return false
+            }
 
+            if (weird) {
+                int lol = 0
+            }
+
+            def weird2 = Model.villagers.findAll {
+                if (it.role.id == ShamanRole.ID) {
+                    return it.shape != Drawable.Shape.SHAMAN &&
+                            it.shape != Drawable.Shape.SHAMAN_CAMP &&
+                            it.shape != Drawable.Shape.SHAMAN_BUILD
+                }
+                return false
+            }
+
+            if (weird2) {
+                int lol = 0
+            }
+
+            def weird3 = Model.villagers.findAll {
+                if (it.role.id == ShamanRole.ID) {
+                    def tribe = it.role.tribe as NomadTribe
+                    return tribe.shaman.id != it.id
+                }
+                return false
+            }
+
+            if (weird3) {
+                int lol = 0
+            }
+        }
     }
 }
