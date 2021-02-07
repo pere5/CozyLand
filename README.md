@@ -16,7 +16,7 @@
      - [x] Walk  
      - [x] etc...
  - [x] Pathfinding aStar
-   - [x] Algoritemen ska inte ta ett steg åt gången mellan tiles utan hitta raka strecka mellan tiles så att gubben kan vandra fritt.
+   - [x] Algoritmen ska inte ta ett steg åt gången mellan tiles utan hitta raka strecka mellan tiles så att gubben kan vandra fritt.
  - [x] Tile network
    - [x] Heightmap 
    - [x] Tile
@@ -43,8 +43,8 @@
  - [ ] Blockeringar mellan tiles i pathfindern (för branta stigningar)
  
  
- - [ ] 3 **All logik i villager reglerna (flytta tribe logiken)**
- - [x] Villagers placerar sigsjälva i tiles
- - [x] optimera debug rendreringen
+ - [x] All logik i villager reglerna (flytta tribe logiken)
+ - [x] Villagers placerar sig själva i tiles
+ - [x] optimera debug renderingen
  - [ ] Flytta in alla roller tillsammans i tribe sub klassen
     
