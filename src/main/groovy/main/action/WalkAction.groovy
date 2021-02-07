@@ -24,6 +24,18 @@ class WalkAction extends Action {
     }
 
     @Override
+    boolean interrupt() {
+        def first = pathQueue.find()
+        if (first) {
+            pathQueue.clear()
+            pathQueue << first
+            return true
+        } else {
+            return false
+        }
+    }
+
+    @Override
     void switchWorker(Villager villager) {
         villager.toPathfinderWorker()
     }

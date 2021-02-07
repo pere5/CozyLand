@@ -13,6 +13,11 @@ class ShapeAction extends Action {
     }
 
     @Override
+    boolean interrupt() {
+        return false
+    }
+
+    @Override
     void switchWorker(Villager villager) {
         throw new UnsupportedOperationException()
     }

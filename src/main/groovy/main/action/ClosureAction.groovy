@@ -11,6 +11,11 @@ class ClosureAction extends Action {
     }
 
     @Override
+    boolean interrupt() {
+        return false
+    }
+
+    @Override
     void switchWorker(Villager me) {
         throw new UnsupportedOperationException()
     }

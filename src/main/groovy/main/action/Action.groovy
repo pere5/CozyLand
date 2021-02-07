@@ -24,6 +24,7 @@ abstract class Action {
         this.closure = closure
     }
 
+    abstract boolean interrupt()
     abstract void switchWorker(Villager me)
     abstract boolean doIt(Villager me)
 
