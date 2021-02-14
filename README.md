@@ -47,4 +47,5 @@
  - [x] Villagers placerar sig själva i tiles
  - [x] optimera debug renderingen
  - [ ] Flytta in alla roller tillsammans i tribe sub klassen
+ - [ ] Flytta int status(Villager me) till Role där de ändå listas
     
