@@ -24,7 +24,7 @@ class ShapeAction extends Action {
 
     @Override
     boolean doIt(Villager villager) {
-        villager.setShape(shape, villager.role.tribe)
+        villager.setShape(shape)
         return DONE
     }
 }

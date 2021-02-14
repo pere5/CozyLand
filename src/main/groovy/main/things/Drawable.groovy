@@ -2,6 +2,7 @@ package main.things
 
 import main.Main
 import main.Model
+import main.model.Villager
 import main.role.Tribe
 
 import java.awt.*
@@ -41,22 +42,21 @@ abstract class Drawable {
     }
 
     void setShape(Shape shape) {
-        setShape(shape, null)
-    }
-
-    void setShape(Shape shape, Tribe tribe) {
         BufferedImage image
 
-        def shapeMap = tribe?.shapeMap?.get(shape)
-        if (shapeMap) {
-            if (shapeMap.image) {
-                image = shapeMap.image
-            } else {
-                image = Model.applyColorFilter(
-                        Model.shapeProperties[shape].image as BufferedImage,
-                        tribe.color
-                )
-                shapeMap.image = image
+        if (this instanceof Villager) {
+            def villager = this as Villager
+            def shapeMap = villager.role.tribe.shapeMap.get(shape)
+            if (shapeMap) {
+                if (shapeMap.image) {
+                    image = shapeMap.image
+                } else {
+                    image = Model.applyColorFilter(
+                            Model.shapeProperties[shape].image as BufferedImage,
+                            villager.role.tribe.color
+                    )
+                    shapeMap.image = image
+                }
             }
         }
 

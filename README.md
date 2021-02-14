@@ -43,7 +43,7 @@
  - [ ] Blockeringar mellan tiles i pathfindern (för branta stigningar)
  
  
- - [x] All logik i villager reglerna (flytta tribe logiken)
+ - [x] All logik i action reglerna (flytta tribe logiken)
  - [x] Villagers placerar sig själva i tiles
  - [x] optimera debug renderingen
  - [ ] Flytta in alla roller tillsammans i tribe sub klassen

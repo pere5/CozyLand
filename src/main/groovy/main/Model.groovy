@@ -90,23 +90,17 @@ class Model {
             (Shape.RECT)        : [
                     fileName: null,
                     scale   : null,
-                    image   : null,
-                    offsetX : null,
-                    offsetY : null
+                    image   : null
             ],
             (Shape.CIRCLE)      : [
                     fileName: null,
                     scale   : null,
-                    image   : null,
-                    offsetX : null,
-                    offsetY : null
+                    image   : null
             ],
             (Shape.LINE)      : [
                     fileName: null,
                     scale   : null,
-                    image   : null,
-                    offsetX : null,
-                    offsetY : null
+                    image   : null
             ],
             (Shape.TREE)        : [
                     fileName: 'icons8-large-tree-48.png',
