@@ -1,10 +1,9 @@
-package main.role.alone
+package main.npcLogic.stages.alone.role
 
-import main.role.Role
-import main.role.tribe.NomadTribe
-import main.rule.AffinityRule
-import main.rule.RandomBigWalkRule
-import main.rule.Rule
+import main.npcLogic.Role
+import main.npcLogic.stages.alone.rule.AffinityRule
+import main.npcLogic.stages.alone.AloneTribe
+import main.npcLogic.Rule
 
 class AloneRole extends Role {
 

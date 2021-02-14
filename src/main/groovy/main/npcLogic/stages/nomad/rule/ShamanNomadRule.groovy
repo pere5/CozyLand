@@ -1,13 +1,14 @@
-package main.rule
+package main.npcLogic.stages.nomad.rule
 
 import main.Main
 import main.Model
-import main.action.ClosureAction
-import main.action.ShapeAction
-import main.action.SurveyAction
-import main.action.WalkAction
+import main.npcLogic.action.ClosureAction
+import main.npcLogic.action.ShapeAction
+import main.npcLogic.action.SurveyAction
+import main.npcLogic.action.WalkAction
 import main.model.Location
 import main.model.Villager
+import main.npcLogic.Rule
 import main.things.Drawable.Shape
 import main.things.naturalResource.NaturalResource
 

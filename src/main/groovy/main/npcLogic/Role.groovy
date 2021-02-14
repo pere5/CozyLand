@@ -1,7 +1,4 @@
-package main.role
-
-import main.role.tribe.NomadTribe
-import main.rule.Rule
+package main.npcLogic
 
 abstract class Role {
 

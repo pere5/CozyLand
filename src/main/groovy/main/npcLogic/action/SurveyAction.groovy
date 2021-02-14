@@ -1,13 +1,14 @@
-package main.action
+package main.npcLogic.action
 
 import main.Main
 import main.Model
 import main.TestPrints
 import main.model.Tile
 import main.model.Villager
-import main.role.Tribe
-import main.role.tribe.NomadTribe
-import main.role.tribe.ShamanRole
+import main.npcLogic.Action
+import main.npcLogic.Tribe
+import main.npcLogic.stages.nomad.NomadTribe
+import main.npcLogic.stages.nomad.role.ShamanRole
 
 class SurveyAction extends Action {
 

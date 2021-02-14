@@ -1,4 +1,4 @@
-package main.rule
+package main.npcLogic
 
 import main.model.Villager
 

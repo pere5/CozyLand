@@ -1,8 +1,10 @@
-package main.rule
+package main.npcLogic.stages.miscellaneous.rule
 
 import main.Model
-import main.action.WalkAction
+import main.npcLogic.action.WalkAction
 import main.model.Villager
+import main.npcLogic.Rule
+import main.npcLogic.stages.alone.rule.AffinityRule
 
 class RandomBigWalkRule extends Rule {
 

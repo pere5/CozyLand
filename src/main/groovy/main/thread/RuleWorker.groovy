@@ -1,10 +1,8 @@
 package main.thread
 
 import main.Model
-import main.model.Tile
 import main.model.Villager
-import main.role.tribe.NomadTribe
-import main.rule.Rule
+import main.npcLogic.Rule
 
 class RuleWorker extends Worker {
 

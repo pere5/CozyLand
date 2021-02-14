@@ -1,4 +1,4 @@
-package main.action
+package main.npcLogic
 
 import main.model.Villager
 

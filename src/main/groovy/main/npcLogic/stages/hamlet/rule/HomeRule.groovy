@@ -1,9 +1,10 @@
-package main.rule
+package main.npcLogic.stages.hamlet.rule
 
 import main.Main
 import main.Model
 import main.model.Villager
-import main.role.tribe.NomadTribe
+import main.npcLogic.stages.nomad.NomadTribe
+import main.npcLogic.Rule
 import main.things.building.Hut
 
 class HomeRule extends Rule {

@@ -1,4 +1,4 @@
-package main.role
+package main.npcLogic
 
 import main.model.Location
 import main.things.Drawable

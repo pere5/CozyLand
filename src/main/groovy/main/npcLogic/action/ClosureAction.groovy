@@ -1,6 +1,7 @@
-package main.action
+package main.npcLogic.action
 
 import main.model.Villager
+import main.npcLogic.Action
 
 class ClosureAction extends Action {
 

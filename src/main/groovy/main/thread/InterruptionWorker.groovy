@@ -1,9 +1,8 @@
 package main.thread
 
 import main.Model
-import main.model.Villager
-import main.role.tribe.NomadTribe
-import main.role.tribe.ShamanRole
+import main.npcLogic.stages.nomad.NomadTribe
+import main.npcLogic.stages.nomad.role.ShamanRole
 import main.things.Drawable
 
 class InterruptionWorker extends Worker {

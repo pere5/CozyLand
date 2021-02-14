@@ -2,13 +2,11 @@ package main.model
 
 import main.Model
 import main.Model.TravelType
-import main.action.Action
-import main.action.WalkAction
-import main.role.Role
-import main.role.alone.AloneRole
+import main.npcLogic.Action
+import main.npcLogic.Role
+import main.npcLogic.stages.alone.role.AloneRole
 import main.things.Drawable
 import main.things.building.Building
-import main.things.tool.Tool
 
 import java.awt.Color
 

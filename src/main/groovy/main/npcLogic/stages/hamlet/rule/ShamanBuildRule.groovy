@@ -1,10 +1,11 @@
-package main.rule
+package main.npcLogic.stages.hamlet.rule
 
 import main.Model
-import main.action.ShapeAction
-import main.action.WaitAction
-import main.action.WalkAction
+import main.npcLogic.action.ShapeAction
+import main.npcLogic.action.WaitAction
+import main.npcLogic.action.WalkAction
 import main.model.Villager
+import main.npcLogic.Rule
 import main.things.Drawable.Shape
 
 class ShamanBuildRule extends Rule {

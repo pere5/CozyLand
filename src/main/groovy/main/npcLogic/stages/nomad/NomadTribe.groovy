@@ -1,14 +1,10 @@
-package main.role.tribe
+package main.npcLogic.stages.nomad
 
-import main.Main
-import main.Model
+
 import main.model.Villager
-import main.role.Tribe
-import main.role.alone.AloneRole
+import main.npcLogic.Tribe
 import main.things.Drawable.Shape
 
-import java.awt.*
-import java.util.List
 import java.util.concurrent.ConcurrentLinkedQueue
 
 class NomadTribe extends Tribe {

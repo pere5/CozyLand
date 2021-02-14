@@ -1,11 +1,12 @@
-package main.rule
+package main.npcLogic.stages.nomad.rule
 
 import main.Main
 import main.Model
-import main.action.ShapeAction
-import main.action.WalkAction
+import main.npcLogic.action.ShapeAction
+import main.npcLogic.action.WalkAction
 import main.model.Villager
-import main.role.tribe.NomadTribe
+import main.npcLogic.stages.nomad.NomadTribe
+import main.npcLogic.Rule
 import main.things.Drawable.Shape
 
 class FollowRule extends Rule {

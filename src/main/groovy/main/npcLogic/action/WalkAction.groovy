@@ -1,10 +1,11 @@
-package main.action
+package main.npcLogic.action
 
 import main.Model
 import main.exception.PerIsBorkenException
 import main.model.StraightPath
 import main.model.Tile
 import main.model.Villager
+import main.npcLogic.Action
 
 class WalkAction extends Action {
 

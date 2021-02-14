@@ -1,10 +1,11 @@
-package main.role.tribe
+package main.npcLogic.stages.nomad.role
 
 
-import main.role.Role
-import main.rule.Rule
-import main.rule.ShamanBuildRule
-import main.rule.ShamanNomadRule
+import main.npcLogic.Role
+import main.npcLogic.stages.nomad.NomadTribe
+import main.npcLogic.stages.hamlet.rule.ShamanBuildRule
+import main.npcLogic.stages.nomad.rule.ShamanNomadRule
+import main.npcLogic.Rule
 
 class ShamanRole extends Role {
 

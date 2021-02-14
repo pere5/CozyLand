@@ -1,7 +1,7 @@
 package main
 
 import javaSrc.color.ColorUtils
-import main.action.WalkAction
+import main.npcLogic.action.WalkAction
 import main.model.Path
 import main.model.Tile
 import main.model.Villager

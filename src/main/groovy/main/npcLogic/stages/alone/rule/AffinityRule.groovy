@@ -1,16 +1,17 @@
-package main.rule
+package main.npcLogic.stages.alone.rule
 
 
 import main.Main
 import main.Model
-import main.action.ShapeAction
-import main.action.WalkAction
+import main.npcLogic.action.ShapeAction
+import main.npcLogic.action.WalkAction
 import main.model.Tile
 import main.model.Villager
-import main.role.alone.AloneRole
-import main.role.tribe.FollowerRole
-import main.role.tribe.NomadTribe
-import main.role.tribe.ShamanRole
+import main.npcLogic.stages.alone.role.AloneRole
+import main.npcLogic.stages.nomad.role.FollowerRole
+import main.npcLogic.stages.nomad.NomadTribe
+import main.npcLogic.stages.nomad.role.ShamanRole
+import main.npcLogic.Rule
 import main.things.Drawable.Shape
 
 import java.awt.Color

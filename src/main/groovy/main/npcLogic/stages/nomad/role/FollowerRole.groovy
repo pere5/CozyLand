@@ -1,9 +1,10 @@
-package main.role.tribe
+package main.npcLogic.stages.nomad.role
 
-import main.role.Role
-import main.rule.BuilderRule
-import main.rule.FollowRule
-import main.rule.Rule
+import main.npcLogic.Role
+import main.npcLogic.stages.nomad.rule.FollowRule
+import main.npcLogic.stages.nomad.NomadTribe
+import main.npcLogic.stages.hamlet.rule.BuilderRule
+import main.npcLogic.Rule
 
 class FollowerRole extends Role {
 

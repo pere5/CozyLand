@@ -3,7 +3,7 @@ package main.things
 import main.Main
 import main.Model
 import main.model.Villager
-import main.role.Tribe
+import main.npcLogic.Tribe
 
 import java.awt.*
 import java.awt.image.BufferedImage

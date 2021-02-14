@@ -1,7 +1,8 @@
-package main.action
+package main.npcLogic.action
 
 
 import main.model.Villager
+import main.npcLogic.Action
 import main.things.Drawable.Shape
 
 class ShapeAction extends Action {

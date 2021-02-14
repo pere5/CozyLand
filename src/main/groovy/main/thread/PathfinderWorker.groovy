@@ -5,7 +5,7 @@ import javaSrc.linkedbinarytree.Position
 import main.Model
 import main.Model.TravelType
 import main.TestPrints
-import main.action.WalkAction
+import main.npcLogic.action.WalkAction
 import main.model.Path
 import main.model.StraightPath
 import main.model.Tile

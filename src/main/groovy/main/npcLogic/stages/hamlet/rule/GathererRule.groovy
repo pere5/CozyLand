@@ -1,6 +1,7 @@
-package main.rule
+package main.npcLogic.stages.hamlet.rule
 
 import main.model.Villager
+import main.npcLogic.Rule
 
 class GathererRule extends Rule {
     @Override
