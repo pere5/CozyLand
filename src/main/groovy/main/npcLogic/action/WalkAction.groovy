@@ -61,10 +61,10 @@ class WalkAction extends Action {
         }
 
         if (result == DONE) {
-            placeInTileNetwork(villager)
+            Model.placeInTileNetwork(villager)
         } else {
             perInterval (1000, 1) {
-                placeInTileNetwork(villager)
+                Model.placeInTileNetwork(villager)
             }
         }
 
@@ -75,43 +75,5 @@ class WalkAction extends Action {
         }
 
         return result
-    }
-
-    private void placeInTileNetwork(Villager villager) {
-
-        def (int tileX, int tileY) = villager.getTileXY()
-        def correctTile = Model.tileNetwork[tileX][tileY] as Tile
-
-        if (!villager.tile) {
-            villager.tile = correctTile
-            villager.tile.villagers << villager
-        } else if (correctTile.id != villager.tile.id) {
-            villager.tile.villagers.remove(villager)
-            villager.tile = correctTile
-            villager.tile.villagers << villager
-        }
-
-        def test = false
-        if (test) {
-            def tileNetwork = Model.tileNetwork
-            def matches = []
-            for (int x = 0; x < tileNetwork.length; x++) {
-                for (int y = 0; y < tileNetwork[x].length; y++) {
-                    Tile tile = tileNetwork[x][y]
-                    if (villager.id in tile.villagers.id) {
-                        matches << [tile: tile, villager: villager]
-                    }
-                }
-            }
-
-            def one = correctTile.id == villager.tile.id
-            def two = villager.id == villager.tile.villagers.find { it.id == villager.id }?.id
-            def three = matches.size() == 1
-            def four = villager.id in (matches.find().tile as Tile).villagers.id
-
-            if (!(one && two && three && four)) {
-                throw new PerIsBorkenException()
-            }
-        }
     }
 }
