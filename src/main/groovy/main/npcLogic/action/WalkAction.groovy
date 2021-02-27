@@ -91,7 +91,7 @@ class WalkAction extends Action {
             villager.tile.villagers << villager
         }
 
-        def test = false
+        def test = true
         if (test) {
             def tileNetwork = Model.tileNetwork
             def matches = []

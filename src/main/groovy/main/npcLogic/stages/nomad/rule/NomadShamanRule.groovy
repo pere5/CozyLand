@@ -12,16 +12,20 @@ import main.npcLogic.Rule
 import main.things.Drawable.Shape
 import main.things.naturalResource.NaturalResource
 
-class ShamanNomadRule extends Rule {
+class NomadShamanRule extends Rule {
 
     private static final int NUMBER_SURVEYS = 2
     private static final int MIN_UNIQUE = 2
+
+    NomadShamanRule(int rank) {
+        this.rank = rank
+    }
 
     @Override
     int status(Villager me) {
         if (me.role.tribe.goodLocation) {
             return GOOD
-        } else if (me.metaObjects[ShamanNomadRule.toString()]) {
+        } else if (me.metaObjects[NomadShamanRule.toString()]) {
             return BAD
         } else {
             def surveyResources = me.role.tribe.surveyNaturalResources
@@ -57,7 +61,7 @@ class ShamanNomadRule extends Rule {
             }
 
             if (goodLocations) {
-                me.metaObjects[ShamanNomadRule.toString()] = goodLocations.max { it.score }
+                me.metaObjects[NomadShamanRule.toString()] = goodLocations.max { it.score }
             }
 
             return BAD
@@ -66,13 +70,13 @@ class ShamanNomadRule extends Rule {
 
     @Override
     void planWork(Villager me, int status) {
-        if (me.metaObjects[ShamanNomadRule.toString()]) {
-            def location = me.metaObjects[ShamanNomadRule.toString()] as Location
+        if (me.metaObjects[NomadShamanRule.toString()]) {
+            def location = me.metaObjects[NomadShamanRule.toString()] as Location
             me.actionQueue << new ShapeAction(Shape.SHAMAN)
             me.actionQueue << new WalkAction(location.spot)
             me.actionQueue << new ClosureAction({
                 me.role.tribe.goodLocation = location
-                me.metaObjects[ShamanNomadRule.toString()] = null
+                me.metaObjects[NomadShamanRule.toString()] = null
             })
         } else {
             def tileDest = Model.closeRandomTile(me, me.tileXY, Main.SHAMAN_DISTANCE_TILES_MAX, Main.SHAMAN_DISTANCE_TILES_MIN)

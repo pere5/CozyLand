@@ -9,6 +9,10 @@ import main.things.building.Hut
 
 class HomeRule extends Rule {
 
+    HomeRule(int rank) {
+        this.rank = rank
+    }
+
     @Override
     int status(Villager me) {
         if (!me.home && me.role.tribe.goodLocation) {

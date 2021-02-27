@@ -4,9 +4,12 @@ import main.Model
 import main.npcLogic.action.WalkAction
 import main.model.Villager
 import main.npcLogic.Rule
-import main.npcLogic.stages.alone.rule.AffinityRule
 
 class RandomBigWalkRule extends Rule {
+
+    RandomBigWalkRule(int rank) {
+        this.rank = rank
+    }
 
     @Override
     int status(Villager me) {

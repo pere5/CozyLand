@@ -4,6 +4,11 @@ import main.model.Villager
 import main.npcLogic.Rule
 
 class GathererRule extends Rule {
+
+    GathererRule(int rank) {
+        this.rank = rank
+    }
+
     @Override
     int status(Villager villager) {
         def enoughResourcesToBuild = false

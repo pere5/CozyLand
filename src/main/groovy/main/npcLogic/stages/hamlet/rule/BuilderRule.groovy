@@ -13,6 +13,10 @@ import main.things.resource.Wood
 
 class BuilderRule extends Rule {
 
+    BuilderRule(int rank) {
+        this.rank = rank
+    }
+
     @Override
     int status(Villager me) {
         def unfinishedBuildings = [true]

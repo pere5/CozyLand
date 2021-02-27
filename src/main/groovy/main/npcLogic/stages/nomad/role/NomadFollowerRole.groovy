@@ -1,16 +1,16 @@
 package main.npcLogic.stages.nomad.role
 
 import main.npcLogic.Role
-import main.npcLogic.stages.nomad.rule.FollowRule
-import main.npcLogic.stages.nomad.NomadTribe
 import main.npcLogic.stages.hamlet.rule.BuilderRule
+import main.npcLogic.stages.nomad.rule.NomadFollowRule
+import main.npcLogic.stages.nomad.NomadTribe
 import main.npcLogic.Rule
 
-class FollowerRole extends Role {
+class NomadFollowerRole extends Role {
 
     static final String ID = 'follower'
 
-    FollowerRole(NomadTribe tribe) {
+    NomadFollowerRole(NomadTribe tribe) {
         super(ID, tribe)
     }
 
@@ -27,10 +27,10 @@ class FollowerRole extends Role {
 
         int rank = Integer.MAX_VALUE
         [
-                new FollowRule(rank: --rank),
+                new NomadFollowRule(--rank),
                 //new HomeRule(rank: --rank),
                 //new GathererRule(rank: --rank),
-                new BuilderRule(rank: --rank)
+                new BuilderRule(--rank)
         ]
     }
 }

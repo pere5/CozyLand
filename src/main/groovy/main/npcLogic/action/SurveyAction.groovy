@@ -8,7 +8,7 @@ import main.model.Villager
 import main.npcLogic.Action
 import main.npcLogic.Tribe
 import main.npcLogic.stages.nomad.NomadTribe
-import main.npcLogic.stages.nomad.role.ShamanRole
+import main.npcLogic.stages.nomad.role.NomadShamanRole
 
 class SurveyAction extends Action {
 
@@ -33,7 +33,7 @@ class SurveyAction extends Action {
 
     @Override
     boolean doIt(Villager shaman) {
-        assert shaman.role instanceof ShamanRole
+        assert shaman.role instanceof NomadShamanRole
 
         if (!time) {
             time = System.currentTimeMillis() + (seconds * 1000)

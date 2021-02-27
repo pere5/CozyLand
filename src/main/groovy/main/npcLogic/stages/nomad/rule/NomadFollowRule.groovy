@@ -9,7 +9,11 @@ import main.npcLogic.stages.nomad.NomadTribe
 import main.npcLogic.Rule
 import main.things.Drawable.Shape
 
-class FollowRule extends Rule {
+class NomadFollowRule extends Rule {
+
+    NomadFollowRule(int rank) {
+        this.rank = rank
+    }
 
     @Override
     int status(Villager me) {

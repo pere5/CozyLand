@@ -10,6 +10,10 @@ import main.things.Drawable.Shape
 
 class ShamanBuildRule extends Rule {
 
+    ShamanBuildRule(int rank) {
+        this.rank = rank
+    }
+
     @Override
     int status(Villager me) {
         if (me.role.tribe.goodLocation) {
