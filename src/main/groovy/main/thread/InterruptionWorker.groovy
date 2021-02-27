@@ -14,7 +14,7 @@ class InterruptionWorker extends Worker {
     }
 
     def update() {
-        def test = true
+        def test = false
         if (test) {
             def weird = Model.villagers.findAll {
                 def tribe = it.role?.tribe
