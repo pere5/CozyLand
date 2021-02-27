@@ -1,4 +1,4 @@
-package main.npcLogic.stages.miscellaneous.rule
+package main.npcLogic.stages.generic.rule
 
 import main.Model
 import main.npcLogic.action.WalkAction
