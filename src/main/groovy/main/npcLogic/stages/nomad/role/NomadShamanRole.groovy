@@ -19,7 +19,7 @@ class NomadShamanRole extends Role {
         int rank = Integer.MAX_VALUE
         [
                 new NomadShamanRule(--rank),
-                //new ShamanBuildRule(--rank)
+                new ShamanBuildRule(--rank)
         ]
     }
 }
