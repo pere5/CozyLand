@@ -2,8 +2,8 @@ package main
 
 import javaSrc.circulararray.CircularArrayList
 import main.calculator.Background
+import main.calculator.ImageUtils
 import main.calculator.Probabilities
-import main.calculator.Utility
 import main.input.MyKeyboardListener
 import main.input.MyMouseListener
 import main.model.Tile
@@ -156,18 +156,18 @@ class Model {
         Model.keyboard = keyboard
         Model.mouse = mouse
         tileNetwork = Background.generateBackground()
-        backgroundImage = Utility.createBGImage(tileNetwork)
-        shapeProperties[Shape.TREE].image = Utility.createImage(Shape.TREE)
-        shapeProperties[Shape.ROCK].image = Utility.createImage(Shape.ROCK)
-        shapeProperties[Shape.STONE].image = Utility.createImage(Shape.STONE)
-        shapeProperties[Shape.WOOD].image = Utility.createImage(Shape.WOOD)
-        shapeProperties[Shape.WARRIOR].image = Utility.createImage(Shape.WARRIOR)
-        shapeProperties[Shape.SHAMAN].image = Utility.createImage(Shape.SHAMAN)
-        shapeProperties[Shape.SHAMAN_CAMP].image = Utility.createImage(Shape.SHAMAN_CAMP)
-        shapeProperties[Shape.SHAMAN_BUILD].image = Utility.createImage(Shape.SHAMAN_BUILD)
-        shapeProperties[Shape.FOLLOWER].image = Utility.createImage(Shape.FOLLOWER)
-        shapeProperties[Shape.FOLLOWER_BUILDER].image = Utility.createImage(Shape.FOLLOWER_BUILDER)
-        shapeProperties[Shape.HUT].image = Utility.createImage(Shape.HUT)
+        backgroundImage = ImageUtils.createBGImage(tileNetwork)
+        shapeProperties[Shape.TREE].image = ImageUtils.createImage(Shape.TREE)
+        shapeProperties[Shape.ROCK].image = ImageUtils.createImage(Shape.ROCK)
+        shapeProperties[Shape.STONE].image = ImageUtils.createImage(Shape.STONE)
+        shapeProperties[Shape.WOOD].image = ImageUtils.createImage(Shape.WOOD)
+        shapeProperties[Shape.WARRIOR].image = ImageUtils.createImage(Shape.WARRIOR)
+        shapeProperties[Shape.SHAMAN].image = ImageUtils.createImage(Shape.SHAMAN)
+        shapeProperties[Shape.SHAMAN_CAMP].image = ImageUtils.createImage(Shape.SHAMAN_CAMP)
+        shapeProperties[Shape.SHAMAN_BUILD].image = ImageUtils.createImage(Shape.SHAMAN_BUILD)
+        shapeProperties[Shape.FOLLOWER].image = ImageUtils.createImage(Shape.FOLLOWER)
+        shapeProperties[Shape.FOLLOWER_BUILDER].image = ImageUtils.createImage(Shape.FOLLOWER_BUILDER)
+        shapeProperties[Shape.HUT].image = ImageUtils.createImage(Shape.HUT)
         1000.times { villagers << Villager.test() }
 
         Model.villagers = villagers

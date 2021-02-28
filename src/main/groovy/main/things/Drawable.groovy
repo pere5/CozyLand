@@ -2,6 +2,7 @@ package main.things
 
 import main.Main
 import main.Model
+import main.calculator.ImageUtils
 import main.calculator.Utility
 import main.model.Villager
 
@@ -51,7 +52,7 @@ abstract class Drawable {
                 if (shapeMap.image) {
                     image = shapeMap.image
                 } else {
-                    image = Utility.applyColorFilter(
+                    image = ImageUtils.applyColorFilter(
                             Model.shapeProperties[shape].image as BufferedImage,
                             villager.role.tribe.color
                     )

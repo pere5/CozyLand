@@ -2,14 +2,14 @@ package main.thread
 
 import main.Model
 import main.TestPrints
-import main.npcLogic.Action
 import main.model.Villager
+import main.npcLogic.Action
 
 class WorkWorker extends Worker {
 
     @Override
     def run() {
-        super.intendedFps = 16
+        super.intendedFps = 50
         super.run()
     }
 

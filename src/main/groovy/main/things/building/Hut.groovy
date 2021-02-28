@@ -1,7 +1,7 @@
 package main.things.building
 
 import main.Model
-import main.calculator.Utility
+import main.calculator.ImageUtils
 import main.model.Tile
 import main.model.Villager
 
@@ -16,7 +16,7 @@ class Hut extends Building {
         def tileNetwork = Model.tileNetwork as Tile[][]
         def tile = tileNetwork[tileXY[0]][tileXY[1]]
         this.shape = Shape.HUT
-        this.image = Utility.shadeImage(Model.shapeProperties[Shape.HUT].image, tile.color)
+        this.image = ImageUtils.shadeImage(Model.shapeProperties[Shape.HUT].image, tile.color)
         this.x = tileXY[0]
         this.y = tileXY[1]
         habitants << me

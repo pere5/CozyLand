@@ -268,7 +268,7 @@ class Background {
 
             def uniqueHeightValues = tileGroup.groupBy { it.height }.collect { it.key }
 
-            List<Color> colors = Utility.gradient(colorRatio.colorFrom, colorRatio.colorTo, uniqueHeightValues.size())
+            List<Color> colors = ImageUtils.gradient(colorRatio.colorFrom, colorRatio.colorTo, uniqueHeightValues.size())
             for (int i = 0; i < uniqueHeightValues.size(); i++) {
                 tileGroup.grep { it.height == uniqueHeightValues[i] }.each {
                     it.color = colors[i]

@@ -1,8 +1,7 @@
 package main.input
 
-
 import main.Model
-import main.calculator.Utility
+import main.calculator.ImageUtils
 import main.things.Drawable
 
 import java.awt.*
@@ -18,7 +17,7 @@ class MyMouseListener implements MouseListener {
         Model.drawables.findAll { Drawable drawable ->
             Model.shapeProperties[drawable.shape].image && e.point.x >= drawable.x - 30 && e.point.x <= drawable.x + 30 && e.point.y >= drawable.y - 30 && e.point.y <= drawable.y + 30
         }.each { Drawable drawable ->
-            drawable.image = Utility.shadeImage(Model.shapeProperties[drawable.shape].image, Color.lightGray)
+            drawable.image = ImageUtils.shadeImage(Model.shapeProperties[drawable.shape].image, Color.lightGray)
         }
     }
 

@@ -1,6 +1,7 @@
 package main
 
 import javaSrc.color.ColorUtils
+import main.calculator.ImageUtils
 import main.calculator.Utility
 import main.model.Path
 import main.model.Tile
@@ -30,7 +31,7 @@ class TestPrints {
 
             int maxProb = maxTile[0][1] - maxTile[0][0] + 1
 
-            def colorGradient = Utility.gradient(Color.DARK_GRAY, Color.WHITE, maxProb)
+            def colorGradient = ImageUtils.gradient(Color.DARK_GRAY, Color.WHITE, maxProb)
 
             nextTiles.each { def tile ->
                 def (int nX, int nY) = tile[1]
