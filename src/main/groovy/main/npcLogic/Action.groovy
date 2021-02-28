@@ -8,7 +8,7 @@ abstract class Action {
     static boolean DONE = false
 
     private final Integer DEFAULT_ID = 1
-    private final Map<Integer, Long> lastMap = [:].withDefault { System.currentTimeMillis() }
+    private final Map<Integer, Long> lastMap = [:].withDefault { 0L }
 
     boolean initialized = true
     Closure closure

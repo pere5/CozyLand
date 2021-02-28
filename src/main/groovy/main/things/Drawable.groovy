@@ -29,6 +29,7 @@ abstract class Drawable {
     Double y = 0
     Integer offsetX
     Integer offsetY
+    Boolean debug = false
 
     Drawable() {
         this.id = Model.getNewId()

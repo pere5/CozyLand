@@ -1,6 +1,8 @@
 package main.input
 
 import main.Model
+import main.drawers.Surface
+import main.model.Villager
 import main.things.Drawable
 import main.utility.ImageUtils
 
@@ -15,9 +17,21 @@ class MyMouseListener implements MouseListener {
         //bilder och ytor ritas från övre vänstra hörnet
 
         Model.drawables.findAll { Drawable drawable ->
-            Model.shapeProperties[drawable.shape].image && e.point.x >= drawable.x - 30 && e.point.x <= drawable.x + 30 && e.point.y >= drawable.y - 30 && e.point.y <= drawable.y + 30
+            if (Model.shapeProperties[drawable.shape].image) {
+                def a = e.point.x >= drawable.x + Surface.xOffset - 30
+                def b = e.point.x <= drawable.x + Surface.xOffset + 30
+                def c = e.point.y >= drawable.y + Surface.yOffset - 30
+                def d = e.point.y <= drawable.y + Surface.yOffset + 30
+                return a && b && c && d
+            } else {
+                return false
+            }
         }.each { Drawable drawable ->
             drawable.image = ImageUtils.shadeImage(Model.shapeProperties[drawable.shape].image, Color.lightGray)
+            if (drawable instanceof Villager) {
+                drawable.debug = true
+                println((drawable as Villager).toString())
+            }
         }
     }
 

@@ -15,8 +15,8 @@ import java.util.concurrent.ConcurrentLinkedQueue
 
 class Surface extends JPanel implements ActionListener {
 
-    int xOffset = 0
-    int yOffset = 0
+    static int xOffset = 0
+    static int yOffset = 0
 
     int lastFramesPerSecond = 0
     long startTime = System.currentTimeMillis()
