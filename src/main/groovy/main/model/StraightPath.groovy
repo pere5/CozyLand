@@ -1,7 +1,7 @@
 package main.model
 
 import main.Main
-import main.Model
+import main.calculator.Utility
 
 class StraightPath {
 
@@ -12,7 +12,7 @@ class StraightPath {
     StraightPath(Double[] start, Double[] dest) {
         this.start = start
         Double[] nextStep = start
-        while (!Model.closeEnough(nextStep, dest)) {
+        while (!Utility.closeEnough(nextStep, dest)) {
             Double vx = dest[0] - nextStep[0]
             Double vy = dest[1] - nextStep[1]
 

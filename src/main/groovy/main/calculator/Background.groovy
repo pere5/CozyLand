@@ -145,13 +145,13 @@ class Background {
         int max = 128
         int min = 128
 
-        for (Double x = 0; Model.round(x) < heightMap.length; x += xStep) {
-            for (Double y = 0; Model.round(y) < heightMap[Model.round(x)].length; y += yStep) {
+        for (Double x = 0; Utility.round(x) < heightMap.length; x += xStep) {
+            for (Double y = 0; Utility.round(y) < heightMap[Utility.round(x)].length; y += yStep) {
                 int sumAreaHeight = 0
                 int noPixels = 0
 
-                for (int xx = Model.round(x); xx < Math.min(Model.round(x + xStep), heightMap.length); xx++) {
-                    for (int yy = Model.round(y); yy < Math.min(Model.round(y + yStep), heightMap[xx].length); yy++) {
+                for (int xx = Utility.round(x); xx < Math.min(Utility.round(x + xStep), heightMap.length); xx++) {
+                    for (int yy = Utility.round(y); yy < Math.min(Utility.round(y + yStep), heightMap[xx].length); yy++) {
                         pixelReadControl[xx][yy] += 1
                         sumAreaHeight += heightMap[xx][yy]
                         noPixels++
@@ -268,7 +268,7 @@ class Background {
 
             def uniqueHeightValues = tileGroup.groupBy { it.height }.collect { it.key }
 
-            List<Color> colors = Model.gradient(colorRatio.colorFrom, colorRatio.colorTo, uniqueHeightValues.size())
+            List<Color> colors = Utility.gradient(colorRatio.colorFrom, colorRatio.colorTo, uniqueHeightValues.size())
             for (int i = 0; i < uniqueHeightValues.size(); i++) {
                 tileGroup.grep { it.height == uniqueHeightValues[i] }.each {
                     it.color = colors[i]

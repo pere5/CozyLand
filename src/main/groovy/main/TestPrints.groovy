@@ -1,10 +1,11 @@
 package main
 
 import javaSrc.color.ColorUtils
-import main.npcLogic.action.WalkAction
+import main.calculator.Utility
 import main.model.Path
 import main.model.Tile
 import main.model.Villager
+import main.npcLogic.action.WalkAction
 import main.things.Artifact
 import main.things.ArtifactLine
 import main.things.Drawable
@@ -19,7 +20,7 @@ class TestPrints {
     static final boolean DEBUG_DOTTED_PRINTS = false
 
     static void testPrintsNextTiles(Double[] pixelStart, Double[] pixelDest, def nextTiles, Villager villager) {
-        def (int x, int y) = Model.pixelToTileIdx(pixelStart)
+        def (int x, int y) = Utility.pixelToTileIdx(pixelStart)
         def tileNetwork = Model.tileNetwork as Tile[][]
 
         if (nextTiles) {
@@ -29,7 +30,7 @@ class TestPrints {
 
             int maxProb = maxTile[0][1] - maxTile[0][0] + 1
 
-            def colorGradient = Model.gradient(Color.DARK_GRAY, Color.WHITE, maxProb)
+            def colorGradient = Utility.gradient(Color.DARK_GRAY, Color.WHITE, maxProb)
 
             nextTiles.each { def tile ->
                 def (int nX, int nY) = tile[1]
@@ -58,10 +59,10 @@ class TestPrints {
     static void perStarTestPrints(int[] tileStart, int[] tileDest, Villager villager, Set<List<Integer>> visited) {
         if (!DEBUG_DOTTED_PRINTS) return
 
-        def pixelStart = Model.tileToPixelIdx(tileStart)
-        def pixelDest = Model.tileToPixelIdx(tileDest)
+        def pixelStart = Utility.tileToPixelIdx(tileStart)
+        def pixelDest = Utility.tileToPixelIdx(tileDest)
 
-        visited.collect { Model.tileToPixelIdx(it) }.each {
+        visited.collect { Utility.tileToPixelIdx(it) }.each {
             new Artifact(
                     size: 3, parent: villager.id, x: it[0], y: it[1],
                     color: villager.testColor
@@ -85,8 +86,8 @@ class TestPrints {
         def count = 0
         villager.actionQueue.findAll { it instanceof WalkAction }.collect { it as WalkAction }.each { WalkAction walkAction ->
             for (int i = 0; i < walkAction.pathQueue.size() - 1; i++) {
-                int[] a = Model.pixelToTileIdx(walkAction.pathQueue[i].start)
-                int[] b = Model.pixelToTileIdx(walkAction.pathQueue[i + 1].start)
+                int[] a = Utility.pixelToTileIdx(walkAction.pathQueue[i].start)
+                int[] b = Utility.pixelToTileIdx(walkAction.pathQueue[i + 1].start)
                 if (Path.bresenhamBuffer[Path.bresenham(a, b, villager)].clone() != b) {
                     println("${a} - ${b}")
                     count++
@@ -102,7 +103,7 @@ class TestPrints {
         if (!DEBUG_DOTTED_PRINTS) return
 
         new Artifact(
-                size: 3, parent: me.id, x: Model.tileToPixelIdx(x), y: Model.tileToPixelIdx(y),
+                size: 3, parent: me.id, x: Utility.tileToPixelIdx(x), y: Utility.tileToPixelIdx(y),
                 color: me.testColor
         )
     }
@@ -110,7 +111,7 @@ class TestPrints {
     static void printSurveyResourcesCircle(Drawable me, int x, int y) {
         if (!DEBUG_DOTTED_PRINTS) return
 
-        new Artifact(size: 2, parent: me.id, x: Model.tileToPixelIdx(x), y: Model.tileToPixelIdx(y), color: Color.BLUE)
+        new Artifact(size: 2, parent: me.id, x: Utility.tileToPixelIdx(x), y: Utility.tileToPixelIdx(y), color: Color.BLUE)
     }
 
     static void removeSurveyResourcesCircle(int id) {

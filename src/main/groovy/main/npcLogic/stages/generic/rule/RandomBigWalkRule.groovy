@@ -1,9 +1,10 @@
 package main.npcLogic.stages.generic.rule
 
-import main.Model
-import main.npcLogic.action.WalkAction
+
+import main.calculator.Utility
 import main.model.Villager
 import main.npcLogic.Rule
+import main.npcLogic.action.WalkAction
 
 class RandomBigWalkRule extends Rule {
 
@@ -25,7 +26,7 @@ class RandomBigWalkRule extends Rule {
 
     @Override
     void planWork(Villager villager, int status) {
-        def tileDest = Model.generateTileXY()
+        def tileDest = Utility.generateTileXY()
         villager.actionQueue << new WalkAction(tileDest, walkActionClosure)
     }
 }

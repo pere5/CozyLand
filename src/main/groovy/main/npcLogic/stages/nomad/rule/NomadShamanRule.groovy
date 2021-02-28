@@ -1,14 +1,14 @@
 package main.npcLogic.stages.nomad.rule
 
 import main.Main
-import main.Model
+import main.calculator.Utility
+import main.model.Location
+import main.model.Villager
+import main.npcLogic.Rule
 import main.npcLogic.action.ClosureAction
 import main.npcLogic.action.ShapeAction
 import main.npcLogic.action.SurveyAction
 import main.npcLogic.action.WalkAction
-import main.model.Location
-import main.model.Villager
-import main.npcLogic.Rule
 import main.things.Drawable.Shape
 import main.things.naturalResource.NaturalResource
 
@@ -79,7 +79,7 @@ class NomadShamanRule extends Rule {
                 me.metaObjects[NomadShamanRule.toString()] = null
             })
         } else {
-            def tileDest = Model.closeRandomTile(me, me.tileXY, Main.SHAMAN_DISTANCE_TILES_MAX, Main.SHAMAN_DISTANCE_TILES_MIN)
+            def tileDest = Utility.closeRandomTile(me, me.tileXY, Main.SHAMAN_DISTANCE_TILES_MAX, Main.SHAMAN_DISTANCE_TILES_MIN)
             me.actionQueue << new ShapeAction(Shape.SHAMAN)
             me.actionQueue << new WalkAction(tileDest)
             me.actionQueue << new ShapeAction(Shape.SHAMAN_CAMP)

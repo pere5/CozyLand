@@ -1,10 +1,11 @@
 package main.input
 
-import groovyjarjarpicocli.CommandLine
+
 import main.Model
+import main.calculator.Utility
 import main.things.Drawable
 
-import java.awt.Color
+import java.awt.*
 import java.awt.event.MouseEvent
 import java.awt.event.MouseListener
 
@@ -17,7 +18,7 @@ class MyMouseListener implements MouseListener {
         Model.drawables.findAll { Drawable drawable ->
             Model.shapeProperties[drawable.shape].image && e.point.x >= drawable.x - 30 && e.point.x <= drawable.x + 30 && e.point.y >= drawable.y - 30 && e.point.y <= drawable.y + 30
         }.each { Drawable drawable ->
-            drawable.image = Model.shadeImage(Model.shapeProperties[drawable.shape].image, Color.lightGray)
+            drawable.image = Utility.shadeImage(Model.shapeProperties[drawable.shape].image, Color.lightGray)
         }
     }
 

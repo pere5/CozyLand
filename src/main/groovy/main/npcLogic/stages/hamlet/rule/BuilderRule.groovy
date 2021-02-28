@@ -1,12 +1,12 @@
 package main.npcLogic.stages.hamlet.rule
 
-
 import main.Model
+import main.calculator.Utility
+import main.model.Villager
+import main.npcLogic.Rule
 import main.npcLogic.action.ShapeAction
 import main.npcLogic.action.WaitAction
-import main.model.Villager
 import main.npcLogic.stages.nomad.NomadTribe
-import main.npcLogic.Rule
 import main.things.Drawable.Shape
 import main.things.resource.Stone
 import main.things.resource.Wood
@@ -32,7 +32,7 @@ class BuilderRule extends Rule {
     void planWork(Villager me, int status) {
         def unfinishedBuildings = []
         def unfinishedBuilding = unfinishedBuildings[
-                Model.getRandomIntegerBetween(0, unfinishedBuildings.size() - 1)
+                Utility.getRandomIntegerBetween(0, unfinishedBuildings.size() - 1)
         ]
 
         def tribe = me.role.tribe as NomadTribe

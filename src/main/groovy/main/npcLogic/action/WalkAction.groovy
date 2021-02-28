@@ -1,9 +1,8 @@
 package main.npcLogic.action
 
-import main.Model
-import main.exception.PerIsBorkenException
+
+import main.calculator.Utility
 import main.model.StraightPath
-import main.model.Tile
 import main.model.Villager
 import main.npcLogic.Action
 
@@ -61,10 +60,10 @@ class WalkAction extends Action {
         }
 
         if (result == DONE) {
-            Model.placeInTileNetwork(villager)
+            Utility.placeInTileNetwork(villager)
         } else {
             perInterval (1000, 1) {
-                Model.placeInTileNetwork(villager)
+                Utility.placeInTileNetwork(villager)
             }
         }
 

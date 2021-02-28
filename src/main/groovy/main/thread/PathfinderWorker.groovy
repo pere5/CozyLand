@@ -5,11 +5,12 @@ import javaSrc.linkedbinarytree.Position
 import main.Model
 import main.Model.TravelType
 import main.TestPrints
-import main.npcLogic.action.WalkAction
+import main.calculator.Utility
 import main.model.Path
 import main.model.StraightPath
 import main.model.Tile
 import main.model.Villager
+import main.npcLogic.action.WalkAction
 
 class PathfinderWorker extends Worker {
 
@@ -69,13 +70,13 @@ class PathfinderWorker extends Worker {
         for (int i = 0; i < perStarTiles.size() - 1; i++) {
             def aT = perStarTiles[i]
             def bT = perStarTiles[i + 1]
-            if (Model.distance(aT, bT) > 2) {
+            if (Utility.distance(aT, bT) > 2) {
                 result.addAll(randomTilesWithBresenham(aT, bT, villager))
             } else {
                 result.addAll([aT, bT])
             }
         }
-        def pxls = Model.randomPlacesInTileList(result)
+        def pxls = Utility.randomPlacesInTileList(result)
         for (int i = 0; i < pxls.size() - 1; i++) {
             def start = i == 0 ? first : pxls[i]
             def dest = pxls[i + 1]
@@ -237,7 +238,7 @@ class PathfinderWorker extends Worker {
                 def nextTileDirection = nextTileDirections.find { random >= (it[0][0] as Double) && random <= (it[0][1] as Double) }
                 tileStep = [tileStep[0] + nextTileDirection[1][0], tileStep[1] + nextTileDirection[1][1]] as int[]
                 retList << tileStep
-                if (Model.closeEnoughTile(tileStep, tileDest)) {
+                if (Utility.closeEnoughTile(tileStep, tileDest)) {
                     retList << tileDest
                     break
                 }
@@ -260,7 +261,7 @@ class PathfinderWorker extends Worker {
 
     def nextTilesWithBresenham(Villager villager, int[] tileStart, int[] tileDest) {
 
-        def degree = Model.calculateDegreeRound(tileStart, tileDest)
+        def degree = Utility.calculateDegreeRound(tileStart, tileDest)
         def (int tileX, int tileY) = tileStart
 
         def nextTiles = []

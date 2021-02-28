@@ -3,6 +3,7 @@ package main.npcLogic.action
 import main.Main
 import main.Model
 import main.TestPrints
+import main.calculator.Utility
 import main.model.Tile
 import main.model.Villager
 import main.npcLogic.Action
@@ -45,7 +46,7 @@ class SurveyAction extends Action {
             def tileNetwork = Model.tileNetwork as Tile[][]
             (shaman.role.tribe as NomadTribe).followers.each { Villager follower ->
                 def (int tileX, int tileY) = follower.getTileXY()
-                Model.getTilesWithinRadii(shaman, tileX, tileY, Main.VISIBLE_ZONE_TILES) { int x, int y ->
+                Utility.getTilesWithinRadii(shaman, tileX, tileY, Main.VISIBLE_ZONE_TILES) { int x, int y ->
                     TestPrints.printSurveyResourcesCircle(follower, x, y)
                     Tile tile = tileNetwork[x][y]
                     if (tile.naturalResources) {

@@ -2,8 +2,8 @@ package main.things
 
 import main.Main
 import main.Model
+import main.calculator.Utility
 import main.model.Villager
-import main.npcLogic.Tribe
 
 import java.awt.*
 import java.awt.image.BufferedImage
@@ -51,7 +51,7 @@ abstract class Drawable {
                 if (shapeMap.image) {
                     image = shapeMap.image
                 } else {
-                    image = Model.applyColorFilter(
+                    image = Utility.applyColorFilter(
                             Model.shapeProperties[shape].image as BufferedImage,
                             villager.role.tribe.color
                     )
@@ -75,7 +75,7 @@ abstract class Drawable {
     }
 
     int[] getTileXY() {
-        Model.pixelToTileIdx(x, y)
+        Utility.pixelToTileIdx(x, y)
     }
 
     boolean equals(o) {

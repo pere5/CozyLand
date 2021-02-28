@@ -1,14 +1,16 @@
 package main.model
 
-import main.Model
+
 import main.Model.TravelType
+import main.calculator.Utility
 import main.npcLogic.Action
 import main.npcLogic.Role
 import main.npcLogic.stages.alone.role.AloneRole
 import main.things.Drawable
 import main.things.building.Building
 
-import java.awt.Color
+import java.awt.*
+import java.util.Queue
 
 class Villager extends Drawable {
 
@@ -29,10 +31,10 @@ class Villager extends Drawable {
         villager.testColor = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
         villager.role = new AloneRole()
         villager.setShape(Shape.WARRIOR)
-        def (Double x, Double y) = Model.generateXY()
+        def (Double x, Double y) = Utility.generateXY()
         villager.x = x
         villager.y = y
-        Model.placeInTileNetwork(villager)
+        Utility.placeInTileNetwork(villager)
         villager.toRuleWorker()
         return villager
     }

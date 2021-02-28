@@ -1,10 +1,10 @@
 package main.npcLogic.stages.hamlet.rule
 
 import main.Main
-import main.Model
+import main.calculator.Utility
 import main.model.Villager
-import main.npcLogic.stages.nomad.NomadTribe
 import main.npcLogic.Rule
+import main.npcLogic.stages.nomad.NomadTribe
 import main.things.building.Hut
 
 class HomeRule extends Rule {
@@ -26,7 +26,7 @@ class HomeRule extends Rule {
     void planWork(Villager me, int status) {
 
         def tribe = me.role.tribe as NomadTribe
-        int[] tileXY = Model.closeRandomTile(me, tribe.shaman.tileXY, Main.COMFORT_ZONE_TILES + 1, 1)
+        int[] tileXY = Utility.closeRandomTile(me, tribe.shaman.tileXY, Main.COMFORT_ZONE_TILES + 1, 1)
         me.home = new Hut(me, tileXY)
     }
 }

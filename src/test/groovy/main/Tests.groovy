@@ -1,6 +1,7 @@
 package main
 
 import main.calculator.Probabilities
+import main.calculator.Utility
 import main.model.Tile
 import main.model.Villager
 import main.thread.PathfinderWorker
@@ -80,7 +81,7 @@ class Tests {
             assert Math.abs((tiles.collect { it[1] }.sum() as Double) - 100) < 0.00000001
 
             def diffDegree = reverseEngineerDegree(realDegree, tiles)
-            assert diffDegree < 0.349 && Model.round(diffDegree) == 0
+            assert diffDegree < 0.349 && Utility.round(diffDegree) == 0
         }
     }
 
