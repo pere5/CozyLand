@@ -1,6 +1,6 @@
 package main
 
-import main.calculator.Utility
+import main.calculator.OSUtils
 import main.drawers.Surface
 import main.input.MyKeyboardListener
 import main.input.MyMouseListener
@@ -99,7 +99,7 @@ class Main extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE)
         setExtendedState(MAXIMIZED_BOTH)
         setVisible(true)
-        if (!Utility.isWindows()) {
+        if (!OSUtils.isWindows()) {
             pack()
             toFront()
             requestFocus()
