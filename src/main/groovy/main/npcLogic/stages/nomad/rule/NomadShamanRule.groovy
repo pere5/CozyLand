@@ -1,7 +1,6 @@
 package main.npcLogic.stages.nomad.rule
 
 import main.Main
-import main.calculator.Utility
 import main.model.Location
 import main.model.Villager
 import main.npcLogic.Rule
@@ -11,6 +10,7 @@ import main.npcLogic.action.SurveyAction
 import main.npcLogic.action.WalkAction
 import main.things.Drawable.Shape
 import main.things.naturalResource.NaturalResource
+import main.utility.Utility
 
 class NomadShamanRule extends Rule {
 

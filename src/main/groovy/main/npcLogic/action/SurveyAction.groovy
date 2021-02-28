@@ -3,13 +3,13 @@ package main.npcLogic.action
 import main.Main
 import main.Model
 import main.TestPrints
-import main.calculator.Utility
 import main.model.Tile
 import main.model.Villager
 import main.npcLogic.Action
 import main.npcLogic.Tribe
 import main.npcLogic.stages.nomad.NomadTribe
 import main.npcLogic.stages.nomad.role.NomadShamanRole
+import main.utility.Utility
 
 class SurveyAction extends Action {
 

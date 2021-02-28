@@ -5,12 +5,12 @@ import javaSrc.linkedbinarytree.Position
 import main.Model
 import main.Model.TravelType
 import main.TestPrints
-import main.calculator.Utility
 import main.model.Path
 import main.model.StraightPath
 import main.model.Tile
 import main.model.Villager
 import main.npcLogic.action.WalkAction
+import main.utility.Utility
 
 class PathfinderWorker extends Worker {
 

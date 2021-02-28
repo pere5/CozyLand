@@ -1,10 +1,10 @@
 package main.npcLogic.stages.alone.role
 
-import main.calculator.GameUtils
 import main.npcLogic.Role
 import main.npcLogic.Rule
 import main.npcLogic.stages.alone.AloneTribe
 import main.npcLogic.stages.generic.rule.AffinityRule
+import main.utility.GameUtils
 
 class AloneRole extends Role {
 

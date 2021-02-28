@@ -1,4 +1,4 @@
-package main.calculator
+package main.utility
 
 import javaSrc.color.GaussianFilter
 import main.Main

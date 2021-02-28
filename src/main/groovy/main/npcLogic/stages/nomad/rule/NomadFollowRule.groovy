@@ -1,13 +1,13 @@
 package main.npcLogic.stages.nomad.rule
 
 import main.Main
-import main.calculator.Utility
 import main.model.Villager
 import main.npcLogic.Rule
 import main.npcLogic.action.ShapeAction
 import main.npcLogic.action.WalkAction
 import main.npcLogic.stages.nomad.NomadTribe
 import main.things.Drawable.Shape
+import main.utility.Utility
 
 class NomadFollowRule extends Rule {
 

@@ -1,13 +1,12 @@
 package main.model
 
-
 import main.Model.TravelType
-import main.calculator.Utility
 import main.npcLogic.Action
 import main.npcLogic.Role
 import main.npcLogic.stages.alone.role.AloneRole
 import main.things.Drawable
 import main.things.building.Building
+import main.utility.Utility
 
 import java.awt.*
 import java.util.Queue

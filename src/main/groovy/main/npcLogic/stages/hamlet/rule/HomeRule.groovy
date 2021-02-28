@@ -1,11 +1,11 @@
 package main.npcLogic.stages.hamlet.rule
 
 import main.Main
-import main.calculator.Utility
 import main.model.Villager
 import main.npcLogic.Rule
 import main.npcLogic.stages.nomad.NomadTribe
 import main.things.building.Hut
+import main.utility.Utility
 
 class HomeRule extends Rule {
 

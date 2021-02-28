@@ -1,10 +1,10 @@
 package main
 
-import main.calculator.Probabilities
-import main.calculator.Utility
 import main.model.Tile
 import main.model.Villager
 import main.thread.PathfinderWorker
+import main.utility.ProbabilityUtils
+import main.utility.Utility
 import org.junit.BeforeClass
 import org.junit.Test
 
@@ -15,18 +15,18 @@ class Tests {
 
     @Test
     void degreeRange() {
-        assert Probabilities.degreeRange(45) == (315..359) + (0..135)
-        assert Probabilities.degreeRange(100) == 10..190
-        assert Probabilities.degreeRange(300) == (210..359) + (0..30)
+        assert ProbabilityUtils.degreeRange(45) == (315..359) + (0..135)
+        assert ProbabilityUtils.degreeRange(100) == 10..190
+        assert ProbabilityUtils.degreeRange(300) == (210..359) + (0..30)
     }
 
     @Test
     void probabilitiesModel() {
 
         360.times { def realDegree ->
-            def degreeRange = Probabilities.degreeRange(realDegree)
-            def degreeProbabilities = Probabilities.degreeProbabilities(degreeRange)
-            def (tiles, testC) = Probabilities.tileProbabilities(degreeProbabilities)
+            def degreeRange = ProbabilityUtils.degreeRange(realDegree)
+            def degreeProbabilities = ProbabilityUtils.degreeProbabilities(degreeRange)
+            def (tiles, testC) = ProbabilityUtils.tileProbabilities(degreeProbabilities)
 
             def probKeys = testC.flatten().collect{ it.p }.unique()
             def allTheSame = [
@@ -112,7 +112,7 @@ class Tests {
 
     @Test
     void nextTiles() {
-        Model.tileProbabilitiesForDegrees = Probabilities.calculateProbabilitiesModel()
+        Model.tileProbabilitiesForDegrees = ProbabilityUtils.calculateProbabilitiesModel()
         plainTerrain()
         unevenTerrain()
     }

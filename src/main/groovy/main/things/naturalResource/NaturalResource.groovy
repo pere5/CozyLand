@@ -1,9 +1,9 @@
 package main.things.naturalResource
 
 import main.Model
-import main.calculator.ImageUtils
 import main.model.Tile
 import main.things.Drawable
+import main.utility.ImageUtils
 
 abstract class NaturalResource extends Drawable {
     NaturalResource(Tile tile, Shape shape) {

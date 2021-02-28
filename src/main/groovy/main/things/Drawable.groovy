@@ -2,9 +2,9 @@ package main.things
 
 import main.Main
 import main.Model
-import main.calculator.ImageUtils
-import main.calculator.Utility
 import main.model.Villager
+import main.utility.ImageUtils
+import main.utility.Utility
 
 import java.awt.*
 import java.awt.image.BufferedImage

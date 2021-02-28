@@ -1,7 +1,7 @@
 package main.model
 
 import main.Main
-import main.calculator.Utility
+import main.utility.Utility
 
 class StraightPath {
 

@@ -1,4 +1,4 @@
-package main.calculator
+package main.utility
 
 class OSUtils {
 

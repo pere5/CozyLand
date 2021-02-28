@@ -1,10 +1,9 @@
 package main.npcLogic.action
 
-
-import main.calculator.Utility
 import main.model.StraightPath
 import main.model.Villager
 import main.npcLogic.Action
+import main.utility.Utility
 
 class WalkAction extends Action {
 

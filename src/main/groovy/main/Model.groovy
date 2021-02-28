@@ -1,9 +1,6 @@
 package main
 
 import javaSrc.circulararray.CircularArrayList
-import main.calculator.Background
-import main.calculator.ImageUtils
-import main.calculator.Probabilities
 import main.input.MyKeyboardListener
 import main.input.MyMouseListener
 import main.model.Tile
@@ -13,6 +10,9 @@ import main.things.Drawable.Shape
 import main.things.naturalResource.NaturalResource
 import main.things.naturalResource.Rock
 import main.things.naturalResource.Tree
+import main.utility.BackgroundUtils
+import main.utility.ImageUtils
+import main.utility.ProbabilityUtils
 
 import java.awt.image.BufferedImage
 import java.util.concurrent.ConcurrentLinkedQueue
@@ -76,7 +76,7 @@ class Model {
     static List<Villager> villagers = []
     static ConcurrentLinkedQueue<Drawable> drawables = []
     static List<Map> frameSlots = []
-    static def tileProbabilitiesForDegrees = Probabilities.calculateProbabilitiesModel()
+    static def tileProbabilitiesForDegrees = ProbabilityUtils.calculateProbabilitiesModel()
     static BufferedImage backgroundImage
 
     static Map<Shape, Object> shapeProperties = [
@@ -155,7 +155,7 @@ class Model {
     static def init(def keyboard, def mouse) {
         Model.keyboard = keyboard
         Model.mouse = mouse
-        tileNetwork = Background.generateBackground()
+        tileNetwork = BackgroundUtils.generateBackground()
         backgroundImage = ImageUtils.createBGImage(tileNetwork)
         shapeProperties[Shape.TREE].image = ImageUtils.createImage(Shape.TREE)
         shapeProperties[Shape.ROCK].image = ImageUtils.createImage(Shape.ROCK)
@@ -172,6 +172,6 @@ class Model {
 
         Model.villagers = villagers
 
-        Background.setNaturalResources(tileNetwork)
+        BackgroundUtils.setNaturalResources(tileNetwork)
     }
 }

@@ -2,13 +2,13 @@ package main.npcLogic.stages.generic.rule
 
 import main.Main
 import main.Model
-import main.calculator.Utility
 import main.model.Tile
 import main.model.Villager
 import main.npcLogic.Rule
 import main.npcLogic.action.ShapeAction
 import main.npcLogic.action.WalkAction
 import main.things.Drawable.Shape
+import main.utility.Utility
 
 class AffinityRule extends Rule {
 

@@ -1,7 +1,6 @@
 package main.npcLogic.stages.hamlet.rule
 
 import main.Model
-import main.calculator.Utility
 import main.model.Villager
 import main.npcLogic.Rule
 import main.npcLogic.action.ShapeAction
@@ -10,6 +9,7 @@ import main.npcLogic.stages.nomad.NomadTribe
 import main.things.Drawable.Shape
 import main.things.resource.Stone
 import main.things.resource.Wood
+import main.utility.Utility
 
 class BuilderRule extends Rule {
 

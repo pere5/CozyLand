@@ -1,4 +1,4 @@
-package main.calculator
+package main.utility
 
 import main.Main
 import main.Model
@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage
 import java.util.List
 import java.util.concurrent.ThreadLocalRandom
 
-class Background {
+class BackgroundUtils {
 
     static Tile[][] generateBackground() {
         generateBackground('lol2.png')

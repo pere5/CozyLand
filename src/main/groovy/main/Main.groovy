@@ -1,6 +1,5 @@
 package main
 
-import main.calculator.OSUtils
 import main.drawers.Surface
 import main.input.MyKeyboardListener
 import main.input.MyMouseListener
@@ -8,6 +7,7 @@ import main.thread.InterruptionWorker
 import main.thread.PathfinderWorker
 import main.thread.RuleWorker
 import main.thread.WorkWorker
+import main.utility.OSUtils
 
 import javax.swing.*
 import java.awt.*

@@ -1,8 +1,8 @@
-package main.calculator
+package main.utility
 
 import main.Model
 
-class Probabilities {
+class ProbabilityUtils {
 
     static def calculateProbabilitiesModel() {
         (0..359).collectEntries { def degree ->

@@ -1,8 +1,6 @@
 package main
 
 import javaSrc.color.ColorUtils
-import main.calculator.ImageUtils
-import main.calculator.Utility
 import main.model.Path
 import main.model.Tile
 import main.model.Villager
@@ -11,6 +9,8 @@ import main.things.Artifact
 import main.things.ArtifactLine
 import main.things.Drawable
 import main.things.Drawable.Shape
+import main.utility.ImageUtils
+import main.utility.Utility
 
 import java.awt.*
 import java.util.List

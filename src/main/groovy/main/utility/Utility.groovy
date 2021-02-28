@@ -1,4 +1,4 @@
-package main.calculator
+package main.utility
 
 import main.Main
 import main.Model

@@ -1,8 +1,8 @@
 package main.input
 
 import main.Model
-import main.calculator.ImageUtils
 import main.things.Drawable
+import main.utility.ImageUtils
 
 import java.awt.*
 import java.awt.event.MouseEvent

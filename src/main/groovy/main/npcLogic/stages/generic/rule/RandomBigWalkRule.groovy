@@ -1,10 +1,9 @@
 package main.npcLogic.stages.generic.rule
 
-
-import main.calculator.Utility
 import main.model.Villager
 import main.npcLogic.Rule
 import main.npcLogic.action.WalkAction
+import main.utility.Utility
 
 class RandomBigWalkRule extends Rule {
 

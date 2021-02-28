@@ -1,9 +1,9 @@
 package main.things.building
 
 import main.Model
-import main.calculator.ImageUtils
 import main.model.Tile
 import main.model.Villager
+import main.utility.ImageUtils
 
 class Hut extends Building {
 
