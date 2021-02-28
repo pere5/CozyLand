@@ -152,6 +152,8 @@ class Model {
             ]
     ]
 
+    static def NO_VILLAGERS = 1000
+
     static def init(def keyboard, def mouse) {
         Model.keyboard = keyboard
         Model.mouse = mouse
@@ -168,7 +170,7 @@ class Model {
         shapeProperties[Shape.FOLLOWER].image = ImageUtils.createImage(Shape.FOLLOWER)
         shapeProperties[Shape.FOLLOWER_BUILDER].image = ImageUtils.createImage(Shape.FOLLOWER_BUILDER)
         shapeProperties[Shape.HUT].image = ImageUtils.createImage(Shape.HUT)
-        1000.times { villagers << Villager.test() }
+        NO_VILLAGERS.times { villagers << Villager.test() }
 
         Model.villagers = villagers
 
