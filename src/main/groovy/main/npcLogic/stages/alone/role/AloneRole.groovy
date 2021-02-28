@@ -1,18 +1,11 @@
 package main.npcLogic.stages.alone.role
 
-import main.Main
-import main.Model
-import main.model.Villager
-import main.npcLogic.Role
-import main.npcLogic.stages.generic.rule.AffinityRule
-import main.npcLogic.stages.alone.AloneTribe
-import main.npcLogic.Rule
-import main.npcLogic.stages.generic.rule.RandomBigWalkRule
-import main.npcLogic.stages.nomad.NomadTribe
-import main.npcLogic.stages.nomad.role.NomadFollowerRole
-import main.npcLogic.stages.nomad.role.NomadShamanRole
 
-import java.awt.Color
+import main.Model
+import main.npcLogic.Role
+import main.npcLogic.Rule
+import main.npcLogic.stages.alone.AloneTribe
+import main.npcLogic.stages.generic.rule.AffinityRule
 
 class AloneRole extends Role {
 
