@@ -1,21 +1,14 @@
 package main.calculator
 
-
 import main.Main
 import main.Model
 import main.TestPrints
 import main.exception.PerIsBorkenException
 import main.model.Tile
 import main.model.Villager
-import main.npcLogic.stages.alone.role.AloneRole
-import main.npcLogic.stages.nomad.NomadTribe
-import main.npcLogic.stages.nomad.role.NomadFollowerRole
-import main.npcLogic.stages.nomad.role.NomadShamanRole
 import main.things.Drawable
 
-import java.awt.*
 import java.awt.geom.Point2D
-import java.util.List
 import java.util.concurrent.ThreadLocalRandom
 
 class Utility {
@@ -296,49 +289,6 @@ class Utility {
 
             if (!(one && two && three && four)) {
                 throw new PerIsBorkenException()
-            }
-        }
-    }
-
-    static void joinATribe(Villager me) {
-        if (me.role.id == AloneRole.ID) {
-            def becomeFollower = { Villager villager, NomadTribe tribe ->
-                villager.role = new NomadFollowerRole(tribe)
-                tribe.followers << villager
-                villager.interrupt()
-            }
-
-            def tileNetwork = Model.tileNetwork
-            def (int tileX, int tileY) = me.getTileXY()
-
-            List<Villager> neighbors = []
-
-            getTilesWithinRadii(me, tileX, tileY, Main.COMFORT_ZONE_TILES) { int x, int y ->
-                tileNetwork[x][y].villagers.each { Villager neighbor ->
-                    if (neighbor.id != me.id) {
-                        neighbors << neighbor
-                    }
-                }
-            }
-
-            if (neighbors) {
-                def nomadTribe = neighbors.role.tribe.find { it instanceof NomadTribe } as NomadTribe
-
-                if (nomadTribe) {
-                    becomeFollower(me, nomadTribe)
-                } else {
-                    Random rand = new Random()
-
-                    NomadTribe myNomadTribe = new NomadTribe()
-                    myNomadTribe.shaman = me
-                    myNomadTribe.color = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
-
-                    me.role = new NomadShamanRole(myNomadTribe)
-                    me.interrupt()
-                    neighbors.findAll { it.role.id == AloneRole.ID }.each { def aloneVillager ->
-                        becomeFollower(aloneVillager, myNomadTribe)
-                    }
-                }
             }
         }
     }

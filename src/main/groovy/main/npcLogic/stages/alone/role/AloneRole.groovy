@@ -1,7 +1,6 @@
 package main.npcLogic.stages.alone.role
 
-
-import main.calculator.Utility
+import main.calculator.GameUtils
 import main.npcLogic.Role
 import main.npcLogic.Rule
 import main.npcLogic.stages.alone.AloneTribe
@@ -18,8 +17,8 @@ class AloneRole extends Role {
     List<Rule> constructRuleList() {
         int rank = Integer.MAX_VALUE
         [
-                new AffinityRule(--rank, Utility.&joinATribe)
-                //new RandomBigWalkRule(--rank, Utility.&joinATribe)
+                new AffinityRule(--rank, GameUtils.&joinATribe)
+                //new RandomBigWalkRule(--rank, GameUtils.&joinATribe)
         ]
     }
 }

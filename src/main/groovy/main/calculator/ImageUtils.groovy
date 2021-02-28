@@ -13,6 +13,7 @@ import java.awt.image.RescaleOp
 import java.util.List
 
 class ImageUtils {
+
     static BufferedImage createImage(Drawable.Shape shape) {
 
         def fileName = Model.shapeProperties[shape].fileName as String

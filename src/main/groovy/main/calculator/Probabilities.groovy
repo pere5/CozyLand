@@ -3,6 +3,7 @@ package main.calculator
 import main.Model
 
 class Probabilities {
+
     static def calculateProbabilitiesModel() {
         (0..359).collectEntries { def degree ->
             def degreeRange = degreeRange(degree)
