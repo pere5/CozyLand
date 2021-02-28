@@ -98,7 +98,7 @@ class Main extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE)
         setExtendedState(MAXIMIZED_BOTH)
         setVisible(true)
-        if (!MiscellaneousService.isWindows()) {
+        if (!UtilityService.isWindows()) {
             pack()
             toFront()
             requestFocus()

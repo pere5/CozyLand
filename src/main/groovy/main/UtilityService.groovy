@@ -1,6 +1,6 @@
 package main
 
-class MiscellaneousService {
+class UtilityService {
 
     private static String OS = System.getProperty("os.name").toLowerCase()
 
