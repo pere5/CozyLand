@@ -17,7 +17,7 @@ class GameUtils {
         if (me.role.id == AloneRole.ID) {
             def becomeFollower = { Villager villager, NomadTribe tribe ->
                 villager.role = new NomadFollowerRole(tribe)
-                tribe.followers << villager
+                tribe.villagers << villager
                 villager.interrupt()
             }
 
@@ -43,7 +43,7 @@ class GameUtils {
                     Random rand = new Random()
 
                     NomadTribe myNomadTribe = new NomadTribe()
-                    myNomadTribe.shaman = me
+                    myNomadTribe.ruler = me
                     myNomadTribe.color = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
 
                     me.role = new NomadShamanRole(myNomadTribe)

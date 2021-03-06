@@ -9,7 +9,7 @@ class WorkWorker extends Worker {
 
     @Override
     def run() {
-        super.intendedFps = 16
+        super.intendedFps = 32
         super.run()
     }
 

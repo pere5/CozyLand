@@ -36,7 +36,7 @@ class NomadFollowRule extends Rule {
 
     private static int[] getHomeXY(Villager me) {
         def tribe = me.role.tribe as NomadTribe
-        me.home?.tileXY ?: tribe.shaman.tileXY
+        me.home?.tileXY ?: tribe.ruler.tileXY
     }
 }
 

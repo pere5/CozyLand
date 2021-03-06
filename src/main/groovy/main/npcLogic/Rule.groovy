@@ -4,9 +4,9 @@ import main.model.Villager
 
 abstract class Rule {
 
-    static int UNREACHABLE = 3
-    static int GREAT = 2
-    static int GOOD = 1
+    static int UNREACHABLE = 30
+    static int GREAT = 20
+    static int GOOD = 10
     static int BAD = 0
 
     int rank

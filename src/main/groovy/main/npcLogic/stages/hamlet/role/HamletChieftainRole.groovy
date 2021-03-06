@@ -1,23 +1,22 @@
-package main.npcLogic.stages.nomad.role
+package main.npcLogic.stages.hamlet.role
 
 import main.npcLogic.Role
 import main.npcLogic.Rule
 import main.npcLogic.stages.hamlet.rule.HamletChieftainRule
 import main.npcLogic.stages.nomad.NomadTribe
-import main.npcLogic.stages.nomad.rule.NomadShamanRule
 
-class NomadShamanRole extends Role {
+class HamletChieftainRole extends Role {
 
-    static final String ID = 'nomad_shaman'
+    static final String ID = 'hamlet_chieftain'
 
-    NomadShamanRole(NomadTribe tribe) {
+    HamletChieftainRole(NomadTribe tribe) {
         super(ID, tribe)
     }
 
+    @Override
     List<Rule> constructRuleList() {
         int rank = Integer.MAX_VALUE
         [
-                new NomadShamanRule(--rank),
                 new HamletChieftainRule(--rank)
         ]
     }

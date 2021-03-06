@@ -1,15 +1,10 @@
 package main.npcLogic.stages.nomad
 
 
-import main.model.Villager
 import main.npcLogic.Tribe
 import main.things.Drawable.Shape
 
-import java.util.concurrent.ConcurrentLinkedQueue
-
 class NomadTribe extends Tribe {
-    Villager shaman
-    ConcurrentLinkedQueue<Villager> followers = []
 
     NomadTribe() {
         shapeMap[Shape.SHAMAN] = [image:null]

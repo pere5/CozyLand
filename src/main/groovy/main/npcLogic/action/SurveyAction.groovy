@@ -7,7 +7,6 @@ import main.model.Tile
 import main.model.Villager
 import main.npcLogic.Action
 import main.npcLogic.Tribe
-import main.npcLogic.stages.nomad.NomadTribe
 import main.npcLogic.stages.nomad.role.NomadShamanRole
 import main.utility.Utility
 
@@ -44,7 +43,7 @@ class SurveyAction extends Action {
 
         perInterval (2000) {
             def tileNetwork = Model.tileNetwork as Tile[][]
-            (shaman.role.tribe as NomadTribe).followers.each { Villager follower ->
+            shaman.role.tribe.villagers.each { Villager follower ->
                 def (int tileX, int tileY) = follower.getTileXY()
                 Utility.getTilesWithinRadii(shaman, tileX, tileY, Main.VISIBLE_ZONE_TILES) { int x, int y ->
                     TestPrints.printSurveyResourcesCircle(follower, x, y)

@@ -11,9 +11,9 @@ import main.things.resource.Stone
 import main.things.resource.Wood
 import main.utility.Utility
 
-class BuilderRule extends Rule {
+class HamletVillagerBuilderRule extends Rule {
 
-    BuilderRule(int rank) {
+    HamletVillagerBuilderRule(int rank) {
         this.rank = rank
     }
 

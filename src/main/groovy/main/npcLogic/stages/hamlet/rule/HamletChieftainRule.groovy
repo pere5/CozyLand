@@ -8,9 +8,9 @@ import main.npcLogic.action.WalkAction
 import main.things.Drawable.Shape
 import main.utility.Utility
 
-class ShamanBuildRule extends Rule {
+class HamletChieftainRule extends Rule {
 
-    ShamanBuildRule(int rank) {
+    HamletChieftainRule(int rank) {
         this.rank = rank
     }
 

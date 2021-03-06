@@ -17,10 +17,10 @@ class InterruptionWorker extends Worker {
         def test = false
         if (test) {
             def weird = Model.villagers.findAll {
-                def tribe = it.role?.tribe
+                def tribe = it.role.tribe
                 if (tribe instanceof NomadTribe) {
                     def nomadTribe = tribe as NomadTribe
-                    return !nomadTribe.shaman
+                    return !nomadTribe.ruler
                 }
                 return false
             }
@@ -45,7 +45,7 @@ class InterruptionWorker extends Worker {
             def weird3 = Model.villagers.findAll {
                 if (it.role.id == NomadShamanRole.ID) {
                     def tribe = it.role.tribe as NomadTribe
-                    return tribe.shaman.id != it.id
+                    return tribe.ruler.id != it.id
                 }
                 return false
             }

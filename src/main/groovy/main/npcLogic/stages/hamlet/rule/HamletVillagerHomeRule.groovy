@@ -3,13 +3,12 @@ package main.npcLogic.stages.hamlet.rule
 import main.Main
 import main.model.Villager
 import main.npcLogic.Rule
-import main.npcLogic.stages.nomad.NomadTribe
 import main.things.building.Hut
 import main.utility.Utility
 
-class HomeRule extends Rule {
+class HamletVillagerHomeRule extends Rule {
 
-    HomeRule(int rank) {
+    HamletVillagerHomeRule(int rank) {
         this.rank = rank
     }
 
@@ -24,9 +23,7 @@ class HomeRule extends Rule {
 
     @Override
     void planWork(Villager me, int status) {
-
-        def tribe = me.role.tribe as NomadTribe
-        int[] tileXY = Utility.closeRandomTile(me, tribe.shaman.tileXY, Main.COMFORT_ZONE_TILES + 1, 1)
+        int[] tileXY = Utility.closeRandomTile(me, me.role.tribe.ruler.tileXY, Main.COMFORT_ZONE_TILES + 1, 1)
         me.home = new Hut(me, tileXY)
     }
 }
