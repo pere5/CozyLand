@@ -3,11 +3,9 @@ package main.things.resource
 import main.Model
 import main.things.Drawable
 
-import java.awt.image.BufferedImage
-
 abstract class Resource extends Drawable {
     Resource(Shape shape) {
         this.shape = shape
-        this.image = Model.shapeProperties[shape].image as BufferedImage
+        this.image = Model.shapeProperties[shape]
     }
 }

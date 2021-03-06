@@ -2,7 +2,6 @@ package main.utility
 
 import javaSrc.color.GaussianFilter
 import main.Main
-import main.Model
 import main.model.Tile
 import main.things.Drawable
 
@@ -14,10 +13,7 @@ import java.util.List
 
 class ImageUtils {
 
-    static BufferedImage createImage(Drawable.Shape shape) {
-
-        def fileName = Model.shapeProperties[shape].fileName as String
-        def scale = Model.shapeProperties[shape].scale as Double
+    static BufferedImage createImage(String fileName, Double scale) {
 
         ClassLoader classloader = Thread.currentThread().getContextClassLoader()
         def img = ImageIO.read(classloader.getResourceAsStream(fileName))

@@ -79,77 +79,23 @@ class Model {
     static def tileProbabilitiesForDegrees = ProbabilityUtils.calculateProbabilitiesModel()
     static BufferedImage backgroundImage
 
-    static Map<Shape, Object> shapeProperties = [
-            (Shape.RECT)        : [
-                    fileName: null,
-                    scale   : null,
-                    image   : null
-            ],
-            (Shape.CIRCLE)      : [
-                    fileName: null,
-                    scale   : null,
-                    image   : null
-            ],
-            (Shape.LINE)      : [
-                    fileName: null,
-                    scale   : null,
-                    image   : null
-            ],
-            (Shape.TREE)        : [
-                    fileName: 'icons8-large-tree-48.png',
-                    scale   : Main.TREE_SCALE,
-                    image   : null
-            ],
-            (Shape.ROCK)        : [
-                    fileName: 'icons8-silver-ore-48.png',
-                    scale   : Main.ROCK_SCALE,
-                    image   : null
-            ],
-            (Shape.WOOD)        : [
-                    fileName: 'flaticon-firewood-64.png',
-                    scale   : Main.SCALE_64,
-                    image   : null
-            ],
-            (Shape.STONE)       : [
-                    fileName: 'flaticon-rocks-64.png',
-                    scale   : Main.SCALE_64,
-                    image   : null
-            ],
-            (Shape.WARRIOR)     : [
-                    fileName: 'icons8-iron-age-warrior-48.png',
-                    scale   : Main.SCALE_48,
-                    image   : null
-            ],
-            (Shape.SHAMAN)      : [
-                    fileName: 'icons8-spartan-helmet-48.png',
-                    scale   : Main.SCALE_48,
-                    image   : null
-            ],
-            (Shape.SHAMAN_CAMP) : [
-                    fileName: 'icons8-campfire-48.png',
-                    scale   : Main.SCALE_48,
-                    image   : null
-            ],
-            (Shape.SHAMAN_BUILD): [
-                    fileName: 'flaticon-hammer-64.png',
-                    scale   : Main.SCALE_64,
-                    image   : null
-            ],
-            (Shape.FOLLOWER)    : [
-                    fileName: 'icons8-sword-48.png',
-                    scale   : Main.SCALE_48,
-                    image   : null
-            ],
-            (Shape.FOLLOWER_BUILDER)    : [
-                    fileName: 'flaticon-builder-hammer-64.png',
-                    scale   : Main.SCALE_64,
-                    image   : null
-            ],
-            (Shape.HUT)    : [
-                    fileName: 'flaticon-hut-128.png',
-                    scale   : Main.SCALE_x2_128,
-                    image   : null
-            ]
+    static Map<Shape, BufferedImage> shapeProperties = [
+            (Shape.RECT)            : null,
+            (Shape.CIRCLE)          : null,
+            (Shape.LINE)            : null,
+            (Shape.TREE)            : ImageUtils.createImage('icons8-large-tree-48.png', Main.TREE_SCALE),
+            (Shape.ROCK)            : ImageUtils.createImage('icons8-silver-ore-48.png', Main.ROCK_SCALE),
+            (Shape.WOOD)            : ImageUtils.createImage('flaticon-firewood-64.png', Main.SCALE_64),
+            (Shape.STONE)           : ImageUtils.createImage('flaticon-rocks-64.png', Main.SCALE_64),
+            (Shape.WARRIOR)         : ImageUtils.createImage('icons8-iron-age-warrior-48.png', Main.SCALE_48),
+            (Shape.SHAMAN)          : ImageUtils.createImage('icons8-spartan-helmet-48.png', Main.SCALE_48),
+            (Shape.SHAMAN_CAMP)     : ImageUtils.createImage('icons8-campfire-48.png', Main.SCALE_48),
+            (Shape.SHAMAN_BUILD)    : ImageUtils.createImage('flaticon-hammer-64.png', Main.SCALE_64),
+            (Shape.FOLLOWER)        : ImageUtils.createImage('icons8-sword-48.png', Main.SCALE_48),
+            (Shape.FOLLOWER_BUILDER): ImageUtils.createImage('flaticon-builder-hammer-64.png', Main.SCALE_64),
+            (Shape.HUT)             : ImageUtils.createImage('flaticon-hut-128.png', Main.SCALE_x2_128),
+            (Shape.SHAMAN_LODGE)    : ImageUtils.createImage('flaticon-history-64.png', Main.SCALE_x2_128),
+            (Shape.GRANARY)         : ImageUtils.createImage('flaticon-shield-64.png', Main.SCALE_x2_128)
     ]
 
     static def NO_VILLAGERS = 1000
@@ -159,17 +105,6 @@ class Model {
         Model.mouse = mouse
         tileNetwork = BackgroundUtils.generateBackground()
         backgroundImage = ImageUtils.createBGImage(tileNetwork)
-        shapeProperties[Shape.TREE].image = ImageUtils.createImage(Shape.TREE)
-        shapeProperties[Shape.ROCK].image = ImageUtils.createImage(Shape.ROCK)
-        shapeProperties[Shape.STONE].image = ImageUtils.createImage(Shape.STONE)
-        shapeProperties[Shape.WOOD].image = ImageUtils.createImage(Shape.WOOD)
-        shapeProperties[Shape.WARRIOR].image = ImageUtils.createImage(Shape.WARRIOR)
-        shapeProperties[Shape.SHAMAN].image = ImageUtils.createImage(Shape.SHAMAN)
-        shapeProperties[Shape.SHAMAN_CAMP].image = ImageUtils.createImage(Shape.SHAMAN_CAMP)
-        shapeProperties[Shape.SHAMAN_BUILD].image = ImageUtils.createImage(Shape.SHAMAN_BUILD)
-        shapeProperties[Shape.FOLLOWER].image = ImageUtils.createImage(Shape.FOLLOWER)
-        shapeProperties[Shape.FOLLOWER_BUILDER].image = ImageUtils.createImage(Shape.FOLLOWER_BUILDER)
-        shapeProperties[Shape.HUT].image = ImageUtils.createImage(Shape.HUT)
         NO_VILLAGERS.times { villagers << Villager.test() }
 
         Model.villagers = villagers

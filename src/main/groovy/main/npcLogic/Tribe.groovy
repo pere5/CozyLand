@@ -1,5 +1,6 @@
 package main.npcLogic
 
+import main.Model
 import main.model.Location
 import main.model.Villager
 import main.things.Drawable
@@ -22,4 +23,12 @@ abstract class Tribe {
     Map<List<Integer>, Set<NaturalResource>> surveyNaturalResources = [:]
     Location goodLocation
     Location location
+
+    Tribe() {
+        for (Drawable.Shape shape : Drawable.Shape.values()) {
+            if (Model.shapeProperties[shape]) {
+                shapeMap[shape] = [image: null] as Map<String, BufferedImage>
+            }
+        }
+    }
 }

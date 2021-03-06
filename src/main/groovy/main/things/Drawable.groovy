@@ -48,13 +48,13 @@ abstract class Drawable {
 
         if (this instanceof Villager) {
             def villager = this as Villager
-            def shapeMap = villager.role.tribe.shapeMap.get(shape)
-            if (shapeMap) {
+            if (villager.role.tribe.color) {
+                def shapeMap = villager.role.tribe.shapeMap[shape]
                 if (shapeMap.image) {
                     image = shapeMap.image
                 } else {
                     image = ImageUtils.applyColorFilter(
-                            Model.shapeProperties[shape].image as BufferedImage,
+                            Model.shapeProperties[shape],
                             villager.role.tribe.color
                     )
                     shapeMap.image = image
@@ -63,7 +63,7 @@ abstract class Drawable {
         }
 
         if (image == null) {
-            image = Model.shapeProperties[shape].image as BufferedImage
+            image = Model.shapeProperties[shape]
         }
 
         this.shape = shape
