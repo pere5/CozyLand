@@ -8,7 +8,7 @@ import main.utility.ImageUtils
 abstract class NaturalResource extends Drawable {
     NaturalResource(Tile tile, Shape shape) {
         this.shape = shape
-        this.image = ImageUtils.shadeImage(Model.shapeProperties[shape], tile.color)
+        this.image = ImageUtils.shadeImage(Model.shapeImageMap[shape], tile.color)
         this.parent = tile.id
         this.x = tile.x
         this.y = tile.y

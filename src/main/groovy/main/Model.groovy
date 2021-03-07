@@ -79,7 +79,7 @@ class Model {
     static def tileProbabilitiesForDegrees = ProbabilityUtils.calculateProbabilitiesModel()
     static BufferedImage backgroundImage
 
-    static Map<Shape, BufferedImage> shapeProperties = [
+    static Map<Shape, BufferedImage> shapeImageMap = [
             (Shape.RECT)            : null,
             (Shape.CIRCLE)          : null,
             (Shape.LINE)            : null,

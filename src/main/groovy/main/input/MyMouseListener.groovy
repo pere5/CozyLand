@@ -17,7 +17,7 @@ class MyMouseListener implements MouseListener {
         //bilder och ytor ritas från övre vänstra hörnet
 
         Model.drawables.findAll { Drawable drawable ->
-            if (Model.shapeProperties[drawable.shape]) {
+            if (Model.shapeImageMap[drawable.shape]) {
                 def a = e.point.x >= drawable.x + Surface.xOffset - 30
                 def b = e.point.x <= drawable.x + Surface.xOffset + 30
                 def c = e.point.y >= drawable.y + Surface.yOffset - 30
@@ -27,7 +27,7 @@ class MyMouseListener implements MouseListener {
                 return false
             }
         }.each { Drawable drawable ->
-            drawable.image = ImageUtils.shadeImage(Model.shapeProperties[drawable.shape], Color.lightGray)
+            drawable.image = ImageUtils.shadeImage(Model.shapeImageMap[drawable.shape], Color.lightGray)
             if (drawable instanceof Villager) {
                 drawable.debug = true
                 println((drawable as Villager).toString())

@@ -54,7 +54,7 @@ abstract class Drawable {
                     image = tribeImage
                 } else {
                     image = ImageUtils.applyColorFilter(
-                            Model.shapeProperties[shape],
+                            Model.shapeImageMap[shape],
                             villager.role.tribe.color
                     )
                     villager.role.tribe.shapeImageMap[shape] = image
@@ -63,7 +63,7 @@ abstract class Drawable {
         }
 
         if (image == null) {
-            image = Model.shapeProperties[shape]
+            image = Model.shapeImageMap[shape]
         }
 
         this.shape = shape
