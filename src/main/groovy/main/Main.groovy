@@ -36,7 +36,7 @@ class Main extends JFrame {
 
     static final Double STEP = 0.85
 
-    static final int GAUSSIAN_FILTER = 3
+    static final int GAUSSIAN_FILTER = 4
 
     static final Double TREE_SCALE = 0.90
     static final Double ROCK_SCALE = 0.40

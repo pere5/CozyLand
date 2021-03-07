@@ -15,7 +15,7 @@ import java.util.concurrent.ThreadLocalRandom
 class BackgroundUtils {
 
     static Tile[][] generateBackground() {
-        generateBackground('lol2.png')
+        generateBackground("lol${(Math.random() * 4 + 1) as int}.png")
     }
 
     static Tile[][] generateBackground(String imageName) {
