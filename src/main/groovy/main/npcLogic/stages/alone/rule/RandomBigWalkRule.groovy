@@ -1,21 +1,15 @@
-package main.npcLogic.stages.generic.rule
+package main.npcLogic.stages.alone.rule
 
 import main.model.Villager
 import main.npcLogic.Rule
 import main.npcLogic.action.WalkAction
+import main.npcLogic.stages.alone.rule.AffinityRule
 import main.utility.Utility
 
 class RandomBigWalkRule extends Rule {
 
-    Closure walkActionClosure
-
     RandomBigWalkRule(int rank) {
         this.rank = rank
-    }
-
-    RandomBigWalkRule(int rank, Closure walkActionClosure) {
-        this.rank = rank
-        this.walkActionClosure = walkActionClosure
     }
 
     @Override
@@ -26,7 +20,7 @@ class RandomBigWalkRule extends Rule {
     @Override
     void planWork(Villager villager, int status) {
         def tileDest = Utility.generateTileXY()
-        villager.actionQueue << new WalkAction(tileDest, walkActionClosure)
+        villager.actionQueue << new WalkAction(tileDest, AffinityRule.&joinATribe)
     }
 }
 
