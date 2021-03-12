@@ -95,7 +95,8 @@ class Model {
             (Shape.FOLLOWER_BUILDER): ImageUtils.createImage('flaticon-builder-hammer-64.png', Main.SCALE_64),
             (Shape.HUT)             : ImageUtils.createImage('flaticon-hut-128.png', Main.SCALE_x2_128),
             (Shape.SHAMAN_LODGE)    : ImageUtils.createImage('flaticon-history-64.png', Main.SCALE_x2_128),
-            (Shape.GRANARY)         : ImageUtils.createImage('flaticon-shield-64.png', Main.SCALE_x2_128)
+            (Shape.GRANARY)         : ImageUtils.createImage('flaticon-shield-64.png', Main.SCALE_x2_128),
+            (Shape.CARAVEL)         : ImageUtils.createImage('flaticon-caravel-128.png', Main.SCALE_x2_128)
     ]
 
     static def NO_VILLAGERS = 1000

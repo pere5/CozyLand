@@ -4,6 +4,9 @@ import main.npcLogic.Role
 import main.npcLogic.Rule
 import main.npcLogic.Tribe
 import main.npcLogic.stages.hamlet.rule.HamletVillagerBuilderRule
+import main.npcLogic.stages.hamlet.rule.HamletVillagerChillRule
+import main.npcLogic.stages.hamlet.rule.HamletVillagerGathererRule
+import main.npcLogic.stages.hamlet.rule.HamletVillagerHomeRule
 
 class HamletVillagerRole extends Role {
 
@@ -13,22 +16,14 @@ class HamletVillagerRole extends Role {
         super(ID, tribe)
     }
 
-    /*
-        - Hitta en färdig Hut som ingen bor i
-            - Ta den som ditt Home
-        - !^ Hitta en oklar Hut har plats för fler byggare
-            - Bygg på den
-        - !^ Anlägg en ny Hut
-            - Bygg på den
-     */
-
     @Override
     List<Rule> constructRuleList() {
         int rank = Integer.MAX_VALUE
         [
-                //new HamletVillagerHomeRule(--rank),
-                //new HamletVillagerGathererRule(--rank),
-                new HamletVillagerBuilderRule(--rank)
+                new HamletVillagerHomeRule(--rank),
+                new HamletVillagerBuilderRule(--rank),
+                new HamletVillagerGathererRule(--rank),
+                new HamletVillagerChillRule(--rank)
         ]
     }
 }
