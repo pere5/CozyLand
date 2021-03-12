@@ -30,12 +30,20 @@ class Tests2 {
         assert (-10..10).collect {l.get(it)} == [3,1,2,3,1,2,3,1,2,3, 1,2,3,1,2,3,1,2,3,1,2]
     }
 
+    static Tile w(int x, int y) {
+        new Tile(height: 10, size: Main.TILE_WIDTH, x: x, y: y, travelType: Model.TravelType.WATER)
+    }
+
+    static Tile p(int x, int y) {
+        new Tile(height: 10, size: Main.TILE_WIDTH, x: x, y: y, travelType: Model.TravelType.PLAIN)
+    }
+
     @Test
     void findPath() {
         Model.tileNetwork = [
-                [Tile.p(0,0), Tile.p(0,1), Tile.p(0,2)],
-                [Tile.p(1,0), Tile.p(1,1), Tile.w(1,2)],
-                [Tile.p(2,0), Tile.w(2,1), Tile.w(2,2)]
+                [p(0,0), p(0,1), p(0,2)],
+                [p(1,0), p(1,1), w(1,2)],
+                [p(2,0), w(2,1), w(2,2)]
         ]
         Set<List<Integer>> v = []
 
