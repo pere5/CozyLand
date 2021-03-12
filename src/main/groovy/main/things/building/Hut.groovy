@@ -11,8 +11,9 @@ class Hut extends Building {
 
     List<Villager> habitants = []
 
-    Hut(Villager me, int[] tileXY) {
+    Hut(Villager me) {
         super(Shape.HUT)
+        def tileXY = me.tileXY
         def tileNetwork = Model.tileNetwork as Tile[][]
         def tile = tileNetwork[tileXY[0]][tileXY[1]]
         this.shape = Shape.HUT
