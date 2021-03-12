@@ -7,15 +7,12 @@ import main.model.Villager
 import main.npcLogic.Rule
 import main.npcLogic.action.ShapeAction
 import main.npcLogic.action.WalkAction
+import main.npcLogic.stages.alone.AloneTribe
 import main.npcLogic.stages.alone.role.AloneRole
 import main.npcLogic.stages.nomad.NomadTribe
-import main.npcLogic.stages.nomad.role.NomadFollowerRole
-import main.npcLogic.stages.nomad.role.NomadShamanRole
 import main.things.Drawable.Shape
+import main.utility.GameUtils
 import main.utility.Utility
-
-import java.awt.*
-import java.util.List
 
 class AffinityRule extends Rule {
 
@@ -71,15 +68,8 @@ class AffinityRule extends Rule {
 
     static void joinATribe(Villager me) {
         if (me.role.id == AloneRole.ID) {
-            def becomeFollower = { Villager villager, NomadTribe tribe ->
-                villager.role = new NomadFollowerRole(tribe)
-                tribe.villagers << villager
-                villager.interrupt()
-            }
-
             def tileNetwork = Model.tileNetwork
             def (int tileX, int tileY) = me.getTileXY()
-
             List<Villager> neighbors = []
 
             Utility.getTilesWithinRadii(me, tileX, tileY, Main.COMFORT_ZONE_TILES) { int x, int y ->
@@ -91,22 +81,14 @@ class AffinityRule extends Rule {
             }
 
             if (neighbors) {
-                def nomadTribe = neighbors.role.tribe.find { it instanceof NomadTribe } as NomadTribe
-
-                if (nomadTribe) {
-                    becomeFollower(me, nomadTribe)
+                def otherTribe = neighbors.role.tribe.find { !(it instanceof AloneTribe) }
+                if (otherTribe) {
+                    GameUtils.joinTribe(me, otherTribe)
                 } else {
-                    Random rand = new Random()
-
-                    NomadTribe myNomadTribe = new NomadTribe()
-                    myNomadTribe.ruler = me
-                    myNomadTribe.color = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
-
-                    me.role = new NomadShamanRole(myNomadTribe)
-                    me.interrupt()
-                    neighbors.findAll { it.role.id == AloneRole.ID }.each { def aloneVillager ->
-                        becomeFollower(aloneVillager, myNomadTribe)
+                    neighbors.each {
+                        GameUtils.joinTribe(it, me.role.tribe)
                     }
+                    GameUtils.transformTribe(me.role.tribe, new NomadTribe())
                 }
             }
         }

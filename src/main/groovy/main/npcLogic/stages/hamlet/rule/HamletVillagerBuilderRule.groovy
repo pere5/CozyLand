@@ -1,11 +1,12 @@
 package main.npcLogic.stages.hamlet.rule
 
+import main.Main
 import main.Model
 import main.model.Villager
 import main.npcLogic.Rule
 import main.npcLogic.action.ShapeAction
 import main.npcLogic.action.WaitAction
-import main.npcLogic.stages.nomad.NomadTribe
+import main.npcLogic.action.WalkAction
 import main.things.Drawable.Shape
 import main.things.resource.Stone
 import main.things.resource.Wood
@@ -35,8 +36,15 @@ class HamletVillagerBuilderRule extends Rule {
                 Utility.getRandomIntegerBetween(0, unfinishedBuildings.size() - 1)
         ]
 
-        def tribe = me.role.tribe as NomadTribe
+        def tribe = me.role.tribe
         def resources = tribe.resources
+
+        me.actionQueue << new ShapeAction(Shape.FOLLOWER_BUILDER)
+        me.actionQueue << new WaitAction(2)
+
+        def tileDest = Utility.closeRandomTile(me, tribe.ruler.tileXY, Main.COMFORT_ZONE_TILES)
+        me.actionQueue << new ShapeAction(Shape.FOLLOWER)
+        me.actionQueue << new WalkAction(tileDest)
 
         me.actionQueue << new ShapeAction(Shape.FOLLOWER_BUILDER)
         me.actionQueue << new WaitAction(10)

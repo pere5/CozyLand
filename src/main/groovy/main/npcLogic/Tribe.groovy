@@ -23,4 +23,7 @@ abstract class Tribe {
     Map<List<Integer>, Set<NaturalResource>> surveyNaturalResources = [:]
     Location goodLocation
     Location location
+
+    abstract Role getNewRulerRole()
+    abstract Role getNewVillagerRole()
 }

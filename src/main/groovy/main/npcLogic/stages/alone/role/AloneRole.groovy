@@ -2,15 +2,15 @@ package main.npcLogic.stages.alone.role
 
 import main.npcLogic.Role
 import main.npcLogic.Rule
-import main.npcLogic.stages.alone.AloneTribe
+import main.npcLogic.Tribe
 import main.npcLogic.stages.alone.rule.AffinityRule
 
 class AloneRole extends Role {
 
     static final String ID = 'alone'
 
-    AloneRole() {
-        super(ID, new AloneTribe())
+    AloneRole(Tribe tribe) {
+        super(ID, tribe)
     }
 
     List<Rule> constructRuleList() {

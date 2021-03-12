@@ -3,6 +3,7 @@ package main.model
 import main.Model.TravelType
 import main.npcLogic.Action
 import main.npcLogic.Role
+import main.npcLogic.stages.alone.AloneTribe
 import main.npcLogic.stages.alone.role.AloneRole
 import main.things.Drawable
 import main.things.building.Building
@@ -28,7 +29,9 @@ class Villager extends Drawable {
         def villager = new Villager()
         Random rand = new Random()
         villager.testColor = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
-        villager.role = new AloneRole()
+        def newTribe = new AloneTribe()
+        newTribe.ruler = villager
+        villager.role = new AloneRole(newTribe)
         villager.setShape(Shape.WARRIOR)
         def (Double x, Double y) = Utility.generateXY()
         villager.x = x

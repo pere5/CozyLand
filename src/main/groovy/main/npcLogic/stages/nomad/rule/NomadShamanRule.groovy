@@ -4,10 +4,8 @@ import main.Main
 import main.model.Location
 import main.model.Villager
 import main.npcLogic.Rule
-import main.npcLogic.action.ClosureAction
-import main.npcLogic.action.ShapeAction
-import main.npcLogic.action.SurveyAction
-import main.npcLogic.action.WalkAction
+import main.npcLogic.action.*
+import main.npcLogic.stages.hamlet.HamletTribe
 import main.things.Drawable.Shape
 import main.things.naturalResource.NaturalResource
 import main.utility.Utility
@@ -78,6 +76,7 @@ class NomadShamanRule extends Rule {
                 me.role.tribe.goodLocation = location
                 me.metaObjects[NomadShamanRule.toString()] = null
             })
+            me.actionQueue << new TribeAction(me.role.tribe, new HamletTribe())
         } else {
             def tileDest = Utility.closeRandomTile(me, me.tileXY, Main.SHAMAN_DISTANCE_TILES_MAX, Main.SHAMAN_DISTANCE_TILES_MIN)
             me.actionQueue << new ShapeAction(Shape.SHAMAN)

@@ -2,16 +2,14 @@ package main.npcLogic.stages.hamlet.role
 
 import main.npcLogic.Role
 import main.npcLogic.Rule
+import main.npcLogic.Tribe
 import main.npcLogic.stages.hamlet.rule.HamletVillagerBuilderRule
-import main.npcLogic.stages.hamlet.rule.HamletVillagerGathererRule
-import main.npcLogic.stages.hamlet.rule.HamletVillagerHomeRule
-import main.npcLogic.stages.nomad.NomadTribe
 
 class HamletVillagerRole extends Role {
 
     static final String ID = 'hamlet_villager'
 
-    HamletVillagerRole(NomadTribe tribe) {
+    HamletVillagerRole(Tribe tribe) {
         super(ID, tribe)
     }
 
@@ -28,8 +26,8 @@ class HamletVillagerRole extends Role {
     List<Rule> constructRuleList() {
         int rank = Integer.MAX_VALUE
         [
-                new HamletVillagerHomeRule(--rank),
-                new HamletVillagerGathererRule(--rank),
+                //new HamletVillagerHomeRule(--rank),
+                //new HamletVillagerGathererRule(--rank),
                 new HamletVillagerBuilderRule(--rank)
         ]
     }

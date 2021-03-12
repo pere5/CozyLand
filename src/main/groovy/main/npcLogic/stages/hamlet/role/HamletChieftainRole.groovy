@@ -2,14 +2,14 @@ package main.npcLogic.stages.hamlet.role
 
 import main.npcLogic.Role
 import main.npcLogic.Rule
+import main.npcLogic.Tribe
 import main.npcLogic.stages.hamlet.rule.HamletChieftainRule
-import main.npcLogic.stages.nomad.NomadTribe
 
 class HamletChieftainRole extends Role {
 
     static final String ID = 'hamlet_chieftain'
 
-    HamletChieftainRole(NomadTribe tribe) {
+    HamletChieftainRole(Tribe tribe) {
         super(ID, tribe)
     }
 
