@@ -47,6 +47,6 @@
  - [x] Villagers placerar sig själva i tiles
  - [x] optimera debug renderingen
  - [x] Organisera om roller och regler till respektive tribe folder
+ - [x] Assigna nya tribes
  - [ ] Skapa egna Hamlet roller
-    - [ ] Hur skall de assignas?
     
