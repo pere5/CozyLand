@@ -2,6 +2,7 @@ package main.things.building.home
 
 
 import main.model.Villager
+import main.utility.Utility
 
 class Hut extends Home {
 
@@ -9,11 +10,11 @@ class Hut extends Home {
 
     Hut(Villager me) {
         super(Shape.HUT, MAX_HABITANTS)
-        this.shape = Shape.HUT
-        def tileXY = me.tileXY
-        this.x = tileXY[0]
-        this.y = tileXY[1]
+        def pixels = Utility.randomPlaceInTile(me.tileXY)
+        this.x = pixels[0]
+        this.y = pixels[1]
         habitants << me
         me.home = this
+        this.shape = Shape.HUT
     }
 }
