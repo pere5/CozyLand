@@ -103,7 +103,7 @@ class Model {
             (Shape.CARAVEL)         : ImageUtils.createImage('flaticon-caravel-128.png', Main.SCALE_128)
     ]
 
-    static def NO_VILLAGERS = 3000
+    static def NO_VILLAGERS = 1400
 
     static def init(def keyboard, def mouse) {
         Model.keyboard = keyboard

@@ -5,6 +5,7 @@ import main.model.Path
 import main.model.Tile
 import main.model.Villager
 import main.npcLogic.action.WalkAction
+import main.npcLogic.stages.nomad.role.NomadFollowerRole
 import main.things.Artifact
 import main.things.ArtifactLine
 import main.things.Drawable
@@ -17,10 +18,12 @@ import java.util.List
 
 class TestPrints {
 
+    static final boolean EXCLUDE_FOLLOWERS = true
     static final boolean DEBUG_PATH_PRINTS = true
+
     static final boolean DEBUG_DOTTED_PRINTS = false
 
-    static final boolean ONLY_RULERS = true
+    static final boolean PRINT_BRESENHAM_MISSES = false
 
     static void testPrintsNextTiles(Double[] pixelStart, Double[] pixelDest, def nextTiles, Villager villager) {
         def (int x, int y) = Utility.pixelToTileIdx(pixelStart)
@@ -54,7 +57,7 @@ class TestPrints {
     }
 
     static void straightPathTestPrints(Double[] pixelStart, Double[] pixelDest, Villager villager) {
-        if (!DEBUG_PATH_PRINTS) return
+        if (!(DEBUG_PATH_PRINTS && EXCLUDE_FOLLOWERS ? (villager.role.id != NomadFollowerRole.ID) : true)) return
 
         new ArtifactLine(size: 1, parent: villager.id, orig: pixelStart, dest: pixelDest, color: villager.testColor, shape: Shape.LINE)
     }
@@ -84,7 +87,7 @@ class TestPrints {
     }
 
     static void printBresenhamMisses(Villager villager) {
-        if (!DEBUG_PATH_PRINTS) return
+        if (!PRINT_BRESENHAM_MISSES) return
 
         def count = 0
         villager.actionQueue.findAll { it instanceof WalkAction }.collect { it as WalkAction }.each { WalkAction walkAction ->
