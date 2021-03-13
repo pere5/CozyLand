@@ -125,9 +125,6 @@ class Utility {
         def radians = Math.atan2(y, x)
         def otherDirection = radians + Math.PI
 
-        def degreesTo = Math.toDegrees(radians)
-        def degreesFrom = Math.toDegrees(otherDirection)
-
         def xRatio = Math.cos(otherDirection)
         def yRatio = Math.sin(otherDirection)
 
