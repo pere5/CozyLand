@@ -45,7 +45,7 @@ class SurveyAction extends Action {
             def tileNetwork = Model.tileNetwork as Tile[][]
             shaman.role.tribe.villagers.each { Villager follower ->
                 def (int tileX, int tileY) = follower.getTileXY()
-                Utility.getTilesWithinRadii(shaman, tileX, tileY, Main.VISIBLE_ZONE_TILES) { int x, int y ->
+                Utility.getTilesWithinRadii(tileX, tileY, Main.VISIBLE_ZONE_TILES) { int x, int y ->
                     TestPrints.printSurveyResourcesCircle(follower, x, y)
                     Tile tile = tileNetwork[x][y]
                     if (tile.naturalResources) {

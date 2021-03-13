@@ -27,7 +27,7 @@ class AffinityRule extends Rule {
         def (int tileX, int tileY) = me.getTileXY()
 
         int withinRange = 0
-        Utility.getTilesWithinRadii(me, tileX, tileY, Main.COMFORT_ZONE_TILES) { int x, int y ->
+        Utility.getTilesWithinRadii(tileX, tileY, Main.COMFORT_ZONE_TILES) { int x, int y ->
             withinRange += tileNetwork[x][y].villagers.size()
         }
 
@@ -48,7 +48,7 @@ class AffinityRule extends Rule {
         def (int tileX, int tileY) = me.getTileXY()
 
         List<Villager> closeVillagers = []
-        Utility.getTilesWithinRadii(me, tileX, tileY, Main.VISIBLE_ZONE_TILES) { int x, int y ->
+        Utility.getTilesWithinRadii(tileX, tileY, Main.VISIBLE_ZONE_TILES) { int x, int y ->
             tileNetwork[x][y].villagers.each { Villager villager ->
                 if (villager.id != me.id) {
                     closeVillagers << villager
@@ -57,10 +57,10 @@ class AffinityRule extends Rule {
         }
 
         int[] tileDest
-        if (closeVillagers.size() == 0) {
-            tileDest = Utility.closeRandomTile(me, me.tileXY, Main.WALK_DISTANCE_TILES_MAX, Main.WALK_DISTANCE_TILES_MIN)
-        } else {
+        if (closeVillagers) {
             tileDest = Utility.centroidTile(closeVillagers, me, Main.WALK_DISTANCE_TILES_MAX)
+        } else {
+            tileDest = Utility.closeRandomTile(me, me.tileXY, Main.WALK_DISTANCE_TILES_MAX, Main.WALK_DISTANCE_TILES_MIN)
         }
         me.actionQueue << new ShapeAction(Shape.WARRIOR)
         me.actionQueue << new WalkAction(tileDest, AffinityRule.&joinATribe)
@@ -72,7 +72,7 @@ class AffinityRule extends Rule {
             def (int tileX, int tileY) = me.getTileXY()
             List<Villager> neighbors = []
 
-            Utility.getTilesWithinRadii(me, tileX, tileY, Main.COMFORT_ZONE_TILES) { int x, int y ->
+            Utility.getTilesWithinRadii(tileX, tileY, Main.COMFORT_ZONE_TILES) { int x, int y ->
                 tileNetwork[x][y].villagers.each { Villager neighbor ->
                     if (neighbor.id != me.id) {
                         neighbors << neighbor

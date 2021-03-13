@@ -17,8 +17,10 @@ import java.util.List
 
 class TestPrints {
 
-    static final boolean DEBUG_PATH_PRINTS = false
+    static final boolean DEBUG_PATH_PRINTS = true
     static final boolean DEBUG_DOTTED_PRINTS = false
+
+    static final boolean ONLY_RULERS = true
 
     static void testPrintsNextTiles(Double[] pixelStart, Double[] pixelDest, def nextTiles, Villager villager) {
         def (int x, int y) = Utility.pixelToTileIdx(pixelStart)

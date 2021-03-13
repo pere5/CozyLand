@@ -1,6 +1,6 @@
 package main.npcLogic
 
-
+import main.Model
 import main.model.Location
 import main.model.Villager
 import main.things.Drawable
@@ -14,6 +14,8 @@ import java.util.concurrent.ConcurrentLinkedQueue
 
 abstract class Tribe {
 
+    int id
+
     Villager ruler
     ConcurrentLinkedQueue<Villager> villagers = []
 
@@ -23,6 +25,10 @@ abstract class Tribe {
     Map<List<Integer>, Set<NaturalResource>> surveyNaturalResources = [:]
     Location goodLocation
     Location location
+
+    Tribe () {
+        this.id = Model.getNewId()
+    }
 
     abstract Role getNewRulerRole()
     abstract Role getNewVillagerRole()

@@ -2,7 +2,6 @@ package main.utility
 
 import main.Main
 import main.Model
-import main.TestPrints
 import main.exception.PerIsBorkenException
 import main.model.Tile
 import main.model.Villager
@@ -78,7 +77,7 @@ class Utility {
 
         List<int[]> tiles = []
 
-        getTilesWithinRadii(me, tileX, tileY, maxTileDist) { int x, int y ->
+        getTilesWithinRadii(tileX, tileY, maxTileDist) { int x, int y ->
             def tile = tileNetwork[x][y]
             def furtherThanMin = minTileDist ? !withinCircle(tileX, tileY, x, y, minTileDist) : true
 
@@ -111,6 +110,41 @@ class Utility {
 
         if (me.canTravel(tile.travelType)) {
             return cTile
+        } else {
+            return closeRandomTile(me, me.tileXY, maxTileDist)
+        }
+    }
+
+    static int[] antiCentroidTile(List<Villager> villagers, Villager me, Integer maxTileDist) {
+        def (int centroidX, int centroidY) = centroidTile(villagers, me, maxTileDist)
+        def (int meX, int meY) = me.getTileXY()
+
+        def x = centroidX - meX
+        def y = centroidY - meY
+
+        def radians = Math.atan2(y, x)
+        def otherDirection = radians + Math.PI
+
+        def degreesTo = Math.toDegrees(radians)
+        def degreesFrom = Math.toDegrees(otherDirection)
+
+        def xRatio = Math.cos(otherDirection)
+        def yRatio = Math.sin(otherDirection)
+
+        def xDistance = xRatio * maxTileDist
+        def yDistance = yRatio * maxTileDist
+
+        def antiCentroidX = (meX + xDistance) as Integer
+        def antiCentroidY = (meY + yDistance) as Integer
+
+        if (withinTileNetwork(antiCentroidX, antiCentroidY)) {
+            def tile = Model.tileNetwork[antiCentroidX][antiCentroidY]
+
+            if (me.canTravel(tile.travelType)) {
+                return [antiCentroidX, antiCentroidY]
+            } else {
+                return closeRandomTile(me, me.tileXY, maxTileDist)
+            }
         } else {
             return closeRandomTile(me, me.tileXY, maxTileDist)
         }
@@ -198,14 +232,14 @@ class Utility {
     }
 
     //https://stackoverflow.com/questions/40779343/java-loop-through-all-pixels-in-a-2d-circle-with-center-x-y-and-radius?noredirect=1&lq=1
-    static void getTilesWithinRadii(Villager me, int tX, int tY, int r, Closure function) {
+    static void getTilesWithinRadii(int tX, int tY, int r, Closure function) {
         // iterate through all y-coordinates
         for (int y = tY - r; y <= tY + r; y++) {
             // iterate through all x-coordinates
             for (int x = tX - r; x <= tX + r; x++) {
                 if (withinCircle(x, y, tX, tY, r)) {
                     if (withinTileNetwork(x, y)) {
-                        TestPrints.printRadii(x, y, me)
+                        //TestPrints.printRadii(x, y, me)
                         function(x, y)
                     }
                 }

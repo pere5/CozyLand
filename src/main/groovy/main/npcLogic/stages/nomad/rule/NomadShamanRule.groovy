@@ -1,10 +1,12 @@
 package main.npcLogic.stages.nomad.rule
 
 import main.Main
+import main.Model
 import main.model.Location
 import main.model.Villager
 import main.npcLogic.Rule
 import main.npcLogic.action.*
+import main.npcLogic.stages.alone.role.AloneRole
 import main.npcLogic.stages.hamlet.HamletTribe
 import main.things.Drawable.Shape
 import main.things.naturalResource.NaturalResource
@@ -72,13 +74,31 @@ class NomadShamanRule extends Rule {
             def location = me.metaObjects[NomadShamanRule.toString()] as Location
             me.actionQueue << new ShapeAction(Shape.SHAMAN)
             me.actionQueue << new WalkAction(location.spot)
+            //me.actionQueue << new DistanceAction()
             me.actionQueue << new ClosureAction({
                 me.role.tribe.goodLocation = location
                 me.metaObjects[NomadShamanRule.toString()] = null
             })
             me.actionQueue << new TribeAction(me.role.tribe, new HamletTribe())
         } else {
-            def tileDest = Utility.closeRandomTile(me, me.tileXY, Main.SHAMAN_DISTANCE_TILES_MAX, Main.SHAMAN_DISTANCE_TILES_MIN)
+            def tileNetwork = Model.tileNetwork
+            def (int tileX, int tileY) = me.getTileXY()
+            def avoidThese = []
+            Utility.getTilesWithinRadii(tileX, tileY, Main.VISIBLE_ZONE_TILES) { int x, int y ->
+                tileNetwork[x][y].villagers.each { Villager villager ->
+                    def notMyTribe = villager.role.tribe.id != me.role.tribe.id
+                    def notAlone = villager.role.id != AloneRole.ID
+                    if (notMyTribe && notAlone) {
+                        avoidThese << villager
+                    }
+                }
+            }
+            int[] tileDest
+            if (avoidThese) {
+                tileDest = Utility.antiCentroidTile(avoidThese, me, Main.WALK_DISTANCE_TILES_MAX)
+            } else {
+                tileDest = Utility.closeRandomTile(me, me.tileXY, Main.WALK_DISTANCE_TILES_MAX, Main.WALK_DISTANCE_TILES_MIN)
+            }
             me.actionQueue << new ShapeAction(Shape.SHAMAN)
             me.actionQueue << new WalkAction(tileDest)
             me.actionQueue << new ShapeAction(Shape.SHAMAN_CAMP)
