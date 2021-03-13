@@ -29,7 +29,7 @@ class Main extends JFrame {
 
     static final int COMFORT_ZONE_TILES = 2
     static final int VISIBLE_ZONE_TILES = 10
-    static final int WALK_DISTANCE_TILES_MAX = 10
+    static final int WALK_DISTANCE_TILES_MAX = 8
     static final int WALK_DISTANCE_TILES_MIN = 6
     static final int SHAMAN_DISTANCE_TILES_MAX = 15
     static final int SHAMAN_DISTANCE_TILES_MIN = 10

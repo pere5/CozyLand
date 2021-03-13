@@ -71,28 +71,26 @@ class NomadShamanRule extends Rule {
     @Override
     void planWork(Villager me, int status) {
         if (me.metaObjects[NomadShamanRule.toString()]) {
-            def location = me.metaObjects[NomadShamanRule.toString()] as Location
+            def goodLocation = me.metaObjects[NomadShamanRule.toString()] as Location
+            me.metaObjects[NomadShamanRule.toString()] = null
+
             me.actionQueue << new ShapeAction(Shape.SHAMAN)
-            me.actionQueue << new WalkAction(location.spot)
-            //me.actionQueue << new DistanceAction()
+            me.actionQueue << new WalkAction(goodLocation.spot)
             me.actionQueue << new ClosureAction({
-                me.role.tribe.goodLocation = location
-                me.metaObjects[NomadShamanRule.toString()] = null
+                def (int tileX, int tileY) = me.getTileXY()
+                def avoidThese = findWhoToAvoid(tileX, tileY, me)
+                if (avoidThese) {
+                    int[] tileDest = Utility.antiCentroidTile(avoidThese, me, (Main.WALK_DISTANCE_TILES_MAX / 2) as Integer)
+                    me.actionQueue.add(1, new WalkAction(tileDest))
+                }
+            })
+            me.actionQueue << new ClosureAction({
+                me.role.tribe.goodLocation = new Location(spot: me.tileXY)
             })
             me.actionQueue << new TribeAction(me.role.tribe, new HamletTribe())
         } else {
-            def tileNetwork = Model.tileNetwork
             def (int tileX, int tileY) = me.getTileXY()
-            def avoidThese = []
-            Utility.getTilesWithinRadii(tileX, tileY, Main.VISIBLE_ZONE_TILES) { int x, int y ->
-                tileNetwork[x][y].villagers.each { Villager villager ->
-                    def notMyTribe = villager.role.tribe.id != me.role.tribe.id
-                    def notAlone = villager.role.id != AloneRole.ID
-                    if (notMyTribe && notAlone) {
-                        avoidThese << villager
-                    }
-                }
-            }
+            def avoidThese = findWhoToAvoid(tileX, tileY, me)
             int[] tileDest
             if (avoidThese) {
                 tileDest = Utility.antiCentroidTile(avoidThese, me, Main.WALK_DISTANCE_TILES_MAX)
@@ -104,5 +102,20 @@ class NomadShamanRule extends Rule {
             me.actionQueue << new ShapeAction(Shape.SHAMAN_CAMP)
             me.actionQueue << new SurveyAction(6, me.role.tribe)
         }
+    }
+
+    private List<Villager> findWhoToAvoid(int tileX, int tileY, me) {
+        def tileNetwork = Model.tileNetwork
+        def avoidThese = []
+        Utility.getTilesWithinRadii(tileX, tileY, Main.VISIBLE_ZONE_TILES) { int x, int y ->
+            tileNetwork[x][y].villagers.each { Villager villager ->
+                def notMyTribe = villager.role.tribe.id != me.role.tribe.id
+                def notAlone = villager.role.id != AloneRole.ID
+                if (notMyTribe && notAlone) {
+                    avoidThese << villager
+                }
+            }
+        }
+        return avoidThese
     }
 }
