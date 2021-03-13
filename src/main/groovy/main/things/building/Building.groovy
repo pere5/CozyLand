@@ -10,9 +10,9 @@ abstract class Building extends Drawable {
 
     Building(Shape shape) {
         super()
-        Model.buildingResources[shape].each {
-            it.value.times {
-                resourceSlots << new ResourceSlot(shape: it.key, resource: null)
+        Model.buildingResources[shape].each { def resource ->
+            resource.value.times {
+                resourceSlots << new ResourceSlot(shape: resource.key, resource: null)
             }
         }
     }

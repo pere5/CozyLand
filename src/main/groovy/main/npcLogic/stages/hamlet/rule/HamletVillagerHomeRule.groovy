@@ -1,8 +1,14 @@
 package main.npcLogic.stages.hamlet.rule
 
-
+import main.Main
 import main.model.Villager
 import main.npcLogic.Rule
+import main.npcLogic.action.HomeAction
+import main.npcLogic.action.ShapeAction
+import main.npcLogic.action.WalkAction
+import main.things.Drawable
+import main.things.building.home.Hut
+import main.utility.Utility
 
 class HamletVillagerHomeRule extends Rule {
 
@@ -21,12 +27,9 @@ class HamletVillagerHomeRule extends Rule {
 
     @Override
     void planWork(Villager me, int status) {
-
-        i think we need an abstract home class?
-
-
-
         int[] tileXY = Utility.closeRandomTile(me, me.role.tribe.ruler.tileXY, Main.COMFORT_ZONE_TILES + 2, 1)
+        me.actionQueue << new ShapeAction(Drawable.Shape.FOLLOWER_BUILDER)
+        me.actionQueue << new WalkAction(tileXY)
         me.actionQueue << new HomeAction(Hut.class)
     }
 }

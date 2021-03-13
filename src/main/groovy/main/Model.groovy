@@ -33,6 +33,10 @@ class Model {
             (Shape.HUT): [
                     (Shape.WOOD): 2,
                     (Shape.STONE): 1
+            ],
+            (Shape.SHAMAN_LODGE): [
+                    (Shape.WOOD): 3,
+                    (Shape.STONE): 4
             ]
     ]
 

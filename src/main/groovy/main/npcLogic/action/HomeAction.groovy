@@ -1,16 +1,15 @@
 package main.npcLogic.action
 
-
 import main.model.Villager
 import main.npcLogic.Action
-import main.things.building.Building
+import main.things.building.home.Home
 
 class HomeAction extends Action {
 
-    Class<? extends Building> buildingClazz
+    Class<? extends Home> homeClazz
 
-    HomeAction(Class<? extends Building> buildingClazz) {
-        this.buildingClazz = buildingClazz
+    HomeAction(Class<? extends Home> homeClazz) {
+        this.homeClazz = homeClazz
     }
 
     @Override
@@ -25,7 +24,7 @@ class HomeAction extends Action {
 
     @Override
     boolean doIt(Villager me) {
-        me.home = buildingClazz.getDeclaredConstructor(Villager.class).newInstance(me)
+        homeClazz.getDeclaredConstructor(Villager.class).newInstance(me)
         DONE
     }
 }
