@@ -5,7 +5,6 @@ import main.model.Path
 import main.model.Tile
 import main.model.Villager
 import main.npcLogic.action.WalkAction
-import main.npcLogic.stages.nomad.role.NomadFollowerRole
 import main.things.Artifact
 import main.things.ArtifactLine
 import main.things.Drawable
@@ -18,7 +17,7 @@ import java.util.List
 
 class TestPrints {
 
-    static final boolean EXCLUDE_FOLLOWERS = true
+    static final boolean ONLY_RULERS = true
     static final boolean DEBUG_PATH_PRINTS = true
 
     static final boolean DEBUG_DOTTED_PRINTS = false
@@ -57,7 +56,7 @@ class TestPrints {
     }
 
     static void straightPathTestPrints(Double[] pixelStart, Double[] pixelDest, Villager villager) {
-        if (!(DEBUG_PATH_PRINTS && EXCLUDE_FOLLOWERS ? (villager.role.id != NomadFollowerRole.ID) : true)) return
+        if (!(DEBUG_PATH_PRINTS && ONLY_RULERS ? (villager.role.tribe.ruler.id == villager.id) : true)) return
 
         new ArtifactLine(size: 1, parent: villager.id, orig: pixelStart, dest: pixelDest, color: villager.testColor, shape: Shape.LINE)
     }
