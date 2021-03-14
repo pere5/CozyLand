@@ -17,6 +17,8 @@ class NomadShamanRule extends Rule {
     private static final int MIN_SURVEYS = 2
     private static final int MIN_UNIQUE_RESOURCES = 2
     private static final int MIN_VILLAGERS = 5
+    
+    private static final String RULE_GOAL = 'rule_goal'
 
     NomadShamanRule(int rank) {
         this.rank = rank
@@ -26,7 +28,7 @@ class NomadShamanRule extends Rule {
     int status(Villager me) {
         if (me.role.tribe.goodLocation) {
             return GOOD
-        } else if (me.metaObjects[NomadShamanRule.toString()]) {
+        } else if (me.metaObjects[RULE_GOAL]) {
             return BAD
         } else if (me.role.tribe.villagers.size() < MIN_VILLAGERS) {
             return BAD
@@ -65,7 +67,7 @@ class NomadShamanRule extends Rule {
                     goodLocations << new Location(spot: spot as int[], naturalResources: resources, score: score)
                 }
 
-                me.metaObjects[NomadShamanRule.toString()] = goodLocations.max { it.score }
+                me.metaObjects[RULE_GOAL] = goodLocations.max { it.score }
                 return BAD
             }
         }
@@ -73,9 +75,9 @@ class NomadShamanRule extends Rule {
 
     @Override
     void planWork(Villager me, int status) {
-        if (me.metaObjects[NomadShamanRule.toString()]) {
-            def goodLocation = me.metaObjects[NomadShamanRule.toString()] as Location
-            me.metaObjects[NomadShamanRule.toString()] = null
+        if (me.metaObjects[RULE_GOAL]) {
+            def goodLocation = me.metaObjects[RULE_GOAL] as Location
+            me.metaObjects[RULE_GOAL] = null
 
             me.actionQueue << new ShapeAction(Shape.SHAMAN)
             me.actionQueue << new WalkAction(goodLocation.spot)
