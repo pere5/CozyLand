@@ -17,8 +17,8 @@ import java.util.List
 
 class TestPrints {
 
+    static final boolean DEBUG_PATH_PRINTS = false
     static final boolean ONLY_RULERS = true
-    static final boolean DEBUG_PATH_PRINTS = true
 
     static final boolean DEBUG_DOTTED_PRINTS = false
 
@@ -56,7 +56,8 @@ class TestPrints {
     }
 
     static void straightPathTestPrints(Double[] pixelStart, Double[] pixelDest, Villager villager) {
-        if (!(DEBUG_PATH_PRINTS && ONLY_RULERS ? (villager.role.tribe.ruler.id == villager.id) : true)) return
+        if (!DEBUG_PATH_PRINTS) return
+        if (ONLY_RULERS ? (villager.id != villager.role.tribe.ruler.id) : false) return
 
         new ArtifactLine(size: 1, parent: villager.id, orig: pixelStart, dest: pixelDest, color: villager.testColor, shape: Shape.LINE)
     }
