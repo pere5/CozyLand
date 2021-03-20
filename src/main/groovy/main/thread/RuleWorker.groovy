@@ -1,10 +1,13 @@
 package main.thread
 
+import main.Main
 import main.Model
 import main.model.Villager
 import main.npcLogic.Rule
 
 class RuleWorker extends Worker {
+
+    static int[][] bresenhamBuffer = new int[Main.MAP_WIDTH + Main.MAP_HEIGHT][2]
 
     @Override
     def run() {

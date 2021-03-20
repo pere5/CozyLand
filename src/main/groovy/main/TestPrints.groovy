@@ -9,6 +9,7 @@ import main.things.Artifact
 import main.things.ArtifactLine
 import main.things.Drawable
 import main.things.Drawable.Shape
+import main.thread.PathfinderWorker
 import main.utility.ImageUtils
 import main.utility.Utility
 
@@ -94,7 +95,7 @@ class TestPrints {
             for (int i = 0; i < walkAction.pathQueue.size() - 1; i++) {
                 int[] a = Utility.pixelToTileIdx(walkAction.pathQueue[i].start)
                 int[] b = Utility.pixelToTileIdx(walkAction.pathQueue[i + 1].start)
-                if (Path.bresenhamBuffer[Path.bresenham(a, b, villager)].clone() != b) {
+                if (PathfinderWorker.bresenhamBuffer[Path.bresenham(a, b, PathfinderWorker.bresenhamBuffer, villager)].clone() != b) {
                     println("${a} - ${b}")
                     count++
                 }

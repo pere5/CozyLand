@@ -2,6 +2,7 @@ package main.thread
 
 import javaSrc.linkedbinarytree.LinkedBinaryTree
 import javaSrc.linkedbinarytree.Position
+import main.Main
 import main.Model
 import main.Model.TravelType
 import main.TestPrints
@@ -13,6 +14,8 @@ import main.npcLogic.action.WalkAction
 import main.utility.Utility
 
 class PathfinderWorker extends Worker {
+
+    static int[][] bresenhamBuffer = new int[Main.MAP_WIDTH + Main.MAP_HEIGHT][2]
 
     /*
         - [ ] Bresenham binary search per star algorithm, "optimized random path":
@@ -101,11 +104,11 @@ class PathfinderWorker extends Worker {
 
         while (true) {
 
-            def idx = Path.bresenham(stepPos.element, tileDest, villager)
+            def idx = Path.bresenham(stepPos.element, tileDest, PathfinderWorker.bresenhamBuffer, villager)
 
-            def nextStep = Path.bresenhamBuffer[idx].clone()
-            def currentStep = Path.bresenhamBuffer[idx - 1].clone()
-            def previousStep = idx >= 2 ? Path.bresenhamBuffer[idx - 2].clone() : null
+            def nextStep = PathfinderWorker.bresenhamBuffer[idx].clone()
+            def currentStep = PathfinderWorker.bresenhamBuffer[idx - 1].clone()
+            def previousStep = idx >= 2 ? PathfinderWorker.bresenhamBuffer[idx - 2].clone() : null
 
             if (nextStep == tileDest) {
                 stepPos = lbt.addLeft(stepPos, nextStep)
@@ -243,10 +246,10 @@ class PathfinderWorker extends Worker {
                     break
                 }
             } else {
-                def idx = Path.bresenham(tileStep, tileDest, villager)
+                def idx = Path.bresenham(tileStep, tileDest, PathfinderWorker.bresenhamBuffer, villager)
                 def middleIndex = ((idx / 2) as int)
                 if (middleIndex > 0) {
-                    def middleTileDest = Path.bresenhamBuffer[middleIndex].clone()
+                    def middleTileDest = PathfinderWorker.bresenhamBuffer[middleIndex].clone()
                     retList.addAll(randomTilesWithBresenham(tileStep, middleTileDest, villager))
                     tileStep = middleTileDest
                 } else {
@@ -282,8 +285,8 @@ class PathfinderWorker extends Worker {
 
                 if (villager.canTravel(travelType)) {
                     if (tileProbability > 0) {
-                        def idx = Path.bresenham(neighborXY, tileDest, villager)
-                        def xy = Path.bresenhamBuffer[idx].clone()
+                        def idx = Path.bresenham(neighborXY, tileDest, PathfinderWorker.bresenhamBuffer, villager)
+                        def xy = PathfinderWorker.bresenhamBuffer[idx].clone()
                         if (xy == tileDest) {
                             nextTiles << calculateProbabilityForNeighbor(neighbor, tile, neighborTile)
                         }

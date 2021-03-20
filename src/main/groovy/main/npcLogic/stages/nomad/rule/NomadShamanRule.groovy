@@ -94,12 +94,41 @@ class NomadShamanRule extends Rule {
             })
             me.actionQueue << new TribeAction(me.role.tribe, new HamletTribe())
         } else {
-            def (int tileX, int tileY) = me.getTileXY()
+            def tileXY = me.getTileXY()
+            def (int tileX, int tileY) = tileXY
             def avoidThese = findWhoToAvoid(tileX, tileY, me)
             int[] tileDest
+
             if (avoidThese) {
+                /*
+            }
+                def antiCentroidTile = Utility.antiCentroidTile(avoidThese, me, Main.WALK_DISTANCE_TILES_MAX)
+                def idx = Path.bresenham(tileXY, antiCentroidTile, RuleWorker.bresenhamBuffer, me)
+                def (int x, int y) = RuleWorker.bresenhamBuffer[idx].clone()
+                if (Model.tileNetwork[x][y].travelType == Model.TravelType.MOUNTAIN) {
+                    for (int i = 0; i <= idx; i++) {
+                        (x, y) = RuleWorker.bresenhamBuffer[i].clone()
+                        def travelType = Model.tileNetwork[x][y].travelType
+                        if (!me.canTravel(travelType) || travelType == Model.TravelType.MOUNTAIN) {
+                            idx = i - 1
+                            break
+                        }
+                    }
+                }
+                tileDest = RuleWorker.bresenhamBuffer[idx].clone()
+                */
                 tileDest = Utility.antiCentroidTile(avoidThese, me, Main.WALK_DISTANCE_TILES_MAX)
             } else {
+                /*
+                def (int x, int y) = Utility.closeRandomTile(me, me.tileXY, Main.WALK_DISTANCE_TILES_MAX, Main.WALK_DISTANCE_TILES_MIN)
+                def MAX = 10
+                int i = 0
+                while (Model.tileNetwork[x][y].travelType == Model.TravelType.MOUNTAIN && i < MAX) {
+                    (x, y) = Utility.closeRandomTile(me, me.tileXY, Main.WALK_DISTANCE_TILES_MAX, Main.WALK_DISTANCE_TILES_MIN)
+                    i++
+                }
+                tileDest = [x, y]
+                */
                 tileDest = Utility.closeRandomTile(me, me.tileXY, Main.WALK_DISTANCE_TILES_MAX, Main.WALK_DISTANCE_TILES_MIN)
             }
             me.actionQueue << new ShapeAction(Shape.SHAMAN)

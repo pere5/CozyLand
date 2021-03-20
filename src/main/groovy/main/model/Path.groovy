@@ -1,15 +1,13 @@
 package main.model
 
-import main.Main
+
 import main.Model
 import main.model.Tile
 import main.model.Villager
 
 class Path {
 
-    static int[][] bresenhamBuffer = new int[Main.MAP_WIDTH + Main.MAP_HEIGHT][2]
-
-    static int bresenham(int[] tileStart, int[] tileDest, Villager villager = null) {
+    static int bresenham(int[] tileStart, int[] tileDest, int[][] buffer, Villager villager = null) {
         def (int x1, int y1) = tileStart
         def (int x2, int y2) = tileDest
 
@@ -34,8 +32,8 @@ class Path {
 
         while (true) {
 
-            bresenhamBuffer[idx][0] = x
-            bresenhamBuffer[idx][1] = y
+            buffer[idx][0] = x
+            buffer[idx][1] = y
 
             if ((villager && !villager.canTravel(tileNetwork[x][y].travelType))) {
                 return idx
