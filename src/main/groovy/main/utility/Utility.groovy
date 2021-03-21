@@ -152,29 +152,14 @@ class Utility {
 
         if (Model.tileNetwork[tileDest[0]][tileDest[1]].travelType in avoidList) {
             def idx = Path.bresenham(me.tileXY, tileDest, bresenhamBuffer, me)
-            def (int x, int y) = bresenhamBuffer[idx].clone()
-
-
-
-            if (([x, y] as int[]) != tileDest) {
-                throw new PerIsBorkenException()
-            }
-
-
-            works, but still need FARTHEST permissible
-
-
-            if (Model.tileNetwork[x][y].travelType == Model.TravelType.MOUNTAIN) {
-                for (int i = 0; i <= idx; i++) {
-                    (x, y) = bresenhamBuffer[i].clone()
-                    def travelType = Model.tileNetwork[x][y].travelType
-                    if (!me.canTravel(travelType) || travelType == Model.TravelType.MOUNTAIN) {
-                        idx = i - 1
-                        break
-                    }
+            for (int i = idx; i >= 0; i--) {
+                def (int x, int y) = bresenhamBuffer[i].clone()
+                def travelType = Model.tileNetwork[x][y].travelType
+                if (me.canTravel(travelType) && !(travelType in avoidList)) {
+                    return bresenhamBuffer[i].clone()
                 }
             }
-            return bresenhamBuffer[idx].clone()
+            return me.tileXY
         } else {
             return tileDest
         }
