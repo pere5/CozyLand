@@ -22,7 +22,7 @@ class HamletVillagerBuilderRule extends Rule {
     int status(Villager me) {
         def unfinishedBuildings = [true]
         //if (unfinishedBuildings) {
-        if (me.role.tribe.goodLocation) {
+        if (me.role.tribe.location) {
             BAD
         } else {
             GREAT

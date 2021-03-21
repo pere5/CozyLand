@@ -22,7 +22,6 @@ class GameUtils {
         newTribe.surveyNaturalResources = oldTribe.surveyNaturalResources
         newTribe.resources = oldTribe.resources
         newTribe.shapeImageMap = oldTribe.shapeImageMap
-        newTribe.goodLocation = oldTribe.goodLocation
         newTribe.location = oldTribe.location
 
         ruler.role = newTribe.getNewRulerRole()

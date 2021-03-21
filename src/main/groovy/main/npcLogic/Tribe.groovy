@@ -23,7 +23,6 @@ abstract class Tribe {
     Map<Drawable.Shape, BufferedImage> shapeImageMap = [:]
     ConcurrentLinkedQueue<Resource> resources = []
     Map<List<Integer>, Set<NaturalResource>> surveyNaturalResources = [:]
-    Location goodLocation
     Location location
 
     Tribe () {

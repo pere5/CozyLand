@@ -28,7 +28,7 @@ class NomadShamanRule extends Rule {
 
     @Override
     int status(Villager me) {
-        if (me.role.tribe.goodLocation) {
+        if (me.role.tribe.location) {
             return GOOD
         } else if (me.metaObjects[RULE_GOAL]) {
             return BAD
@@ -93,7 +93,7 @@ class NomadShamanRule extends Rule {
                 }
             })
             me.actionQueue << new ClosureAction({
-                me.role.tribe.goodLocation = new Location(spot: me.tileXY)
+                me.role.tribe.location = new Location(spot: me.tileXY)
             })
             me.actionQueue << new TribeAction(me.role.tribe, new HamletTribe())
         } else {

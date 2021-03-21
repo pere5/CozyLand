@@ -16,7 +16,7 @@ class HamletChieftainRule extends Rule {
 
     @Override
     int status(Villager me) {
-        if (me.role.tribe.goodLocation) {
+        if (me.role.tribe.location) {
             BAD
         } else {
             GOOD
@@ -25,12 +25,12 @@ class HamletChieftainRule extends Rule {
 
     @Override
     void planWork(Villager me, int status) {
-        if (Utility.compareTiles(me.tileXY, me.role.tribe.goodLocation.spot)) {
+        if (Utility.compareTiles(me.tileXY, me.role.tribe.location.spot)) {
             me.actionQueue << new ShapeAction(Shape.SHAMAN_BUILD)
             me.actionQueue << new WaitAction(10)
         } else {
             me.actionQueue << new ShapeAction(Shape.SHAMAN)
-            me.actionQueue << new WalkAction(me.role.tribe.goodLocation.spot)
+            me.actionQueue << new WalkAction(me.role.tribe.location.spot)
         }
     }
 }
