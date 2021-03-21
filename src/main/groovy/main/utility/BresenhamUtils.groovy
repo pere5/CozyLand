@@ -64,7 +64,7 @@ class BresenhamUtils {
         }
     }
 
-    static int[] farthestTileWithBresenham(Villager me, int[] tileDest, List<Model.TravelType> avoidList, int[][] bresenhamBuffer) {
+    static int[] farthestPermissibleTileWithBresenham(Villager me, int[] tileDest, List<Model.TravelType> avoidList, int[][] bresenhamBuffer) {
 
         def tileXY = me.tileXY
 

@@ -88,8 +88,8 @@ class NomadShamanRule extends Rule {
                 def avoidThese = findWhoToAvoid(tileX, tileY, me)
                 if (avoidThese) {
                     int[] tileDest = Utility.antiCentroidTile(avoidThese, me, (Main.WALK_DISTANCE_TILES_MAX / 2) as Integer)
-                    def farthestTile = BresenhamUtils.farthestTileWithBresenham(me, tileDest, [Model.TravelType.MOUNTAIN], RuleWorker.bresenhamBuffer)
-                    me.actionQueue.add(1, new WalkAction(farthestTile))
+                    def farthestPermissibleTile = BresenhamUtils.farthestPermissibleTileWithBresenham(me, tileDest, [Model.TravelType.MOUNTAIN], RuleWorker.bresenhamBuffer)
+                    me.actionQueue.add(1, new WalkAction(farthestPermissibleTile))
                 }
             })
             me.actionQueue << new ClosureAction({
@@ -105,9 +105,9 @@ class NomadShamanRule extends Rule {
             } else {
                 tileDest = Utility.closeRandomTile(me, me.tileXY, Main.WALK_DISTANCE_TILES_MAX, Main.WALK_DISTANCE_TILES_MIN)
             }
-            def farthestTile = BresenhamUtils.farthestTileWithBresenham(me, tileDest, [Model.TravelType.MOUNTAIN], RuleWorker.bresenhamBuffer)
+            def farthestPermissibleTile = BresenhamUtils.farthestPermissibleTileWithBresenham(me, tileDest, [Model.TravelType.MOUNTAIN], RuleWorker.bresenhamBuffer)
             me.actionQueue << new ShapeAction(Shape.SHAMAN)
-            me.actionQueue << new WalkAction(farthestTile)
+            me.actionQueue << new WalkAction(farthestPermissibleTile)
             me.actionQueue << new ShapeAction(Shape.SHAMAN_CAMP)
             me.actionQueue << new SurveyAction(6, me.role.tribe)
         }
