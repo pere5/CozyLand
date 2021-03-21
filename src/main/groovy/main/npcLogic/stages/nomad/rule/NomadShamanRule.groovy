@@ -10,6 +10,7 @@ import main.npcLogic.stages.alone.role.AloneRole
 import main.npcLogic.stages.hamlet.HamletTribe
 import main.things.Drawable.Shape
 import main.things.naturalResource.NaturalResource
+import main.thread.RuleWorker
 import main.utility.Utility
 
 class NomadShamanRule extends Rule {
@@ -17,7 +18,7 @@ class NomadShamanRule extends Rule {
     private static final int MIN_SURVEYS = 2
     private static final int MIN_UNIQUE_RESOURCES = 2
     private static final int MIN_VILLAGERS = 5
-    
+
     private static final String RULE_GOAL = 'rule_goal'
 
     NomadShamanRule(int rank) {
@@ -86,7 +87,8 @@ class NomadShamanRule extends Rule {
                 def avoidThese = findWhoToAvoid(tileX, tileY, me)
                 if (avoidThese) {
                     int[] tileDest = Utility.antiCentroidTile(avoidThese, me, (Main.WALK_DISTANCE_TILES_MAX / 2) as Integer)
-                    me.actionQueue.add(1, new WalkAction(tileDest))
+                    def farthestPermissibleTile = Utility.farthestPermissibleTile(me, tileDest, [Model.TravelType.MOUNTAIN], RuleWorker.bresenhamBuffer)
+                    me.actionQueue.add(1, new WalkAction(farthestPermissibleTile))
                 }
             })
             me.actionQueue << new ClosureAction({
@@ -94,45 +96,18 @@ class NomadShamanRule extends Rule {
             })
             me.actionQueue << new TribeAction(me.role.tribe, new HamletTribe())
         } else {
-            def tileXY = me.getTileXY()
-            def (int tileX, int tileY) = tileXY
+            def (int tileX, int tileY) = me.getTileXY()
             def avoidThese = findWhoToAvoid(tileX, tileY, me)
             int[] tileDest
-
             if (avoidThese) {
-                /*
-            }
-                def antiCentroidTile = Utility.antiCentroidTile(avoidThese, me, Main.WALK_DISTANCE_TILES_MAX)
-                def idx = Path.bresenham(tileXY, antiCentroidTile, RuleWorker.bresenhamBuffer, me)
-                def (int x, int y) = RuleWorker.bresenhamBuffer[idx].clone()
-                if (Model.tileNetwork[x][y].travelType == Model.TravelType.MOUNTAIN) {
-                    for (int i = 0; i <= idx; i++) {
-                        (x, y) = RuleWorker.bresenhamBuffer[i].clone()
-                        def travelType = Model.tileNetwork[x][y].travelType
-                        if (!me.canTravel(travelType) || travelType == Model.TravelType.MOUNTAIN) {
-                            idx = i - 1
-                            break
-                        }
-                    }
-                }
-                tileDest = RuleWorker.bresenhamBuffer[idx].clone()
-                */
                 tileDest = Utility.antiCentroidTile(avoidThese, me, Main.WALK_DISTANCE_TILES_MAX)
             } else {
-                /*
-                def (int x, int y) = Utility.closeRandomTile(me, me.tileXY, Main.WALK_DISTANCE_TILES_MAX, Main.WALK_DISTANCE_TILES_MIN)
-                def MAX = 10
-                int i = 0
-                while (Model.tileNetwork[x][y].travelType == Model.TravelType.MOUNTAIN && i < MAX) {
-                    (x, y) = Utility.closeRandomTile(me, me.tileXY, Main.WALK_DISTANCE_TILES_MAX, Main.WALK_DISTANCE_TILES_MIN)
-                    i++
-                }
-                tileDest = [x, y]
-                */
                 tileDest = Utility.closeRandomTile(me, me.tileXY, Main.WALK_DISTANCE_TILES_MAX, Main.WALK_DISTANCE_TILES_MIN)
             }
+            def farthestPermissibleTile = Utility.farthestPermissibleTile(me, tileDest, [Model.TravelType.MOUNTAIN], RuleWorker.bresenhamBuffer)
+
             me.actionQueue << new ShapeAction(Shape.SHAMAN)
-            me.actionQueue << new WalkAction(tileDest)
+            me.actionQueue << new WalkAction(farthestPermissibleTile)
             me.actionQueue << new ShapeAction(Shape.SHAMAN_CAMP)
             me.actionQueue << new SurveyAction(6, me.role.tribe)
         }

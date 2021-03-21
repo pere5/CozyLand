@@ -3,6 +3,7 @@ package main.utility
 import main.Main
 import main.Model
 import main.exception.PerIsBorkenException
+import main.model.Path
 import main.model.Tile
 import main.model.Villager
 import main.things.Drawable
@@ -93,16 +94,16 @@ class Utility {
         }
     }
 
-    static int[] centroidTile(List<Villager> villagers, Villager me, Integer maxTileDist) {
+    static int[] centroidTile(List<Drawable> drawables, Villager me, Integer maxTileDist) {
         def cPixel = [0, 0] as Double[]
 
-        for (Villager villager: villagers) {
-            cPixel[0] += villager.x
-            cPixel[1] += villager.y
+        for (Drawable drawable: drawables) {
+            cPixel[0] += drawable.x
+            cPixel[1] += drawable.y
         }
 
-        cPixel[0] = cPixel[0] / villagers.size()
-        cPixel[1] = cPixel[1] / villagers.size()
+        cPixel[0] = cPixel[0] / drawables.size()
+        cPixel[1] = cPixel[1] / drawables.size()
 
         def cTile = pixelToTileIdx(cPixel)
 
@@ -115,8 +116,8 @@ class Utility {
         }
     }
 
-    static int[] antiCentroidTile(List<Villager> villagers, Villager me, Integer maxTileDist) {
-        def (int centroidX, int centroidY) = centroidTile(villagers, me, maxTileDist)
+    static int[] antiCentroidTile(List<Drawable> drawables, Villager me, Integer maxTileDist) {
+        def (int centroidX, int centroidY) = centroidTile(drawables, me, maxTileDist)
         def (int meX, int meY) = me.getTileXY()
 
         def x = centroidX - meX
@@ -144,6 +145,38 @@ class Utility {
             }
         } else {
             return closeRandomTile(me, me.tileXY, maxTileDist)
+        }
+    }
+
+    static int[] farthestPermissibleTile(Villager me, int[] tileDest, List<Model.TravelType> avoidList, int[][] bresenhamBuffer) {
+
+        if (Model.tileNetwork[tileDest[0]][tileDest[1]].travelType in avoidList) {
+            def idx = Path.bresenham(me.tileXY, tileDest, bresenhamBuffer, me)
+            def (int x, int y) = bresenhamBuffer[idx].clone()
+
+
+
+            if (([x, y] as int[]) != tileDest) {
+                throw new PerIsBorkenException()
+            }
+
+
+            works, but still need FARTHEST permissible
+
+
+            if (Model.tileNetwork[x][y].travelType == Model.TravelType.MOUNTAIN) {
+                for (int i = 0; i <= idx; i++) {
+                    (x, y) = bresenhamBuffer[i].clone()
+                    def travelType = Model.tileNetwork[x][y].travelType
+                    if (!me.canTravel(travelType) || travelType == Model.TravelType.MOUNTAIN) {
+                        idx = i - 1
+                        break
+                    }
+                }
+            }
+            return bresenhamBuffer[idx].clone()
+        } else {
+            return tileDest
         }
     }
 
