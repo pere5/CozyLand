@@ -6,11 +6,11 @@ import main.Main
 import main.Model
 import main.Model.TravelType
 import main.TestPrints
-import main.model.Path
 import main.model.StraightPath
 import main.model.Tile
 import main.model.Villager
 import main.npcLogic.action.WalkAction
+import main.utility.BresenhamUtils
 import main.utility.Utility
 
 class PathfinderWorker extends Worker {
@@ -104,7 +104,7 @@ class PathfinderWorker extends Worker {
 
         while (true) {
 
-            def idx = Path.bresenham(stepPos.element, tileDest, PathfinderWorker.bresenhamBuffer, villager)
+            def idx = BresenhamUtils.bresenham(stepPos.element, tileDest, PathfinderWorker.bresenhamBuffer, villager)
 
             def nextStep = PathfinderWorker.bresenhamBuffer[idx].clone()
             def currentStep = PathfinderWorker.bresenhamBuffer[idx - 1].clone()
@@ -246,7 +246,7 @@ class PathfinderWorker extends Worker {
                     break
                 }
             } else {
-                def idx = Path.bresenham(tileStep, tileDest, PathfinderWorker.bresenhamBuffer, villager)
+                def idx = BresenhamUtils.bresenham(tileStep, tileDest, PathfinderWorker.bresenhamBuffer, villager)
                 def middleIndex = ((idx / 2) as int)
                 if (middleIndex > 0) {
                     def middleTileDest = PathfinderWorker.bresenhamBuffer[middleIndex].clone()
@@ -285,7 +285,7 @@ class PathfinderWorker extends Worker {
 
                 if (villager.canTravel(travelType)) {
                     if (tileProbability > 0) {
-                        def idx = Path.bresenham(neighborXY, tileDest, PathfinderWorker.bresenhamBuffer, villager)
+                        def idx = BresenhamUtils.bresenham(neighborXY, tileDest, PathfinderWorker.bresenhamBuffer, villager)
                         def xy = PathfinderWorker.bresenhamBuffer[idx].clone()
                         if (xy == tileDest) {
                             nextTiles << calculateProbabilityForNeighbor(neighbor, tile, neighborTile)

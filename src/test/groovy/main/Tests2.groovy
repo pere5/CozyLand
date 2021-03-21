@@ -1,10 +1,10 @@
 package main
 
 import javaSrc.circulararray.CircularArrayList
-import main.model.Path
 import main.model.Tile
 import main.model.Villager
 import main.thread.PathfinderWorker
+import main.utility.BresenhamUtils
 import org.junit.Test
 
 class Tests2 {
@@ -19,7 +19,7 @@ class Tests2 {
                 [new Tile(height: 10, size: sw, x: 0, y: 0, travelType: p), new Tile(height: 10, size: sw, x: 0, y: 1, travelType: w)]
         ]
 
-        def idx = Path.bresenham([0, 0] as int[], [0, 1] as int[], new Villager())
+        def idx = BresenhamUtils.bresenham([0, 0] as int[], [0, 1] as int[], PathfinderWorker.bresenhamBuffer, new Villager())
 
         assert idx != 0
     }

@@ -3,7 +3,6 @@ package main.utility
 import main.Main
 import main.Model
 import main.exception.PerIsBorkenException
-import main.model.Path
 import main.model.Tile
 import main.model.Villager
 import main.things.Drawable
@@ -145,23 +144,6 @@ class Utility {
             }
         } else {
             return closeRandomTile(me, me.tileXY, maxTileDist)
-        }
-    }
-
-    static int[] farthestPermissibleTile(Villager me, int[] tileDest, List<Model.TravelType> avoidList, int[][] bresenhamBuffer) {
-
-        if (Model.tileNetwork[tileDest[0]][tileDest[1]].travelType in avoidList) {
-            def idx = Path.bresenham(me.tileXY, tileDest, bresenhamBuffer, me)
-            for (int i = idx; i >= 0; i--) {
-                def (int x, int y) = bresenhamBuffer[i].clone()
-                def travelType = Model.tileNetwork[x][y].travelType
-                if (me.canTravel(travelType) && !(travelType in avoidList)) {
-                    return bresenhamBuffer[i].clone()
-                }
-            }
-            return me.tileXY
-        } else {
-            return tileDest
         }
     }
 

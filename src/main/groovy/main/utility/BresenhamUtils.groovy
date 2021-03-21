@@ -1,11 +1,11 @@
-package main.model
+package main.utility
 
 
 import main.Model
 import main.model.Tile
 import main.model.Villager
 
-class Path {
+class BresenhamUtils {
 
     static int bresenham(int[] tileStart, int[] tileDest, int[][] buffer, Villager villager = null) {
         def (int x1, int y1) = tileStart
@@ -61,6 +61,25 @@ class Path {
                 }
             }
             idx++
+        }
+    }
+
+    static int[] farthestTileWithBresenham(Villager me, int[] tileDest, List<Model.TravelType> avoidList, int[][] bresenhamBuffer) {
+
+        def tileXY = me.tileXY
+
+        if (Model.tileNetwork[tileDest[0]][tileDest[1]].travelType in avoidList) {
+            def idx = bresenham(tileXY, tileDest, bresenhamBuffer, me)
+            for (int i = idx; i >= 0; i--) {
+                def (int x, int y) = bresenhamBuffer[i].clone()
+                def travelType = Model.tileNetwork[x][y].travelType
+                if (me.canTravel(travelType) && !(travelType in avoidList)) {
+                    return [x, y] as int[]
+                }
+            }
+            return tileXY
+        } else {
+            return tileDest
         }
     }
 }
