@@ -6,7 +6,7 @@ import main.model.Tile
 class Rock extends NaturalResource {
 
     Rock(Tile tile) {
-        super(tile, Shape.ROCK)
+        super(tile, Shape.SILVER_ORDE)
     }
 
     @Override

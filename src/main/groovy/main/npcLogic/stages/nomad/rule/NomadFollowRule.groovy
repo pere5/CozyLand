@@ -26,7 +26,7 @@ class NomadFollowRule extends Rule {
     @Override
     void planWork(Villager me, int status) {
         def tileDest = Utility.closeRandomTile(me, me.role.tribe.ruler.tileXY, Main.COMFORT_ZONE_TILES)
-        me.actionQueue << new ShapeAction(Shape.FOLLOWER)
+        me.actionQueue << new ShapeAction(Shape.SWORD)
         me.actionQueue << new WalkAction(tileDest)
     }
 }

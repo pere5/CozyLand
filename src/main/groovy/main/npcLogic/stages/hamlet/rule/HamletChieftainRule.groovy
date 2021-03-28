@@ -26,10 +26,10 @@ class HamletChieftainRule extends Rule {
     @Override
     void planWork(Villager me, int status) {
         if (Utility.compareTiles(me.tileXY, me.role.tribe.location.spot)) {
-            me.actionQueue << new ShapeAction(Shape.SHAMAN_BUILD)
+            me.actionQueue << new ShapeAction(Shape.HAMMER_2)
             me.actionQueue << new WaitAction(10)
         } else {
-            me.actionQueue << new ShapeAction(Shape.SHAMAN)
+            me.actionQueue << new ShapeAction(Shape.SPARTAN_HELMET)
             me.actionQueue << new WalkAction(me.role.tribe.location.spot)
         }
     }

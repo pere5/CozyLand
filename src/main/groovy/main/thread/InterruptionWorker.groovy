@@ -31,9 +31,9 @@ class InterruptionWorker extends Worker {
 
             def weird2 = Model.villagers.findAll {
                 if (it.role.id == NomadShamanRole.ID) {
-                    return it.shape != Drawable.Shape.SHAMAN &&
-                            it.shape != Drawable.Shape.SHAMAN_CAMP &&
-                            it.shape != Drawable.Shape.SHAMAN_BUILD
+                    return it.shape != Drawable.Shape.SPARTAN_HELMET &&
+                            it.shape != Drawable.Shape.CAMPFIRE &&
+                            it.shape != Drawable.Shape.HAMMER_2
                 }
                 return false
             }

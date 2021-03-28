@@ -34,7 +34,7 @@ class Model {
                     (Shape.WOOD): 2,
                     (Shape.STONE): 1
             ],
-            (Shape.SHAMAN_LODGE): [
+            (Shape.SCROLL): [
                     (Shape.WOOD): 3,
                     (Shape.STONE): 4
             ]
@@ -84,23 +84,23 @@ class Model {
     static BufferedImage backgroundImage
 
     static Map<Shape, BufferedImage> shapeImageMap = [
-            (Shape.RECT)            : null,
-            (Shape.CIRCLE)          : null,
-            (Shape.LINE)            : null,
-            (Shape.TREE)            : ImageUtils.createImage('icons8/icons8-large-tree-48.png', Main.TREE_SCALE),
-            (Shape.ROCK)            : ImageUtils.createImage('icons8/icons8-silver-ore-48.png', Main.ROCK_SCALE),
-            (Shape.WOOD)            : ImageUtils.createImage('flaticon/flaticon-firewood-64.png', Main.SCALE_64),
-            (Shape.STONE)           : ImageUtils.createImage('flaticon/flaticon-rocks-64.png', Main.SCALE_64),
-            (Shape.WARRIOR)         : ImageUtils.createImage('icons8/icons8-iron-age-warrior-48.png', Main.SCALE_48),
-            (Shape.SHAMAN)          : ImageUtils.createImage('icons8/icons8-spartan-helmet-48.png', Main.SCALE_48),
-            (Shape.SHAMAN_CAMP)     : ImageUtils.createImage('icons8/icons8-campfire-48.png', Main.SCALE_48),
-            (Shape.SHAMAN_BUILD)    : ImageUtils.createImage('flaticon/flaticon-hammer-64.png', Main.SCALE_64),
-            (Shape.FOLLOWER)        : ImageUtils.createImage('icons8/icons8-sword-48.png', Main.SCALE_48),
-            (Shape.FOLLOWER_BUILDER): ImageUtils.createImage('flaticon/flaticon-builder-hammer-64.png', Main.SCALE_64),
-            (Shape.HUT)             : ImageUtils.createImage('flaticon/flaticon-hut-128.png', Main.SCALE_128),
-            (Shape.SHAMAN_LODGE)    : ImageUtils.createImage('flaticon/flaticon-history-64.png', Main.SCALE_128),
-            (Shape.GRANARY)         : ImageUtils.createImage('flaticon/flaticon-shield-64.png', Main.SCALE_128),
-            (Shape.CARAVEL)         : ImageUtils.createImage('flaticon/flaticon-caravel-128.png', Main.SCALE_128)
+            (Shape.RECT)          : null,
+            (Shape.CIRCLE)        : null,
+            (Shape.LINE)          : null,
+            (Shape.WOOD)          : ImageUtils.createImage('flaticon/flaticon-firewood-64.png', Main.SCALE_64),
+            (Shape.STONE)         : ImageUtils.createImage('flaticon/flaticon-rocks-64.png', Main.SCALE_64),
+            (Shape.HAMMER)        : ImageUtils.createImage('flaticon/flaticon-builder-hammer-64.png', Main.SCALE_64),
+            (Shape.HAMMER_2)      : ImageUtils.createImage('flaticon/flaticon-hammer-64.png', Main.SCALE_64),
+            (Shape.HUT)           : ImageUtils.createImage('flaticon/flaticon-hut-128.png', Main.SCALE_128),
+            (Shape.SCROLL)        : ImageUtils.createImage('flaticon/flaticon-history-64.png', Main.SCALE_128),
+            (Shape.SHIELD)        : ImageUtils.createImage('flaticon/flaticon-shield-64.png', Main.SCALE_128),
+            (Shape.CARAVEL)       : ImageUtils.createImage('flaticon/flaticon-caravel-128.png', Main.SCALE_128),
+            (Shape.WARRIOR)       : ImageUtils.createImage('icons8/icons8-iron-age-warrior-48.png', Main.SCALE_48),
+            (Shape.SPARTAN_HELMET): ImageUtils.createImage('icons8/icons8-spartan-helmet-48.png', Main.SCALE_48),
+            (Shape.CAMPFIRE)      : ImageUtils.createImage('icons8/icons8-campfire-48.png', Main.SCALE_48),
+            (Shape.TREE)          : ImageUtils.createImage('icons8/icons8-large-tree-48.png', Main.TREE_SCALE),
+            (Shape.SILVER_ORDE)   : ImageUtils.createImage('icons8/icons8-silver-ore-48.png', Main.ROCK_SCALE),
+            (Shape.SWORD)         : ImageUtils.createImage('icons8/icons8-sword-48.png', Main.SCALE_48),
     ]
 
     static def NO_VILLAGERS = 1400
