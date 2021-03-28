@@ -1,7 +1,9 @@
 package main.things.resource
 
+import main.Model
+
 class Stone extends Resource {
     Stone() {
-        super(Shape.STONE)
+        super(Model.Shape.STONE)
     }
 }

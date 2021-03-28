@@ -1,12 +1,12 @@
 package main.things.naturalResource
 
-
+import main.Model
 import main.model.Tile
 
 class Tree extends NaturalResource {
 
     Tree (Tile tile) {
-        super(tile, Shape.TREE)
+        super(tile, Model.Shape.TREE)
     }
 
     @Override

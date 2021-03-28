@@ -89,7 +89,7 @@ class Model {
         TREE,
         STONE,
         WOOD,
-        SILVER_ORDE,
+        SILVER_ORE,
         SPARTAN_HELMET,
         CAMPFIRE,
         HAMMER_2,
@@ -138,7 +138,7 @@ class Model {
             (Shape.SPARTAN_HELMET): ImageUtils.createImage('icons8/icons8-spartan-helmet-48.png', Main.SCALE_48),
             (Shape.CAMPFIRE)      : ImageUtils.createImage('icons8/icons8-campfire-48.png', Main.SCALE_48),
             (Shape.TREE)          : ImageUtils.createImage('icons8/icons8-large-tree-48.png', Main.TREE_SCALE),
-            (Shape.SILVER_ORDE)   : ImageUtils.createImage('icons8/icons8-silver-ore-48.png', Main.ROCK_SCALE),
+            (Shape.SILVER_ORE)    : ImageUtils.createImage('icons8/icons8-silver-ore-48.png', Main.ROCK_SCALE),
             (Shape.SWORD)         : ImageUtils.createImage('icons8/icons8-sword-48.png', Main.SCALE_48),
     ]
 
