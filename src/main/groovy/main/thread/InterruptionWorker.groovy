@@ -3,7 +3,6 @@ package main.thread
 import main.Model
 import main.npcLogic.stages.nomad.NomadTribe
 import main.npcLogic.stages.nomad.role.NomadShamanRole
-import main.things.Drawable
 
 class InterruptionWorker extends Worker {
 
@@ -31,9 +30,9 @@ class InterruptionWorker extends Worker {
 
             def weird2 = Model.villagers.findAll {
                 if (it.role.id == NomadShamanRole.ID) {
-                    return it.shape != Drawable.Shape.SPARTAN_HELMET &&
-                            it.shape != Drawable.Shape.CAMPFIRE &&
-                            it.shape != Drawable.Shape.HAMMER_2
+                    return it.shape != Model.Shape.SPARTAN_HELMET &&
+                            it.shape != Model.Shape.CAMPFIRE &&
+                            it.shape != Model.Shape.HAMMER_2
                 }
                 return false
             }

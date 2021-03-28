@@ -10,7 +10,6 @@ import main.npcLogic.action.WalkAction
 import main.npcLogic.stages.alone.AloneTribe
 import main.npcLogic.stages.alone.role.AloneRole
 import main.npcLogic.stages.nomad.NomadTribe
-import main.things.Drawable.Shape
 import main.utility.GameUtils
 import main.utility.Utility
 
@@ -62,7 +61,7 @@ class AffinityRule extends Rule {
         } else {
             tileDest = Utility.closeRandomTile(me, me.tileXY, Main.WALK_DISTANCE_TILES_MAX, Main.WALK_DISTANCE_TILES_MIN)
         }
-        me.actionQueue << new ShapeAction(Shape.WARRIOR)
+        me.actionQueue << new ShapeAction(Model.Shape.WARRIOR)
         me.actionQueue << new WalkAction(tileDest, AffinityRule.&joinATribe)
     }
 

@@ -8,7 +8,7 @@ abstract class Building extends Drawable {
 
     List<ResourceSlot> resourceSlots = []
 
-    Building(Shape shape) {
+    Building(Model.Shape shape) {
         super()
         Model.buildingResources[shape].each { def resource ->
             resource.value.times {

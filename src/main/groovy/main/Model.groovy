@@ -6,7 +6,6 @@ import main.input.MyMouseListener
 import main.model.Tile
 import main.model.Villager
 import main.things.Drawable
-import main.things.Drawable.Shape
 import main.things.naturalResource.NaturalResource
 import main.things.naturalResource.Rock
 import main.things.naturalResource.Tree
@@ -83,11 +82,51 @@ class Model {
     static def tileProbabilitiesForDegrees = ProbabilityUtils.calculateProbabilitiesModel()
     static BufferedImage backgroundImage
 
+    enum Shape {
+        RECT,
+        CIRCLE,
+        LINE,
+        TREE,
+        STONE,
+        WOOD,
+        SILVER_ORDE,
+        SPARTAN_HELMET,
+        CAMPFIRE,
+        HAMMER_2,
+        WARRIOR,
+        SWORD,
+        HAMMER,
+        HUT,
+        SCROLL,
+        SHIELD,
+        CARAVEL,
+        BOW,
+        AXE,
+        BAG,
+        GEMS,
+        SCEPTRE,
+        SHIELD_2,
+        SHOVEL,
+        WOOD_2,
+        SWORD_2,
+        SWORD_3
+    }
+
     static Map<Shape, BufferedImage> shapeImageMap = [
             (Shape.RECT)          : null,
             (Shape.CIRCLE)        : null,
             (Shape.LINE)          : null,
             (Shape.WOOD)          : ImageUtils.createImage('flaticon/flaticon-firewood-64.png', Main.SCALE_64),
+            (Shape.BOW)           : ImageUtils.createImage('flaticon/flaticon-arch-64.png', Main.SCALE_64),
+            (Shape.AXE)           : ImageUtils.createImage('flaticon/flaticon-axe-64.png', Main.SCALE_64),
+            (Shape.BAG)           : ImageUtils.createImage('flaticon/flaticon-bag-64.png', Main.SCALE_64),
+            (Shape.GEMS)          : ImageUtils.createImage('flaticon/flaticon-gems-64.png', Main.SCALE_64),
+            (Shape.SCEPTRE)       : ImageUtils.createImage('flaticon/flaticon-sceptre-64.png', Main.SCALE_64),
+            (Shape.SHIELD_2)      : ImageUtils.createImage('flaticon/flaticon-shield-2-64.png', Main.SCALE_64),
+            (Shape.SHOVEL)        : ImageUtils.createImage('flaticon/flaticon-shovel-64.png', Main.SCALE_64),
+            (Shape.WOOD_2)        : ImageUtils.createImage('flaticon/flaticon-wood-64.png', Main.SCALE_64),
+            (Shape.SWORD_2)       : ImageUtils.createImage('flaticon/flaticon-swords-64.png', Main.SCALE_64),
+            (Shape.SWORD_3)       : ImageUtils.createImage('flaticon/flaticon-sword-64.png', Main.SCALE_64),
             (Shape.STONE)         : ImageUtils.createImage('flaticon/flaticon-rocks-64.png', Main.SCALE_64),
             (Shape.HAMMER)        : ImageUtils.createImage('flaticon/flaticon-builder-hammer-64.png', Main.SCALE_64),
             (Shape.HAMMER_2)      : ImageUtils.createImage('flaticon/flaticon-hammer-64.png', Main.SCALE_64),

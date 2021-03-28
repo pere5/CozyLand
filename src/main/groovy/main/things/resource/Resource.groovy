@@ -4,7 +4,7 @@ import main.Model
 import main.things.Drawable
 
 abstract class Resource extends Drawable {
-    Resource(Shape shape) {
+    Resource(Model.Shape shape) {
         this.shape = shape
         this.image = Model.shapeImageMap[shape]
     }

@@ -7,7 +7,6 @@ import main.npcLogic.action.WalkAction
 import main.things.Artifact
 import main.things.ArtifactLine
 import main.things.Drawable
-import main.things.Drawable.Shape
 import main.thread.PathfinderWorker
 import main.utility.BresenhamUtils
 import main.utility.ImageUtils
@@ -60,7 +59,7 @@ class TestPrints {
         if (!DEBUG_PATH_PRINTS) return
         if (ONLY_RULERS ? (villager.id != villager.role.tribe.ruler.id) : false) return
 
-        new ArtifactLine(size: 1, parent: villager.id, orig: pixelStart, dest: pixelDest, color: villager.testColor, shape: Shape.LINE)
+        new ArtifactLine(size: 1, parent: villager.id, orig: pixelStart, dest: pixelDest, color: villager.testColor, shape: Model.Shape.LINE)
     }
 
     static void perStarTestPrints(int[] tileStart, int[] tileDest, Villager villager, Set<List<Integer>> visited) {

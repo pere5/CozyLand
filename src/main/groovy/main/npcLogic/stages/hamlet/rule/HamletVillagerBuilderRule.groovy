@@ -7,7 +7,6 @@ import main.npcLogic.Rule
 import main.npcLogic.action.ShapeAction
 import main.npcLogic.action.WaitAction
 import main.npcLogic.action.WalkAction
-import main.things.Drawable.Shape
 import main.things.resource.Stone
 import main.things.resource.Wood
 import main.utility.Utility
@@ -39,20 +38,20 @@ class HamletVillagerBuilderRule extends Rule {
         def tribe = me.role.tribe
         def resources = tribe.resources
 
-        me.actionQueue << new ShapeAction(Shape.HAMMER)
+        me.actionQueue << new ShapeAction(Model.Shape.HAMMER)
         me.actionQueue << new WaitAction(2)
 
         def tileDest = Utility.closeRandomTile(me, tribe.ruler.tileXY, Main.COMFORT_ZONE_TILES)
-        me.actionQueue << new ShapeAction(Shape.SWORD)
+        me.actionQueue << new ShapeAction(Model.Shape.SWORD)
         me.actionQueue << new WalkAction(tileDest)
 
-        me.actionQueue << new ShapeAction(Shape.HAMMER)
+        me.actionQueue << new ShapeAction(Model.Shape.HAMMER)
         me.actionQueue << new WaitAction(10)
         def wood = resources.findAll { it instanceof Wood }
         def stone = resources.findAll { it instanceof Stone }
 
-        def neededWood = Model.buildingResources[Shape.HUT][Shape.WOOD]
-        def neededStone = Model.buildingResources[Shape.HUT][Shape.STONE]
+        def neededWood = Model.buildingResources[Model.Shape.HUT][Model.Shape.WOOD]
+        def neededStone = Model.buildingResources[Model.Shape.HUT][Model.Shape.STONE]
 
         def enoughWood = wood.size() >= neededWood
         def enoughStone = stone.size() >= neededStone

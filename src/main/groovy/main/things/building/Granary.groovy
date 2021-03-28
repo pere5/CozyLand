@@ -1,7 +1,9 @@
 package main.things.building
 
+import main.Model
+
 class Granary extends Building {
-    Granary(Shape shape) {
+    Granary(Model.Shape shape) {
         super(shape)
     }
 }

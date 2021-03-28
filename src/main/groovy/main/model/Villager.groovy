@@ -1,5 +1,6 @@
 package main.model
 
+import main.Model
 import main.Model.TravelType
 import main.npcLogic.Action
 import main.npcLogic.Role
@@ -32,7 +33,7 @@ class Villager extends Drawable {
         def newTribe = new AloneTribe()
         newTribe.ruler = villager
         villager.role = new AloneRole(newTribe)
-        villager.setShape(Shape.WARRIOR)
+        villager.setShape(Model.Shape.WARRIOR)
         def (Double x, Double y) = Utility.generateXY()
         villager.x = x
         villager.y = y

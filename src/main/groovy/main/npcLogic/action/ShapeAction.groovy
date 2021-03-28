@@ -1,15 +1,14 @@
 package main.npcLogic.action
 
-
+import main.Model
 import main.model.Villager
 import main.npcLogic.Action
-import main.things.Drawable.Shape
 
 class ShapeAction extends Action {
 
-    Shape shape
+    Model.Shape shape
 
-    ShapeAction(Shape shape) {
+    ShapeAction(Model.Shape shape) {
         this.shape = shape
     }
 

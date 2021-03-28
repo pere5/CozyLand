@@ -2,6 +2,7 @@ package main.utility
 
 import javaSrc.color.GaussianFilter
 import main.Main
+import main.Model
 import main.model.Tile
 import main.things.Drawable
 
@@ -118,7 +119,7 @@ class ImageUtils {
             for (int y = 0; y < tileNetwork[x].length; y++) {
                 Drawable drawable = tileNetwork[x][y]
                 g2d.setPaint(drawable.color)
-                if (drawable.shape == Drawable.Shape.RECT) {
+                if (drawable.shape == Model.Shape.RECT) {
                     g2d.fillRect(drawable.x as int, drawable.y as int, drawable.size, drawable.size)
                 }
             }

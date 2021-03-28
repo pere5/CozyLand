@@ -1,9 +1,9 @@
 package main.model
 
-import main.things.Drawable.Shape
+import main.Model
 import main.things.resource.Resource
 
 class ResourceSlot {
     Resource resource
-    Shape shape
+    Model.Shape shape
 }

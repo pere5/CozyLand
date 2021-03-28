@@ -59,11 +59,11 @@ class Surface extends JPanel implements ActionListener {
                 g2d.setPaint(drawable.color)
                 def x = (drawable.x + xOffset) as int
                 def y = (drawable.y + yOffset) as int
-                if (drawable.shape == Drawable.Shape.RECT) {
+                if (drawable.shape == Model.Shape.RECT) {
                     g2d.fillRect(x, y, drawable.size, drawable.size)
-                } else if (drawable.shape == Drawable.Shape.CIRCLE) {
+                } else if (drawable.shape == Model.Shape.CIRCLE) {
                     g2d.fillOval(x, y, drawable.size, drawable.size)
-                } else if (drawable.shape == Drawable.Shape.LINE) {
+                } else if (drawable.shape == Model.Shape.LINE) {
                     def artifactLine = drawable as ArtifactLine
                     def x1 = artifactLine.orig[0] + xOffset
                     def y1 = artifactLine.orig[1] + yOffset
@@ -103,7 +103,7 @@ class Surface extends JPanel implements ActionListener {
     }
 
     boolean inView(Drawable drawable, int left, int right, int top, int bottom) {
-        if (drawable.shape == Drawable.Shape.LINE) {
+        if (drawable.shape == Model.Shape.LINE) {
             return true
         } else {
             Double x = drawable.x

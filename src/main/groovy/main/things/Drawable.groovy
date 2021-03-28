@@ -11,18 +11,11 @@ import java.awt.image.BufferedImage
 
 abstract class Drawable {
 
-    enum Shape {
-        RECT, CIRCLE, LINE,
-        TREE, STONE, WOOD, SILVER_ORDE,
-        SPARTAN_HELMET, CAMPFIRE, HAMMER_2, WARRIOR, SWORD, HAMMER,
-        HUT, SCROLL, SHIELD, CARAVEL
-    }
-
     int id
     int parent
     Color color
     Color testColor
-    Shape shape = Shape.RECT
+    Model.Shape shape = Model.Shape.RECT
     BufferedImage image
     int size = 10
     Double x = 0
@@ -43,7 +36,7 @@ abstract class Drawable {
         }
     }
 
-    void setShape(Shape shape) {
+    void setShape(Model.Shape shape) {
         BufferedImage image
 
         if (this instanceof Villager) {
