@@ -1,6 +1,7 @@
 package main.utility
 
 import javaSrc.color.GaussianFilter
+import javaSrc.mkyong.FileResourcesUtils
 import main.Main
 import main.Model
 import main.model.Tile
@@ -14,10 +15,14 @@ import java.util.List
 
 class ImageUtils {
 
-    static BufferedImage createImage(String fileName, Double scale) {
+    static List<BufferedImage> readFromDir(String dir, Double scale) {
+        FileResourcesUtils.getAllFilesFromResource(dir).collect {
+            createImage(it, scale)
+        }
+    }
 
-        ClassLoader classloader = Thread.currentThread().getContextClassLoader()
-        def img = ImageIO.read(classloader.getResourceAsStream(fileName))
+    static BufferedImage createImage(File image, Double scale) {
+        def img = ImageIO.read(image)
         def scaledImage = new BufferedImage (
                 (scale * img.getWidth(null)) as int,
                 (scale * img.getHeight(null)) as int,
