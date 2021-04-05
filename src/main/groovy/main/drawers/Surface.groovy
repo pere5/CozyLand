@@ -48,8 +48,8 @@ class Surface extends JPanel implements ActionListener {
 
         int left = - xOffset
         int right = Main.VIEWPORT_WIDTH - xOffset
-        int bottom = - yOffset
-        int top = Main.VIEWPORT_HEIGHT - yOffset
+        int top = - yOffset
+        int bottom = Main.VIEWPORT_HEIGHT - yOffset
 
         g2d.drawImage(Model.backgroundImage, xOffset, yOffset, null)
 
@@ -103,12 +103,26 @@ class Surface extends JPanel implements ActionListener {
     }
 
     boolean inView(Drawable drawable, int left, int right, int top, int bottom) {
+        //y grows down
+        left -= 50
+        right += 50
+        top -= 10
+        bottom += 100
         if (drawable.shape == Model.Shape.LINE) {
-            return true
+            def artifactLine = drawable as ArtifactLine
+            def x1 = artifactLine.orig[0]
+            def y1 = artifactLine.orig[1]
+            def x2 = artifactLine.dest[0]
+            def y2 = artifactLine.dest[1]
+            return inView(x1, y1, left, right, top, bottom) || inView(x2, y2, left, right, top, bottom)
         } else {
             Double x = drawable.x
             Double y = drawable.y
-            x >= left && x <= right && y <= top && y >= bottom
+            inView(x, y, left, right, top, bottom)
         }
+    }
+
+    boolean inView(Double x, Double y, int left, int right, int top, int bottom) {
+        x >= left && x <= right && y >= top && y <= bottom
     }
 }
