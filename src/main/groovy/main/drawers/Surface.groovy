@@ -22,6 +22,8 @@ class Surface extends JPanel implements ActionListener {
     long startTime = System.currentTimeMillis()
     int framesPerSecond = 0
 
+    Drawable[] drawableBuffer = new Drawable[50000]
+
     @Override
     void actionPerformed(ActionEvent e) {
 
@@ -54,28 +56,36 @@ class Surface extends JPanel implements ActionListener {
         g2d.drawImage(Model.backgroundImage, xOffset, yOffset, null)
 
         ConcurrentLinkedQueue<Drawable> drawables = Model.drawables
+        int counter = 0
         for (Drawable drawable : drawables) {
             if (inView(drawable, left, right, top, bottom)) {
-                g2d.setPaint(drawable.color)
-                def x = (drawable.x + xOffset) as int
-                def y = (drawable.y + yOffset) as int
-                if (drawable.shape == Model.Shape.RECT) {
-                    g2d.fillRect(x, y, drawable.size, drawable.size)
-                } else if (drawable.shape == Model.Shape.CIRCLE) {
-                    g2d.fillOval(x, y, drawable.size, drawable.size)
-                } else if (drawable.shape == Model.Shape.LINE) {
-                    def artifactLine = drawable as ArtifactLine
-                    def x1 = artifactLine.orig[0] + xOffset
-                    def y1 = artifactLine.orig[1] + yOffset
-                    def x2 = artifactLine.dest[0] + xOffset
-                    def y2 = artifactLine.dest[1] + yOffset
-                    g2d.drawLine(x1, y1, x2, y2)
-                } else {
-                    g2d.drawImage(drawable.image, x + drawable.offsetX, y + drawable.offsetY, null)
-                }
+                drawableBuffer[counter] = drawable
+                counter++
             }
         }
 
+        Arrays.sort(drawableBuffer, 0, counter)
+
+        for (int i = 0; i < counter; i++) {
+            def drawable = drawableBuffer[i]
+            g2d.setPaint(drawable.color)
+            def x = (drawable.x + xOffset) as int
+            def y = (drawable.y + yOffset) as int
+            if (drawable.shape == Model.Shape.RECT) {
+                g2d.fillRect(x, y, drawable.size, drawable.size)
+            } else if (drawable.shape == Model.Shape.CIRCLE) {
+                g2d.fillOval(x, y, drawable.size, drawable.size)
+            } else if (drawable.shape == Model.Shape.LINE) {
+                def artifactLine = drawable as ArtifactLine
+                def x1 = artifactLine.orig[0] + xOffset
+                def y1 = artifactLine.orig[1] + yOffset
+                def x2 = artifactLine.dest[0] + xOffset
+                def y2 = artifactLine.dest[1] + yOffset
+                g2d.drawLine(x1, y1, x2, y2)
+            } else {
+                g2d.drawImage(drawable.image, x + drawable.offsetX, y + drawable.offsetY, null)
+            }
+        }
         drawFPS(g2d)
     }
 

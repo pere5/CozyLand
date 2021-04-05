@@ -9,7 +9,7 @@ import main.utility.Utility
 import java.awt.*
 import java.awt.image.BufferedImage
 
-abstract class Drawable {
+abstract class Drawable implements Comparable {
 
     int id
     int parent
@@ -73,6 +73,7 @@ abstract class Drawable {
         Utility.pixelToTileIdx(x, y)
     }
 
+    @Override
     boolean equals(o) {
         if (this.is(o)) return true
         if (!(o instanceof Drawable)) return false
@@ -84,9 +85,15 @@ abstract class Drawable {
         return true
     }
 
+    @Override
     int hashCode() {
         return id
     }
 
-
+    @Override
+    int compareTo(Object o) {
+        def a = this
+        def b = o as Drawable
+        return a.y <=> b.y
+    }
 }
