@@ -49,5 +49,5 @@
  - [x] Organisera om roller och regler till respektive tribe folder
  - [x] Assigna nya tribes
  - [ ] Skapa egna Hamlet roller
- - [ ] Fixa utritningen så husen inte pilar fel
+ - [ ] Fixa layering på renderingen
     
