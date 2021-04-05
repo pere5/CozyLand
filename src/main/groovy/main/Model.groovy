@@ -107,13 +107,19 @@ class Model {
         TOTEM,
         TREE,
         VILLAGER,
-        WINDMILL
+        WINDMILL,
+        WARRIOR,
+        SHAMAN,
+        FISHER,
+        BUILDER
     }
 
     static Map<Shape, List<BufferedImage>> shapeImageMap = [
             (Shape.RECT)    : null,
             (Shape.CIRCLE)  : null,
             (Shape.LINE)    : null,
+            (Shape.ROCK)    : ImageUtils.readFromDir('icons/ROCK',  Main.SCALE_TREE),
+            (Shape.TREE)    : ImageUtils.readFromDir('icons/TREE', Main.SCALE_ROCK),
             (Shape.BEAR)    : ImageUtils.readFromDir('icons/BEAR', Main.SCALE_64),
             (Shape.BIRD)    : ImageUtils.readFromDir('icons/BIRD', Main.SCALE_64),
             (Shape.BOAT)    : ImageUtils.readFromDir('icons/BOAT', Main.SCALE_64),
@@ -125,15 +131,17 @@ class Model {
             (Shape.FORT)    : ImageUtils.readFromDir('icons/FORT', Main.SCALE_64),
             (Shape.HOUSE)   : ImageUtils.readFromDir('icons/HOUSE', Main.SCALE_64),
             (Shape.HUT)     : ImageUtils.readFromDir('icons/HUT', Main.SCALE_64),
-            (Shape.ROCK)    : ImageUtils.readFromDir('icons/ROCK', Main.SCALE_64),
             (Shape.RUIN)    : ImageUtils.readFromDir('icons/RUIN', Main.SCALE_64),
             (Shape.TEMPLE)  : ImageUtils.readFromDir('icons/TEMPLE', Main.SCALE_64),
             (Shape.TENT)    : ImageUtils.readFromDir('icons/TENT', Main.SCALE_64),
             (Shape.TOOL)    : ImageUtils.readFromDir('icons/TOOL', Main.SCALE_64),
             (Shape.TOTEM)   : ImageUtils.readFromDir('icons/TOTEM', Main.SCALE_64),
-            (Shape.TREE)    : ImageUtils.readFromDir('icons/TREE', Main.SCALE_64),
-            (Shape.VILLAGER): ImageUtils.readFromDir('icons/VILLAGER', Main.SCALE_64),
-            (Shape.WINDMILL): ImageUtils.readFromDir('icons/WINDMILL', Main.SCALE_64)
+            (Shape.WINDMILL): ImageUtils.readFromDir('icons/WINDMILL', Main.SCALE_64),
+            (Shape.BUILDER) : ImageUtils.readFromDir('icons/PEOPLE/BUILDER', Main.SCALE_PEOPLE),
+            (Shape.FISHER)  : ImageUtils.readFromDir('icons/PEOPLE/FISHER', Main.SCALE_PEOPLE),
+            (Shape.SHAMAN)  : ImageUtils.readFromDir('icons/PEOPLE/SHAMAN', Main.SCALE_PEOPLE),
+            (Shape.VILLAGER): ImageUtils.readFromDir('icons/PEOPLE/VILLAGER', Main.SCALE_PEOPLE),
+            (Shape.WARRIOR) : ImageUtils.readFromDir('icons/PEOPLE/WARRIOR', Main.SCALE_PEOPLE)
     ]
 
     static def NO_VILLAGERS = 1400

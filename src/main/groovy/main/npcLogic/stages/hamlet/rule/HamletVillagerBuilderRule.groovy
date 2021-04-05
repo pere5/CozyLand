@@ -38,14 +38,14 @@ class HamletVillagerBuilderRule extends Rule {
         def tribe = me.role.tribe
         def resources = tribe.resources
 
-        me.actionQueue << new ShapeAction(Model.Shape.HAMMER)
+        me.actionQueue << new ShapeAction(Model.Shape.VILLAGER)
         me.actionQueue << new WaitAction(2)
 
         def tileDest = Utility.closeRandomTile(me, tribe.ruler.tileXY, Main.COMFORT_ZONE_TILES)
-        me.actionQueue << new ShapeAction(Model.Shape.SWORD)
+        me.actionQueue << new ShapeAction(Model.Shape.BUILDER)
         me.actionQueue << new WalkAction(tileDest)
 
-        me.actionQueue << new ShapeAction(Model.Shape.HAMMER)
+        me.actionQueue << new ShapeAction(Model.Shape.VILLAGER)
         me.actionQueue << new WaitAction(10)
         def wood = resources.findAll { it instanceof Wood }
         def stone = resources.findAll { it instanceof Stone }

@@ -41,10 +41,11 @@ class Main extends JFrame {
     static final Double TREE_SCALE = 0.90
     static final Double ROCK_SCALE = 0.40
 
-    static final Double SCALE = 1.5
-    static final Double SCALE_64 = 0.15 * SCALE
-    static final Double SCALE_48 = 0.20 * SCALE
-    static final Double SCALE_128 = 0.10 * SCALE
+    static final Double SCALE = 1
+    static final Double SCALE_64 = 0.20 * SCALE
+    static final Double SCALE_TREE = 0.7 * SCALE
+    static final Double SCALE_ROCK = 0.7 * SCALE
+    static final Double SCALE_PEOPLE = 0.3 * SCALE
 
     static final Double SHADE_IMAGES = 0.50
     static final Double SHADE_TRIBE = 2.0

@@ -38,7 +38,7 @@ abstract class Drawable {
 
     void setShape(Model.Shape shape) {
         BufferedImage image
-
+        def rnd = new Random().nextInt(Model.shapeImageMap[shape].size())
         if (this instanceof Villager) {
             def villager = this as Villager
             if (villager.role.tribe.color) {
@@ -47,7 +47,7 @@ abstract class Drawable {
                     image = tribeImage
                 } else {
                     image = ImageUtils.applyColorFilter(
-                            Model.shapeImageMap[shape],
+                            Model.shapeImageMap[shape][rnd],
                             villager.role.tribe.color
                     )
                     villager.role.tribe.shapeImageMap[shape] = image
@@ -56,7 +56,7 @@ abstract class Drawable {
         }
 
         if (image == null) {
-            image = Model.shapeImageMap[shape]
+            image = Model.shapeImageMap[shape][rnd]
         }
 
         this.shape = shape

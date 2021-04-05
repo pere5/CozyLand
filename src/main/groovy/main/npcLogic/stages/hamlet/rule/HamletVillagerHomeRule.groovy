@@ -28,7 +28,7 @@ class HamletVillagerHomeRule extends Rule {
     @Override
     void planWork(Villager me, int status) {
         int[] tileXY = Utility.closeRandomTile(me, me.role.tribe.ruler.tileXY, Main.COMFORT_ZONE_TILES + 1, 1)
-        me.actionQueue << new ShapeAction(Model.Shape.HAMMER)
+        me.actionQueue << new ShapeAction(Model.Shape.BUILDER)
         me.actionQueue << new WalkAction(tileXY)
         me.actionQueue << new HomeAction(Hut.class)
     }

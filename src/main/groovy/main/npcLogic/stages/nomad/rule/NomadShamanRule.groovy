@@ -80,7 +80,7 @@ class NomadShamanRule extends Rule {
             def goodLocation = me.metaObjects[RULE_GOAL] as Location
             me.metaObjects[RULE_GOAL] = null
 
-            me.actionQueue << new ShapeAction(Model.Shape.SPARTAN_HELMET)
+            me.actionQueue << new ShapeAction(Model.Shape.SHAMAN)
             me.actionQueue << new WalkAction(goodLocation.spot)
             me.actionQueue << new ClosureAction({
                 def (int tileX, int tileY) = me.getTileXY()
@@ -105,9 +105,9 @@ class NomadShamanRule extends Rule {
                 tileDest = Utility.closeRandomTile(me, me.tileXY, Main.WALK_DISTANCE_TILES_MAX, Main.WALK_DISTANCE_TILES_MIN)
             }
             def farthestPermissibleTile = BresenhamUtils.farthestPermissibleTileWithBresenham(me, tileDest, [Model.TravelType.MOUNTAIN], RuleWorker.bresenhamBuffer)
-            me.actionQueue << new ShapeAction(Model.Shape.SPARTAN_HELMET)
+            me.actionQueue << new ShapeAction(Model.Shape.SHAMAN)
             me.actionQueue << new WalkAction(farthestPermissibleTile)
-            me.actionQueue << new ShapeAction(Model.Shape.CAMPFIRE)
+            me.actionQueue << new ShapeAction(Model.Shape.TOOL)
             me.actionQueue << new SurveyAction(6, me.role.tribe)
         }
     }
