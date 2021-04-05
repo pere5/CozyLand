@@ -107,7 +107,7 @@ class NomadShamanRule extends Rule {
             def farthestPermissibleTile = BresenhamUtils.farthestPermissibleTileWithBresenham(me, tileDest, [Model.TravelType.MOUNTAIN], RuleWorker.bresenhamBuffer)
             me.actionQueue << new ShapeAction(Model.Shape.SHAMAN)
             me.actionQueue << new WalkAction(farthestPermissibleTile)
-            me.actionQueue << new ShapeAction(Model.Shape.TOOL)
+            me.actionQueue << new ShapeAction(Model.Shape.TOTEM)
             me.actionQueue << new SurveyAction(6, me.role.tribe)
         }
     }
