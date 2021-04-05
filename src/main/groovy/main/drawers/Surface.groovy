@@ -21,6 +21,8 @@ class Surface extends JPanel implements ActionListener {
     int lastFramesPerSecond = 0
     long startTime = System.currentTimeMillis()
     int framesPerSecond = 0
+    long globalFrameCounter = 0
+    int globalLengthCounter = 0
 
     Drawable[] drawableBuffer = new Drawable[50000]
 
@@ -46,6 +48,12 @@ class Surface extends JPanel implements ActionListener {
     @Override
     void paintComponent(Graphics g) {
         super.paintComponent(g)
+
+        if (globalFrameCounter > Long.MAX_VALUE - 100) {
+            globalFrameCounter = 0
+        }
+        globalFrameCounter++
+
         Graphics2D g2d = (Graphics2D) g
 
         int left = - xOffset
@@ -56,17 +64,19 @@ class Surface extends JPanel implements ActionListener {
         g2d.drawImage(Model.backgroundImage, xOffset, yOffset, null)
 
         ConcurrentLinkedQueue<Drawable> drawables = Model.drawables
-        int counter = 0
-        for (Drawable drawable : drawables) {
-            if (inView(drawable, left, right, top, bottom)) {
-                drawableBuffer[counter] = drawable
-                counter++
+
+        if (globalLengthCounter == 0 || globalFrameCounter % 5 == 0) {
+            globalLengthCounter = 0
+            for (Drawable drawable : drawables) {
+                if (inView(drawable, left, right, top, bottom)) {
+                    drawableBuffer[globalLengthCounter] = drawable
+                    globalLengthCounter++
+                }
             }
+            Arrays.sort(drawableBuffer, 0, globalLengthCounter)
         }
 
-        Arrays.sort(drawableBuffer, 0, counter)
-
-        for (int i = 0; i < counter; i++) {
+        for (int i = 0; i < globalLengthCounter; i++) {
             def drawable = drawableBuffer[i]
             g2d.setPaint(drawable.color)
             def x = (drawable.x + xOffset) as int
