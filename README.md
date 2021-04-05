@@ -50,4 +50,7 @@
  - [x] Assigna nya tribes
  - [ ] Skapa egna Hamlet roller
  - [x] Fixa layering på renderingen
+ - [ ] Ordna till färgerna på gubbarna
+ - [ ] Ordna till färgerna på träden
+ - [ ] Villagers inte byta till random shape om de har en
     

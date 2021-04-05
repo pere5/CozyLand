@@ -114,12 +114,9 @@ class Model {
         BUILDER
     }
 
-    static final Double TREE_SCALE = 0.90
-    static final Double ROCK_SCALE = 0.40
-
     static final Double SCALE = 1
     static final Double SCALE_64 = 0.20 * SCALE
-    static final Double SCALE_TREE = 1.1 * SCALE
+    static final Double SCALE_TREE = 1.3 * SCALE
     static final Double SCALE_ROCK = 0.7 * SCALE
     static final Double SCALE_PEOPLE = 0.5 * SCALE
     static final Double SCALE_TOTEM = 0.9 * SCALE
