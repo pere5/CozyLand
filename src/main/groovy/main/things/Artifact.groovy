@@ -9,6 +9,6 @@ class Artifact extends Drawable {
     Artifact () {
         size = 1
         color = Color.RED
-        shape = Model.Shape.RECT
+        setShapeAndImage(Model.Shape.RECT)
     }
 }

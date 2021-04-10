@@ -5,6 +5,6 @@ import main.things.Drawable
 
 abstract class Resource extends Drawable {
     Resource(Model.Shape shape) {
-        this.shape = shape
+        setShapeAndImage(shape)
     }
 }

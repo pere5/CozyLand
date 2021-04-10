@@ -2,7 +2,9 @@ package main.things
 
 import main.Main
 import main.Model
+import main.model.Tile
 import main.model.Villager
+import main.things.naturalResource.NaturalResource
 import main.utility.ImageUtils
 import main.utility.Utility
 
@@ -36,27 +38,41 @@ abstract class Drawable implements Comparable {
         }
     }
 
-    void setShape(Model.Shape shape) {
+    void setShapeAndImage(Model.Shape shape) {
+        def tileNetwork = Model.tileNetwork as Tile[][]
         BufferedImage image
-        def rnd = new Random().nextInt(Model.shapeImageMap[shape].size())
-        if (this instanceof Villager) {
-            def villager = this as Villager
-            if (villager.role.tribe.color) {
-                def tribeImage = villager.role.tribe.shapeImageMap[shape]
-                if (tribeImage) {
-                    image = tribeImage
-                } else {
-                    image = ImageUtils.applyColorFilter(
-                            Model.shapeImageMap[shape][rnd],
-                            villager.role.tribe.color
-                    )
-                    villager.role.tribe.shapeImageMap[shape] = image
+        def bufferedImage = Model.shapeImageMap[shape]
+        if (bufferedImage) {
+            def rnd = new Random().nextInt(bufferedImage.size())
+            if (this instanceof Villager) {
+                def villager = this as Villager
+                if (villager.role.tribe.color) {
+                    def tribeImage = villager.role.tribe.shapeImageMap[shape]
+                    if (tribeImage) {
+                        image = tribeImage
+                    } else {
+                        image = ImageUtils.applyColorFilter(
+                                bufferedImage[rnd],
+                                villager.role.tribe.color
+                        )
+                        villager.role.tribe.shapeImageMap[shape] = image
+                    }
                 }
-            }
-        }
+            } else if (this instanceof NaturalResource) {
 
-        if (image == null) {
-            image = Model.shapeImageMap[shape][rnd]
+
+                bygg en shade map per natural resource
+
+                /*
+                    def (int tileX, int tileY) = getTileXY()
+                    def tile = tileNetwork[tileX][tileY]
+                    image = ImageUtils.shadeImage(bufferedImage[rnd], tile.height)
+                 */
+            }
+
+            if (image == null) {
+                image = bufferedImage[rnd]
+            }
         }
 
         this.shape = shape

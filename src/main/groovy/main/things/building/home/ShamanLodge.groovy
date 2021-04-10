@@ -15,6 +15,6 @@ class ShamanLodge extends Home {
         this.y = pixels[1]
         habitants << me
         me.home = this
-        this.shape = Model.Shape.TEMPLE
+        setShapeAndImage(Model.Shape.TEMPLE)
     }
 }

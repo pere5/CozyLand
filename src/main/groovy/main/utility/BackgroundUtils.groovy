@@ -314,13 +314,14 @@ class BackgroundUtils {
         for (int y = 0; y < tileNetwork[0].length; y++) {
             for (int x = 0; x < tileNetwork.length; x++) {
                 Tile tile = tileNetwork[x][y]
-                int random = ThreadLocalRandom.current().nextInt(0, Integer.MAX_VALUE)
-
                 def naturalResources = Model.travelTypeNaturalResources[tile.travelType]
-
-                naturalResources.each { Class<? extends NaturalResource> clazz, Integer prevalence ->
+                if (naturalResources) {
+                    int random = ThreadLocalRandom.current().nextInt(0, Integer.MAX_VALUE)
+                    Class<? extends NaturalResource> clazz = naturalResources.clazz
+                    Model.Shape shape = naturalResources.shape
+                    int prevalence = naturalResources.prevalence
                     if (random % prevalence == 0) {
-                        tile.naturalResources << clazz.getDeclaredConstructor(Tile.class).newInstance(tile)
+                        tile.naturalResources << clazz.getDeclaredConstructor(Tile.class, Model.Shape).newInstance(tile, shape)
                     }
                 }
             }

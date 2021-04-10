@@ -6,9 +6,9 @@ import main.things.Drawable
 
 abstract class NaturalResource extends Drawable {
     NaturalResource(Tile tile, Model.Shape shape) {
-        this.shape = shape
         this.parent = tile.id
         this.x = tile.x
         this.y = tile.y
+        setShapeAndImage(shape)
     }
 }

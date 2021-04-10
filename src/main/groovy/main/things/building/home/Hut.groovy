@@ -15,6 +15,6 @@ class Hut extends Home {
         this.y = pixels[1]
         habitants << me
         me.home = this
-        this.shape = Model.Shape.HUT
+        setShapeAndImage(Model.Shape.HUT)
     }
 }

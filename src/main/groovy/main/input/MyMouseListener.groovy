@@ -27,7 +27,9 @@ class MyMouseListener implements MouseListener {
                 return false
             }
         }.each { Drawable drawable ->
-            drawable.image = ImageUtils.shadeImage(Model.shapeImageMap[drawable.shape], Color.lightGray)
+            def c = Color.lightGray
+            def gray = ((c.getRed() + c.getGreen() + c.getBlue()) / 3) as int
+            drawable.image = ImageUtils.shadeImage(Model.shapeImageMap[drawable.shape][0], gray)
             if (drawable instanceof Villager) {
                 drawable.debug = true
                 println((drawable as Villager).toString())

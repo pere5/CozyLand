@@ -38,7 +38,7 @@ class Main extends JFrame {
 
     static final int GAUSSIAN_FILTER = 4
 
-    static final Double SHADE_IMAGES = 0.50
+    static final Double SHADE_IMAGES = 0.75
     static final Double SHADE_TRIBE = 2.0
 
     MyKeyboardListener myKeyboardListener

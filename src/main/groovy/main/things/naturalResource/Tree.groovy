@@ -5,8 +5,8 @@ import main.model.Tile
 
 class Tree extends NaturalResource {
 
-    Tree (Tile tile) {
-        super(tile, Model.Shape.TREE)
+    Tree (Tile tile, Model.Shape shape) {
+        super(tile, shape)
     }
 
     @Override
