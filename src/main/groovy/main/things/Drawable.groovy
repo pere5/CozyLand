@@ -2,7 +2,6 @@ package main.things
 
 import main.Main
 import main.Model
-import main.model.Tile
 import main.model.Villager
 import main.things.naturalResource.NaturalResource
 import main.utility.ImageUtils
@@ -39,7 +38,6 @@ abstract class Drawable implements Comparable {
     }
 
     void setShapeAndImage(Model.Shape shape) {
-        def tileNetwork = Model.tileNetwork as Tile[][]
         BufferedImage image
         def bufferedImage = Model.shapeImageMap[shape]
         if (bufferedImage) {
@@ -59,15 +57,13 @@ abstract class Drawable implements Comparable {
                     }
                 }
             } else if (this instanceof NaturalResource) {
-
-
-                bygg en shade map per natural resource
-
-                /*
-                    def (int tileX, int tileY) = getTileXY()
-                    def tile = tileNetwork[tileX][tileY]
-                    image = ImageUtils.shadeImage(bufferedImage[rnd], tile.height)
-                 */
+                def travelTypeModel = Model.travelTypeNaturalResources.values().find {
+                    it.shape == shape
+                }
+                def shade = travelTypeModel.shade as Float
+                if (shade) {
+                    image = ImageUtils.shadeImage(bufferedImage[rnd], shade)
+                }
             }
 
             if (image == null) {

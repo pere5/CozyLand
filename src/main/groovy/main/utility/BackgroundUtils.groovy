@@ -233,12 +233,13 @@ class BackgroundUtils {
         Color mountainLower = new Color(75, 75, 75)
         Color mountainLow = new Color(90, 90, 90)
         Color mountainHigh = new Color(255, 255, 255)
+
         def colorRatios = [
-                [from: 0.0,  to: 0.18,  colorFrom: blueLow,           colorTo: blueHigh,         travelType: Model.TravelType.WATER],
-                [from: 0.18,  to: 0.35, colorFrom: yellowLow,         colorTo: yellowHigh,       travelType: Model.TravelType.BEACH],
-                [from: 0.35, to: 0.85, colorFrom: greenLow,          colorTo: greenHigh,        travelType: Model.TravelType.FOREST],
-                [from: 0.85, to: 0.93, colorFrom: mountainEdgeGreen, colorTo: mountainLower,    travelType: Model.TravelType.HILL],
-                [from: 0.93, to: 1.0,  colorFrom: mountainLow,       colorTo: mountainHigh,     travelType: Model.TravelType.MOUNTAIN]
+                [from: 0.0,  to: 0.18, colorFrom: blueLow,           colorTo: blueHigh,      travelType: Model.TravelType.WATER],
+                [from: 0.18, to: 0.35, colorFrom: yellowLow,         colorTo: yellowHigh,    travelType: Model.TravelType.BEACH],
+                [from: 0.35, to: 0.85, colorFrom: greenLow,          colorTo: greenHigh,     travelType: Model.TravelType.FOREST],
+                [from: 0.85, to: 0.93, colorFrom: mountainEdgeGreen, colorTo: mountainLower, travelType: Model.TravelType.HILL],
+                [from: 0.93, to: 1.0,  colorFrom: mountainLow,       colorTo: mountainHigh,  travelType: Model.TravelType.MOUNTAIN]
         ]
 
         def controlMap = [:]

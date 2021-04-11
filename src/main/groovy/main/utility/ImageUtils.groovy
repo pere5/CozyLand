@@ -69,12 +69,14 @@ class ImageUtils {
         return b
     }
 
-    static BufferedImage shadeImage(BufferedImage image, int gray) {
-
+    static BufferedImage shadeImageToMatch(BufferedImage image, int gray) {
         def c2 = getDominantColor(image)
         def gray2 = ((c2.getRed() + c2.getGreen() + c2.getBlue()) / 3) as int
-
         float scaleFactor = ((gray / gray2) * Main.SHADE_IMAGES) as float
+        shadeImage(image, scaleFactor)
+    }
+
+    static BufferedImage shadeImage(BufferedImage image, float scaleFactor) {
         RescaleOp op = new RescaleOp(scaleFactor, 0, null)
         op.filter(image, null)
     }

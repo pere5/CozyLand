@@ -40,10 +40,10 @@ class Model {
 
     static Map<TravelType, Map> travelTypeNaturalResources = [
             (TravelType.WATER)   : [:],
-            (TravelType.BEACH)   : [clazz: Tree.class, shape: Shape.TREE_AUTUMN_LEAF, prevalence: 75],
-            (TravelType.FOREST)  : [clazz: Tree.class, shape: Shape.TREE_LEAF, prevalence: 75],
-            (TravelType.HILL)    : [clazz: Tree.class, shape: Shape.TREE_PINE, prevalence: 75],
-            (TravelType.MOUNTAIN): [clazz: Rock.class, shape: Shape.ROCK, prevalence: 75],
+            (TravelType.BEACH)   : [clazz: Tree.class, shape: Shape.TREE_AUTUMN_LEAF, prevalence: 110, shade: 0.9],
+            (TravelType.FOREST)  : [clazz: Tree.class, shape: Shape.TREE_LEAF, prevalence: 80, shade: 0.9],
+            (TravelType.HILL)    : [clazz: Tree.class, shape: Shape.TREE_PINE, prevalence: 50, shade: 0.8],
+            (TravelType.MOUNTAIN): [clazz: Rock.class, shape: Shape.ROCK, prevalence: 75, shade: 0.5],
             (TravelType.PLAIN)   : [:],
             (TravelType.ROAD)    : [:],
     ]
