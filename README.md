@@ -48,9 +48,21 @@
  - [x] optimera debug renderingen
  - [x] Organisera om roller och regler till respektive tribe folder
  - [x] Assigna nya tribes
- - [ ] Skapa egna Hamlet roller
  - [x] Fixa layering på renderingen
  - [x] Ordna till färgerna på gubbarna
  - [x] Ordna till färgerna på träden
  - [x] Villagers inte byta till random shape om de har en
+ - [x] Skapa egna Hamlet roller
+ - [ ] byggnadsplacering
+    - [ ] inte på berg
+    - [ ] separat från varandra
+ - [ ] Skapa roller och regler för träd
+ - [ ] Ny natural resource, ruin
+ - [ ] shaman placerar totem, inte blir en
+ - [ ] tält för nomads
+ - [ ] hus för hamlets
+ - [ ] implementera naturliga stigar
+ - [ ] implementera byggandet av byggnader
+    - [ ] finn bilder för oklara tält/hus osv...
+
     
