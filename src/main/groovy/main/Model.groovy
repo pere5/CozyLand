@@ -23,6 +23,8 @@ class Model {
         idGenerator++
     }
 
+    static final Double GOLDEN_RATIO = 1.61803398874989484820458683436563811772030917980576286213544862270526046281890
+
     enum TravelType {
         WATER, BEACH, FOREST, HILL, MOUNTAIN, PLAIN, ROAD, UP_HILL, DOWN_HILL, EVEN
     }
@@ -159,7 +161,7 @@ class Model {
             (Shape.WARRIOR)         : ImageUtils.readFromDir('icons/PEOPLE/WARRIOR', SCALE_PEOPLE)
     ]
 
-    static def NO_VILLAGERS = 1400
+    static def NO_VILLAGERS = 5000
 
     static def init(def keyboard, def mouse) {
         Model.keyboard = keyboard

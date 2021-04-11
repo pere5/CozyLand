@@ -3,6 +3,7 @@ package main.npcLogic
 import main.Model
 import main.model.Location
 import main.model.Villager
+import main.things.building.Building
 import main.things.naturalResource.NaturalResource
 import main.things.resource.Resource
 
@@ -17,6 +18,7 @@ abstract class Tribe {
 
     Villager ruler
     ConcurrentLinkedQueue<Villager> villagers = []
+    ConcurrentLinkedQueue<Building> buildings = []
 
     Color color
     Map<Model.Shape, BufferedImage> shapeImageMap = [:]
