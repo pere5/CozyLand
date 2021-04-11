@@ -24,6 +24,7 @@ abstract class Drawable implements Comparable {
     Integer offsetX
     Integer offsetY
     Boolean debug = false
+    Map<Model.Shape, BufferedImage> shapeImageMap = [:]
 
     Drawable() {
         this.id = Model.getNewId()
@@ -55,6 +56,11 @@ abstract class Drawable implements Comparable {
                         )
                         villager.role.tribe.shapeImageMap[shape] = image
                     }
+                } else if (villager.shapeImageMap[shape]) {
+                    image = villager.shapeImageMap[shape]
+                } else {
+                    image = bufferedImage[rnd]
+                    villager.shapeImageMap[shape] = image
                 }
             } else if (this instanceof NaturalResource) {
                 def travelTypeModel = Model.travelTypeNaturalResources.values().find {
