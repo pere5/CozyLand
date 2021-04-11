@@ -117,13 +117,13 @@ class Model {
         BUILDER
     }
 
-    static final Double SCALE = 0.9
+    static final Double SCALE = 0.8
     static final Double SCALE_64 = 0.20 * SCALE
     static final Double SCALE_TREE = 1.2 * SCALE
     static final Double SCALE_ROCK = 0.7 * SCALE
-    static final Double SCALE_PEOPLE = 0.5 * SCALE
+    static final Double SCALE_PEOPLE = 0.45 * SCALE
     static final Double SCALE_TOTEM = 0.9 * SCALE
-    static final Double SCALE_HUT = 0.8 * SCALE
+    static final Double SCALE_HUT = 0.7 * SCALE
 
     static Map<Shape, List<BufferedImage>> shapeImageMap = [
             (Shape.RECT)            : null,
