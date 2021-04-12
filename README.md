@@ -53,6 +53,9 @@
  - [x] Ordna till färgerna på träden
  - [x] Villagers inte byta till random shape om de har en
  - [x] Skapa egna Hamlet roller
+ - [ ] Flytta in wait till Action så att alla kan bruka funktionen
+    - [ ] Lägg till wait i HomeAction om man inte hittar en plats att bygga
+    - [ ] Wait skall göras för alla actions som misslyckas
  - [ ] byggnadsplacering
     - [ ] inte på berg
     - [ ] separat från varandra
