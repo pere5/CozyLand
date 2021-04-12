@@ -65,7 +65,7 @@ class NomadShamanRule extends Rule {
                     def score = multiplied.sum {
                         it.amount
                     } as Integer
-                    goodLocations << new Location(spot: spot as int[], naturalResources: resources, score: score)
+                    goodLocations << new Location(tileXY: spot as int[], naturalResources: resources, score: score)
                 }
 
                 me.metaObjects[RULE_GOAL] = goodLocations.max { it.score }
@@ -81,7 +81,7 @@ class NomadShamanRule extends Rule {
             me.metaObjects[RULE_GOAL] = null
 
             me.actionQueue << new ShapeAction(Model.Shape.SHAMAN)
-            me.actionQueue << new WalkAction(goodLocation.spot)
+            me.actionQueue << new WalkAction(goodLocation.tileXY)
             me.actionQueue << new ClosureAction({
                 def (int tileX, int tileY) = me.getTileXY()
                 def avoidThese = findWhoToAvoid(tileX, tileY, me)
@@ -92,7 +92,7 @@ class NomadShamanRule extends Rule {
                 }
             })
             me.actionQueue << new ClosureAction({
-                me.role.tribe.location = new Location(spot: me.tileXY)
+                me.role.tribe.location = new Location(tileXY: me.tileXY)
             })
             me.actionQueue << new TribeAction(me.role.tribe, new HamletTribe())
         } else {

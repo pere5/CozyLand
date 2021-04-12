@@ -3,11 +3,11 @@ package main.things.building.home
 import main.Model
 import main.model.Villager
 
-class Hut extends Home {
+class Tent extends Home {
 
     private static final int MAX_HABITANTS = 2
 
-    Hut(Villager me, int[] tileXY) {
-        super(Model.Shape.HUT, MAX_HABITANTS, me, tileXY)
+    Tent(Villager me, int[] tileXY) {
+        super(Model.Shape.TENT, MAX_HABITANTS, me, tileXY)
     }
 }

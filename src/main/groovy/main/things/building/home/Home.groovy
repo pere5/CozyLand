@@ -9,8 +9,8 @@ abstract class Home extends Building {
     List<Villager> habitants = []
     Integer maxHabitants
 
-    Home(Model.Shape shape, Integer maxHabitants, Villager me) {
-        super(shape, me.tileXY)
+    Home(Model.Shape shape, Integer maxHabitants, Villager me, int[] tileXY) {
+        super(shape, tileXY)
         this.maxHabitants = maxHabitants
         habitants << me
         me.home = this

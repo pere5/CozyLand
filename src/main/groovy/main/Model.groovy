@@ -125,7 +125,7 @@ class Model {
     static final Double SCALE_ROCK = 0.7 * SCALE
     static final Double SCALE_PEOPLE = 0.45 * SCALE
     static final Double SCALE_TOTEM = 0.9 * SCALE
-    static final Double SCALE_HUT = 0.7 * SCALE
+    static final Double SCALE_HUT = 0.6 * SCALE
 
     static Map<Shape, List<BufferedImage>> shapeImageMap = [
             (Shape.RECT)            : null,
