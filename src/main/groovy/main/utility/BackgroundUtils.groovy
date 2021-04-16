@@ -15,23 +15,23 @@ import java.util.concurrent.ThreadLocalRandom
 class BackgroundUtils {
 
     static Tile[][] generateBackground() {
-        generateBackground("maps/lol${(Math.random() * 4 + 1) as int}.png")
+        generateBackground("maps/lol${(Math.random() * 4 + 1) as int}.png", false)
     }
 
-    static Tile[][] generateBackground(String imageName) {
+    static Tile[][] generateBackground(String imageName, Boolean test) {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader()
         BufferedImage image = ImageIO.read(classloader.getResourceAsStream(imageName))
 
-        int[][] heightMap = buildHeightMap(image)
-        shaveOffExtremeMaxMin(heightMap)
-        maximizeScale(heightMap)
-        Tile[][] tileNetwork = buildTileNetwork(heightMap)
-        setColors(tileNetwork)
+        int[][] heightMap = buildHeightMap(image, test)
+        shaveOffExtremeMaxMin(heightMap, test)
+        maximizeScale(heightMap, test)
+        Tile[][] tileNetwork = buildTileNetwork(heightMap, test)
+        setColors(tileNetwork, test)
 
         return tileNetwork
     }
 
-    private static int[][] buildHeightMap(BufferedImage image) {
+    private static int[][] buildHeightMap(BufferedImage image, Boolean test) {
         int[][] heightMap = new int[image.getWidth()][image.getHeight()]
 
         for (int x = 0; x < image.getWidth(); x++) {
@@ -50,7 +50,7 @@ class BackgroundUtils {
         return heightMap
     }
 
-    private static void shaveOffExtremeMaxMin(int[][] heightMap) {
+    private static void shaveOffExtremeMaxMin(int[][] heightMap, Boolean test) {
 
         List<Integer> maxMin = []
         for (int x = 0; x < heightMap.length; x++) {
@@ -78,7 +78,7 @@ class BackgroundUtils {
         }
     }
 
-    private static void maximizeScale(int[][] heightMap) {
+    private static void maximizeScale(int[][] heightMap, Boolean test) {
         Double middle = 255 / 2
         List<Integer> maxMin = []
         for (int x = 0; x < heightMap.length; x++) {
@@ -118,7 +118,7 @@ class BackgroundUtils {
         }
     }
 
-    private static Tile[][] buildTileNetwork(int[][] heightMap) {
+    private static Tile[][] buildTileNetwork(int[][] heightMap, Boolean test) {
 
         int imageWidth = heightMap.length
         int imageHeight = heightMap[0].length
@@ -186,34 +186,37 @@ class BackgroundUtils {
             xTileIdx++
         }
 
-        def controlMap = [:]
+        if (test) {
+            def controlMap = [:]
 
-        for (int x = 0; x < pixelReadControl.length; x++) {
-            for (int y = 0; y < pixelReadControl[x].length; y++) {
-                def xy = controlMap["${pixelReadControl[x][y]}"]
-                if (xy == null) {
-                    controlMap["${pixelReadControl[x][y]}"] = 1
-                } else {
-                    controlMap["${pixelReadControl[x][y]}"] += 1
+            for (int x = 0; x < pixelReadControl.length; x++) {
+                for (int y = 0; y < pixelReadControl[x].length; y++) {
+                    def xy = controlMap["${pixelReadControl[x][y]}"]
+                    if (xy == null) {
+                        controlMap["${pixelReadControl[x][y]}"] = 1
+                    } else {
+                        controlMap["${pixelReadControl[x][y]}"] += 1
+                    }
+                }
+            }
+
+            if (controlMap['1'] != imageHeight * imageWidth) {
+                throw new PerIsBorkenException()
+            }
+
+            for (int x = 0; x < tileNetwork.length; x++) {
+                for (int y = 0; y < tileNetwork[x].length; y++) {
+                    if (!tileNetwork[x][y]) {
+                        throw new PerIsBorkenException()
+                    }
                 }
             }
         }
 
-        if (controlMap['1'] != imageHeight * imageWidth) {
-            throw new PerIsBorkenException()
-        }
-
-        for (int x = 0; x < tileNetwork.length; x++) {
-            for (int y = 0; y < tileNetwork[x].length; y++) {
-                if (!tileNetwork[x][y]) {
-                    throw new PerIsBorkenException()
-                }
-            }
-        }
         return tileNetwork
     }
 
-    private static void setColors(Tile[][] tileNetwork) {
+    private static void setColors(Tile[][] tileNetwork, Boolean test) {
 
         List<Tile> allTiles = []
         for (int x = 0; x < tileNetwork.length; x++) {
@@ -281,33 +284,35 @@ class BackgroundUtils {
             controlUniqueHeightValues << uniqueHeightValues
         }
 
-        //test: use all colors
-        if (!(controlAllColors.flatten()*.getRGB().unique().sort() == allTiles.color*.getRGB().unique().sort())) {
-            throw new PerIsBorkenException()
-        }
-
-        //test: no two heights of tiles uses the same color
-        allTiles.groupBy { it.height }.each { int height, List<Tile> tiles ->
-            if (tiles.groupBy { it.color }.size() != 1) {
+        if (test) {
+            //test: use all colors
+            if (!(controlAllColors.flatten()*.getRGB().unique().sort() == allTiles.color*.getRGB().unique().sort())) {
                 throw new PerIsBorkenException()
             }
-        }
 
-        if (controlMap.collect { it.key }.sort() != allTiles.id.sort()) {
-            throw new PerIsBorkenException()
-        }
-        controlMap.each {
-            if (it.value != 1) {
+            //test: no two heights of tiles uses the same color
+            allTiles.groupBy { it.height }.each { int height, List<Tile> tiles ->
+                if (tiles.groupBy { it.color }.size() != 1) {
+                    throw new PerIsBorkenException()
+                }
+            }
+
+            if (controlMap.collect { it.key }.sort() != allTiles.id.sort()) {
                 throw new PerIsBorkenException()
             }
-        }
-
-        if (allTiles.color.grep().size() != allTiles.size()) {
-            allTiles.grep { !it.color }.each {
-                it.color = new Color(255, 0, 0)
-                it.size = 20
+            controlMap.each {
+                if (it.value != 1) {
+                    throw new PerIsBorkenException()
+                }
             }
-            throw new PerIsBorkenException()
+
+            if (allTiles.color.grep().size() != allTiles.size()) {
+                allTiles.grep { !it.color }.each {
+                    it.color = new Color(255, 0, 0)
+                    it.size = 20
+                }
+                throw new PerIsBorkenException()
+            }
         }
     }
 
