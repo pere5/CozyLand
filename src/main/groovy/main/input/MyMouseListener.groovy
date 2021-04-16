@@ -5,6 +5,7 @@ import main.drawers.Surface
 import main.model.Villager
 import main.things.Drawable
 import main.utility.ImageUtils
+import main.utility.Utility
 
 import java.awt.*
 import java.awt.event.MouseEvent
@@ -15,7 +16,6 @@ class MyMouseListener implements MouseListener {
     void mouseClicked(MouseEvent e) {
 
         //bilder och ytor ritas från övre vänstra hörnet
-
         Model.drawables.findAll { Drawable drawable ->
             if (Model.shapeImageMap[drawable.shape]) {
                 def a = e.point.x >= drawable.x + Surface.xOffset - 30
@@ -35,6 +35,10 @@ class MyMouseListener implements MouseListener {
                 println((drawable as Villager).toString())
             }
         }
+        def x = e.point.x - Surface.xOffset
+        def y = e.point.y - Surface.yOffset
+        println(Utility.pixelToTileIdx([x, y]))
+        println([x, y])
     }
 
     @Override
