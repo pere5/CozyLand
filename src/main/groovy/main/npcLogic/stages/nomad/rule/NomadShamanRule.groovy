@@ -21,6 +21,8 @@ class NomadShamanRule extends Rule {
 
     private static final String RULE_GOAL = 'rule_goal'
 
+    private static final List<Model.Shape> COMPULSORY_RESOURCES = [Model.Shape.ROCK]
+
     NomadShamanRule(int rank) {
         this.rank = rank
     }
@@ -40,7 +42,11 @@ class NomadShamanRule extends Rule {
             List<Location> goodLocations = []
 
             def uniqueResourcesAtSpot = surveyResources.collect {
-                it.value.unique(false) { it.shape }.size()
+                it.value.shape.unique(false)
+            }.findAll { def uniqueShapes ->
+                COMPULSORY_RESOURCES.every { it in uniqueShapes }
+            }.collect {
+                it.size()
             }.max()
 
             if (uniqueResourcesAtSpot < MIN_UNIQUE_RESOURCES) {

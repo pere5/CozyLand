@@ -12,8 +12,6 @@ import main.utility.Utility
 
 class SurveyAction extends Action {
 
-    int seconds
-    long time
     Tribe tribe
 
     SurveyAction(int seconds, Tribe tribe) {
@@ -35,10 +33,6 @@ class SurveyAction extends Action {
     boolean doIt(Villager shaman) {
         assert shaman.role instanceof NomadShamanRole
 
-        if (!time) {
-            time = System.currentTimeMillis() + (seconds * 1000)
-        }
-
         List<Integer> shamanXY = shaman.getTileXY().collect { it as Integer }
 
         perInterval (2000) {
@@ -59,7 +53,7 @@ class SurveyAction extends Action {
             }
         }
 
-        def resolution = time > System.currentTimeMillis() ? CONTINUE : DONE
+        def resolution = waitForPeriod()
 
         if (resolution == DONE) {
             TestPrints.removeSurveyResourcesCircle(shaman.id)

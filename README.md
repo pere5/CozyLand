@@ -53,10 +53,10 @@
  - [x] Ordna till färgerna på träden
  - [x] Villagers inte byta till random shape om de har en
  - [x] Skapa egna Hamlet roller
- - [ ] Flytta PerIsBorken testen i kart genereringen (fler?) till ett separat test så att de inte körs varje gång
- - [ ] Flytta in wait till Action så att alla kan bruka funktionen
-    - [ ] Lägg till wait i HomeAction om man inte hittar en plats att bygga
-    - [ ] Wait skall göras för alla actions som misslyckas
+ - [x] Flytta PerIsBorken testen i kart genereringen (fler?) till ett separat test så att de inte körs varje gång
+ - [x] Flytta in wait till Action så att alla kan bruka funktionen
+    - [x] Lägg till wait i HomeAction om man inte hittar en plats att bygga
+    - [ ] Wait skall göras för alla actions som kan misslyckas
  - [ ] byggnadsplacering
     - [ ] inte på berg
     - [ ] separat från varandra

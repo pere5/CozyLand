@@ -5,9 +5,6 @@ import main.npcLogic.Action
 
 class WaitAction extends Action {
 
-    int seconds
-    long time
-
     WaitAction(int seconds) {
         this.seconds = seconds
     }
@@ -24,11 +21,7 @@ class WaitAction extends Action {
 
     @Override
     boolean doIt(Villager me) {
-        if (!time) {
-            time = System.currentTimeMillis() + (seconds * 1000)
-        }
-
-        def resolution = time > System.currentTimeMillis() ? CONTINUE : DONE
+        def resolution = waitForPeriod()
         return resolution
     }
 }

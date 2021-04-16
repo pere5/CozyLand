@@ -13,6 +13,9 @@ abstract class Action {
     boolean initialized = true
     Closure closure
 
+    Integer seconds
+    Long time
+
     Action () { }
 
     Action(Boolean initialized) {
@@ -27,6 +30,15 @@ abstract class Action {
     abstract boolean interrupt()
     abstract void switchWorker(Villager me)
     abstract boolean doIt(Villager me)
+
+    boolean waitForPeriod() {
+        if (!time) {
+            time = System.currentTimeMillis() + (this.seconds * 1000)
+        }
+
+        def resolution = time > System.currentTimeMillis() ? CONTINUE : DONE
+        return resolution
+    }
 
     void perInterval(Long interval, Closure closure) {
         perInterval(interval, DEFAULT_ID, closure)
