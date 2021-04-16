@@ -57,9 +57,9 @@
  - [x] Flytta in wait till Action så att alla kan bruka funktionen
     - [x] Lägg till wait i HomeAction om man inte hittar en plats att bygga
     - [ ] Wait skall göras för alla actions som kan misslyckas
- - [ ] byggnadsplacering
-    - [ ] inte på berg
-    - [ ] separat från varandra
+ - [x] byggnadsplacering
+    - [x] inte på berg
+    - [x] separat från varandra
  - [ ] Skapa roller och regler för träd
  - [ ] Ny natural resource, ruin
  - [ ] shaman placerar totem, inte blir en

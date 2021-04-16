@@ -23,6 +23,11 @@ class WorkWorker extends Worker {
 
                 if (action && action.initialized) {
                     def canContinue = action.doIt(villager)
+
+
+                    här kan du lägga till en tredje fail + wait state!?
+
+
                     if (canContinue) {
                         resolution = Action.CONTINUE
                     } else {
