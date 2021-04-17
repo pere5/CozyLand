@@ -14,9 +14,9 @@ class SurveyAction extends Action {
 
     Tribe tribe
 
-    SurveyAction(int seconds, Tribe tribe) {
+    SurveyAction(int waitSeconds, Tribe tribe) {
         this.tribe = tribe
-        this.seconds = seconds
+        this.waitSeconds = waitSeconds
     }
 
     @Override

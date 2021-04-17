@@ -7,23 +7,27 @@ abstract class Action {
     static boolean CONTINUE = true
     static boolean DONE = false
 
+    boolean resolution = CONTINUE
+
     private final Integer DEFAULT_ID = 1
     private final Map<Integer, Long> lastMap = [:].withDefault { 0L }
 
-    boolean initialized = true
+    boolean initializeByAnotherWorker = false
+    boolean timerStarted = false
+    Long timer
     Closure closure
 
-    Integer seconds
-    Long time
+    Integer waitSeconds
+    Long waitTime
 
     Action () { }
 
-    Action(Boolean initialized) {
-        this.initialized = initialized
+    Action(Boolean initializeByAnotherWorker) {
+        this.initializeByAnotherWorker = initializeByAnotherWorker
     }
 
-    Action(Boolean initialized, Closure closure) {
-        this.initialized = initialized
+    Action(Boolean initializeByAnotherWorker, Closure closure) {
+        this.initializeByAnotherWorker = initializeByAnotherWorker
         this.closure = closure
     }
 
@@ -32,11 +36,11 @@ abstract class Action {
     abstract boolean doIt(Villager me)
 
     boolean waitForPeriod() {
-        if (!time) {
-            time = System.currentTimeMillis() + (this.seconds * 1000)
+        if (!waitTime) {
+            waitTime = System.currentTimeMillis() + (this.waitSeconds * 1000)
         }
 
-        def resolution = time > System.currentTimeMillis() ? CONTINUE : DONE
+        def resolution = waitTime > System.currentTimeMillis() ? CONTINUE : DONE
         return resolution
     }
 

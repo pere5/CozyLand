@@ -13,12 +13,12 @@ class WalkAction extends Action {
     Queue<StraightPath> pathQueue = new LinkedList<>()
 
     WalkAction(int[] tile) {
-        super(false)
+        super(true)
         tileDest = tile
     }
 
     WalkAction(int[] tile, Closure closure) {
-        super(false, closure)
+        super(true, closure)
         tileDest = tile
     }
 

@@ -44,9 +44,9 @@ class PathfinderWorker extends Worker {
 
             if (villager.pathfinderWorker) {
 
-                def walkAction = villager.actionQueue.find {it instanceof WalkAction && !it.initialized} as WalkAction
+                def walkAction = villager.actionQueue.find {it instanceof WalkAction && it.initializeByAnotherWorker} as WalkAction
                 if (walkAction) {
-                    walkAction.initialized = true
+                    walkAction.initializeByAnotherWorker = false
                     def tileStart = villager.getTileXY()
                     def tileDest = walkAction.tileDest
                     if (tileStart == tileDest) {

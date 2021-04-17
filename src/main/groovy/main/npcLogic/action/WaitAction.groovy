@@ -5,8 +5,8 @@ import main.npcLogic.Action
 
 class WaitAction extends Action {
 
-    WaitAction(int seconds) {
-        this.seconds = seconds
+    WaitAction(int waitSeconds) {
+        this.waitSeconds = waitSeconds
     }
 
     @Override

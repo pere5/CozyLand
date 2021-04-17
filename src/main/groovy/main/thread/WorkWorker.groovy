@@ -21,13 +21,13 @@ class WorkWorker extends Worker {
 
                 def action = villager.actionQueue.peek()
 
-                if (action && action.initialized) {
+                if (action && !action.timerStarted) {
+                    action.timer = System.currentTimeMillis()
+                    action.timerStarted = true
+                }
+
+                if (action && !action.initializeByAnotherWorker) {
                     def canContinue = action.doIt(villager)
-
-
-                    här kan du lägga till en tredje fail + wait state!?
-
-
                     if (canContinue) {
                         resolution = Action.CONTINUE
                     } else {
@@ -38,7 +38,7 @@ class WorkWorker extends Worker {
                             resolution = Action.DONE
                         }
                     }
-                } else if (action && !action.initialized) {
+                } else if (action && action.initializeByAnotherWorker) {
                     action.switchWorker(villager)
                     resolution = Action.CONTINUE
                 } else {
@@ -46,8 +46,10 @@ class WorkWorker extends Worker {
                 }
 
                 if (resolution == Action.DONE) {
-                    villager.toRuleWorker()
-                    TestPrints.clearPrints(villager)
+                    if (action.timer <= System.currentTimeMillis() - 1000) {
+                        villager.toRuleWorker()
+                        TestPrints.clearPrints(villager)
+                    }
                 }
             }
         }
