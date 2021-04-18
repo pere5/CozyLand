@@ -112,7 +112,7 @@ class Model {
         TREE_PALM,
         TREE_CACTUS,
         WINDMILL,
-        ALONE,
+        WARRIOR_STAGE_1,
         NOMAD_FOLLOWER,
         NOMAD_SHAMAN,
         HAMLET_VILLAGER,
@@ -160,7 +160,7 @@ class Model {
             (Shape.HAMLET_VILLAGER) : ImageUtils.readFromDir('icons/PEOPLE/HAMLET/VILLAGER', SCALE_PEOPLE),
             (Shape.NOMAD_SHAMAN)    : ImageUtils.readFromDir('icons/PEOPLE/NOMAD/SHAMAN', SCALE_PEOPLE),
             (Shape.NOMAD_FOLLOWER)  : ImageUtils.readFromDir('icons/PEOPLE/NOMAD/FOLLOWER', SCALE_PEOPLE),
-            (Shape.ALONE)           : ImageUtils.readFromDir('icons/PEOPLE/ALONE', SCALE_PEOPLE),
+            (Shape.WARRIOR_STAGE_1) : ImageUtils.readFromDir('icons/PEOPLE/WARRIOR_STAGE_1', SCALE_PEOPLE),
     ]
 
     static def NO_VILLAGERS = 5000

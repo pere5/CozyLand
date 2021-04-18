@@ -61,7 +61,7 @@ class AffinityRule extends Rule {
         } else {
             tileDest = Utility.closeRandomTile(me, me.tileXY, Main.WALK_DISTANCE_TILES_MAX, Main.WALK_DISTANCE_TILES_MIN)
         }
-        me.actionQueue << new ShapeAction(Model.Shape.ALONE)
+        me.actionQueue << new ShapeAction(Model.Shape.WARRIOR_STAGE_1)
         me.actionQueue << new WalkAction(tileDest, AffinityRule.&joinATribe)
     }
 
