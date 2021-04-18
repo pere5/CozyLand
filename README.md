@@ -44,8 +44,7 @@
  
  
  - [x] nomad_warrior == alone skin
- - [ ] flytta suspend till WW.gr
- - [ ] time är inte från new, utan från första doIt
+ - [x] flytta suspend till AW.gr
  - [ ] zoom ingame
  - [x] Implement suspend for actions
  - [x] All logik i action reglerna (flytta tribe logiken)
