@@ -28,7 +28,7 @@ class HomeAction extends Action {
     }
 
     @Override
-    Resolution doIt(Villager me) {
+    Resolution work(Villager me) {
         def tileNetwork = Model.tileNetwork
         int depth = 0
         while (true) {

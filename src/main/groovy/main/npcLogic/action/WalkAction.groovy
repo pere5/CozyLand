@@ -40,7 +40,7 @@ class WalkAction extends Action {
     }
 
     @Override
-    Resolution doIt(Villager villager) {
+    Resolution work(Villager villager) {
         Resolution result
         def straightPath = pathQueue.peek()
         if (straightPath) {
@@ -52,7 +52,7 @@ class WalkAction extends Action {
                 result = Resolution.CONTINUE
             } else {
                 pathQueue.poll()
-                result = doIt(villager)
+                result = work(villager)
             }
         } else {
             result = Resolution.DONE

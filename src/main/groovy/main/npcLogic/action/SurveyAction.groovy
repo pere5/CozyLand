@@ -30,7 +30,7 @@ class SurveyAction extends Action {
     }
 
     @Override
-    Resolution doIt(Villager shaman) {
+    Resolution work(Villager shaman) {
         assert shaman.role instanceof NomadShamanRole
 
         List<Integer> shamanXY = shaman.getTileXY().collect { it as Integer }

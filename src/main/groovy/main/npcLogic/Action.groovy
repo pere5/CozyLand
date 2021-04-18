@@ -34,7 +34,7 @@ abstract class Action {
 
     abstract boolean interrupt()
     abstract void switchWorker(Villager me)
-    abstract Resolution doIt(Villager me)
+    abstract Resolution work(Villager me)
 
     Resolution waitForPeriod() {
         if (!waitTime) {

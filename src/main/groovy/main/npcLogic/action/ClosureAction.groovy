@@ -22,7 +22,7 @@ class ClosureAction extends Action {
     }
 
     @Override
-    Resolution doIt(Villager me) {
+    Resolution work(Villager me) {
         closure()
         return Resolution.DONE
     }
