@@ -25,7 +25,6 @@ class WorkWorker extends Worker {
                     if (action.timer < System.currentTimeMillis() - 2000) {
                         resolution = nextAction(villager)
                     } else {
-                        println(action.timer - (System.currentTimeMillis() - 2000))
                         resolution = Resolution.CONTINUE
                     }
                 } else if (action && action.initializeByAnotherWorker) {
