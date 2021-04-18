@@ -43,6 +43,8 @@
  - [ ] Blockeringar mellan tiles i pathfindern (för branta stigningar)
  
  
+ - [ ] nomad_warrior == alone skin
+ - [ ] zoom ingame
  - [x] All logik i action reglerna (flytta tribe logiken)
  - [x] Villagers placerar sig själva i tiles
  - [x] optimera debug renderingen
