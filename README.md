@@ -60,7 +60,7 @@
  - [x] Flytta PerIsBorken testen i kart genereringen (fler?) till ett separat test så att de inte körs varje gång
  - [x] Flytta in wait till Action så att alla kan bruka funktionen
     - [x] Lägg till wait i HomeAction om man inte hittar en plats att bygga
-    - [ ] Wait skall göras för alla actions som kan misslyckas
+    - [x] Wait skall göras för alla actions som kan misslyckas
  - [x] byggnadsplacering
     - [x] inte på berg
     - [x] separat från varandra
