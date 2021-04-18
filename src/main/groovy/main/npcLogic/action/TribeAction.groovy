@@ -26,8 +26,8 @@ class TribeAction extends Action {
     }
 
     @Override
-    boolean doIt(Villager me) {
+    Resolution doIt(Villager me) {
         GameUtils.transformTribe(oldTribe, newTribe)
-        return DONE
+        return Resolution.DONE
     }
 }

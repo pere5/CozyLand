@@ -20,7 +20,7 @@ class WaitAction extends Action {
     }
 
     @Override
-    boolean doIt(Villager me) {
+    Resolution doIt(Villager me) {
         def resolution = waitForPeriod()
         return resolution
     }

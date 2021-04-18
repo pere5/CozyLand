@@ -4,10 +4,7 @@ import main.model.Villager
 
 abstract class Action {
 
-    static boolean CONTINUE = true
-    static boolean DONE = false
-
-    boolean resolution = CONTINUE
+    enum Resolution { DONE, CONTINUE, SUSPEND }
 
     private final Integer DEFAULT_ID = 1
     private final Map<Integer, Long> lastMap = [:].withDefault { 0L }
@@ -20,27 +17,31 @@ abstract class Action {
     Integer waitSeconds
     Long waitTime
 
-    Action () { }
+    Action () {
+        this.timer = System.currentTimeMillis()
+    }
 
     Action(Boolean initializeByAnotherWorker) {
+        this.timer = System.currentTimeMillis()
         this.initializeByAnotherWorker = initializeByAnotherWorker
     }
 
     Action(Boolean initializeByAnotherWorker, Closure closure) {
+        this.timer = System.currentTimeMillis()
         this.initializeByAnotherWorker = initializeByAnotherWorker
         this.closure = closure
     }
 
     abstract boolean interrupt()
     abstract void switchWorker(Villager me)
-    abstract boolean doIt(Villager me)
+    abstract Resolution doIt(Villager me)
 
-    boolean waitForPeriod() {
+    Resolution waitForPeriod() {
         if (!waitTime) {
             waitTime = System.currentTimeMillis() + (this.waitSeconds * 1000)
         }
 
-        def resolution = waitTime > System.currentTimeMillis() ? CONTINUE : DONE
+        def resolution = waitTime > System.currentTimeMillis() ? Resolution.CONTINUE : Resolution.DONE
         return resolution
     }
 

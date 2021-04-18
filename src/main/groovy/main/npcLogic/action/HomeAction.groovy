@@ -28,7 +28,7 @@ class HomeAction extends Action {
     }
 
     @Override
-    boolean doIt(Villager me) {
+    Resolution doIt(Villager me) {
         def tileNetwork = Model.tileNetwork
         int depth = 0
         while (true) {
@@ -51,11 +51,11 @@ class HomeAction extends Action {
             } else {
                 depth++
                 if (depth > 20) {
-                    return DONE
+                    return Resolution.SUSPEND
                 }
             }
         }
-        return DONE
+        return Resolution.DONE
     }
 
     private int[] positionByGoldenRatio(Villager me, int[] tileXY, int multiplier) {

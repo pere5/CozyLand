@@ -30,7 +30,7 @@ class SurveyAction extends Action {
     }
 
     @Override
-    boolean doIt(Villager shaman) {
+    Resolution doIt(Villager shaman) {
         assert shaman.role instanceof NomadShamanRole
 
         List<Integer> shamanXY = shaman.getTileXY().collect { it as Integer }
@@ -55,7 +55,7 @@ class SurveyAction extends Action {
 
         def resolution = waitForPeriod()
 
-        if (resolution == DONE) {
+        if (resolution == Resolution.DONE) {
             TestPrints.removeSurveyResourcesCircle(shaman.id)
         }
 

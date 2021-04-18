@@ -23,8 +23,8 @@ class ShapeAction extends Action {
     }
 
     @Override
-    boolean doIt(Villager villager) {
+    Resolution doIt(Villager villager) {
         villager.setShapeAndImage(shape)
-        return DONE
+        return Resolution.DONE
     }
 }

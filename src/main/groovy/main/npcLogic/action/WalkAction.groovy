@@ -40,8 +40,8 @@ class WalkAction extends Action {
     }
 
     @Override
-    boolean doIt(Villager villager) {
-        Boolean result
+    Resolution doIt(Villager villager) {
+        Resolution result
         def straightPath = pathQueue.peek()
         if (straightPath) {
             def step = straightPath.path.poll()
@@ -49,16 +49,16 @@ class WalkAction extends Action {
                 def (Double x, Double y) = step
                 villager.x = x
                 villager.y = y
-                result = CONTINUE
+                result = Resolution.CONTINUE
             } else {
                 pathQueue.poll()
                 result = doIt(villager)
             }
         } else {
-            result = DONE
+            result = Resolution.DONE
         }
 
-        if (result == DONE) {
+        if (result == Resolution.DONE) {
             Utility.placeInTileNetwork(villager)
         } else {
             perInterval (1000, 1) {

@@ -22,8 +22,8 @@ class ClosureAction extends Action {
     }
 
     @Override
-    boolean doIt(Villager me) {
+    Resolution doIt(Villager me) {
         closure()
-        return DONE
+        return Resolution.DONE
     }
 }
