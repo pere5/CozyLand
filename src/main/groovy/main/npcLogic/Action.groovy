@@ -4,7 +4,7 @@ import main.model.Villager
 
 abstract class Action {
 
-    enum Resolution { DONE, CONTINUE, SUSPEND }
+    enum Resolution { DONE, CONTINUE }
 
     private final Integer DEFAULT_ID = 1
     private final Map<Integer, Long> lastMap = [:].withDefault { 0L }

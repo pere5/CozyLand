@@ -51,7 +51,7 @@ class HomeAction extends Action {
             } else {
                 depth++
                 if (depth > 20) {
-                    return Resolution.SUSPEND
+                    return Resolution.DONE
                 }
             }
         }

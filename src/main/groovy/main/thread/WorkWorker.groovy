@@ -22,7 +22,7 @@ class WorkWorker extends Worker {
                 Resolution resolution
                 def action = villager.actionQueue.peek()
                 if (action && action.suspend) {
-                    if (action.timer < System.currentTimeMillis() - 2000) {
+                    if (enoughTime(action)) {
                         resolution = nextAction(villager)
                     } else {
                         resolution = Resolution.CONTINUE
@@ -35,10 +35,12 @@ class WorkWorker extends Worker {
                     if (actionResolution == Action.Resolution.CONTINUE) {
                         resolution = Resolution.CONTINUE
                     } else if (actionResolution == Action.Resolution.DONE) {
-                        resolution = nextAction(villager)
-                    } else if (actionResolution == Action.Resolution.SUSPEND) {
-                        action.suspend = true
-                        resolution = Resolution.CONTINUE
+                        if (enoughTime(action)) {
+                            resolution = nextAction(villager)
+                        } else {
+                            action.suspend = true
+                            resolution = Resolution.CONTINUE
+                        }
                     } else {
                         throw new PerIsBorkenException()
                     }
@@ -52,6 +54,10 @@ class WorkWorker extends Worker {
                 }
             }
         }
+    }
+
+    private boolean enoughTime(Action action) {
+        action.timer < System.currentTimeMillis() - 2000
     }
 
     private Resolution nextAction(Villager villager) {
