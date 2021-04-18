@@ -12,7 +12,7 @@ class ActionWorker extends Worker {
 
     @Override
     def run() {
-        super.intendedFps = 20
+        super.intendedFps = 16
         super.run()
     }
 
@@ -57,7 +57,7 @@ class ActionWorker extends Worker {
     }
 
     private boolean enoughTime(Action action) {
-        action.timer < System.currentTimeMillis() - 2000
+        action.timer < System.currentTimeMillis() - 1000
     }
 
     private Resolution nextAction(Villager villager) {

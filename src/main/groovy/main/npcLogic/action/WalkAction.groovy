@@ -67,7 +67,7 @@ class WalkAction extends Action {
         }
 
         if (closure) {
-            perInterval(1000, 2) {
+            perInterval(2000, 2) {
                 closure(villager)
             }
         }
