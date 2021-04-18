@@ -3,10 +3,10 @@ package main
 import main.drawers.Surface
 import main.input.MyKeyboardListener
 import main.input.MyMouseListener
+import main.thread.ActionWorker
 import main.thread.InterruptionWorker
 import main.thread.PathfinderWorker
 import main.thread.RuleWorker
-import main.thread.WorkWorker
 import main.utility.OSUtils
 
 import javax.swing.*
@@ -61,7 +61,7 @@ class Main extends JFrame {
         timer.start()
 
         Thread.start {
-            new WorkWorker(frameIndex: 1).run()
+            new ActionWorker(frameIndex: 1).run()
         }
         Thread.start {
             new RuleWorker(frameIndex: 2).run()

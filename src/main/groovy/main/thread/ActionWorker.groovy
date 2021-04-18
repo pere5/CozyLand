@@ -6,7 +6,7 @@ import main.exception.PerIsBorkenException
 import main.model.Villager
 import main.npcLogic.Action
 
-class WorkWorker extends Worker {
+class ActionWorker extends Worker {
 
     enum Resolution { DONE, CONTINUE }
 
