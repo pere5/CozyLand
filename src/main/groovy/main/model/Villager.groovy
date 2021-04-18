@@ -33,7 +33,7 @@ class Villager extends Drawable {
         def newTribe = new AloneTribe()
         newTribe.ruler = villager
         villager.role = new AloneRole(newTribe)
-        villager.setShapeAndImage(Model.Shape.WARRIOR)
+        villager.setShapeAndImage(Model.Shape.ALONE)
         def (Double x, Double y) = Utility.generateXY()
         villager.x = x
         villager.y = y

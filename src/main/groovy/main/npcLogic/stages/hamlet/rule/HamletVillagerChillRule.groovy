@@ -26,7 +26,7 @@ class HamletVillagerChillRule extends Rule {
         def chillPlace = Utility.closeRandomTile(me, me.tileXY, Main.COMFORT_ZONE_TILES)
         def origShape = me.shape
 
-        me.actionQueue << new ShapeAction(Model.Shape.VILLAGER)
+        me.actionQueue << new ShapeAction(Model.Shape.HAMLET_VILLAGER)
         me.actionQueue << new WaitAction(3)
         me.actionQueue << new WalkAction(chillPlace)
         me.actionQueue << new WaitAction(3)

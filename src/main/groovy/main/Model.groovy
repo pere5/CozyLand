@@ -111,12 +111,13 @@ class Model {
         TREE_PINE,
         TREE_PALM,
         TREE_CACTUS,
-        VILLAGER,
         WINDMILL,
-        WARRIOR,
-        SHAMAN,
-        FISHER,
-        BUILDER
+        ALONE,
+        NOMAD_FOLLOWER,
+        NOMAD_SHAMAN,
+        HAMLET_VILLAGER,
+        HAMLET_PRIEST,
+        HAMLET_BUILDER
     }
 
     static final Double SCALE = 0.8
@@ -154,11 +155,12 @@ class Model {
             (Shape.WINDMILL)        : ImageUtils.readFromDir('icons/WINDMILL', SCALE_64),
             (Shape.TOTEM)           : ImageUtils.readFromDir('icons/TOTEM', SCALE_TOTEM),
             (Shape.HUT)             : ImageUtils.readFromDir('icons/HUT', SCALE_HUT),
-            (Shape.BUILDER)         : ImageUtils.readFromDir('icons/PEOPLE/BUILDER', SCALE_PEOPLE),
-            (Shape.FISHER)          : ImageUtils.readFromDir('icons/PEOPLE/FISHER', SCALE_PEOPLE),
-            (Shape.SHAMAN)          : ImageUtils.readFromDir('icons/PEOPLE/SHAMAN', SCALE_PEOPLE),
-            (Shape.VILLAGER)        : ImageUtils.readFromDir('icons/PEOPLE/VILLAGER', SCALE_PEOPLE),
-            (Shape.WARRIOR)         : ImageUtils.readFromDir('icons/PEOPLE/WARRIOR', SCALE_PEOPLE)
+            (Shape.HAMLET_BUILDER)  : ImageUtils.readFromDir('icons/PEOPLE/HAMLET/BUILDER', SCALE_PEOPLE),
+            (Shape.HAMLET_PRIEST)   : ImageUtils.readFromDir('icons/PEOPLE/HAMLET/PRIEST', SCALE_PEOPLE),
+            (Shape.HAMLET_VILLAGER) : ImageUtils.readFromDir('icons/PEOPLE/HAMLET/VILLAGER', SCALE_PEOPLE),
+            (Shape.NOMAD_SHAMAN)    : ImageUtils.readFromDir('icons/PEOPLE/NOMAD/SHAMAN', SCALE_PEOPLE),
+            (Shape.NOMAD_FOLLOWER)  : ImageUtils.readFromDir('icons/PEOPLE/NOMAD/FOLLOWER', SCALE_PEOPLE),
+            (Shape.ALONE)           : ImageUtils.readFromDir('icons/PEOPLE/ALONE', SCALE_PEOPLE),
     ]
 
     static def NO_VILLAGERS = 5000

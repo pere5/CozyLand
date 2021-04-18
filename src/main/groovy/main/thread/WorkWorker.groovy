@@ -21,11 +21,6 @@ class WorkWorker extends Worker {
 
                 def action = villager.actionQueue.peek()
 
-                if (action && !action.timerStarted) {
-                    action.timer = System.currentTimeMillis()
-                    action.timerStarted = true
-                }
-
                 if (action && !action.initializeByAnotherWorker) {
                     def canContinue = action.doIt(villager)
                     if (canContinue) {
@@ -46,10 +41,8 @@ class WorkWorker extends Worker {
                 }
 
                 if (resolution == Action.DONE) {
-                    if (action.timer <= System.currentTimeMillis() - 1000) {
-                        villager.toRuleWorker()
-                        TestPrints.clearPrints(villager)
-                    }
+                    villager.toRuleWorker()
+                    TestPrints.clearPrints(villager)
                 }
             }
         }

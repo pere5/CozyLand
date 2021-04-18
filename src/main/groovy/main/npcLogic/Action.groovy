@@ -13,8 +13,8 @@ abstract class Action {
     private final Map<Integer, Long> lastMap = [:].withDefault { 0L }
 
     boolean initializeByAnotherWorker = false
-    boolean timerStarted = false
     Long timer
+    Boolean suspend = Boolean.FALSE
     Closure closure
 
     Integer waitSeconds
